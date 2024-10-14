@@ -1,0 +1,3 @@
+[submodule "deps/SARibbon"]
+	path = deps/SARibbon
+	url = git@github.com:czyt1988/SARibbon.git
