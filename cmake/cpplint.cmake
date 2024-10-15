@@ -1,12 +1,13 @@
 # cpplint.cmake
 
+
 # This function runs cpplint on the provided source files
 function(run_cpplint)
     # Find the cpplint executable
     find_program(CPPLINT_EXECUTABLE NAMES cpplint)
 
     if (NOT CPPLINT_EXECUTABLE)
-        message(FATAL_ERROR "Miss cpplint")
+        message(FATAL_ERROR "Cpplint is not found!")
     endif()
 
     # Iterate through the provided source files and run cpplint on each one
@@ -21,8 +22,7 @@ function(run_cpplint)
             if(WIN32)
                 add_custom_command(
                     OUTPUT  ${output_file}  # Ensure we are specifying the output file here
-                    COMMAND ${CPPLINT_EXECUTABLE} --verbose=3 ${source_file} > ${output_file} 2>&1 || exit /b 0
-                    COMMAND ${CMAKE_COMMAND} -E cat ${output_file} 
+                    COMMAND ${CPPLINT_EXECUTABLE} --verbose=3 --filter=-build/include_order ${source_file} > ${output_file} 2>&1 || exit /b 0
                     DEPENDS ${source_file}
                     COMMENT "Running cpplint for ${source_file} on Windows and saving output to ${output_file}"
                     VERBATIM
@@ -30,8 +30,7 @@ function(run_cpplint)
             else()
                 add_custom_command(
                     OUTPUT  ${output_file}  # Ensure we are specifying the output file here
-                    COMMAND ${CPPLINT_EXECUTABLE} --verbose=3 ${source_file} > ${output_file} 2>&1 || true
-                    COMMAND ${CMAKE_COMMAND} -E cat ${output_file} 
+                    COMMAND ${CPPLINT_EXECUTABLE} --verbose=3 --filter=-build/include_order ${source_file} > ${output_file} 2>&1 || true
                     DEPENDS ${source_file}
                     COMMENT "Running cpplint for ${source_file} on Linux and saving output to ${output_file}"
                     VERBATIM
@@ -73,5 +72,4 @@ function(add_cpplint_target target_name)
             COMMENT "Printing contents of ${output_file}"
         )
     endforeach()
-
 endfunction()

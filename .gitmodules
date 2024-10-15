@@ -1,3 +1,6 @@
 [submodule "deps/SARibbon"]
 	path = deps/SARibbon
 	url = git@github.com:czyt1988/SARibbon.git
+[submodule "deps/cxxopts"]
+	path = deps/cxxopts
+	url = git@github.com:jarro2783/cxxopts.git

@@ -11,7 +11,6 @@ file(GLOB SUB_DIRECTORY_SOURCES
 list(APPEND PROJECT_SOURCES ${SUB_DIRECTORY_SOURCES})
 
 message(STATUS "PROJECT_SOURCES: " ${PROJECT_SOURCES})
-
 # check code style
 include(cpplint)
 add_cpplint_target(CpplintCheck ${SUB_DIRECTORY_SOURCES})
@@ -31,6 +30,7 @@ target_include_directories(SonCAD PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
 target_link_libraries(SonCAD PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(SonCAD PRIVATE SARibbonBar)
+target_link_libraries(SonCAD PRIVATE cxxopts)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
