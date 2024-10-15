@@ -3,8 +3,7 @@
 #include "App/MainWindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
-    : SARibbonMainWindow(parent)
-{
+    : SARibbonMainWindow(parent) {
 	setupUi();
 }
 

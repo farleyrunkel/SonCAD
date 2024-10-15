@@ -8,15 +8,12 @@
 class WelcomeDialog: public QDialog {
     Q_OBJECT
 
-public:
+ public:
     explicit WelcomeDialog(QWidget* parent = nullptr);
     ~WelcomeDialog() override = default;
 
-private:
-    void setupUi();;
-
-private:
-
+ private:
+    void setupUi();
 };
 
 #endif  // APP_WELCOMEDIALOG_H

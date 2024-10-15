@@ -9,7 +9,7 @@
 #include <cxxopts.hpp>
 
 class CommandLine {
-public:
+ public:
     CommandLine(int argc, char* argv[]);
 
     bool hasPathToOpen() const { return !mPathToOpen.empty(); }
@@ -17,7 +17,7 @@ public:
     bool isSandboxEnabled() const { return mEnableSandbox; }
     bool isWelcomeDialogDisabled() const { return mNoWelcomeDialog; }
 
-private:
+ private:
     std::string mPathToOpen;          // Path to open
     bool mEnableSandbox = false;      // Sandbox mode
     bool mNoWelcomeDialog = false;    // Welcome status

@@ -10,10 +10,10 @@
 // GlobalEventHandler handles global events, such as moving focus to the next UI element on Enter key press.
 class GlobalEventHandler : public QObject {
     Q_OBJECT
-public:
+ public:
     explicit GlobalEventHandler(QObject* parent = nullptr);
 
-protected:
+ protected:
     bool eventFilter(QObject* obj, QEvent* event) override;
 };
 

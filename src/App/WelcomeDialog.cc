@@ -2,8 +2,7 @@
 
 #include "App/WelcomeDialog.h"
 
-WelcomeDialog::WelcomeDialog(QWidget* parent)
-{
+WelcomeDialog::WelcomeDialog(QWidget* parent) {
 	setupUi();
 }
 

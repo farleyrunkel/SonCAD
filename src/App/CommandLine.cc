@@ -1,5 +1,8 @@
 // Copyright [2024] SonCAD
 
+#include <iostream>
+#include <string>
+
 #include "App/CommandLine.h"
 
 CommandLine::CommandLine(int argc, char* argv[]) {

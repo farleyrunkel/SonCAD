@@ -1,7 +1,7 @@
 // Copyright [2024] SonCAD
 
-#ifndef SRC_CORE_MAINWINDOW_H_
-#define SRC_CORE_MAINWINDOW_H_
+#ifndef APP_MAINWINDOW_H
+#define APP_MAINWINDOW_H
 
 #include "SARibbonMainWindow.h"
 
@@ -12,11 +12,8 @@ class MainWindow : public SARibbonMainWindow {
      explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow() override;
 
-private:
+ private:
     void setupUi();
-
-private:
-
 };
 
-#endif  // SRC_CORE_MAINWINDOW_H_
+#endif  // APP_MAINWINDOW_H
