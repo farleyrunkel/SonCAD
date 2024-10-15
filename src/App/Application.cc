@@ -2,10 +2,11 @@
 
 #include "App/Application.h"
 
+#include <iostream>
+
 #include <QTranslator>
 #include <QLocale>
 #include <QStringList>
-#include <iostream>
 
 #include "App/CommandLine.h"
 #include "App/MainWindow.h"
@@ -14,10 +15,7 @@
 #include "Pres/GlobalEventHandler.h"
 
 Application::Application(int& argc, char** argv)
-    : QApplication(argc, argv),
-    mSharedMemory(mMutexName),
-    mSystemSemaphore(mMutexName, 1) {
-    initializeSynchronization(); // Set up synchronization
+    : QApplication(argc, argv) {
     initializeTranslation();
 
     CommandLine cmdLine(argc, argv);
@@ -50,27 +48,4 @@ void Application::initializeTranslation() {
             break; // Exit loop after loading the first valid translation
         }
     }
-}
-
-// Initialize synchronization mechanisms
-void Application::initializeSynchronization() {
-    // Try to acquire the semaphore
-    mSystemSemaphore.acquire();
-
-    // Try to attach to existing shared memory
-    if (mSharedMemory.attach()) {
-        // If successful, another instance is running
-        qDebug() << "Warning" << "Another instance is already running."; // Output warning message
-        exit(0); // Exit the application
-    }
-
-    // Try to create shared memory
-    if (!mSharedMemory.create(1)) {
-        // If creation fails, output the error message
-        qDebug() << "Could not create shared memory:" << mSharedMemory.errorString(); // Output error message
-        exit(1); // Exit the application
-    }
-
-    // Release the semaphore
-    mSystemSemaphore.release(); // Release the semaphore
 }

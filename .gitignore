@@ -77,5 +77,6 @@ CMakeLists.txt.user*
 out
 build
 
+CMakeSettings.json
 CMakePresets.json
 CMakeUserPresets.json

@@ -5,8 +5,6 @@
 
 #include <QString>
 #include <QApplication>
-#include <QSharedMemory>
-#include <QSystemSemaphore>
 
 #include "App/MainWindow.h"
 #include "App/WelcomeDialog.h"
@@ -18,24 +16,14 @@ class Application : public QApplication {
 
  public:
     Application(int& argc, char** argv);
+    ~Application() = default;
 
-    MainWindow* mainWindow(MainWindow* xMainWindow) {
+    MainWindow* mainWindow(MainWindow* xMainWindow) const {
         return mMainWindow;
     }
 
  private:
     void initializeTranslation();
-    // Initialize the mutex and handle synchronization
-    void initializeSynchronization();
-
- private:
-    // Mutex name for instance protection
-    const QString mMutexName = "MacadInstanceRunning";
-
-    // Shared memory and semaphore for inter-process synchronization
-    QSharedMemory mSharedMemory;
-    QSystemSemaphore mSystemSemaphore;
-
 
  private:
     MainWindow* mMainWindow = nullptr;
