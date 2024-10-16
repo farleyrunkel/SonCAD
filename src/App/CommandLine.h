@@ -12,16 +12,19 @@ class CommandLine {
  public:
     CommandLine(int argc, char* argv[]);
 
-    bool hasPathToOpen() const { return !mPathToOpen.empty(); }
-    bool hasScriptToRun() const { return !mScriptToRun.empty(); }
     bool isSandboxEnabled() const { return mEnableSandbox; }
     bool isWelcomeDialogDisabled() const { return mNoWelcomeDialog; }
+    bool hasPathToOpen() const { return !mPathToOpen.empty(); }
+    bool hasScriptToRun() const { return !mScriptToRun.empty(); }
 
  private:
-    std::string mPathToOpen;          // Path to open
     bool mEnableSandbox = false;      // Sandbox mode
     bool mNoWelcomeDialog = false;    // Welcome status
+    std::string mPathToOpen;          // Path to open
     std::string mScriptToRun;         // Script to run
+
+ private:
+    cxxopts::Options mOptions;
 };
 
 #endif // APP_COMMANDLINE_H

@@ -2,20 +2,22 @@
 
 #include <QSystemSemaphore>
 #include <QMessageBox>
+#include <QLibrary>
 
 #include "App/Application.h"
 
 int main(int argc, char *argv[]) {
-    Application a(argc, argv);
 
-    QSystemSemaphore semaphore(a.applicationName(), 1, QSystemSemaphore::Open);
-    if (!semaphore.acquire()) {
+    Application app(argc, argv);
+
+    QSystemSemaphore sema(app.applicationName(), 1, QSystemSemaphore::Open);
+    if (!sema.acquire()) {
         QMessageBox::warning(nullptr, "Error", "An instance of the application is already running.");
         return 1;
     }
 
-    a.exec();
+    app.exec();
 
-    semaphore.release();
+    sema.release();
     return 0;
 }

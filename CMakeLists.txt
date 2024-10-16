@@ -10,9 +10,20 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
+set(OpenCASCADE_DIR "E:/Projects/Project-EchoCAD/OCCT-7_8_1-install/cmake")
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+
+# Find OpenCASCADE package
+find_package(OpenCASCADE REQUIRED)
+if(OpenCASCADE_FOUND)
+	message(STATUS "OpenCASCADE found")
+	message(STATUS "OpenCASCADE include directory: ${OpenCASCADE_INCLUDE_DIR}")
+	message(STATUS "OpenCASCADE binary directory: ${OpenCASCADE_BINARY_DIR}")
+else()
+	message(FATAL_ERROR "OpenCASCADE not found")
+endif()
 
 add_subdirectory(deps)
 add_subdirectory(src)

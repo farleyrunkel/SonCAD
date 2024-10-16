@@ -5,11 +5,12 @@
 
 #include <QString>
 #include <QApplication>
+#include <QCoreApplication>
 
 #include "App/MainWindow.h"
 #include "App/WelcomeDialog.h"
 
-#define coreApp (static_cast<Application*>(qApp))
+#define coreApp (static_cast<Application*>(QCoreApplication::instance()))
 
 class Application : public QApplication {
     Q_OBJECT

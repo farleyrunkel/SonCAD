@@ -16,6 +16,7 @@
 
 Application::Application(int& argc, char** argv)
     : QApplication(argc, argv) {
+
     initializeTranslation();
 
     CommandLine cmdLine(argc, argv);
@@ -24,7 +25,7 @@ Application::Application(int& argc, char** argv)
     bool bSkipWelcome = cmdLine.isWelcomeDialogDisabled() || cmdLine.hasPathToOpen() || cmdLine.hasScriptToRun();
     if (!bSkipWelcome) {
         mWelcomeDialog = new WelcomeDialog; // Create the WelcomeDialog
-        mWelcomeDialog->setWindowFlags(mWelcomeDialog->windowFlags() | Qt::WindowStaysOnTopHint); // Keep it on top
+        mWelcomeDialog->setWindowFlags(mWelcomeDialog->windowFlags() | Qt::WindowStaysOnTopHint);
         mWelcomeDialog->show(); // Show the WelcomeDialog
     }
 

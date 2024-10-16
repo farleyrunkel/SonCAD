@@ -3,7 +3,7 @@
 #ifndef PRES_GLOBALEVENTHANDLER_H
 #define PRES_GLOBALEVENTHANDLER_H
 
-#include <QObject>
+#include <QSplashScreen>
 #include <QKeyEvent>
 #include <QApplication>
 
