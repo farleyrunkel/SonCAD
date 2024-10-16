@@ -56,7 +56,14 @@ jobs:
     
     - name: Install Qt
       uses: jurplel/install-qt-action@v4.0.0
-    
+      
+    - name: Install OpenCASCADE (OCCT)
+      run: |
+        sudo apt-get install -y software-properties-common
+        sudo add-apt-repository ppa:freecad-maintainers/freecad-daily
+        sudo apt-get update
+        sudo apt-get install -y occt
+        
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
