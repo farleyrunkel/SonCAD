@@ -60,7 +60,7 @@ jobs:
     - name: Install OpenCASCADE (OCCT)
       run: |
         sudo apt-get install -y software-properties-common
-        sudo add-apt-repository ppa:freecad-maintainers/freecad-daily
+        sudo add-apt-repository ppa:freecad-maintainers/occt-releases
         sudo apt-get update
         sudo apt-get install opencascade
         
