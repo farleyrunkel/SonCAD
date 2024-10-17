@@ -12,6 +12,8 @@
 
 #include "Core/CoreContext.h"
 
+#include "Iact/Workspace/WorkspaceController.h"
+
 class ModelController : public QObject
 {
     Q_OBJECT
@@ -19,18 +21,6 @@ class ModelController : public QObject
 public:
     ModelController(QObject* parent = nullptr) : QObject(parent) {}
     ~ModelController() {}
-    void dispose() {
-        // 释放资源的具体逻辑
-    }
-};
-
-class WorkspaceController : public QObject
-{
-    Q_OBJECT
-
-public:
-    WorkspaceController(QObject* parent = nullptr) : QObject(parent) {}
-    ~WorkspaceController() {}
     void dispose() {
         // 释放资源的具体逻辑
     }

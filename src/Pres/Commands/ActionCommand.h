@@ -1,33 +1,27 @@
 // Copyright [2024] SonCAD
 
-#ifndef APP_ACTIVECOMMAND_H
-#define APP_ACTIVECOMMAND_H
+#ifndef APP_ACTIONCOMMAND_H
+#define APP_ACTIONCOMMAND_H
 
 #include <functional>
 
-class ActiveCommand {
+#include <QAction>
+
+#include "App/Application.h"
+#include "Pres/Commands/RelayCommand.h"
+
+class ActionCommand final : public QAction, public RelayCommand {
+    Q_OBJECT
+
 public:
     // Constructor
-    ActiveCommand(std::function<void()> execute, std::function<bool()> canExecute)
-        : _execute(std::move(execute)), _canExecute(std::move(canExecute))
+    ActionCommand(std::function<void()> execute, std::function<bool()> canExecute)
+        : QAction(), RelayCommand(execute, canExecute)
     {
+        connect(this, &QAction::triggered, [this]() {this->execute(); });
+        connect(coreApp->commandManager(), &CommandManager::updateEnabled, 
+            [this]() {this->setEnabled(this->canExecute()); });
     }
-
-    // Method to execute the command
-    void execute() const noexcept {
-        if (_execute) {
-            _execute();
-        }
-    }
-
-    // Method to check if the command can be executed
-    bool canExecute() const noexcept {
-        return _canExecute ? _canExecute() : true;
-    }
-
-private:
-    std::function<void()> _execute;      // Function to execute the command
-    std::function<bool()> _canExecute;   // Function to check if the command can be executed
 };
 
-#endif  // APP_ACTIVECOMMAND_H
+#endif  // APP_ACTIONCOMMAND_H

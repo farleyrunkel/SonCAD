@@ -102,9 +102,8 @@ void MainWindow::setupCategories()
         {
             SARibbonPannel* aPannel = categoryEdit->addPannel(("Create"));
             {
-                QAction* aAction = new QAction(QIcon("://icons/model/Prim-Box.svg"), "Box");
+                QAction* aAction = &ModelCommands::CreateBox();
                 aPannel->addAction(aAction, SARibbonPannelItem::Large);
-                connect(aAction, &QAction::triggered, []() {ModelCommands::CreateBox.execute(); });
             }
             {
                 QAction* aAction = new QAction(QIcon("://icons/model/Prim-Cylinder.svg"), "Cylinder");

@@ -31,17 +31,13 @@ Application::Application(int& argc, char** argv)
     }
 
     // Init context
-    mAppContext = new AppContext;
     mAppContext->initialize(cmdLine);
 
-
-    mMainWindow = new MainWindow(); // Create the main window
     mMainWindow->show(); // Show the main window
 
     // Install the event filter for global key handling
     GlobalEventHandler* globalEventHandler = new GlobalEventHandler(this);
     this->installEventFilter(globalEventHandler); // Install the event filter
-
 }
 
 // Initialize synchronization mechanisms

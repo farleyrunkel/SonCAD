@@ -11,6 +11,8 @@
 #include "App/WelcomeDialog.h"
 #include "App/AppContext.h"
 
+#include "Pres/Commands/CommandManager.h"
+
 #define coreApp (static_cast<Application*>(QCoreApplication::instance()))
 
 class Application : public QApplication {
@@ -20,7 +22,15 @@ class Application : public QApplication {
     Application(int& argc, char** argv);
     ~Application() {};
 
-    MainWindow* mainWindow(MainWindow* xMainWindow) const {
+    CommandManager* commandManager() const {
+        return mCommandManager;
+    }
+
+    AppContext* appContext() const {
+        return mAppContext;
+    }
+
+    MainWindow* mainWindow() const {
         return mMainWindow;
     }
 
@@ -28,12 +38,12 @@ class Application : public QApplication {
     void initializeTranslation();
 
  private:
-    MainWindow* mMainWindow = nullptr;
+    CommandManager* mCommandManager = new CommandManager;
+    AppContext* mAppContext = new AppContext;
+
+ private:
     WelcomeDialog* mWelcomeDialog = nullptr;
-
-
-private:
-    AppContext* mAppContext= nullptr;
+    MainWindow* mMainWindow = new MainWindow;
 };
 
 #endif  // APP_APPLICATION_H
