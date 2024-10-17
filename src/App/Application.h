@@ -9,6 +9,7 @@
 
 #include "App/MainWindow.h"
 #include "App/WelcomeDialog.h"
+#include "App/AppContext.h"
 
 #define coreApp (static_cast<Application*>(QCoreApplication::instance()))
 
@@ -17,7 +18,7 @@ class Application : public QApplication {
 
  public:
     Application(int& argc, char** argv);
-    ~Application() = default;
+    ~Application() {};
 
     MainWindow* mainWindow(MainWindow* xMainWindow) const {
         return mMainWindow;
@@ -29,6 +30,10 @@ class Application : public QApplication {
  private:
     MainWindow* mMainWindow = nullptr;
     WelcomeDialog* mWelcomeDialog = nullptr;
+
+
+private:
+    AppContext* mAppContext= nullptr;
 };
 
 #endif  // APP_APPLICATION_H

@@ -12,6 +12,9 @@ class CoreContext : public QObject {
     Q_OBJECT
 
  public:
+    CoreContext() = default;
+
+ public:
     // Static method to get the single instance of CoreContext with lazy initialization
     static CoreContext* instance() {
         static CoreContext instance; // Guaranteed to be destroyed, instantiated on first use
@@ -22,13 +25,6 @@ class CoreContext : public QObject {
     void saveSettings(const std::string& name) {
         // Implement saving logic here
     }
-
- private:
-    // Private constructor to prevent external instantiation
-    CoreContext() = default;
-
-    // Private destructor to control instance destruction
-    virtual ~CoreContext() = default;
 
     // Copy constructor and assignment operator are deleted to prevent copying
     CoreContext(const CoreContext&) = delete;

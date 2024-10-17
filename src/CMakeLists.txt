@@ -33,13 +33,13 @@ target_include_directories(SonCAD PRIVATE ${OpenCASCADE_INCLUDE_DIR})
 target_link_libraries(SonCAD PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(SonCAD PRIVATE SARibbonBar)
 target_link_libraries(SonCAD PRIVATE cxxopts)
+target_link_libraries(SonCAD PRIVATE qt${QT_VERSION_MAJOR}advanceddocking)
 
 # Link OpenCASCADE libraries
 foreach (LIB ${OpenCASCADE_LIBRARIES})
   target_link_libraries(SonCAD PRIVATE debug ${OpenCASCADE_LIBRARY_DIR}d/${LIB}.lib)
   target_link_libraries(SonCAD PRIVATE optimized ${OpenCASCADE_LIBRARY_DIR}/${LIB}.lib)
 endforeach()
-
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

@@ -11,6 +11,7 @@
 #include "App/CommandLine.h"
 #include "App/MainWindow.h"
 #include "App/WelcomeDialog.h"
+#include "App/AppContext.h"
 
 #include "Pres/GlobalEventHandler.h"
 
@@ -19,22 +20,28 @@ Application::Application(int& argc, char** argv)
 
     initializeTranslation();
 
-    CommandLine cmdLine(argc, argv);
+    auto cmdLine = new CommandLine(argc, argv);
 
     // Show Welcome Dialog if not skipped
-    bool bSkipWelcome = cmdLine.isWelcomeDialogDisabled() || cmdLine.hasPathToOpen() || cmdLine.hasScriptToRun();
-    if (!bSkipWelcome) {
+    bool bSkipWelcome = cmdLine->isWelcomeDialogDisabled() || cmdLine->hasPathToOpen() || cmdLine->hasScriptToRun();
+    if (!bSkipWelcome && false) {
         mWelcomeDialog = new WelcomeDialog; // Create the WelcomeDialog
         mWelcomeDialog->setWindowFlags(mWelcomeDialog->windowFlags() | Qt::WindowStaysOnTopHint);
         mWelcomeDialog->show(); // Show the WelcomeDialog
     }
 
-    mMainWindow = new MainWindow; // Create the main window
+    // Init context
+    mAppContext = new AppContext;
+    mAppContext->initialize(cmdLine);
+
+
+    mMainWindow = new MainWindow(); // Create the main window
     mMainWindow->show(); // Show the main window
 
     // Install the event filter for global key handling
     GlobalEventHandler* globalEventHandler = new GlobalEventHandler(this);
     this->installEventFilter(globalEventHandler); // Install the event filter
+
 }
 
 // Initialize synchronization mechanisms
