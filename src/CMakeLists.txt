@@ -1,6 +1,8 @@
 
 set(PROJECT_SOURCES ${CMAKE_SOURCE_DIR}/src/SonCAD.cc)
-set(PROJECT_RESOURCES ${CMAKE_SOURCE_DIR}/res/SonCAD.qrc)
+set(PROJECT_RESOURCES 
+    ${CMAKE_SOURCE_DIR}/src/ResourceUtils.h
+    ${CMAKE_SOURCE_DIR}/res/SonCAD.qrc)
 
 # Recursively find all source and header files
 file(GLOB SUB_DIRECTORY_SOURCES

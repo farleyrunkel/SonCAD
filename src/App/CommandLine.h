@@ -1,7 +1,7 @@
 // Copyright [2024] SonCAD
 
-#ifndef APP_COMMANDLINE_H
-#define APP_COMMANDLINE_H
+#ifndef SRC_APP_COMMANDLINE_H_
+#define SRC_APP_COMMANDLINE_H_
 
 #include <iostream>
 #include <string>
@@ -27,4 +27,4 @@ class CommandLine {
     cxxopts::Options mOptions;
 };
 
-#endif // APP_COMMANDLINE_H
+#endif  // SRC_APP_COMMANDLINE_H_

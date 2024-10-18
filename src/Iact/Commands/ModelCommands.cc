@@ -4,35 +4,37 @@
 
 #include <QIcon>
 #include <QObject>
+#include <QMessageBox>
 
+#include "ResourceUtils.h"
 #include "App/Application.h"
 #include "Iact/Primitives/CreateBoxTool.h"
+#include "Iact/Commands/CommandHelper.h"
 
 // Initialize the static command outside the class
 ActionCommand& ModelCommands::CreateBox() {
-    static ActionCommand command(
-        []() {
-            // Show a warning message for box creation
-            QMessageBox::warning(nullptr, QObject::tr("Create Box"), QObject::tr("This is a warning about creating a box."));
-        },
-        []() {
-            // Check if the command can be executed
-            return true;
-        }
+    static ActionCommand command (
+        []() { CommandHelper::startTool(new CreateBoxTool()); },
+        []() { return CommandHelper::canStartTool(); }
     );
 
-    // Set text and icon if not already set
+    // Initialize command properties if not already set
     if (command.text().isEmpty()) {
         command.setText(QObject::tr("Box"));
-        command.setIcon(QIcon("://icons/model/Prim-Box.svg"));
+        command.setIcon(ResourceUtils::icon(ResourceUtils::MODEL_BOX));
         command.setToolTip(QObject::tr("Creates a new body with a box shape."));
 
-        // Update checkable state based on workspace controller
+        command.connect(coreApp->commandManager(), &CommandManager::updateEnabled,
+            []() { command.setEnabled(command.canExecute()); }
+        );
+
         command.connect(coreApp->appContext(), &InteractiveContext::workspaceControllerChanged,
             []() {
-                command.setCheckable(qobject_cast<CreateBoxTool*>(coreApp->appContext()->workspaceController()));
-            });
+                command.setCheckable(
+                    qobject_cast<CreateBoxTool*>(coreApp->appContext()->workspaceController()) != nullptr
+                );
+            }
+        );
     }
-
     return command;
 }

@@ -1,14 +1,15 @@
 // Copyright [2024] SonCAD
 
-#ifndef IACT_FRAMEWORK_TOOL_H
-#define IACT_FRAMEWORK_TOOL_H
+#ifndef SRC_IACT_FRAMEWORK_TOOL_H_
+#define SRC_IACT_FRAMEWORK_TOOL_H_
 
 #include "Iact/Workspace/WorkspaceController.h"
 
-class Tool : public WorkspaceController {
+class Tool : public QObject {
 	Q_OBJECT
-public:
 
+ public:
+	 Tool();
 };
 
-#endif  // IACT_FRAMEWORK_TOOL_H
+#endif  // SRC_IACT_FRAMEWORK_TOOL_H_

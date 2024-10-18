@@ -1,27 +1,22 @@
 // Copyright [2024] SonCAD
 
-#ifndef CORE_WORKSPACE_H
-#define CORE_WORKSPACE_H
+#ifndef SRC_CORE_WORKSPACE_H_
+#define SRC_CORE_WORKSPACE_H_
 
 #include <QObject>
 
 #include <AIS_InteractiveContext.hxx>
 #include <V3d_Viewer.hxx>
 
-class Workspace final : public QObject {
+class Workspace : public QObject {
     Q_OBJECT
 
  public:
-    Workspace() {
-    }
-    ~Workspace() {
-    }
-    void initViewer() {
-    }
+    Workspace();
 
-    Handle(V3d_Viewer) V3dViewer() const {
-        return v3dViewer;
-    }
+    void initViewer();
+
+    Handle(V3d_Viewer) V3dViewer() const;
 
  private:
     Handle(V3d_Viewer) v3dViewer;
@@ -29,4 +24,4 @@ class Workspace final : public QObject {
     bool gridEnabled;
 };
 
-#endif  // CORE_WORKSPACE_H
+#endif  // SRC_CORE_WORKSPACE_H_

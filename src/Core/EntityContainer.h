@@ -1,14 +1,14 @@
 // Copyright [2024] SonCAD
 
-#ifndef CORE_ENTITYCONTAINER_H
-#define CORE_ENTITYCONTAINER_H
+#ifndef SRC_CORE_ENTITYCONTAINER_H_
+#define SRC_CORE_ENTITYCONTAINER_H_
 
 #include <QObject>
 #include <QList>
 #include <QVariant>
 #include <algorithm>
 
-#include "Core/Topology/Entity.h" 
+#include "Core/Topology/Entity.h"
 
 // Enum to mimic NotifyCollectionChangedAction
 enum class NotifyCollectionChangedAction {
@@ -18,12 +18,11 @@ enum class NotifyCollectionChangedAction {
     Reset
 };
 
-class EntityContainer : public Entity
-{
+class EntityContainer : public Entity {
     Q_OBJECT
 
-public:
-    EntityContainer(QObject* parent = nullptr) : Entity(parent) {
+ public:
+    explicit EntityContainer(QObject* parent = nullptr) : Entity(parent) {
         // Initialize the entity list
         entityList = QList<Entity*>();
     }
@@ -66,21 +65,19 @@ public:
     }
 
     // Remove all entities from the container
-    virtual void remove() override {
+    void remove() override {
         std::for_each(entityList.begin(), entityList.end(), [](Entity* e) { e->remove(); });
         entityList.clear();
         Entity::remove();  // Call the base class remove
     }
 
-signals:
+ signals:
     // Qt signal for notifying collection changes
     void collectionChanged(NotifyCollectionChangedAction action, Entity* entity, int index);
 
-protected:
+ protected:
     // QList to hold the entities
     QList<Entity*> entityList;
-
 };
 
-
-#endif  // CORE_ENTITYCONTAINER_H
+#endif  // SRC_CORE_ENTITYCONTAINER_H_

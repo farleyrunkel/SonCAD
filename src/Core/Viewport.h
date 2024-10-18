@@ -1,7 +1,7 @@
 // Copyright [2024] SonCAD
 
-#ifndef CORE_VIEWPORT_H
-#define CORE_VIEWPORT_H
+#ifndef SRC_CORE_VIEWPORT_H_
+#define SRC_CORE_VIEWPORT_H_
 
 #include <cmath>
 
@@ -136,8 +136,7 @@ class Viewport : public QObject {
         auto& renderParams = mV3dView->ChangeRenderingParams();
         if (mRenderMode == Raytraced) {
             renderParams.Method = Graphic3d_RM_RAYTRACING;
-        }
-        else {
+        } else {
             renderParams.Method = Graphic3d_RM_RASTERIZATION;
         }
     }
@@ -169,4 +168,4 @@ class Viewport : public QObject {
     AIS_AnimationCamera* mAisAnimationCamera;
 };
 
-#endif  // CORE_VIEWPORT_H
+#endif  // SRC_CORE_VIEWPORT_H_

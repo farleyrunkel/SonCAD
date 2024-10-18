@@ -1,15 +1,14 @@
 // Copyright [2024] SonCAD
 
-#ifndef APP_MODELCOMMANDS_H
-#define APP_MODELCOMMANDS_H
+#ifndef SRC_IACT_COMMANDS_MODELCOMMANDS_H_
+#define SRC_IACT_COMMANDS_MODELCOMMANDS_H_
 
 #include "Pres/Commands/ActionCommand.h"
 #include <QMessageBox>
 
 class ModelCommands {
-public:
-    // ¶¨Òå¾²Ì¬µÄ ActionCommand
+ public:
     static ActionCommand& CreateBox();
 };
 
-#endif  // APP_MODELCOMMANDS_H
+#endif  // SRC_IACT_COMMANDS_MODELCOMMANDS_H_

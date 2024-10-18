@@ -1,3 +1,4 @@
+// Copyright [2024] SonCAD
 
 #include "Core/Topology/Entity.h"
 
@@ -7,59 +8,52 @@
 // Constructor
 
  Entity::Entity(QObject* parent)
-    : QObject(parent), _guid(QUuid::createUuid()),  _hasErrors(false)
-{
+    : QObject(parent), _guid(QUuid::createUuid()),  _hasErrors(false) {
     qDebug() << "Entity created with GUID:" << _guid.toString();
 }
 
-
- // Guid property (using QUuid)
-
-  QUuid Entity::guid() const {
+// Guid property (using QUuid)
+QUuid Entity::guid() const {
      return _guid;
- }
-
- void Entity::setGuid(const QUuid& guid) {
-
 }
 
- // Type name property
+void Entity::setGuid(const QUuid& guid) {
+}
 
-  QString Entity::typeName() const {
-     return QString(metaObject()->className());
- }
+// Type name property
 
- // Name property, virtual
+QString Entity::typeName() const {
+    return QString(metaObject()->className());
+}
 
-  QString Entity::name() const {
-     return "Unknown";
- }
+// Name property, virtual
 
-  void Entity::setName(const QString&) {
-     // Override in subclasses
- }
+QString Entity::name() const {
+    return "Unknown";
+}
 
- // Error handling
+void Entity::setName(const QString&) {
+    // Override in subclasses
+}
 
-  bool Entity::hasErrors() const {
-     return _hasErrors;
- }
+// Error handling
 
-  void Entity::setHasErrors(bool hasErrors) {
-     if (_hasErrors != hasErrors) {
-         _hasErrors = hasErrors;
-         emit hasErrorsChanged();
-         emit errorStateChanged();
-     }
- }
+bool Entity::hasErrors() const {
+    return _hasErrors;
+}
 
+void Entity::setHasErrors(bool hasErrors) {
+    if (_hasErrors != hasErrors) {
+        _hasErrors = hasErrors;
+        emit hasErrorsChanged();
+        emit errorStateChanged();
+    }
+}
 
- // Remove entity
+// Remove entity
+void Entity::remove() {
+}
 
-  void Entity::remove() {
-
- }
-
- QString Entity::toString() const {
+QString Entity::toString() const {
     return name();
 }

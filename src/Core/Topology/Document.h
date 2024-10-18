@@ -1,7 +1,7 @@
+// Copyright [2024] SonCAD
 
-
-#ifndef DOCUMENT_H
-#define DOCUMENT_H
+#ifndef SRC_CORE_TOPOLOGY_DOCUMENT_H_
+#define SRC_CORE_TOPOLOGY_DOCUMENT_H_
 
 #include <QObject>
 #include <QFile>
@@ -12,12 +12,11 @@
 #include <QList>
 #include <QVariant>
 #include <QScopedPointer>
-#include "Core/EntityContainer.h" 
-#include "Core/Topology/Entity.h" 
+#include "Core/EntityContainer.h"
+#include "Core/Topology/Entity.h"
 
-class IDocument
-{
-public:
+class IDocument {
+ public:
     virtual ~IDocument() = default;
 
     virtual void registerInstance(Entity* entity) = 0;
@@ -26,11 +25,10 @@ public:
     virtual void instanceChanged(Entity* entity) = 0;
 };
 
-class Document : public EntityContainer, public IDocument
-{
+class Document : public EntityContainer, public IDocument {
     Q_OBJECT
 
-public:
+ public:
     explicit Document(QObject* parent = nullptr)
         : EntityContainer(parent) {}
 
@@ -180,4 +178,4 @@ public:
     QMap<QUuid, QWeakPointer<Entity>> _instances;
 };
 
-#endif // DOCUMENT_H
+#endif // SRC_CORE_TOPOLOGY_DOCUMENT_H_

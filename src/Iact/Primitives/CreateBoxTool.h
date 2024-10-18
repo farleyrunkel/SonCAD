@@ -1,7 +1,7 @@
 // Copyright [2024] SonCAD
 
-#ifndef IACT_PRIMITIVES_CREATEBOXTOOL_H
-#define IACT_PRIMITIVES_CREATEBOXTOOL_H
+#ifndef SRC_IACT_PRIMITIVES_CREATEBOXTOOL_H_
+#define SRC_IACT_PRIMITIVES_CREATEBOXTOOL_H_
 
 #include <QObject>
 
@@ -9,6 +9,9 @@
 
 class CreateBoxTool : public Tool {
 	Q_OBJECT
+
+ public :
+	CreateBoxTool();
 };
 
-#endif // IACT_PRIMITIVES_CREATEBOXTOOL_H
+#endif // SRC_IACT_PRIMITIVES_CREATEBOXTOOL_H_

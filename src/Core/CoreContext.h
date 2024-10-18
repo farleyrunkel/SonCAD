@@ -1,7 +1,7 @@
 // Copyright [2024] SonCAD
 
-#ifndef CORE_CORECONTEXT_H
-#define CORE_CORECONTEXT_H
+#ifndef SRC_CORE_CORECONTEXT_H_
+#define SRC_CORE_CORECONTEXT_H_
 
 #include <string>
 
@@ -15,11 +15,10 @@ class CoreContext : public QObject {
     CoreContext() = default;
 
  public:
-
     // Example method to save settings
     void saveSettings(const std::string& name) {
         // Implement saving logic here
     }
 };
 
-#endif  // CORE_CORECONTEXT_H
+#endif  // SRC_CORE_CORECONTEXT_H_

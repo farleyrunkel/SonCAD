@@ -1,7 +1,7 @@
 // Copyright [2024] SonCAD
 
-#ifndef APP_WELCOMEDIALOG_H
-#define APP_WELCOMEDIALOG_H
+#ifndef SRC_APP_WELCOMEDIALOG_H_
+#define SRC_APP_WELCOMEDIALOG_H_
 
 #include <QDialog>
 
@@ -16,4 +16,4 @@ class WelcomeDialog: public QDialog {
     void setupUi();
 };
 
-#endif  // APP_WELCOMEDIALOG_H
+#endif  // SRC_APP_WELCOMEDIALOG_H_

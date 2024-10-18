@@ -1,6 +1,7 @@
+// Copyright [2024] SonCAD
 
-#ifndef Entity_DOCUMENT_H
-#define Entity_DOCUMENT_H
+#ifndef SRC_CORE_TOPOLOGY_ENTITY_H_
+#define SRC_CORE_TOPOLOGY_ENTITY_H_
 
 #include <QObject>
 #include <QUuid>
@@ -9,11 +10,10 @@
 #include <QJsonDocument>
 
 // Base class for Entity, assuming Entity is derived from QObject for signal/slot support
-class Entity : public QObject
-{
+class Entity : public QObject {
     Q_OBJECT
 
-public:
+ public:
     // Constructor
     explicit Entity(QObject* parent = nullptr);
 
@@ -41,7 +41,7 @@ public:
     // For debugging or logging purposes
     virtual QString toString() const;
 
-signals:
+ signals:
     // Signal when the entity is removed
     void entityRemoved();
 
@@ -54,10 +54,10 @@ signals:
     // Signal when hasErrors changes
     void hasErrorsChanged();
 
-protected:
+ protected:
     QUuid _guid;
     bool _hasErrors;
 };
 
-#endif  // Entity_DOCUMENT_H
+#endif  // SRC_CORE_TOPOLOGY_ENTITY_H_
 

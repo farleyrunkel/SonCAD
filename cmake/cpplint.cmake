@@ -22,7 +22,7 @@ function(run_cpplint)
             if(WIN32)
                 add_custom_command(
                     OUTPUT  ${output_file}  # Ensure we are specifying the output file here
-                    COMMAND ${CPPLINT_EXECUTABLE} --verbose=3 --filter=-build/include_order,-build/header_guard ${source_file} > ${output_file} 2>&1 || exit /b 0
+                    COMMAND ${CPPLINT_EXECUTABLE} --verbose=3 --filter=-build/include_order ${source_file} > ${output_file} 2>&1 || exit /b 0
                     DEPENDS ${source_file}
                     COMMENT "Running cpplint for ${source_file} on Windows and saving output to ${output_file}"
                     VERBATIM
@@ -30,7 +30,7 @@ function(run_cpplint)
             else()
                 add_custom_command(
                     OUTPUT  ${output_file}  # Ensure we are specifying the output file here
-                    COMMAND ${CPPLINT_EXECUTABLE} --verbose=3 --filter=-build/include_order,build/header_guard ${source_file} > ${output_file} 2>&1 || true
+                    COMMAND ${CPPLINT_EXECUTABLE} --verbose=3 --filter=-build/include_order,-build/header_guard ${source_file} > ${output_file} 2>&1 || true
                     DEPENDS ${source_file}
                     COMMENT "Running cpplint for ${source_file} on Linux and saving output to ${output_file}"
                     VERBATIM

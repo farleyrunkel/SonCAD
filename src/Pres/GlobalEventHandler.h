@@ -1,7 +1,7 @@
 // Copyright [2024] SonCAD
 
-#ifndef PRES_GLOBALEVENTHANDLER_H
-#define PRES_GLOBALEVENTHANDLER_H
+#ifndef SRC_PRES_GLOBALEVENTHANDLER_H_
+#define SRC_PRES_GLOBALEVENTHANDLER_H_
 
 #include <QSplashScreen>
 #include <QKeyEvent>
@@ -18,4 +18,4 @@ class GlobalEventHandler : public QObject {
     bool eventFilter(QObject* obj, QEvent* event) override;
 };
 
-#endif // PRES_GLOBALEVENTHANDLER_H
+#endif // SRC_PRES_GLOBALEVENTHANDLER_H_

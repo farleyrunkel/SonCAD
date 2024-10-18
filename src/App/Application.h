@@ -1,7 +1,7 @@
 // Copyright [2024] SonCAD
 
-#ifndef APP_APPLICATION_H
-#define APP_APPLICATION_H
+#ifndef SRC_APP_APPLICATION_H_
+#define SRC_APP_APPLICATION_H_
 
 #include <QString>
 #include <QApplication>
@@ -20,7 +20,7 @@ class Application : public QApplication {
 
  public:
     Application(int& argc, char** argv);
-    ~Application() {};
+    ~Application() {}
 
     CommandManager* commandManager() const {
         return mCommandManager;
@@ -43,7 +43,7 @@ class Application : public QApplication {
 
  private:
     WelcomeDialog* mWelcomeDialog = nullptr;
-    MainWindow* mMainWindow = new MainWindow;
+    MainWindow* mMainWindow = nullptr;
 };
 
-#endif  // APP_APPLICATION_H
+#endif  // SRC_APP_APPLICATION_H_

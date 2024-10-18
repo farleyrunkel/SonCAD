@@ -1,7 +1,7 @@
 // Copyright [2024] SonCAD
 
-#ifndef PRES_COMMANDS_COMMANDMANAGER_H
-#define PRES_COMMANDS_COMMANDMANAGER_H
+#ifndef SRC_PRES_COMMANDS_COMMANDMANAGER_H_
+#define SRC_PRES_COMMANDS_COMMANDMANAGER_H_
 
 #include <functional>
 
@@ -9,13 +9,12 @@
 
 class CommandManager final : public QObject {
     Q_OBJECT
-public:
+ public:
     // Constructor
-    CommandManager()
-    {
+    CommandManager() {
     }
-signals:
+ signals:
     void updateEnabled();
 };
 
-#endif  // PRES_COMMANDS_COMMANDMANAGER_H
+#endif  // SRC_PRES_COMMANDS_COMMANDMANAGER_H_

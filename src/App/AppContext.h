@@ -1,7 +1,7 @@
 // Copyright [2024] SonCAD
 
-#ifndef APP_APPCONTEXT_H
-#define APP_APPCONTEXT_H
+#ifndef SRC_APP_APPCONTEXT_H_
+#define SRC_APP_APPCONTEXT_H_
 
 #include "Iact/Workspace/InteractiveContext.h"
 #include "App/CommandLine.h"
@@ -14,9 +14,7 @@ class AppContext : public InteractiveContext {
     // Private destructor to control instance destruction
     ~AppContext() = default;
 
-    void initialize(CommandLine* cmdLine) {
-    
-    }
+    void initialize(CommandLine* cmdLine) {}
 };
 
-#endif  // APP_APPCONTEXT_H
+#endif  // SRC_APP_APPCONTEXT_H_

@@ -1,15 +1,15 @@
-#ifndef INTF_ICOMMAND_H
-#define INTF_ICOMMAND_H
+// Copyright [2024] SonCAD
+
+#ifndef SRC_INTF_ICOMMAND_H_
+#define SRC_INTF_ICOMMAND_H_
 
 class ICommand {
-public:
+ public:
     virtual ~ICommand() = default;
 
-    // 执行命令
     virtual void execute() = 0;
 
-    // 检查命令是否可以执行
     virtual bool canExecute() const = 0;
 };
 
-#endif // INTF_ICOMMAND_H
+#endif // SRC_INTF_ICOMMAND_H_

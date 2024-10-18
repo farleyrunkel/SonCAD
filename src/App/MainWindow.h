@@ -1,7 +1,7 @@
 // Copyright [2024] SonCAD
 
-#ifndef APP_MAINWINDOW_H
-#define APP_MAINWINDOW_H
+#ifndef SRC_APP_MAINWINDOW_H_
+#define SRC_APP_MAINWINDOW_H_
 
 #include <QWidget>
 
@@ -26,11 +26,11 @@ class MainWindow : public SARibbonMainWindow {
 
     void setupCategories();
 
-private:
+ private:
     QMenu* myAppButton = nullptr;
     SARibbonBar* myRibbonBar = nullptr;;
     // The main container for docking
     ads::CDockManager* m_DockManager = nullptr;;
 };
 
-#endif  // APP_MAINWINDOW_H
+#endif  // SRC_APP_MAINWINDOW_H_

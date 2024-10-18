@@ -39,26 +39,22 @@ void MainWindow::setupUi() {
 
     // set ribbonbar
     myRibbonBar = ribbonBar();
-    //! 通过setContentsMargins设置ribbon四周的间距
     myRibbonBar->setContentsMargins(5, 0, 5, 0);
-
 }
 
-void MainWindow::setupWelcomePage()
-{
+void MainWindow::setupWelcomePage() {
     WelcomeDialog* l = new WelcomeDialog();
 
     // Create a dock widget with the title Label 1 and set the created label
     // as the dock widget content
-    ads::CDockWidget* DockWidget = new ads::CDockWidget("Label 1");
+    ads::CDockWidget* DockWidget = new ads::CDockWidget("Welcome");
     DockWidget->setWidget(l);
 
     // Add the dock widget to the top dock widget area
     m_DockManager->addDockWidget(ads::TopDockWidgetArea, DockWidget);
 }
 
-void MainWindow::setupAppButton()
-{
+void MainWindow::setupAppButton() {
     if (!myRibbonBar) {
         return;
     }
@@ -67,7 +63,7 @@ void MainWindow::setupAppButton()
         btn = new SARibbonApplicationButton(this);
         myRibbonBar->setApplicationButton(btn);
     }
-    myRibbonBar->applicationButton()->setText(("  &File  "));  // 文字两边留有间距，好看一点
+    myRibbonBar->applicationButton()->setText(("  &File  "));
 
     if (!myAppButton) {
         myAppButton = new SARibbonMenu(this);
@@ -81,78 +77,34 @@ void MainWindow::setupAppButton()
     appBtn->setMenu(myAppButton);
 }
 
-void MainWindow::setupCategories()
-{
-    {
-        SARibbonCategory* categoryEdit = myRibbonBar->addCategoryPage(tr("Edit"));
-        {
-            SARibbonPannel* aPannel = categoryEdit->addPannel(("Panel 1"));
-            {
-                QAction* aAction = new QAction;
-                aAction->setText("save");
-                aAction->setIcon(QIcon("://icon/save.svg"));
-                aAction->setObjectName("actSave");
-                aAction->setShortcut(QKeySequence(QLatin1String("Ctrl+S")));
-                aPannel->addLargeAction(aAction);
-            }
-        }
-    }
-    {
-        SARibbonCategory* categoryEdit = myRibbonBar->addCategoryPage(tr("Model"));
-        {
-            SARibbonPannel* aPannel = categoryEdit->addPannel(("Create"));
-            {
-                QAction* aAction = &ModelCommands::CreateBox();
-                aPannel->addAction(aAction, SARibbonPannelItem::Large);
-            }
-            {
-                QAction* aAction = new QAction(QIcon("://icons/model/Prim-Cylinder.svg"), "Cylinder");
-                aPannel->addAction(aAction, SARibbonPannelItem::Large);
-            } 
-            {
-                QAction* aAction = new QAction(QIcon("://icons/model/Prim-Sphere.svg"), "Sphere");
-                aPannel->addAction(aAction, SARibbonPannelItem::Large);
-            }
+void MainWindow::setupCategories() {
+    if (SARibbonCategory* aCategory = myRibbonBar->addCategoryPage(tr("Edit"))) {
+        if (SARibbonPannel* aPannel = aCategory->addPannel(tr("Panel 1"))) {
+            QAction* aAction = new QAction;
+            aAction->setText("save");
+            aAction->setIcon(QIcon("://icon/save.svg"));
+            aAction->setObjectName("actSave");
+            aAction->setShortcut(QKeySequence(QLatin1String("Ctrl+S")));
+            aPannel->addLargeAction(aAction);
         }
     }
 
-    {
-        //Add main tab - The main tab is added through the addcategorypage factory function.
-        SARibbonCategory* categoryEdit = myRibbonBar->addCategoryPage(tr("View"));
-        //Using the addpannel function to create saribponpannel. The effect is the same as that of new saribponpannel, and then call SARibbonCategory:: addpannel.
-        {
-            SARibbonPannel* aPannel = categoryEdit->addPannel(tr("Actions"));
-
-            {
-                QAction* aAction = new QAction;
-                aAction->setText("save");
-                aAction->setIcon(QIcon("://icon/save.svg"));
-                aAction->setObjectName("actSave");
-                aAction->setShortcut(QKeySequence(QLatin1String("Ctrl+S")));
-                aPannel->addLargeAction(aAction);
-            }
+    if (SARibbonCategory* aCategory = myRibbonBar->addCategoryPage(tr("Model"))) {
+        if (SARibbonPannel* aPannel = aCategory->addPannel(tr("Create"))) {
+            aPannel->addAction(&ModelCommands::CreateBox(), SARibbonPannelItem::Large);
+            aPannel->addAction(new QAction(QIcon("://icons/model/Prim-Cylinder.svg"), "Cylinder"), SARibbonPannelItem::Large);
+            aPannel->addAction(new QAction(QIcon("://icons/model/Prim-Sphere.svg"), "Sphere"), SARibbonPannelItem::Large);
         }
-        {
-            SARibbonPannel* aPannel = categoryEdit->addPannel(tr("Widgets"));
+    }
 
-            if (m_DockManager->dockWidgetsMap().contains("Label 1")) {
-  
-                QAction* aAction = m_DockManager->dockWidgetsMap()["Label 1"]->toggleViewAction();
-                aAction->setText("Label 1");
-                aAction->setIcon(QIcon("://icon/save.svg"));
-                aAction->setObjectName("actSave");
-                aPannel->addAction(aAction, SARibbonPannelItem::Large);
-            }
+    if (SARibbonCategory* aCategory = myRibbonBar->addCategoryPage(tr("View"))) {
+        if (SARibbonPannel* aPannel = aCategory->addPannel(tr("Widgets"))) {
+            aPannel->addAction(&ModelCommands::CreateBox(), SARibbonPannelItem::Large);
         }
-
-
-
     }
 }
 
-
-QAction* MainWindow::createAction(const QString& text, const QString& iconurl)
-{
+QAction* MainWindow::createAction(const QString& text, const QString& iconurl) {
     QAction* act = new QAction(this);
     act->setText(text);
     act->setIcon(QIcon(iconurl));
