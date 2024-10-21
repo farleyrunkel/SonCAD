@@ -92,8 +92,8 @@ void MainWindow::setupCategories() {
     if (SARibbonCategory* aCategory = myRibbonBar->addCategoryPage(tr("Model"))) {
         if (SARibbonPannel* aPannel = aCategory->addPannel(tr("Create"))) {
             aPannel->addAction(&ModelCommands::CreateBox(), SARibbonPannelItem::Large);
-            aPannel->addAction(new QAction(QIcon("://icons/model/Prim-Cylinder.svg"), "Cylinder"), SARibbonPannelItem::Large);
-            aPannel->addAction(new QAction(QIcon("://icons/model/Prim-Sphere.svg"), "Sphere"), SARibbonPannelItem::Large);
+            aPannel->addAction(&ModelCommands::CreateCylinder(), SARibbonPannelItem::Large);
+            aPannel->addAction(&ModelCommands::CreateSphere(), SARibbonPannelItem::Large);
         }
     }
 

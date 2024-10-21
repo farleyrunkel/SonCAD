@@ -18,7 +18,7 @@
 Application::Application(int& argc, char** argv)
     : QApplication(argc, argv) {
 
-    initializeTranslation();
+    initTranslation();
 
     auto cmdLine = new CommandLine(argc, argv);
 
@@ -42,7 +42,7 @@ Application::Application(int& argc, char** argv)
 }
 
 // Initialize synchronization mechanisms
-void Application::initializeTranslation() {
+void Application::initTranslation() {
     // Set up translator for localization
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();

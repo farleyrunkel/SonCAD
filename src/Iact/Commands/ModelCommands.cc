@@ -29,10 +29,63 @@ ActionCommand& ModelCommands::CreateBox() {
         );
 
         command.connect(coreApp->appContext(), &InteractiveContext::workspaceControllerChanged,
-            []() {
-                command.setCheckable(
-                    qobject_cast<CreateBoxTool*>(coreApp->appContext()->workspaceController()) != nullptr
+            []() { command.setCheckable(
+                qobject_cast<CreateBoxTool*>(CommandHelper::currentTool()) != nullptr
                 );
+            }
+        );
+    }
+    return command;
+}
+
+ActionCommand& ModelCommands::CreateCylinder()
+{
+    static ActionCommand command(
+        []() { CommandHelper::startTool(new CreateBoxTool()); },
+        []() { return CommandHelper::canStartTool(); }
+    );
+
+    // Initialize command properties if not already set
+    if (command.text().isEmpty()) {
+        command.setText(QObject::tr("Box"));
+        command.setIcon(ResourceUtils::icon(ResourceUtils::MODEL_CYLINDER));
+        command.setToolTip(QObject::tr("Creates a new body with a box shape."));
+
+        command.connect(coreApp->commandManager(), &CommandManager::updateEnabled,
+            []() { command.setEnabled(command.canExecute()); }
+        );
+
+        command.connect(coreApp->appContext(), &InteractiveContext::workspaceControllerChanged,
+            []() { command.setCheckable(
+                qobject_cast<CreateBoxTool*>(CommandHelper::currentTool()) != nullptr
+            );
+            }
+        );
+    }
+    return command;
+}
+
+ActionCommand& ModelCommands::CreateSphere()
+{
+    static ActionCommand command(
+        []() { CommandHelper::startTool(new CreateBoxTool()); },
+        []() { return CommandHelper::canStartTool(); }
+    );
+
+    // Initialize command properties if not already set
+    if (command.text().isEmpty()) {
+        command.setText(QObject::tr("Box"));
+        command.setIcon(ResourceUtils::icon(ResourceUtils::MODEL_SPHERE));
+        command.setToolTip(QObject::tr("Creates a new body with a box shape."));
+
+        command.connect(coreApp->commandManager(), &CommandManager::updateEnabled,
+            []() { command.setEnabled(command.canExecute()); }
+        );
+
+        command.connect(coreApp->appContext(), &InteractiveContext::workspaceControllerChanged,
+            []() { command.setCheckable(
+                qobject_cast<CreateBoxTool*>(CommandHelper::currentTool()) != nullptr
+            );
             }
         );
     }

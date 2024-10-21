@@ -14,13 +14,12 @@ public:
         return coreApp->appContext() ? coreApp->appContext()->workspaceController() : nullptr;
     }
 
-    //static inline Tool* currentTool() {
-    //    return workspaceController() ? workspaceController()->currentTool() : nullptr;
-    //}
+    static inline Tool* currentTool() {
+        return workspaceController() ? workspaceController()->currentTool() : nullptr;
+    }
 
     static inline bool startTool(Tool* tool) {
-        auto controller = workspaceController();
-        return false;
+        return workspaceController() ? workspaceController()->startTool(tool) : false;
     }
 
     //static inline bool canExecuteOnWorkspace() {

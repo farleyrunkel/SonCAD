@@ -40,114 +40,37 @@ class Viewport : public QObject {
     Q_ENUM(RenderModes)
 
     // Constructor
-    explicit Viewport(Workspace* workspace, QObject* parent = nullptr)
-    : QObject(parent), mWorkspace(workspace), mRenderMode(SolidShaded), mTwist(0.0), mScale(100.0) {}
+    explicit Viewport(Workspace* workspace, QObject* parent = nullptr);
 
     // Getters and setters for properties
-    gp_Pnt eyePoint() {
-        if (mV3dView) {
-            double xEye = 0, yEye = 0, zEye = 0;
-            mV3dView->Eye(xEye, yEye, zEye);
-            mEyePoint = gp_Pnt(xEye, yEye, zEye);
-        }
-        return mEyePoint;
-    }
+    gp_Pnt eyePoint();
 
-    void setEyePoint(const gp_Pnt& point) {
-        mEyePoint = point;
-        if (mV3dView) {
-            mV3dView->SetEye(mEyePoint.X(), mEyePoint.Y(), mEyePoint.Z());
-            emit eyePointChanged();
-        }
-    }
+    void setEyePoint(const gp_Pnt& point);
 
-    gp_Pnt targetPoint() {
-        if (mV3dView) {
-            double xAt = 0, yAt = 0, zAt = 0;
-            mV3dView->At(xAt, yAt, zAt);
-            mTargetPoint = gp_Pnt(xAt, yAt, zAt);
-        }
-        return mTargetPoint;
-    }
+    gp_Pnt targetPoint();
 
-    void setTargetPoint(const gp_Pnt& point) {
-        mTargetPoint = point;
-        if (mV3dView) {
-            mV3dView->SetAt(mTargetPoint.X(), mTargetPoint.Y(), mTargetPoint.Z());
-            emit targetPointChanged();
-        }
-    }
+    void setTargetPoint(const gp_Pnt& point);
 
-    double twist() {
-        if (mV3dView) {
-            mTwist = mV3dView->Twist() * 180.0 / M_PI;  // Convert to degrees
-        }
-        return mTwist;
-    }
+    double twist();
 
-    void setTwist(double value) {
-        if (mV3dView) {
-            mV3dView->SetTwist(value * M_PI / 180.0);  // Convert to radians
-            if (mTwist != value) {
-                mTwist = value;
-                emit twistChanged();
-            }
-        }
-    }
+    void setTwist(double value);
 
-    double scale() {
-        if (mV3dView) {
-            mScale = mV3dView->Scale();
-        }
-        return mScale;
-    }
+    double scale();
 
-    void setScale(double value) {
-        if (mV3dView) {
-            mV3dView->SetScale(value);
-            if (mScale != value) {
-                mScale = value;
-                emit scaleChanged();
-            }
-        }
-    }
+    void setScale(double value);
 
-    RenderModes renderMode() const {
-        return mRenderMode;
-    }
+    RenderModes renderMode() const;
 
-    void setRenderMode(RenderModes mode) {
-        if (mRenderMode != mode) {
-            mRenderMode = mode;
-            updateRenderMode();
-            emit renderModeChanged();
-        }
-    }
+    void setRenderMode(RenderModes mode);
 
     // Initialize Viewport with MSAA support
     void init(bool useMsaa);
 
     // Function to update render mode
-    void updateRenderMode() {
-        if (!mV3dView) return;
-
-        mV3dView->SetComputedMode(mRenderMode == HLR);
-
-        auto& renderParams = mV3dView->ChangeRenderingParams();
-        if (mRenderMode == Raytraced) {
-            renderParams.Method = Graphic3d_RM_RAYTRACING;
-        } else {
-            renderParams.Method = Graphic3d_RM_RASTERIZATION;
-        }
-    }
+    void updateRenderMode();
 
     // Destructor
-    ~Viewport() {
-        delete mAisAnimationCamera;
-        if (mV3dView) {
-            mV3dView->Remove();
-        }
-    }
+    ~Viewport();
 
  signals:
     void eyePointChanged();

@@ -9,6 +9,9 @@
 class ModelCommands {
  public:
     static ActionCommand& CreateBox();
+    static ActionCommand& CreateCylinder();
+    static ActionCommand& CreateSphere();
+
 };
 
 #endif  // SRC_IACT_COMMANDS_MODELCOMMANDS_H_

@@ -2,4 +2,4 @@
 
 #include "Iact/Framework/Tool.h"
 
-Tool::Tool() {}
+Tool::Tool(QObject* parent) : QObject() {}

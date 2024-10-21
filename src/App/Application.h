@@ -35,7 +35,7 @@ class Application : public QApplication {
     }
 
  private:
-    void initializeTranslation();
+    void initTranslation();
 
  private:
     CommandManager* mCommandManager = new CommandManager;

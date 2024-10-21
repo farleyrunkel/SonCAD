@@ -3,13 +3,15 @@
 #ifndef SRC_IACT_FRAMEWORK_TOOL_H_
 #define SRC_IACT_FRAMEWORK_TOOL_H_
 
-#include "Iact/Workspace/WorkspaceController.h"
+#include <QObject>
 
 class Tool : public QObject {
 	Q_OBJECT
 
  public:
-	 Tool();
+	 explicit Tool(QObject* parent = nullptr);
+
+	 bool start() { return false; }
 };
 
 #endif  // SRC_IACT_FRAMEWORK_TOOL_H_

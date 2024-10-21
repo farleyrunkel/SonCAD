@@ -12,7 +12,8 @@ int main(int argc, char *argv[]) {
 
     QSystemSemaphore sema(app.applicationName(), 1, QSystemSemaphore::Open);
     if (!sema.acquire()) {
-        QMessageBox::warning(nullptr, "Error", "An instance of the application is already running.");
+        QMessageBox::warning(nullptr, QObject::tr("Error"), 
+            QObject::tr("An instance of the application is already running."));
         return 1;
     }
 
