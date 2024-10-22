@@ -1,1 +1,1 @@
-# SonCAD
+# SunCAD

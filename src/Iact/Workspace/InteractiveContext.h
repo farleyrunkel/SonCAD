@@ -1,4 +1,4 @@
-// Copyright [2024] SonCAD
+// Copyright [2024] SunCAD
 
 #ifndef SRC_IACT_WORKSPACE_INTERACTIVECONTEXT_H_
 #define SRC_IACT_WORKSPACE_INTERACTIVECONTEXT_H_
@@ -14,16 +14,7 @@
 #include "Core/Viewport.h"
 
 #include "Iact/Workspace/WorkspaceController.h"
-
-class ModelController : public QObject {
-    Q_OBJECT
-
- public:
-    explicit ModelController(QObject* parent = nullptr) : QObject(parent) {}
-    ~ModelController() {}
-    void dispose() {
-    }
-};
+#include "Iact/Workspace/ModelController.h"
 
 class ViewportController : public QObject {
     Q_OBJECT
@@ -51,74 +42,27 @@ class InteractiveContext : public CoreContext {
         initialize();
     }
 
-    ~InteractiveContext() override {
-        if (_documentController) {
-            _documentController->dispose();
-            _documentController = nullptr;
-        }
-        if (_workspaceController) {
-            _workspaceController->dispose();
-            _workspaceController = nullptr;
-        }
-        _viewportController = nullptr;
-    }
+    ~InteractiveContext() override;
 
     // ModelController getter/setter
-    ModelController* documentController() const { return _documentController; }
-    void setDocumentController(ModelController* controller) {
-        if (_documentController != controller) {
-            if (_documentController) {
-                _documentController->dispose();
-            }
-            _documentController = controller;
-            emit documentControllerChanged();
-        }
-    }
+    ModelController* documentController() const;
+    void setDocumentController(ModelController* controller);
 
     // WorkspaceController getter/setter
-    WorkspaceController* workspaceController() const { return _workspaceController; }
-    void setWorkspaceController(WorkspaceController* controller) {
-        if (_workspaceController != controller) {
-            if (_workspaceController) {
-                _workspaceController->dispose();
-            }
-            _workspaceController = controller;
-            emit workspaceControllerChanged();
-        }
-    }
+    WorkspaceController* workspaceController() const;
+    void setWorkspaceController(WorkspaceController* controller);
 
     // ViewportController getter/setter
-    ViewportController* viewportController() const { return _viewportController; }
-    void setViewportController(ViewportController* controller) {
-        if (_viewportController != controller) {
-            _viewportController = controller;
-            emit viewportControllerChanged();
-        }
-    }
+    ViewportController* viewportController() const;
+    void setViewportController(ViewportController* controller);
 
     // RecentUsedColors getter
-    QList<QColor> recentUsedColors() const {
-        return _recentUsedColors;
-    }
+    QList<QColor> recentUsedColors() const;
 
     // RecentUsedScripts getter
-    QList<QString> recentUsedScripts() const {
-        return _recentUsedScripts;
-    }
+    QList<QString> recentUsedScripts() const;
 
-    void addToScriptMruList(const QString& filePath) {
-        int index = _recentUsedScripts.indexOf(filePath);
-        if (index >= 0) {
-            _recentUsedScripts.move(index, 0);
-            _recentUsedScripts[0] = filePath;
-        } else {
-            if (_recentUsedScripts.size() >= _maxScriptMruCount) {
-                _recentUsedScripts.removeLast();
-            }
-            _recentUsedScripts.prepend(filePath);
-        }
-        emit recentUsedScriptsChanged();
-    }
+    void addToScriptMruList(const QString& filePath);
 
  signals:
     void documentControllerChanged();

@@ -1,4 +1,4 @@
-// Copyright [2024] SonCAD
+// Copyright [2024] SunCAD
 
 #ifndef SRC_IACT_COMMANDS_MODELCOMMANDS_H_
 #define SRC_IACT_COMMANDS_MODELCOMMANDS_H_

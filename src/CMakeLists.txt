@@ -1,8 +1,8 @@
 
-set(PROJECT_SOURCES ${CMAKE_SOURCE_DIR}/src/SonCAD.cc)
+set(PROJECT_SOURCES ${CMAKE_SOURCE_DIR}/src/SunCAD.cc)
 set(PROJECT_RESOURCES 
     ${CMAKE_SOURCE_DIR}/src/ResourceUtils.h
-    ${CMAKE_SOURCE_DIR}/res/SonCAD.qrc)
+    ${CMAKE_SOURCE_DIR}/res/SunCAD.qrc)
 
 # Recursively find all source and header files
 file(GLOB SUB_DIRECTORY_SOURCES
@@ -19,37 +19,37 @@ include(cpplint)
 add_cpplint_target(CpplintCheck ${SUB_DIRECTORY_SOURCES})
 
 # add executable target
-qt_add_executable(SonCAD
+qt_add_executable(${PROJECT_NAME}
     MANUAL_FINALIZATION
     ${PROJECT_SOURCES}
     ${PROJECT_RESOURCES}
 )
 
 if (TARGET CpplintCheck)
-    add_dependencies(SonCAD CpplintCheck)
+    add_dependencies(${PROJECT_NAME} CpplintCheck)
 endif()
 
-target_include_directories(SonCAD PRIVATE ${CMAKE_SOURCE_DIR}/src)
-target_include_directories(SonCAD PRIVATE ${OpenCASCADE_INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_include_directories(${PROJECT_NAME} PRIVATE ${OpenCASCADE_INCLUDE_DIR})
 
-target_link_libraries(SonCAD PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
-target_link_libraries(SonCAD PRIVATE SARibbonBar)
-target_link_libraries(SonCAD PRIVATE cxxopts)
-target_link_libraries(SonCAD PRIVATE qt${QT_VERSION_MAJOR}advanceddocking)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(${PROJECT_NAME} PRIVATE SARibbonBar)
+target_link_libraries(${PROJECT_NAME} PRIVATE cxxopts)
+target_link_libraries(${PROJECT_NAME} PRIVATE qt${QT_VERSION_MAJOR}advanceddocking)
 
 # Link OpenCASCADE libraries
 foreach (LIB ${OpenCASCADE_LIBRARIES})
-  target_link_libraries(SonCAD PRIVATE debug ${OpenCASCADE_LIBRARY_DIR}d/${LIB}.lib)
-  target_link_libraries(SonCAD PRIVATE optimized ${OpenCASCADE_LIBRARY_DIR}/${LIB}.lib)
+  target_link_libraries(${PROJECT_NAME} PRIVATE debug ${OpenCASCADE_LIBRARY_DIR}d/${LIB}.lib)
+  target_link_libraries(${PROJECT_NAME} PRIVATE optimized ${OpenCASCADE_LIBRARY_DIR}/${LIB}.lib)
 endforeach()
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
 if(${QT_VERSION} VERSION_LESS 6.1.0)
-  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.SonCAD)
+  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.SunCAD)
 endif()
-set_target_properties(SonCAD PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
     ${BUNDLE_ID_OPTION}
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
@@ -57,11 +57,11 @@ set_target_properties(SonCAD PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-# Install the target executable/library (SonCAD)
+# Install the target executable/library (SunCAD)
 include(GNUInstallDirs)
 
 # Install the executable or runtime (if Windows, RUNTIME is used)
-install(TARGETS SonCAD
+install(TARGETS ${PROJECT_NAME}
     BUNDLE DESTINATION .                                # For macOS app bundles (if applicable)
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}         # Shared libraries on Linux/macOS
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}         # Executables and Windows DLLs
@@ -76,5 +76,5 @@ install(FILES ${OPENCASCADE_BINS}
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(SonCAD)
+    qt_finalize_executable(${PROJECT_NAME})
 endif()

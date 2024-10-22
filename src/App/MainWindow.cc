@@ -1,4 +1,4 @@
-// Copyright [2024] SonCAD
+// Copyright [2024] SunCAD
 
 #include "App/MainWindow.h"
 
@@ -12,8 +12,10 @@
 #include "SARibbonApplicationButton.h"
 #include "SARibbonMenu.h"
 
+#include "ResourceUtils.h"
 #include "App/WelcomeDialog.h"
 #include "Iact/Commands/ModelCommands.h"
+#include "Iact/Commands/DocumentCommands.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : SARibbonMainWindow(parent) {
@@ -22,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     setupAppButton();
     setupCategories();
+
+    load();
 }
 
 MainWindow::~MainWindow() {}
@@ -29,7 +33,8 @@ MainWindow::~MainWindow() {}
 void MainWindow::setupUi() {
     resize(1260, 800);
 
-    setWindowTitle(tr("SonCAD"));
+    setWindowTitle(tr("SunCAD"));
+    setWindowIcon(ResourceUtils::icon("App/App-MainLogo"));
     setStatusBar(new QStatusBar());
 
     ads::CDockManager::setConfigFlag(ads::CDockManager::OpaqueSplitterResize, true);
@@ -67,7 +72,7 @@ void MainWindow::setupAppButton() {
 
     if (!myAppButton) {
         myAppButton = new SARibbonMenu(this);
-        myAppButton->addAction(createAction("test1", "://icon/action.svg"));
+        myAppButton->addAction(&DocumentCommands::CreateNewModel());
         myAppButton->addAction(createAction("test2", "://icon/action2.svg"));
     }
     SARibbonApplicationButton* appBtn = qobject_cast<SARibbonApplicationButton*>(btn);
@@ -102,6 +107,10 @@ void MainWindow::setupCategories() {
             aPannel->addAction(&ModelCommands::CreateBox(), SARibbonPannelItem::Large);
         }
     }
+}
+
+void MainWindow::load() {
+    AppCommands::initApplication().execute();
 }
 
 QAction* MainWindow::createAction(const QString& text, const QString& iconurl) {

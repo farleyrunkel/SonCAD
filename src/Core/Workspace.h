@@ -1,4 +1,4 @@
-// Copyright [2024] SonCAD
+// Copyright [2024] SunCAD
 
 #ifndef SRC_CORE_WORKSPACE_H_
 #define SRC_CORE_WORKSPACE_H_

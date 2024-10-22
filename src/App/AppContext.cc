@@ -1,3 +1,3 @@
-// Copyright [2024] SonCAD
+// Copyright [2024] SunCAD
 
 #include "App/AppContext.h"

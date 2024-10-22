@@ -1,4 +1,4 @@
-// Copyright [2024] SonCAD
+// Copyright [2024] SunCAD
 
 #ifndef SRC_PRES_GLOBALEVENTHANDLER_H_
 #define SRC_PRES_GLOBALEVENTHANDLER_H_

@@ -1,4 +1,4 @@
-// Copyright [2024] SonCAD
+// Copyright [2024] SunCAD
 
 #ifndef SRC_INTF_ICOMMAND_H_
 #define SRC_INTF_ICOMMAND_H_

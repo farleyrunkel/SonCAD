@@ -1,4 +1,4 @@
-// Copyright [2024] SonCAD
+// Copyright [2024] SunCAD
 
 #ifndef SRC_APP_MAINWINDOW_H_
 #define SRC_APP_MAINWINDOW_H_
@@ -9,6 +9,8 @@
 #include "SARibbonMainWindow.h"
 #include "DockManager.h"
 
+#include "App/Commands/AppCommands.h"
+
 class MainWindow : public SARibbonMainWindow {
     Q_OBJECT
 
@@ -18,13 +20,13 @@ class MainWindow : public SARibbonMainWindow {
 
  private:
     void setupUi();
-
     void setupWelcomePage();
-
     void setupAppButton();
+    void setupCategories();
+
     QAction* createAction(const QString& text, const QString& iconurl);
 
-    void setupCategories();
+    void load();
 
  private:
     QMenu* myAppButton = nullptr;

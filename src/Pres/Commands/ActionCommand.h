@@ -1,4 +1,4 @@
-// Copyright [2024] SonCAD
+// Copyright [2024] SunCAD
 
 #ifndef SRC_PRES_COMMANDS_ACTIONCOMMAND_H_
 #define SRC_PRES_COMMANDS_ACTIONCOMMAND_H_
@@ -14,10 +14,7 @@ class ActionCommand final : public QAction, public RelayCommand {
 
  public:
     // Constructor
-    ActionCommand(std::function<void()> execute, std::function<bool()> canExecute)
-        : QAction(), RelayCommand(execute, canExecute) {
-        connect(this, &QAction::triggered, [this]() {this->execute(); });
-    }
+    ActionCommand(std::function<void()> execute, std::function<bool()> canExecute);
 };
 
 #endif  // SRC_PRES_COMMANDS_ACTIONCOMMAND_H_

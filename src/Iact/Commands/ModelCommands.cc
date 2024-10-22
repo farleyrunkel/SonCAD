@@ -1,4 +1,4 @@
-// Copyright [2024] SonCAD
+// Copyright [2024] SunCAD
 
 #include "Iact/Commands/ModelCommands.h"
 
@@ -21,7 +21,7 @@ ActionCommand& ModelCommands::CreateBox() {
     // Initialize command properties if not already set
     if (command.text().isEmpty()) {
         command.setText(QObject::tr("Box"));
-        command.setIcon(ResourceUtils::icon(ResourceUtils::MODEL_BOX));
+        command.setIcon(ResourceUtils::icon("model/Prim-Box"));
         command.setToolTip(QObject::tr("Creates a new body with a box shape."));
 
         command.connect(coreApp->commandManager(), &CommandManager::updateEnabled,
@@ -48,8 +48,8 @@ ActionCommand& ModelCommands::CreateCylinder()
     // Initialize command properties if not already set
     if (command.text().isEmpty()) {
         command.setText(QObject::tr("Box"));
-        command.setIcon(ResourceUtils::icon(ResourceUtils::MODEL_CYLINDER));
-        command.setToolTip(QObject::tr("Creates a new body with a box shape."));
+        command.setIcon(ResourceUtils::icon("model/Prim-Cylinder"));
+        command.setToolTip(QObject::tr("Creates a new body with a Cylinder shape."));
 
         command.connect(coreApp->commandManager(), &CommandManager::updateEnabled,
             []() { command.setEnabled(command.canExecute()); }
@@ -75,8 +75,8 @@ ActionCommand& ModelCommands::CreateSphere()
     // Initialize command properties if not already set
     if (command.text().isEmpty()) {
         command.setText(QObject::tr("Box"));
-        command.setIcon(ResourceUtils::icon(ResourceUtils::MODEL_SPHERE));
-        command.setToolTip(QObject::tr("Creates a new body with a box shape."));
+        command.setIcon(ResourceUtils::icon("model/Prim-Sphere"));
+        command.setToolTip(QObject::tr("Creates a new body with a Sphere shape."));
 
         command.connect(coreApp->commandManager(), &CommandManager::updateEnabled,
             []() { command.setEnabled(command.canExecute()); }

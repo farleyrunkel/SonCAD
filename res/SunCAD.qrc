@@ -29,5 +29,20 @@
         <file>icons/model/Prim-Cylinder.svg</file>
         <file>icons/model/Prim-Sketch.svg</file>
         <file>icons/model/Prim-Sphere.svg</file>
+        <file>icons/App/App-Exchange.svg</file>
+        <file>icons/App/App-Export.svg</file>
+        <file>icons/App/App-Import.svg</file>
+        <file>icons/App/App-MainLogo.svg</file>
+        <file>icons/App/App-NewModel.svg</file>
+        <file>icons/App/App-OpenModel.svg</file>
+        <file>icons/App/App-OpenRecent.svg</file>
+        <file>icons/App/App-OpenSample.svg</file>
+        <file>icons/App/App-RestoreLayout.svg</file>
+        <file>icons/App/App-SaveAll.svg</file>
+        <file>icons/App/App-SaveModel.svg</file>
+        <file>icons/App/App-Settings.svg</file>
+        <file>icons/App/App-ShortcutHelp.svg</file>
+        <file>icons/App/App-UserGuide.svg</file>
+        <file>icons/App/App-MainLogo.ico</file>
     </qresource>
 </RCC>
