@@ -13,7 +13,7 @@
 
 #include "Pres/Commands/CommandManager.h"
 
-#define coreApp (static_cast<Application*>(QCoreApplication::instance()))
+class Core;
 
 class Application : public QApplication {
     Q_OBJECT
@@ -22,28 +22,18 @@ class Application : public QApplication {
     Application(int& argc, char** argv);
     ~Application() {}
 
-    CommandManager* commandManager() const {
-        return mCommandManager;
-    }
-
-    AppContext* appContext() const {
-        return mAppContext;
-    }
-
-    MainWindow* mainWindow() const {
-        return mMainWindow;
-    }
-
  private:
     void initTranslation();
 
  private:
-    CommandManager* mCommandManager = new CommandManager;
-    AppContext* mAppContext = new AppContext;
+    friend class Core;
+
+    CommandManager* m_commandManager = new CommandManager;
+    AppContext* m_appContext = new AppContext;
 
  private:
     WelcomeDialog* mWelcomeDialog = nullptr;
-    MainWindow* mMainWindow = nullptr;
+    MainWindow* m_mainWindow = nullptr;
 };
 
 #endif  // SRC_APP_APPLICATION_H_

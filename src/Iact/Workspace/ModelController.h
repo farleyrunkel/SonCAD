@@ -5,6 +5,8 @@
 
 #include <QObject>
 
+#include "Core/Topology/Model.h"
+
 class ModelController : public QObject {
     Q_OBJECT
 
@@ -13,7 +15,7 @@ public:
 
     void dispose();
 
-    void newModel();
+    Model* newModel();
 
     bool askForSavingModelChanges();
 };

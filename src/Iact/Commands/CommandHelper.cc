@@ -2,14 +2,14 @@
 
 #include "Iact/Commands/CommandHelper.h"
 
-#include "App/Application.h"
+#include "Core/Core.h"
 
  WorkspaceController* CommandHelper::workspaceController() {
-    return coreApp->appContext() ? coreApp->appContext()->workspaceController() : nullptr;
+    return Core::appContext() ? Core::appContext()->workspaceController() : nullptr;
 }
 
  ModelController* CommandHelper::documentController() {
-    return coreApp->appContext() ? coreApp->appContext()->documentController() : nullptr;
+    return Core::appContext() ? Core::appContext()->documentController() : nullptr;
 }
 
  Tool* CommandHelper::currentTool() {
@@ -21,8 +21,8 @@
 }
 
  bool CommandHelper::canExecuteOnViewport() {
-    return coreApp->appContext() && coreApp->appContext()->viewportController()
-        && coreApp->appContext()->viewportController()->viewport();
+    return Core::appContext() && Core::appContext()->viewportController()
+        && Core::appContext()->viewportController()->viewport();
 }
 
  bool CommandHelper::canStartTool() {

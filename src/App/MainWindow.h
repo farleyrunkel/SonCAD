@@ -30,9 +30,9 @@ class MainWindow : public SARibbonMainWindow {
 
  private:
     QMenu* myAppButton = nullptr;
-    SARibbonBar* myRibbonBar = nullptr;;
+    SARibbonBar* myRibbonBar = nullptr;
     // The main container for docking
-    ads::CDockManager* m_DockManager = nullptr;;
+    ads::CDockManager* m_DockManager = nullptr;
 };
 
 #endif  // SRC_APP_MAINWINDOW_H_

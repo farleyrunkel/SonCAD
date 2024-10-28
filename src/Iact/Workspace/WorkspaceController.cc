@@ -4,7 +4,6 @@
 
 #include <QDebug>
 
-WorkspaceController::WorkspaceController(QObject* parent) : QObject(parent) {}
 
 Tool* WorkspaceController::currentTool() const { return m_currentTool; }
 

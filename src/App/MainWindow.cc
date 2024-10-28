@@ -48,15 +48,27 @@ void MainWindow::setupUi() {
 }
 
 void MainWindow::setupWelcomePage() {
-    WelcomeDialog* l = new WelcomeDialog();
+    ads::CDockManager::setAutoHideConfigFlags(ads::CDockManager::DefaultAutoHideConfig);
 
-    // Create a dock widget with the title Label 1 and set the created label
-    // as the dock widget content
-    ads::CDockWidget* DockWidget = new ads::CDockWidget("Welcome");
-    DockWidget->setWidget(l);
+    ads::CDockManager::setConfigFlags(ads::CDockManager::DefaultOpaqueConfig);
+    ads::CDockManager::setConfigFlag(ads::CDockManager::AllTabsHaveCloseButton, false);
+    ads::CDockManager::setConfigFlag(ads::CDockManager::DockAreaHasCloseButton, false);
+    ads::CDockManager::setConfigFlag(ads::CDockManager::DockAreaHasUndockButton, false);
+    ads::CDockManager::setConfigFlag(ads::CDockManager::FocusHighlighting, true);
+
+    ads::CDockWidget* Document = new ads::CDockWidget("Document", new WelcomeDialog());
+    ads::CDockWidget* Layers = new ads::CDockWidget("Layers", new WelcomeDialog());
+    ads::CDockWidget* Workspace = new ads::CDockWidget("Workspace", new WelcomeDialog());
+    ads::CDockWidget* Propeties = new ads::CDockWidget("Propeties", new WelcomeDialog());
+    // Add the dock widget to the top dock widget area
+    m_DockManager->addDockWidget(ads::LeftDockWidgetArea, Document);
+    // Add the dock widget to the top dock widget area
+    m_DockManager->addDockWidget(ads::BottomDockWidgetArea, Layers);
+    // Add the dock widget to the top dock widget area
+    m_DockManager->addDockWidget(ads::RightDockWidgetArea, Workspace);
 
     // Add the dock widget to the top dock widget area
-    m_DockManager->addDockWidget(ads::TopDockWidgetArea, DockWidget);
+    m_DockManager->addDockWidget(ads::RightDockWidgetArea, Propeties);
 }
 
 void MainWindow::setupAppButton() {

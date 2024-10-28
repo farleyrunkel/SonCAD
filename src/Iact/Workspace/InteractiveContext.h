@@ -12,33 +12,24 @@
 
 #include "Core/CoreContext.h"
 #include "Core/Viewport.h"
-
+#include "Comm/BaseObject.h"
 #include "Iact/Workspace/WorkspaceController.h"
 #include "Iact/Workspace/ModelController.h"
-
-class ViewportController : public QObject {
-    Q_OBJECT
-
- public:
-    explicit ViewportController(QObject* parent = nullptr) : QObject(parent) {}
-
-    Viewport* viewport() { return nullptr; }
-};
+#include "Iact/Workspace/ViewportController.h"
 
 class InteractiveContext : public CoreContext {
     Q_OBJECT
-        Q_PROPERTY(ModelController* documentController READ documentController WRITE setDocumentController NOTIFY documentControllerChanged)
-        Q_PROPERTY(WorkspaceController* workspaceController READ workspaceController NOTIFY workspaceControllerChanged)
-        Q_PROPERTY(ViewportController* viewportController READ viewportController NOTIFY viewportControllerChanged)
-        Q_PROPERTY(QList<QColor> recentUsedColors READ recentUsedColors NOTIFY recentUsedColorsChanged)
-        Q_PROPERTY(QList<QString> recentUsedScripts READ recentUsedScripts NOTIFY recentUsedScriptsChanged)
+    Q_PROPERTY(ModelController* documentController READ documentController WRITE setDocumentController)
+    Q_PROPERTY(WorkspaceController* workspaceController READ workspaceController WRITE setWorkspaceController)
+    Q_PROPERTY(ViewportController* viewportController READ viewportController WRITE setViewportController)
 
- public:
+public:
     InteractiveContext()
         : CoreContext(),
-        _documentController(new ModelController(this)),
-        _workspaceController(nullptr),
-        _viewportController(nullptr) {
+        m_documentController(new ModelController(this)),
+        m_workspaceController(nullptr),
+        m_viewportController(nullptr) {
+
         initialize();
     }
 
@@ -56,6 +47,8 @@ class InteractiveContext : public CoreContext {
     ViewportController* viewportController() const;
     void setViewportController(ViewportController* controller);
 
+    void setWorkspace(Workspace* workspace) override;
+
     // RecentUsedColors getter
     QList<QColor> recentUsedColors() const;
 
@@ -64,23 +57,22 @@ class InteractiveContext : public CoreContext {
 
     void addToScriptMruList(const QString& filePath);
 
+ private:
+     void initialize();
+
  signals:
-    void documentControllerChanged();
     void workspaceControllerChanged();
+    void documentControllerChanged();
     void viewportControllerChanged();
-    void recentUsedColorsChanged();
-    void recentUsedScriptsChanged();
 
  private:
-    ModelController* _documentController;
-    WorkspaceController* _workspaceController;
-    ViewportController* _viewportController;
+    ModelController* m_documentController;
+    WorkspaceController* m_workspaceController;
+    ViewportController* m_viewportController;
 
-    QList<QColor> _recentUsedColors;
-    QList<QString> _recentUsedScripts;
-    const int _maxScriptMruCount = 10;
-
-    void initialize() {}
+    QList<QColor> m_recentUsedColors;
+    QList<QString> m_recentUsedScripts;
+    const int m_maxScriptMruCount = 10;
 };
 
 #endif  // SRC_IACT_WORKSPACE_INTERACTIVECONTEXT_H_

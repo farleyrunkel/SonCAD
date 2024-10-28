@@ -4,9 +4,14 @@
 #define SRC_CORE_WORKSPACE_H_
 
 #include <QObject>
+#include <QVector>
+
 #include <AIS_InteractiveContext.hxx>
 #include <V3d_Viewer.hxx>
 #include <vector>
+
+class Model;
+class Viewport;
 
 class Workspace : public QObject {
     Q_OBJECT
@@ -30,11 +35,17 @@ public:
     void setNeedsImmediateRedraw(bool value);
 
     // Viewports management
-    // std::vector<Viewport*>& viewports();
+    QVector<Viewport*>& viewports() { return m_viewports; }
 
     // Model management
-    //const Model* model() const;
-    //void setModel(Model* model);
+    Model* model() const {
+        return m_model ;
+    }
+    void setModel(Model* model) {
+        m_model = model;
+    }
+signals:
+    void gridChanged();
 
 private:
     Handle(V3d_Viewer) m_v3dViewer;  // 3D viewer handle
@@ -44,8 +55,8 @@ private:
     bool m_needsRedraw;  // Flag to check if redraw is needed
     bool m_needsImmediateRedraw;  // Flag for immediate redraw
 
-    // std::vector<Viewport*> m_viewports;  // List of viewports
-    // Model* m_model;  // The active model
+    QVector<Viewport*> m_viewports;  // List of viewports
+    Model* m_model;  // The active model
 };
 
 #endif  // SRC_CORE_WORKSPACE_H_

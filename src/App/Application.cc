@@ -31,10 +31,10 @@ Application::Application(int& argc, char** argv)
     }
 
     // Init context
-    mAppContext->initialize(cmdLine);
+    m_appContext->initialize(cmdLine);
 
-    mMainWindow = new MainWindow;
-    mMainWindow->show(); // Show the main window
+    m_mainWindow = new MainWindow;
+    m_mainWindow->show(); // Show the main window
 
     // Install the event filter for global key handling
     GlobalEventHandler* globalEventHandler = new GlobalEventHandler(this);

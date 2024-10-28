@@ -40,6 +40,9 @@ class Viewport : public QObject {
     Q_ENUM(RenderModes)
 
     // Constructor
+    explicit Viewport(QObject* parent = nullptr);
+
+    // Constructor
     explicit Viewport(Workspace* workspace, QObject* parent = nullptr);
 
     // Getters and setters for properties

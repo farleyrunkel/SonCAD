@@ -3,79 +3,101 @@
 #include "Iact/Workspace/InteractiveContext.h"
 
 InteractiveContext::~InteractiveContext() {
-    if (_documentController) {
-        _documentController->dispose();
-        _documentController = nullptr;
+    if (m_documentController) {
+        m_documentController->dispose();
+        m_documentController = nullptr;
     }
-    if (_workspaceController) {
-        _workspaceController->dispose();
-        _workspaceController = nullptr;
+    if (m_workspaceController) {
+        m_workspaceController->dispose();
+        m_workspaceController = nullptr;
     }
-    _viewportController = nullptr;
+    m_viewportController = nullptr;
 }
 
 // ModelController getter/setter
 
-ModelController* InteractiveContext::documentController() const { return _documentController; }
+ModelController* InteractiveContext::documentController() const { return m_documentController; }
 
 void InteractiveContext::setDocumentController(ModelController* controller) {
-    if (_documentController != controller) {
-        if (_documentController) {
-            _documentController->dispose();
+    if (m_documentController != controller) {
+        if (m_documentController) {
+            m_documentController->dispose();
         }
-        _documentController = controller;
-        emit documentControllerChanged();
+        m_documentController = controller;
+
+        emit propertyChanged("documentController");
     }
 }
 
 // WorkspaceController getter/setter
 
-WorkspaceController* InteractiveContext::workspaceController() const { return _workspaceController; }
+WorkspaceController* InteractiveContext::workspaceController() const { return m_workspaceController; }
 
 void InteractiveContext::setWorkspaceController(WorkspaceController* controller) {
-    if (_workspaceController != controller) {
-        if (_workspaceController) {
-            _workspaceController->dispose();
+    if (m_workspaceController != controller) {
+        if (m_workspaceController) {
+            m_workspaceController->dispose();
         }
-        _workspaceController = controller;
-        emit workspaceControllerChanged();
+        m_workspaceController = controller;
+
+        emit propertyChanged("workspaceController");
     }
 }
 
 // ViewportController getter/setter
 
-ViewportController* InteractiveContext::viewportController() const { return _viewportController; }
+ViewportController* InteractiveContext::viewportController() const { return m_viewportController; }
 
 void InteractiveContext::setViewportController(ViewportController* controller) {
-    if (_viewportController != controller) {
-        _viewportController = controller;
-        emit viewportControllerChanged();
+    if (m_viewportController != controller) {
+        m_viewportController = controller;
+
+        emit propertyChanged("viewportController");
     }
+}
+
+void InteractiveContext::setWorkspace(Workspace* workspace) {
+    if (m_workspace = workspace) {
+        return;
+    }
+
+    m_workspaceController = nullptr;
+    m_workspaceController = workspace ? nullptr : new WorkspaceController(workspace);
+    CoreContext::setWorkspace(workspace);
+
+    emit propertyChanged("workspaceController");
 }
 
 // RecentUsedColors getter
 
 QList<QColor> InteractiveContext::recentUsedColors() const {
-    return _recentUsedColors;
+    return m_recentUsedColors;
 }
 
 // RecentUsedScripts getter
 
 QList<QString> InteractiveContext::recentUsedScripts() const {
-    return _recentUsedScripts;
+    return m_recentUsedScripts;
 }
 
 void InteractiveContext::addToScriptMruList(const QString& filePath) {
-    int index = _recentUsedScripts.indexOf(filePath);
+    int index = m_recentUsedScripts.indexOf(filePath);
     if (index >= 0) {
-        _recentUsedScripts.move(index, 0);
-        _recentUsedScripts[0] = filePath;
+        m_recentUsedScripts.move(index, 0);
+        m_recentUsedScripts[0] = filePath;
     }
     else {
-        if (_recentUsedScripts.size() >= _maxScriptMruCount) {
-            _recentUsedScripts.removeLast();
+        if (m_recentUsedScripts.size() >= m_maxScriptMruCount) {
+            m_recentUsedScripts.removeLast();
         }
-        _recentUsedScripts.prepend(filePath);
+        m_recentUsedScripts.prepend(filePath);
     }
-    emit recentUsedScriptsChanged();
+
+    emit propertyChanged("recentUsedScripts");
+}
+
+void InteractiveContext::initialize() {
+    connect(this, &InteractiveContext::workspaceControllerChanged, [this]() {emit propertyChanged("workspaceController"); });
+    connect(this, &InteractiveContext::documentControllerChanged, [this]() {emit propertyChanged("documentController"); });
+    connect(this, &InteractiveContext::viewportControllerChanged, [this]() {emit propertyChanged("viewportController"); });
 }

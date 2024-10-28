@@ -4,11 +4,26 @@
 #define SRC_CORE_TOPOLOGY_MODEL_H_
 
 #include <QObject>
+#include <QVector>
+
+#include "Core/Workspace.h"
 
 class Model : public QObject {
+	Q_OBJECT
 
+ public:
+	Model()  {
 
+	}
 
+	QVector<Workspace*>& workspaces() { return m_workspaces; }
+
+ signals:
+	void resetUnsavedChanges();
+
+ private:
+
+	QVector<Workspace*> m_workspaces;
 };
 
 

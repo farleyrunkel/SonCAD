@@ -6,15 +6,20 @@
 #include <QObject>
 
 #include "Core/Workspace.h"
+#include "Comm/BaseObject.h"
 #include "Iact/Framework/Tool.h"
 #include "Iact/Framework/Editor.h"
 
-class WorkspaceController : public QObject {
+class WorkspaceController : public BaseObject {
     Q_OBJECT
 
  public:
-    explicit WorkspaceController(QObject* parent = nullptr);
-    
+    explicit WorkspaceController(Workspace* workspace) {
+        m_workspace = workspace;
+        connect(m_workspace, &Workspace::gridChanged, this, &WorkspaceController::onWorkspaceGridChanged);
+
+    };
+
     Tool* currentTool() const;
 
     bool startTool(Tool* tool);
@@ -27,6 +32,8 @@ class WorkspaceController : public QObject {
     Workspace* workspace() const;
 
     void dispose();
+private:
+    void onWorkspaceGridChanged() {}
 
 private: 
     Tool* m_currentTool;
