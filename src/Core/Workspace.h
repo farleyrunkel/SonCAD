@@ -3,12 +3,18 @@
 #ifndef SRC_CORE_WORKSPACE_H_
 #define SRC_CORE_WORKSPACE_H_
 
+#include <vector>
+
 #include <QObject>
 #include <QVector>
 
 #include <AIS_InteractiveContext.hxx>
 #include <V3d_Viewer.hxx>
-#include <vector>
+#include <AIS_DisplayMode.hxx>
+#include <Prs3d_LineAspect.hxx>
+
+#include "Core/Project/VisualStyles.h"
+#include "Core/Extensions/ColorExtensions.h"
 
 class Model;
 class Viewport;
@@ -21,7 +27,40 @@ public:
     ~Workspace() {};
 
     // Initialize 3D viewer and context
-    void initViewer();
+    void initV3dViewer();
+    void initAisContext() {
+        if (m_v3dViewer.IsNull())
+            initV3dViewer();
+
+        if (m_aisContext.IsNull())
+        {
+            m_aisContext = new AIS_InteractiveContext(m_v3dViewer);
+            m_aisContext->UpdateCurrentViewer();
+        }
+
+        m_aisContext->SetAutoActivateSelection(true);
+        m_aisContext->SetToHilightSelected(false);
+        m_aisContext->SetPickingStrategy(SelectMgr_PickingStrategy_OnlyTopmost);
+        m_aisContext->SetDisplayMode((int)AIS_Shaded, false);
+        m_v3dViewer->DisplayPrivilegedPlane(false, 1.0);
+        m_aisContext->EnableDrawHiddenLine();
+
+        // Reinit ais parameters
+        _ApplyWorkingContext();
+        m_aisContext->SetPixelTolerance(2);
+
+        auto drawer = m_aisContext->DefaultDrawer();
+        drawer->SetWireAspect(new Prs3d_LineAspect(ColorExtensions::toQuantityColor(Colors::Selection), Aspect_TOL_SOLID, 1.0));
+        drawer->SetTypeOfHLR(Prs3d_TypeOfHLR::Prs3d_TOH_PolyAlgo);
+    }
+
+    void _ApplyWorkingContext()
+    {
+        if (!m_aisContext.IsNull())
+        {
+            // m_v3dViewer->SetPrivilegedPlane(_CurrentWorkingContext.WorkingPlane.Position);
+        }
+    }
 
     // Getters
     Handle(V3d_Viewer) v3dViewer() const;

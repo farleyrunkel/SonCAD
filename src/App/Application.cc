@@ -33,7 +33,7 @@ Application::Application(int& argc, char** argv)
     // Init context
     m_appContext->initialize(cmdLine);
 
-    m_mainWindow = new MainWindow;
+    m_mainWindow = new MainWindow();
     m_mainWindow->show(); // Show the main window
 
     // Install the event filter for global key handling

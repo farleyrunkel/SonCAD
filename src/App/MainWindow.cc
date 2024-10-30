@@ -7,25 +7,34 @@
 #include <QStatusBar>
 #include <QScopedPointer>
 #include <QAbstractButton>
+#include <QPlainTextEdit>
 
 #include "SARibbonBar.h"
 #include "SARibbonApplicationButton.h"
 #include "SARibbonMenu.h"
 
+#include "AutoHideDockContainer.h"
+#include "DockAreaWidget.h"
+#include "DockAreaTitleBar.h"
+
 #include "ResourceUtils.h"
 #include "App/WelcomeDialog.h"
+#include "App/ViewportView.h"
+
 #include "Iact/Commands/ModelCommands.h"
 #include "Iact/Commands/DocumentCommands.h"
+using namespace ads;
 
 MainWindow::MainWindow(QWidget *parent)
     : SARibbonMainWindow(parent) {
 	setupUi();
-    setupWelcomePage();
 
     setupAppButton();
     setupCategories();
 
-    load();
+    setupWelcomePage();
+
+    onMainWindowLoaded();
 }
 
 MainWindow::~MainWindow() {}
@@ -38,64 +47,79 @@ void MainWindow::setupUi() {
     setStatusBar(new QStatusBar());
 
     ads::CDockManager::setConfigFlag(ads::CDockManager::OpaqueSplitterResize, true);
-    ads::CDockManager::setConfigFlag(ads::CDockManager::XmlCompressionEnabled, false);
     ads::CDockManager::setConfigFlag(ads::CDockManager::FocusHighlighting, true);
-    m_DockManager = new ads::CDockManager(this);
+    ads::CDockManager::setConfigFlag(ads::CDockManager::AlwaysShowTabs, true);
+    ads::CDockManager::setConfigFlag(ads::CDockManager::ActiveTabHasCloseButton, false);
+    ads::CDockManager::setConfigFlag(ads::CDockManager::XmlCompressionEnabled, false);
+
+    ads::CDockManager::setConfigFlag(ads::CDockManager::DockAreaHasCloseButton, false);
+    ads::CDockManager::setConfigFlag(ads::CDockManager::DockAreaHasUndockButton, false);
+    ads::CDockManager::setAutoHideConfigFlags(ads::CDockManager::DefaultAutoHideConfig); 
+    ads::CDockManager::setAutoHideConfigFlag(ads::CDockManager::DockAreaHasAutoHideButton, false);
+    
+    m_dockManager = new ads::CDockManager(this);
 
     // set ribbonbar
-    myRibbonBar = ribbonBar();
-    myRibbonBar->setContentsMargins(5, 0, 5, 0);
+    m_ribbonBar = ribbonBar();
+    m_ribbonBar->setContentsMargins(5, 0, 5, 0);
 }
 
 void MainWindow::setupWelcomePage() {
-    ads::CDockManager::setAutoHideConfigFlags(ads::CDockManager::DefaultAutoHideConfig);
+    // Set up a central dock widget 
 
-    ads::CDockManager::setConfigFlags(ads::CDockManager::DefaultOpaqueConfig);
-    ads::CDockManager::setConfigFlag(ads::CDockManager::AllTabsHaveCloseButton, false);
-    ads::CDockManager::setConfigFlag(ads::CDockManager::DockAreaHasCloseButton, false);
-    ads::CDockManager::setConfigFlag(ads::CDockManager::DockAreaHasUndockButton, false);
-    ads::CDockManager::setConfigFlag(ads::CDockManager::FocusHighlighting, true);
+    CDockWidget* CentralDockWidget = new CDockWidget("Workspace");
+    CentralDockWidget->setWidget(new ViewportView());
+    auto* CentralDockArea = m_dockManager->setCentralWidget(CentralDockWidget);
 
-    ads::CDockWidget* Document = new ads::CDockWidget("Document", new WelcomeDialog());
-    ads::CDockWidget* Layers = new ads::CDockWidget("Layers", new WelcomeDialog());
-    ads::CDockWidget* Workspace = new ads::CDockWidget("Workspace", new WelcomeDialog());
-    ads::CDockWidget* Propeties = new ads::CDockWidget("Propeties", new WelcomeDialog());
-    // Add the dock widget to the top dock widget area
-    m_DockManager->addDockWidget(ads::LeftDockWidgetArea, Document);
-    // Add the dock widget to the top dock widget area
-    m_DockManager->addDockWidget(ads::BottomDockWidgetArea, Layers);
-    // Add the dock widget to the top dock widget area
-    m_DockManager->addDockWidget(ads::RightDockWidgetArea, Workspace);
+    // Set up additional dock widgets for various panels
+    ads::CDockWidget* documentDock = new ads::CDockWidget("Document");
+    documentDock->setWidget(new WelcomeDialog());
 
-    // Add the dock widget to the top dock widget area
-    m_DockManager->addDockWidget(ads::RightDockWidgetArea, Propeties);
+    ads::CDockWidget* layersDock = new ads::CDockWidget("Layers");
+    layersDock->setWidget(new WelcomeDialog());
+
+    ads::CDockWidget* propertiesDock = new ads::CDockWidget("Properties");
+    propertiesDock->setWidget(new WelcomeDialog());
+
+    ads::CDockWidget* messageDock = new ads::CDockWidget("Message");
+    messageDock->setWidget(new WelcomeDialog());
+
+    // Add dock widgets to specific dock areas
+    m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarRight, propertiesDock)->setSize(240);
+    m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarLeft, documentDock)->setSize(240);
+    m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarLeft, layersDock)->setSize(240);
+    m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarBottom, messageDock)->setSize(240);
+
+    // Add workspace toggle action (if required in app button)
+    m_appButton->addAction(CentralDockWidget->toggleViewAction());
 }
 
+
 void MainWindow::setupAppButton() {
-    if (!myRibbonBar) {
+    if (!m_ribbonBar) {
         return;
     }
-    QAbstractButton* btn = myRibbonBar->applicationButton();
+    QAbstractButton* btn = m_ribbonBar->applicationButton();
     if (!btn) {
         btn = new SARibbonApplicationButton(this);
-        myRibbonBar->setApplicationButton(btn);
+        m_ribbonBar->setApplicationButton(btn);
     }
-    myRibbonBar->applicationButton()->setText(("  &File  "));
+    m_ribbonBar->applicationButton()->setText(tr("  &File  "));
 
-    if (!myAppButton) {
-        myAppButton = new SARibbonMenu(this);
-        myAppButton->addAction(&DocumentCommands::CreateNewModel());
-        myAppButton->addAction(createAction("test2", "://icon/action2.svg"));
+    if (!m_appButton) {
+        m_appButton = new SARibbonMenu(this);
+        m_appButton->addAction(&DocumentCommands::CreateNewModel());
+        m_appButton->addAction(createAction("test2", "://icon/action2.svg"));
     }
     SARibbonApplicationButton* appBtn = qobject_cast<SARibbonApplicationButton*>(btn);
     if (!appBtn) {
         return;
     }
-    appBtn->setMenu(myAppButton);
+    appBtn->setMenu(m_appButton);
 }
 
 void MainWindow::setupCategories() {
-    if (SARibbonCategory* aCategory = myRibbonBar->addCategoryPage(tr("Edit"))) {
+    if (SARibbonCategory* aCategory = m_ribbonBar->addCategoryPage(tr("Edit"))) {
         if (SARibbonPannel* aPannel = aCategory->addPannel(tr("Panel 1"))) {
             QAction* aAction = new QAction;
             aAction->setText("save");
@@ -106,7 +130,7 @@ void MainWindow::setupCategories() {
         }
     }
 
-    if (SARibbonCategory* aCategory = myRibbonBar->addCategoryPage(tr("Model"))) {
+    if (SARibbonCategory* aCategory = m_ribbonBar->addCategoryPage(tr("Model"))) {
         if (SARibbonPannel* aPannel = aCategory->addPannel(tr("Create"))) {
             aPannel->addAction(&ModelCommands::CreateBox(), SARibbonPannelItem::Large);
             aPannel->addAction(&ModelCommands::CreateCylinder(), SARibbonPannelItem::Large);
@@ -114,21 +138,21 @@ void MainWindow::setupCategories() {
         }
     }
 
-    if (SARibbonCategory* aCategory = myRibbonBar->addCategoryPage(tr("View"))) {
+    if (SARibbonCategory* aCategory = m_ribbonBar->addCategoryPage(tr("View"))) {
         if (SARibbonPannel* aPannel = aCategory->addPannel(tr("Widgets"))) {
             aPannel->addAction(&ModelCommands::CreateBox(), SARibbonPannelItem::Large);
         }
     }
 }
 
-void MainWindow::load() {
+void MainWindow::onMainWindowLoaded() {
     AppCommands::initApplication().execute();
 }
 
 QAction* MainWindow::createAction(const QString& text, const QString& iconurl) {
-    QAction* act = new QAction(this);
-    act->setText(text);
-    act->setIcon(QIcon(iconurl));
-    act->setObjectName(text);
-    return act;
+    QAction* action = new QAction(this);
+    action->setText(text);
+    action->setIcon(QIcon(iconurl));
+    action->setObjectName(text);
+    return action;
 }

@@ -3,7 +3,9 @@
 #include "Core/Workspace.h"
 
 #include <V3d_View.hxx>
+#include <Aspect_DisplayConnection.hxx>
 #include <Graphic3d_GraphicDriver.hxx>
+#include <OpenGl_GraphicDriver.hxx>
 #include <Aspect_Handle.hxx>
 #include "Viewport.h"
 //#include "Model.h"
@@ -17,7 +19,7 @@ Workspace::Workspace()
     m_gridEnabled(false),
     m_needsRedraw(false),
     m_needsImmediateRedraw(false) {
-    initViewer();  // Initialize 3D viewer and context
+    initV3dViewer();  // Initialize 3D viewer and context
 }
 
 //Workspace::~Workspace() {
@@ -31,14 +33,23 @@ Workspace::Workspace()
 //--------------------------------------------------------------------------------------------------
 // Initialize V3d_Viewer and AIS_InteractiveContext
 
-void Workspace::initViewer() {
+void Workspace::initV3dViewer() {
     // Initialize 3D viewer with graphic driver
-    Handle(Graphic3d_GraphicDriver) graphicDriver;  // Graphic driver instance
+    Handle(Aspect_DisplayConnection) aDisp = new Aspect_DisplayConnection();
+    Handle(OpenGl_GraphicDriver) aDriver = new OpenGl_GraphicDriver(aDisp, false);
+    // lets QOpenGLWidget to manage buffer swap
+    aDriver->ChangeOptions().buffersNoSwap = true;
+    // don't write into alpha channel
+    aDriver->ChangeOptions().buffersOpaqueAlpha = true;
+    // offscreen FBOs should be always used
+    aDriver->ChangeOptions().useSystemBuffer = false;
 
-    // Create 3D viewer and enable default lights
-    m_v3dViewer = new V3d_Viewer(graphicDriver);
+    // create viewer
+    m_v3dViewer = new V3d_Viewer(aDriver);
+    m_v3dViewer->SetDefaultBackgroundColor(Quantity_NOC_BLACK);
     m_v3dViewer->SetDefaultLights();
     m_v3dViewer->SetLightOn();
+    m_v3dViewer->ActivateGrid(Aspect_GT_Rectangular, Aspect_GDM_Lines);
 
     // Create AIS context for interactive objects
     m_aisContext = new AIS_InteractiveContext(m_v3dViewer);

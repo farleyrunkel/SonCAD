@@ -24,11 +24,11 @@
 class Viewport : public QObject {
     Q_OBJECT
 
-        Q_PROPERTY(gp_Pnt eyePoint READ eyePoint WRITE setEyePoint NOTIFY eyePointChanged)
-        Q_PROPERTY(gp_Pnt targetPoint READ targetPoint WRITE setTargetPoint NOTIFY targetPointChanged)
-        Q_PROPERTY(double twist READ twist WRITE setTwist NOTIFY twistChanged)
-        Q_PROPERTY(double scale READ scale WRITE setScale NOTIFY scaleChanged)
-        Q_PROPERTY(RenderModes renderMode READ renderMode WRITE setRenderMode NOTIFY renderModeChanged)
+    Q_PROPERTY(gp_Pnt eyePoint READ eyePoint WRITE setEyePoint NOTIFY eyePointChanged)
+    Q_PROPERTY(gp_Pnt targetPoint READ targetPoint WRITE setTargetPoint NOTIFY targetPointChanged)
+    Q_PROPERTY(double twist READ twist WRITE setTwist NOTIFY twistChanged)
+    Q_PROPERTY(double scale READ scale WRITE setScale NOTIFY scaleChanged)
+    Q_PROPERTY(RenderModes renderMode READ renderMode WRITE setRenderMode NOTIFY renderModeChanged)
 
  public:
     // Enum for RenderModes
@@ -71,6 +71,10 @@ class Viewport : public QObject {
 
     // Function to update render mode
     void updateRenderMode();
+
+    Handle(V3d_View) view() const {
+        return mV3dView;
+    }
 
     // Destructor
     ~Viewport();

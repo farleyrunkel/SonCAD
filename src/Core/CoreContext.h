@@ -35,11 +35,10 @@ class CoreContext : public BaseObject {
 
         if (m_document && !m_document->workspaces().contains(m_workspace)) {
             Workspace* firstPrDefault = m_document->workspaces().empty()
-                                        ? new Workspace
+                                        ? new Workspace()
                                         : m_document->workspaces().first();
             setWorkspace(firstPrDefault);
         }
-
     }
 
     void setViewport(Viewport* viewport) {

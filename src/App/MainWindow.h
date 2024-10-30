@@ -7,6 +7,7 @@
 
 #include "SARibbonBar.h"
 #include "SARibbonMainWindow.h"
+
 #include "DockManager.h"
 
 #include "App/Commands/AppCommands.h"
@@ -26,13 +27,13 @@ class MainWindow : public SARibbonMainWindow {
 
     QAction* createAction(const QString& text, const QString& iconurl);
 
-    void load();
+    void onMainWindowLoaded();
 
  private:
-    QMenu* myAppButton = nullptr;
-    SARibbonBar* myRibbonBar = nullptr;
+    QMenu* m_appButton = nullptr;
+    SARibbonBar* m_ribbonBar = nullptr;
     // The main container for docking
-    ads::CDockManager* m_DockManager = nullptr;
+    ads::CDockManager* m_dockManager = nullptr;
 };
 
 #endif  // SRC_APP_MAINWINDOW_H_
