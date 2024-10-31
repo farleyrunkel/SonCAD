@@ -64,15 +64,32 @@ void InteractiveContext::setViewportController(ViewportController* controller) {
 }
 
 void InteractiveContext::setWorkspace(Workspace* workspace) {
-    if (m_workspace = workspace) {
+    if (m_workspace == workspace) {
         return;
     }
-
-    m_workspaceController = nullptr;
-    m_workspaceController = workspace ? nullptr : new WorkspaceController(workspace);
     CoreContext::setWorkspace(workspace);
 
-    emit propertyChanged("workspaceController");
+    if (workspace) {
+        setWorkspaceController(new WorkspaceController(workspace));
+    }
+}
+
+void InteractiveContext::setViewport(Viewport* viewport) {
+    if (m_viewport == viewport) {
+        return;
+    }
+    CoreContext::setViewport(viewport);
+
+    if (viewport == nullptr) {
+        setViewportController(nullptr);
+        if (workspaceController()) {
+            workspaceController()->setActiveViewport(nullptr);
+        }
+        else {
+            workspaceController()->setActiveViewport(CoreContext::viewport());
+            setViewportController(workspaceController()->viewportController(CoreContext::viewport()));
+        }
+    }
 }
 
 // RecentUsedColors getter

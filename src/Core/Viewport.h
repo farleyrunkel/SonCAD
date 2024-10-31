@@ -23,7 +23,6 @@
 
 class Viewport : public QObject {
     Q_OBJECT
-
     Q_PROPERTY(gp_Pnt eyePoint READ eyePoint WRITE setEyePoint NOTIFY eyePointChanged)
     Q_PROPERTY(gp_Pnt targetPoint READ targetPoint WRITE setTargetPoint NOTIFY targetPointChanged)
     Q_PROPERTY(double twist READ twist WRITE setTwist NOTIFY twistChanged)

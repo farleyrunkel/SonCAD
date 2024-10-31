@@ -17,43 +17,27 @@ class CoreContext : public BaseObject {
     Q_PROPERTY(Model* document READ document WRITE setDocument)
 
  public:
-    CoreContext() = default;
+     CoreContext();;
 
  public:
     // Example method to save settings
     void saveSettings(const std::string& name) {
         // Implement saving logic here
     }
-
+signals:
+    void documentChanged(Model* document);
+    void workspaceChanged(Workspace* workspace);
+    void viewportChanged(Viewport* viewport);
  public:
 
-     Model* document() const { return m_document; }
+    Model* document() const { return m_document; }
+    Viewport* viewport() const { return m_viewport; }
 
-    void setDocument(Model* document) {
-        m_document = document;
-        emit propertyChanged("document");
+    void setDocument(Model* document);
 
-        if (m_document && !m_document->workspaces().contains(m_workspace)) {
-            Workspace* firstPrDefault = m_document->workspaces().empty()
-                                        ? new Workspace()
-                                        : m_document->workspaces().first();
-            setWorkspace(firstPrDefault);
-        }
-    }
+    virtual void setViewport(Viewport* viewport);
 
-    void setViewport(Viewport* viewport) {
-        m_viewport = viewport;
-    }
-
-    virtual void setWorkspace(Workspace* workspace) {
-        m_workspace = workspace;
-        if (m_workspace) {
-            Viewport* firstPrDefault = m_workspace->viewports().empty() 
-                                       ? new Viewport
-                                       : m_workspace->viewports().first();
-            setViewport(firstPrDefault);
-        }      
-    }
+    virtual void setWorkspace(Workspace* workspace);
 
  protected:
     Workspace* m_workspace;

@@ -40,6 +40,7 @@ class InteractiveContext : public CoreContext {
     void setViewportController(ViewportController* controller);
 
     void setWorkspace(Workspace* workspace) override;
+    void setViewport(Viewport* viewport) override;
 
     // RecentUsedColors getter
     QList<QColor> recentUsedColors() const;

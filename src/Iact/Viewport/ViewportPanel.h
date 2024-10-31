@@ -13,6 +13,7 @@
 #include <AIS_ViewController.hxx>
 #include <V3d_View.hxx>
 #include <AIS_ViewCube.hxx>
+#include <OpenGl_Context.hxx>
 
 #include "Iact/Workspace/ViewportController.h"
 #include "Iact/Workspace/WorkspaceController.h"
@@ -27,16 +28,16 @@ class ViewportPanel : public QOpenGLWidget,  public AIS_ViewController {
     virtual ~ViewportPanel();
 
     //! Return Viewer.
-    const Handle(V3d_Viewer)& Viewer() const { return myViewer; }
+    const Handle(V3d_Viewer)& Viewer() const { return m_viewer; }
 
     //! Return View.
-    const Handle(V3d_View)& View() const { return myView; }
+    const Handle(V3d_View)& View() const { return m_view; }
 
     //! Return AIS context.
-    const Handle(AIS_InteractiveContext)& Context() const { return myContext; }
+    const Handle(AIS_InteractiveContext)& Context() const { return m_context; }
 
     //! Return OpenGL info.
-    const QString& getGlInfo() const { return myGlInfo; }
+    const QString& getGlInfo() const { return m_glInfo; }
 
     //! Minial widget size.
     virtual QSize minimumSizeHint() const override { return QSize(200, 200); }
@@ -75,27 +76,24 @@ private:
  protected: // OpenGL events
 
     virtual void initializeGL() override;
+    void setupWindow(const Handle(V3d_View)& theView);
     virtual void paintGL() override;
-    virtual void resizeGL(int width, int height) override {
-        if (m_viewportController && m_viewportController->view()) {
-            m_viewportController->view()->MustBeResized();
-        }    
-    }
+    virtual void resizeGL(int width, int height) override;
 
  private:
      ViewportController* m_viewportController;
      WorkspaceController* m_workspaceController;
 
 private:
-    Handle(V3d_Viewer)             myViewer;
-    Handle(V3d_View)               myView;
-    Handle(AIS_InteractiveContext) myContext;
-    Handle(AIS_ViewCube)           myViewCube;
+    Handle(V3d_Viewer)             m_viewer;
+    Handle(V3d_View)               m_view;
+    Handle(AIS_InteractiveContext) m_context;
+    Handle(AIS_ViewCube)           m_viewCube;
 
-    Handle(V3d_View)               myFocusView;
-
-    QString myGlInfo;
-    bool myIsCoreProfile;
+    Handle(V3d_View)               m_focusView;
+    Handle(OpenGl_Context)         m_glContext;
+    QString m_glInfo;
+    bool m_isCoreProfile;
 };
 
 #endif  // SRC_IACT_VIEWPORT_VIEWPORTPANEL_H_

@@ -197,32 +197,33 @@ namespace {
 
 ViewportPanel::ViewportPanel(QWidget* parent)
     : QOpenGLWidget(parent),
-    myIsCoreProfile(true),
-    m_workspaceController(Core::appContext()->workspaceController()),
-    m_viewportController(Core::appContext()->viewportController()) {
+    m_isCoreProfile(true),
+    m_workspaceController(nullptr),
+    m_viewportController(nullptr) {
 
-    auto workspace = new Workspace();
-    workspace->initAisContext();
+    m_view = nullptr;
+    m_viewer = nullptr;
+    m_context = nullptr;
 
-    myViewer = workspace->v3dViewer();
-    myContext = workspace->aisContext();
+    connect(Core::appContext(), &AppContext::workspaceControllerChanged, [this] {
+        m_workspaceController = Core::appContext()->workspaceController();            
+    });
 
-    myViewCube = new AIS_ViewCube();
-    myViewCube->SetViewAnimation(myViewAnimation);
-    myViewCube->SetFixedAnimationLoop(false);
-    myViewCube->SetAutoStartAnimation(true);
-    myViewCube->TransformPersistence()->SetOffset2d(Graphic3d_Vec2i(100, 150));
+    connect(Core::appContext(), &AppContext::viewportControllerChanged, [this] {
+        m_viewportController = Core::appContext()->viewportController(); });
 
-    // note - window will be created later within initializeGL() callback!
-    myView = myViewer->CreateView();
-    myView->SetImmediateUpdate(false);
-#ifndef __APPLE__
-    myView->ChangeRenderingParams().NbMsaaSamples = 4; // warning - affects performance
-#endif
-    myView->ChangeRenderingParams().ToShowStats = true;
-    myView->ChangeRenderingParams().CollectedStats = (Graphic3d_RenderingParams::PerfCounters)
-        (Graphic3d_RenderingParams::PerfCounters_FrameRate
-            | Graphic3d_RenderingParams::PerfCounters_Triangles);
+    connect(Core::appContext(), &AppContext::workspaceChanged, [this](Workspace* workspace) {
+        if (workspace) {
+            m_viewer = workspace->v3dViewer();
+            m_context = workspace->aisContext();
+        }
+    });
+
+    connect(Core::appContext(), &AppContext::viewportChanged, [this](Viewport* viewport) {
+        if (viewport) {
+            m_view = viewport->v3dView();
+        }
+    });
 
     // Qt widget setup
     setMouseTracking(true);
@@ -239,21 +240,15 @@ ViewportPanel::ViewportPanel(QWidget* parent)
     //aGlFormat.setOption (QSurfaceFormat::DeprecatedFunctions, true);
     //    aDriver->ChangeOptions().contextDebug = aGlFormat.testOption(QSurfaceFormat::DebugContext);
 
-    if (myIsCoreProfile)
+    if (m_isCoreProfile)
     {
         aGlFormat.setVersion(4, 5);
     }
-    aGlFormat.setProfile(myIsCoreProfile ? QSurfaceFormat::CoreProfile : QSurfaceFormat::CompatibilityProfile);
+    aGlFormat.setProfile(m_isCoreProfile ? QSurfaceFormat::CoreProfile : QSurfaceFormat::CompatibilityProfile);
 
     // request sRGBColorSpace colorspace to meet OCCT expectations or use OcctQtFrameBuffer fallback.
-  /*#if (QT_VERSION_MAJOR > 5) || (QT_VERSION_MAJOR == 5 && QT_VERSION_MINOR >= 10)
     aGlFormat.setColorSpace (QSurfaceFormat::sRGBColorSpace);
     setTextureFormat (GL_SRGB8_ALPHA8);
-  #else
-    Message::SendWarning ("Warning! Qt 5.10+ is required for sRGB setup.\n"
-                          "Colors in 3D Viewer might look incorrect (Qt " QT_VERSION_STR " is used).\n");
-    aDriver->ChangeOptions().sRGBDisable = true;
-  #endif*/
 
     setFormat(aGlFormat);
 
@@ -264,73 +259,28 @@ ViewportPanel::ViewportPanel(QWidget* parent)
 #endif
 }
 
-// ================================================================
-// Function : ~ViewportPanel
-// Purpose  :
-// ================================================================
-ViewportPanel::~ViewportPanel()
-{
+ViewportPanel::~ViewportPanel() {
     // hold on X11 display connection till making another connection active by glXMakeCurrent()
     // to workaround sudden crash in QOpenGLWidget destructor
-    Handle(Aspect_DisplayConnection) aDisp = myViewer->Driver()->GetDisplayConnection();
+    Handle(Aspect_DisplayConnection) aDisp = m_viewer->Driver()->GetDisplayConnection();
 
     // release OCCT viewer
-    myContext->RemoveAll(false);
-    myContext.Nullify();
-    myView->Remove();
-    myView.Nullify();
-    myViewer.Nullify();
+    m_context->RemoveAll(false);
+    m_context.Nullify();
+    m_view->Remove();
+    m_view.Nullify();
+    m_viewer.Nullify();
 
     // make active OpenGL context created by Qt
     makeCurrent();
     aDisp.Nullify();
 }
 
-// ================================================================
-// Function : dumpGlInfo
-// Purpose  :
-// ================================================================
-void ViewportPanel::dumpGlInfo(bool theIsBasic, bool theToPrint)
-{
-    TColStd_IndexedDataMapOfStringString aGlCapsDict;
-    myView->DiagnosticInformation(aGlCapsDict, theIsBasic ? Graphic3d_DiagnosticInfo_Basic : Graphic3d_DiagnosticInfo_Complete);
-    TCollection_AsciiString anInfo;
-    for (TColStd_IndexedDataMapOfStringString::Iterator aValueIter(aGlCapsDict); aValueIter.More(); aValueIter.Next())
-    {
-        if (!aValueIter.Value().IsEmpty())
-        {
-            if (!anInfo.IsEmpty())
-            {
-                anInfo += "\n";
-            }
-            anInfo += aValueIter.Key() + ": " + aValueIter.Value();
-        }
-    }
-
-    if (theToPrint)
-    {
-        Message::SendInfo(anInfo);
-    }
-    myGlInfo = QString::fromUtf8(anInfo.ToCString());
-}
-
-// ================================================================
-// Function : initializeGL
-// Purpose  :
-// ================================================================
-void ViewportPanel::initializeGL() {
+void ViewportPanel::setupWindow(const Handle(V3d_View)& theView) {
     const QRect aRect = rect();
     const Graphic3d_Vec2i aViewSize(aRect.right() - aRect.left(), aRect.bottom() - aRect.top());
 
-    Handle(OpenGl_Context) aGlCtx = new OpenGl_Context();
-    if (!aGlCtx->Init(myIsCoreProfile)) {
-        Message::SendFail() << "Error: OpenGl_Context is unable to wrap OpenGL context";
-        QMessageBox::critical(0, "Failure", "OpenGl_Context is unable to wrap OpenGL context");
-        QApplication::exit(1);
-        return;
-    }
-
-    Handle(Aspect_NeutralWindow) aWindow = Handle(Aspect_NeutralWindow)::DownCast(myView->Window());
+    Handle(Aspect_NeutralWindow) aWindow = Handle(Aspect_NeutralWindow)::DownCast(theView->Window());
     if (aWindow.IsNull()) {
         aWindow = new Aspect_NeutralWindow();
         aWindow->SetVirtual(true);
@@ -344,161 +294,23 @@ void ViewportPanel::initializeGL() {
         aWindow->SetNativeHandle(aNativeWin);
     }
     aWindow->SetSize(aViewSize.x(), aViewSize.y());
-    myView->SetWindow(aWindow, aGlCtx->RenderingContext());
+    theView->SetWindow(aWindow, m_glContext->RenderingContext());
+}
+
+void ViewportPanel::initializeGL() {
+    m_glContext = new OpenGl_Context();
+    if (!m_glContext->Init(m_isCoreProfile)) {
+        Message::SendFail() << "Error: OpenGl_Context is unable to wrap OpenGL context";
+        QMessageBox::critical(0, "Failure", "OpenGl_Context is unable to wrap OpenGL context");
+        QApplication::exit(1);
+        return;
+    }
+    // setupWindow(m_view);
     dumpGlInfo(true, true);
-    myContext->Display(myViewCube, 0, 0, false);
-
-    {
-        // dummy shape for testing
-        TopoDS_Shape aBox = BRepPrimAPI_MakeBox(100.0, 50.0, 90.0).Shape();
-        Handle(AIS_Shape) aShape = new AIS_Shape(aBox);
-        myContext->Display(aShape, AIS_Shaded, 0, false);
-    }
 }
 
-// ================================================================
-// Function : closeEvent
-// Purpose  :
-// ================================================================
-void ViewportPanel::closeEvent(QCloseEvent* theEvent)
-{
-    theEvent->accept();
-}
-
-// ================================================================
-// Function : keyPressEvent
-// Purpose  :
-// ================================================================
-void ViewportPanel::keyPressEvent(QKeyEvent* theEvent)
-{
-    Aspect_VKey aKey = qtKey2VKey(theEvent->key());
-    switch (aKey)
-    {
-    case Aspect_VKey_Escape:
-    {
-        QApplication::exit();
-        return;
-    }
-    case Aspect_VKey_F:
-    {
-        myView->FitAll(0.01, false);
-        update();
-        return;
-    }
-    }
-    QOpenGLWidget::keyPressEvent(theEvent);
-}
-
-// ================================================================
-// Function : mousePressEvent
-// Purpose  :
-// ================================================================
-void ViewportPanel::mousePressEvent(QMouseEvent* theEvent)
-{
-    QOpenGLWidget::mousePressEvent(theEvent);
-    const Graphic3d_Vec2i aPnt(theEvent->pos().x(), theEvent->pos().y());
-    const Aspect_VKeyFlags aFlags = qtMouseModifiers2VKeys(theEvent->modifiers());
-    if (!myView.IsNull()
-        && UpdateMouseButtons(aPnt,
-            qtMouseButtons2VKeys(theEvent->buttons()),
-            aFlags,
-            false))
-    {
-        updateView();
-    }
-}
-
-// ================================================================
-// Function : mouseReleaseEvent
-// Purpose  :
-// ================================================================
-void ViewportPanel::mouseReleaseEvent(QMouseEvent* theEvent)
-{
-    QOpenGLWidget::mouseReleaseEvent(theEvent);
-    const Graphic3d_Vec2i aPnt(theEvent->pos().x(), theEvent->pos().y());
-    const Aspect_VKeyFlags aFlags = qtMouseModifiers2VKeys(theEvent->modifiers());
-    if (!myView.IsNull()
-        && UpdateMouseButtons(aPnt,
-            qtMouseButtons2VKeys(theEvent->buttons()),
-            aFlags,
-            false))
-    {
-        updateView();
-    }
-}
-
-// ================================================================
-// Function : mouseMoveEvent
-// Purpose  :
-// ================================================================
-void ViewportPanel::mouseMoveEvent(QMouseEvent* theEvent)
-{
-    QOpenGLWidget::mouseMoveEvent(theEvent);
-    const Graphic3d_Vec2i aNewPos(theEvent->pos().x(), theEvent->pos().y());
-    if (!myView.IsNull()
-        && UpdateMousePosition(aNewPos,
-            qtMouseButtons2VKeys(theEvent->buttons()),
-            qtMouseModifiers2VKeys(theEvent->modifiers()),
-            false))
-    {
-        updateView();
-    }
-}
-
-// ==============================================================================
-// function : wheelEvent
-// purpose  :
-// ==============================================================================
-void ViewportPanel::wheelEvent(QWheelEvent* theEvent)
-{
-    QOpenGLWidget::wheelEvent(theEvent);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-    const Graphic3d_Vec2i aPos(Graphic3d_Vec2d(theEvent->position().x(), theEvent->position().y()));
-#else
-    const Graphic3d_Vec2i aPos(theEvent->pos().x(), theEvent->pos().y());
-#endif
-    if (myView.IsNull())
-    {
-        return;
-    }
-
-    if (!myView->Subviews().IsEmpty())
-    {
-        Handle(V3d_View) aPickedView = myView->PickSubview(aPos);
-        if (!aPickedView.IsNull()
-            && aPickedView != myFocusView)
-        {
-            // switch input focus to another subview
-            OnSubviewChanged(myContext, myFocusView, aPickedView);
-            updateView();
-            return;
-        }
-    }
-
-    if (UpdateZoom(Aspect_ScrollDelta(aPos, double(theEvent->angleDelta().y()) / 8.0)))
-    {
-        updateView();
-    }
-}
-
-// =======================================================================
-// function : updateView
-// purpose  :
-// =======================================================================
-void ViewportPanel::updateView()
-{
-    update();
-    //if (window() != NULL) { window()->update(); }
-}
-
-// ================================================================
-// Function : paintGL
-// Purpose  :
-// ================================================================
-void ViewportPanel::paintGL()
-{
-    if (myView->Window().IsNull())
-    {
+void ViewportPanel::paintGL() {
+    if (m_view.IsNull() || m_view->Window().IsNull()) {
         return;
     }
 
@@ -506,15 +318,13 @@ void ViewportPanel::paintGL()
     // get context from this (composer) view rather than from arbitrary one
     //Handle(OpenGl_GraphicDriver) aDriver = Handle(OpenGl_GraphicDriver)::DownCast (myContext->CurrentViewer()->Driver());
     //Handle(OpenGl_Context) aGlCtx = aDriver->GetSharedContext();
-    Handle(OpenGl_Context) aGlCtx = ::OcctGlTools::GetGlContext(myView);
+    Handle(OpenGl_Context) aGlCtx = ::OcctGlTools::GetGlContext(m_view);
     Handle(OpenGl_FrameBuffer) aDefaultFbo = aGlCtx->DefaultFrameBuffer();
-    if (aDefaultFbo.IsNull())
-    {
+    if (aDefaultFbo.IsNull()) {
         aDefaultFbo = new ::OcctFrameBuffer();
         aGlCtx->SetDefaultFrameBuffer(aDefaultFbo);
     }
-    if (!aDefaultFbo->InitWrapper(aGlCtx))
-    {
+    if (!aDefaultFbo->InitWrapper(aGlCtx)) {
         aDefaultFbo.Nullify();
         Message::DefaultMessenger()->Send("Default FBO wrapper creation failed", Message_Fail);
         QMessageBox::critical(0, "Failure", "Default FBO wrapper creation failed");
@@ -523,19 +333,17 @@ void ViewportPanel::paintGL()
     }
 
     Graphic3d_Vec2i aViewSizeOld;
-    const QRect aRect = rect(); 
+    const QRect aRect = rect();
     Graphic3d_Vec2i aViewSizeNew(aRect.right() - aRect.left(), aRect.bottom() - aRect.top());
-    Handle(Aspect_NeutralWindow) aWindow = Handle(Aspect_NeutralWindow)::DownCast(myView->Window());
+    Handle(Aspect_NeutralWindow) aWindow = Handle(Aspect_NeutralWindow)::DownCast(m_view->Window());
     aWindow->Size(aViewSizeOld.x(), aViewSizeOld.y());
-    if (aViewSizeNew != aViewSizeOld)
-    {
+    if (aViewSizeNew != aViewSizeOld) {
         aWindow->SetSize(aViewSizeNew.x(), aViewSizeNew.y());
-        myView->MustBeResized();
-        myView->Invalidate();
+        m_view->MustBeResized();
+        m_view->Invalidate();
         dumpGlInfo(true, false);
 
-        for (const Handle(V3d_View)& aSubviewIter : myView->Subviews())
-        {
+        for (const Handle(V3d_View)& aSubviewIter : m_view->Subviews()) {
             aSubviewIter->MustBeResized();
             aSubviewIter->Invalidate();
             aDefaultFbo->SetupViewport(aGlCtx);
@@ -543,33 +351,139 @@ void ViewportPanel::paintGL()
     }
 
     // flush pending input events and redraw the viewer
-    Handle(V3d_View) aView = !myFocusView.IsNull() ? myFocusView : myView;
+    Handle(V3d_View) aView = !m_focusView.IsNull() ? m_focusView : m_view;
     aView->InvalidateImmediate();
-    FlushViewEvents(myContext, aView, true);
+    FlushViewEvents(m_context, aView, true);
 }
 
-// ================================================================
-// Function : handleViewRedraw
-// Purpose  :
-// ================================================================
+void ViewportPanel::resizeGL(int width, int height) {
+    if (m_viewportController && m_viewportController->view()) {
+        m_viewportController->view()->MustBeResized();
+    }
+}
+
+void ViewportPanel::closeEvent(QCloseEvent* theEvent) {
+    theEvent->accept();
+}
+
+void ViewportPanel::keyPressEvent(QKeyEvent* theEvent) {
+    Aspect_VKey aKey = qtKey2VKey(theEvent->key());
+    switch (aKey) {
+        case Aspect_VKey_Escape: {
+            QApplication::exit();
+            return;
+        }
+        case Aspect_VKey_F: {
+            m_view->FitAll(0.01, false);
+            update();
+            return;
+        }
+    }
+    QOpenGLWidget::keyPressEvent(theEvent);
+}
+
+void ViewportPanel::mousePressEvent(QMouseEvent* theEvent) {
+    QOpenGLWidget::mousePressEvent(theEvent);
+    const Graphic3d_Vec2i aPnt(theEvent->pos().x(), theEvent->pos().y());
+    const Aspect_VKeyFlags aFlags = qtMouseModifiers2VKeys(theEvent->modifiers());
+    if (!m_view.IsNull()
+        && UpdateMouseButtons(aPnt,
+            qtMouseButtons2VKeys(theEvent->buttons()),
+            aFlags,
+            false)) {
+        updateView();
+    }
+}
+
+void ViewportPanel::mouseReleaseEvent(QMouseEvent* theEvent) {
+    QOpenGLWidget::mouseReleaseEvent(theEvent);
+    const Graphic3d_Vec2i aPnt(theEvent->pos().x(), theEvent->pos().y());
+    const Aspect_VKeyFlags aFlags = qtMouseModifiers2VKeys(theEvent->modifiers());
+    if (!m_view.IsNull()
+        && UpdateMouseButtons(aPnt,
+            qtMouseButtons2VKeys(theEvent->buttons()),
+            aFlags,
+            false)) {
+        updateView();
+    }
+}
+
+void ViewportPanel::mouseMoveEvent(QMouseEvent* theEvent) {
+    QOpenGLWidget::mouseMoveEvent(theEvent);
+    const Graphic3d_Vec2i aNewPos(theEvent->pos().x(), theEvent->pos().y());
+    if (!m_view.IsNull()
+        && UpdateMousePosition(aNewPos,
+            qtMouseButtons2VKeys(theEvent->buttons()),
+            qtMouseModifiers2VKeys(theEvent->modifiers()),
+            false)) {
+        updateView();
+    }
+}
+
+void ViewportPanel::wheelEvent(QWheelEvent* theEvent) {
+    QOpenGLWidget::wheelEvent(theEvent);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    const Graphic3d_Vec2i aPos(Graphic3d_Vec2d(theEvent->position().x(), theEvent->position().y()));
+#else
+    const Graphic3d_Vec2i aPos(theEvent->pos().x(), theEvent->pos().y());
+#endif
+    if (m_view.IsNull()) {
+        return;
+    }
+
+    if (!m_view->Subviews().IsEmpty()) {
+        Handle(V3d_View) aPickedView = m_view->PickSubview(aPos);
+        if (!aPickedView.IsNull()
+            && aPickedView != m_focusView) {
+            // switch input focus to another subview
+            OnSubviewChanged(m_context, m_focusView, aPickedView);
+            updateView();
+            return;
+        }
+    }
+
+    if (UpdateZoom(Aspect_ScrollDelta(aPos, double(theEvent->angleDelta().y()) / 8.0))) {
+        updateView();
+    }
+}
+
+void ViewportPanel::updateView() {
+    update();
+    //if (window() != NULL) { window()->update(); }
+}
+
 void ViewportPanel::handleViewRedraw(const Handle(AIS_InteractiveContext)& theCtx,
-    const Handle(V3d_View)& theView)
-{
+    const Handle(V3d_View)& theView) {
     AIS_ViewController::handleViewRedraw(theCtx, theView);
-    if (myToAskNextFrame)
-    {
+    if (myToAskNextFrame) {
         // ask more frames for animation
         updateView();
     }
 }
 
-// ================================================================
-// Function : OnSubviewChanged
-// Purpose  :
-// ================================================================
 void ViewportPanel::OnSubviewChanged(const Handle(AIS_InteractiveContext)&,
     const Handle(V3d_View)&,
-    const Handle(V3d_View)& theNewView)
-{
-    myFocusView = theNewView;
+    const Handle(V3d_View)& theNewView) {
+    m_focusView = theNewView;
+}
+
+void ViewportPanel::dumpGlInfo(bool theIsBasic, bool theToPrint) {
+    if (m_view.IsNull()) {
+        return;
+    }
+    TColStd_IndexedDataMapOfStringString aGlCapsDict;
+    m_view->DiagnosticInformation(aGlCapsDict, theIsBasic ? Graphic3d_DiagnosticInfo_Basic : Graphic3d_DiagnosticInfo_Complete);
+    TCollection_AsciiString anInfo;
+    for (TColStd_IndexedDataMapOfStringString::Iterator aValueIter(aGlCapsDict); aValueIter.More(); aValueIter.Next()) {
+        if (!aValueIter.Value().IsEmpty()) {
+            if (!anInfo.IsEmpty()) {
+                anInfo += "\n";
+            }
+            anInfo += aValueIter.Key() + ": " + aValueIter.Value();
+        }
+    }
+    if (theToPrint) {
+        Message::SendInfo(anInfo);
+    }
+    m_glInfo = QString::fromUtf8(anInfo.ToCString());
 }
