@@ -23,7 +23,7 @@ class InteractiveContext : public CoreContext {
     Q_PROPERTY(WorkspaceController* workspaceController READ workspaceController WRITE setWorkspaceController)
     Q_PROPERTY(ViewportController* viewportController READ viewportController WRITE setViewportController)
 
-public:
+ public:
     InteractiveContext();
     ~InteractiveContext() override;
 
