@@ -167,9 +167,9 @@ namespace {
     };
 
     //! OpenGL FBO subclass for wrapping FBO created by Qt using GL_RGBA8 texture format instead of GL_SRGB8_ALPHA8.
-//! This FBO is set to OpenGl_Context::SetDefaultFrameBuffer() as a final target.
-//! Subclass calls OpenGl_Context::SetFrameBufferSRGB() with sRGB=false flag,
-//! which asks OCCT to disable GL_FRAMEBUFFER_SRGB and apply sRGB gamma correction manually.
+    //! This FBO is set to OpenGl_Context::SetDefaultFrameBuffer() as a final target.
+    //! Subclass calls OpenGl_Context::SetFrameBufferSRGB() with sRGB=false flag,
+    //! which asks OCCT to disable GL_FRAMEBUFFER_SRGB and apply sRGB gamma correction manually.
     class OcctFrameBuffer : public OpenGl_FrameBuffer {
         DEFINE_STANDARD_RTTI_INLINE(OcctFrameBuffer, OpenGl_FrameBuffer)
     public:
@@ -201,24 +201,11 @@ ViewportPanel::ViewportPanel(QWidget* parent)
     m_workspaceController(Core::appContext()->workspaceController()),
     m_viewportController(Core::appContext()->viewportController()) {
 
-    Handle(Aspect_DisplayConnection) aDisp = new Aspect_DisplayConnection();
-    Handle(OpenGl_GraphicDriver) aDriver = new OpenGl_GraphicDriver(aDisp, false);
-    // lets QOpenGLWidget to manage buffer swap
-    aDriver->ChangeOptions().buffersNoSwap = true;
-    // don't write into alpha channel
-    aDriver->ChangeOptions().buffersOpaqueAlpha = true;
-    // offscreen FBOs should be always used
-    aDriver->ChangeOptions().useSystemBuffer = false;
+    auto workspace = new Workspace();
+    workspace->initAisContext();
 
-    // create viewer
-    myViewer = new V3d_Viewer(aDriver);
-    myViewer->SetDefaultBackgroundColor(Quantity_NOC_BLACK);
-    myViewer->SetDefaultLights();
-    myViewer->SetLightOn();
-    myViewer->ActivateGrid(Aspect_GT_Rectangular, Aspect_GDM_Lines);
-
-    // create AIS context
-    myContext = new AIS_InteractiveContext(myViewer);
+    myViewer = workspace->v3dViewer();
+    myContext = workspace->aisContext();
 
     myViewCube = new AIS_ViewCube();
     myViewCube->SetViewAnimation(myViewAnimation);
@@ -249,8 +236,9 @@ ViewportPanel::ViewportPanel(QWidget* parent)
     aGlFormat.setDepthBufferSize(24);
     aGlFormat.setStencilBufferSize(8);
     //aGlFormat.setOption (QSurfaceFormat::DebugContext, true);
-    aDriver->ChangeOptions().contextDebug = aGlFormat.testOption(QSurfaceFormat::DebugContext);
     //aGlFormat.setOption (QSurfaceFormat::DeprecatedFunctions, true);
+    //    aDriver->ChangeOptions().contextDebug = aGlFormat.testOption(QSurfaceFormat::DebugContext);
+
     if (myIsCoreProfile)
     {
         aGlFormat.setVersion(4, 5);
@@ -274,9 +262,8 @@ ViewportPanel::ViewportPanel(QWidget* parent)
     QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
     //QCoreApplication::setAttribute (Qt::AA_UseOpenGLES);
 #endif
-
-
 }
+
 // ================================================================
 // Function : ~ViewportPanel
 // Purpose  :
@@ -331,14 +318,12 @@ void ViewportPanel::dumpGlInfo(bool theIsBasic, bool theToPrint)
 // Function : initializeGL
 // Purpose  :
 // ================================================================
-void ViewportPanel::initializeGL()
-{
+void ViewportPanel::initializeGL() {
     const QRect aRect = rect();
     const Graphic3d_Vec2i aViewSize(aRect.right() - aRect.left(), aRect.bottom() - aRect.top());
 
     Handle(OpenGl_Context) aGlCtx = new OpenGl_Context();
-    if (!aGlCtx->Init(myIsCoreProfile))
-    {
+    if (!aGlCtx->Init(myIsCoreProfile)) {
         Message::SendFail() << "Error: OpenGl_Context is unable to wrap OpenGL context";
         QMessageBox::critical(0, "Failure", "OpenGl_Context is unable to wrap OpenGL context");
         QApplication::exit(1);
@@ -346,17 +331,9 @@ void ViewportPanel::initializeGL()
     }
 
     Handle(Aspect_NeutralWindow) aWindow = Handle(Aspect_NeutralWindow)::DownCast(myView->Window());
-    if (!aWindow.IsNull())
-    {
-        aWindow->SetSize(aViewSize.x(), aViewSize.y());
-        myView->SetWindow(aWindow, aGlCtx->RenderingContext());
-        dumpGlInfo(true, true);
-    }
-    else
-    {
+    if (aWindow.IsNull()) {
         aWindow = new Aspect_NeutralWindow();
         aWindow->SetVirtual(true);
-
         Aspect_Drawable aNativeWin = (Aspect_Drawable)winId();
 #ifdef _WIN32
         //HGLRC aWglCtx    = wglGetCurrentContext();
@@ -365,12 +342,11 @@ void ViewportPanel::initializeGL()
         aNativeWin = (Aspect_Drawable)aWglWin;
 #endif
         aWindow->SetNativeHandle(aNativeWin);
-        aWindow->SetSize(aViewSize.x(), aViewSize.y());
-        myView->SetWindow(aWindow, aGlCtx->RenderingContext());
-        dumpGlInfo(true, true);
-
-        myContext->Display(myViewCube, 0, 0, false);
     }
+    aWindow->SetSize(aViewSize.x(), aViewSize.y());
+    myView->SetWindow(aWindow, aGlCtx->RenderingContext());
+    dumpGlInfo(true, true);
+    myContext->Display(myViewCube, 0, 0, false);
 
     {
         // dummy shape for testing

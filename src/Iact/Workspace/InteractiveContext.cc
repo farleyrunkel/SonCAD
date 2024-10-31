@@ -2,6 +2,13 @@
 
 #include "Iact/Workspace/InteractiveContext.h"
 
+InteractiveContext::InteractiveContext() : CoreContext(),
+    m_documentController(new ModelController(this)),
+    m_workspaceController(new WorkspaceController(this)),
+    m_viewportController(new ViewportController(this)) {
+    initialize();
+}
+
 InteractiveContext::~InteractiveContext() {
     if (m_documentController) {
         m_documentController->dispose();

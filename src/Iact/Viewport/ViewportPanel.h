@@ -77,7 +77,7 @@ private:
     virtual void initializeGL() override;
     virtual void paintGL() override;
     virtual void resizeGL(int width, int height) override {
-        if (m_viewportController->view()) {
+        if (m_viewportController && m_viewportController->view()) {
             m_viewportController->view()->MustBeResized();
         }    
     }

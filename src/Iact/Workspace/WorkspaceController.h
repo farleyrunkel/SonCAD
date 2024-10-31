@@ -14,10 +14,11 @@ class WorkspaceController : public BaseObject {
     Q_OBJECT
 
  public:
+    explicit WorkspaceController(QObject* parent = nullptr) : BaseObject(parent) {}
+
     explicit WorkspaceController(Workspace* workspace) {
         m_workspace = workspace;
         connect(m_workspace, &Workspace::gridChanged, this, &WorkspaceController::onWorkspaceGridChanged);
-
     };
 
     Tool* currentTool() const;

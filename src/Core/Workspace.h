@@ -15,6 +15,7 @@
 
 #include "Core/Project/VisualStyles.h"
 #include "Core/Extensions/ColorExtensions.h"
+#include "Core/Project/WorkingContext.h"
 
 class Model;
 class Viewport;
@@ -28,39 +29,9 @@ public:
 
     // Initialize 3D viewer and context
     void initV3dViewer();
-    void initAisContext() {
-        if (m_v3dViewer.IsNull())
-            initV3dViewer();
+    void initAisContext();
 
-        if (m_aisContext.IsNull())
-        {
-            m_aisContext = new AIS_InteractiveContext(m_v3dViewer);
-            m_aisContext->UpdateCurrentViewer();
-        }
-
-        m_aisContext->SetAutoActivateSelection(true);
-        m_aisContext->SetToHilightSelected(false);
-        m_aisContext->SetPickingStrategy(SelectMgr_PickingStrategy_OnlyTopmost);
-        m_aisContext->SetDisplayMode((int)AIS_Shaded, false);
-        m_v3dViewer->DisplayPrivilegedPlane(false, 1.0);
-        m_aisContext->EnableDrawHiddenLine();
-
-        // Reinit ais parameters
-        _ApplyWorkingContext();
-        m_aisContext->SetPixelTolerance(2);
-
-        auto drawer = m_aisContext->DefaultDrawer();
-        drawer->SetWireAspect(new Prs3d_LineAspect(ColorExtensions::toQuantityColor(Colors::Selection), Aspect_TOL_SOLID, 1.0));
-        drawer->SetTypeOfHLR(Prs3d_TypeOfHLR::Prs3d_TOH_PolyAlgo);
-    }
-
-    void _ApplyWorkingContext()
-    {
-        if (!m_aisContext.IsNull())
-        {
-            // m_v3dViewer->SetPrivilegedPlane(_CurrentWorkingContext.WorkingPlane.Position);
-        }
-    }
+    void _ApplyWorkingContext();
 
     // Getters
     Handle(V3d_Viewer) v3dViewer() const;
@@ -72,6 +43,16 @@ public:
     // Setters
     void setNeedsRedraw(bool value);
     void setNeedsImmediateRedraw(bool value);
+
+    const gp_Pln& workingPlane() const {
+        return  gp_Pln();//_CurrentWorkingContext.WorkingPlane;
+    }
+
+    void setWorkingPlane(const gp_Pln& value) {
+        //_CurrentWorkingContext.WorkingPlane = value;
+        //Model::MarkAsUnsaved();
+        //_ApplyWorkingContext();
+    }
 
     // Viewports management
     QVector<Viewport*>& viewports() { return m_viewports; }
@@ -96,6 +77,9 @@ private:
 
     QVector<Viewport*> m_viewports;  // List of viewports
     Model* m_model;  // The active model
+
+    gp_Pln WorkingPlane; 
+    WorkingContext* _CurrentWorkingContext;
 };
 
 #endif  // SRC_CORE_WORKSPACE_H_

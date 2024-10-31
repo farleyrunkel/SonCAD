@@ -24,15 +24,7 @@ class InteractiveContext : public CoreContext {
     Q_PROPERTY(ViewportController* viewportController READ viewportController WRITE setViewportController)
 
 public:
-    InteractiveContext()
-        : CoreContext(),
-        m_documentController(new ModelController(this)),
-        m_workspaceController(nullptr),
-        m_viewportController(nullptr) {
-
-        initialize();
-    }
-
+    InteractiveContext();
     ~InteractiveContext() override;
 
     // ModelController getter/setter

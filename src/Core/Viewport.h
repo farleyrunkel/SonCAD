@@ -76,6 +76,10 @@ class Viewport : public QObject {
         return mV3dView;
     }
 
+    Handle(V3d_View) v3dView() const {
+        return mV3dView;
+    }
+
     // Destructor
     ~Viewport();
 

@@ -8,11 +8,15 @@
 #include <array>
 #include <stdexcept>
 
+#include <Quantity_Color.hxx>
+
 class Color {
 public:
     static const Color Black;
     static const Color White;
 
+    Color(float r, float g, float b);
+    Color(const std::string& s);
     //--------------------------------------------------------------------------------------------------
 
     float Red;
@@ -20,12 +24,11 @@ public:
     float Blue;
 
     //--------------------------------------------------------------------------------------------------
+        // Convert Color to Quantity_Color
+    Quantity_Color toQuantityColor() const {
+        return Quantity_Color(Red, Green, Blue, Quantity_TOC_sRGB);
+    }
 
-    Color(float r, float g, float b);
-
-    Color(const std::string& s);
-
-    //--------------------------------------------------------------------------------------------------
 
     std::string toString() const;
 
@@ -58,8 +61,6 @@ public:
             Blue + (other.Blue - Blue) * f
         );
     }
-
-    //--------------------------------------------------------------------------------------------------
 
     // Hash function for Color (example)
     size_t getHashCode() const;

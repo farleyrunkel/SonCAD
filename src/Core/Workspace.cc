@@ -20,6 +20,7 @@ Workspace::Workspace()
     m_needsRedraw(false),
     m_needsImmediateRedraw(false) {
     initV3dViewer();  // Initialize 3D viewer and context
+    initAisContext();
 }
 
 //Workspace::~Workspace() {
@@ -53,6 +54,40 @@ void Workspace::initV3dViewer() {
 
     // Create AIS context for interactive objects
     m_aisContext = new AIS_InteractiveContext(m_v3dViewer);
+}
+
+void Workspace::initAisContext() {
+    if (m_v3dViewer.IsNull())
+        initV3dViewer();
+
+    if (m_aisContext.IsNull())
+    {
+        m_aisContext = new AIS_InteractiveContext(m_v3dViewer);
+        m_aisContext->UpdateCurrentViewer();
+    }
+
+    m_aisContext->SetAutoActivateSelection(true);
+    m_aisContext->SetToHilightSelected(false);
+    m_aisContext->SetPickingStrategy(SelectMgr_PickingStrategy_OnlyTopmost);
+    m_aisContext->SetDisplayMode((int)AIS_Shaded, false);
+    m_v3dViewer->DisplayPrivilegedPlane(false, 1.0);
+    m_aisContext->EnableDrawHiddenLine();
+
+    // Reinit ais parameters
+    _ApplyWorkingContext();
+    m_aisContext->SetPixelTolerance(2);
+
+    auto drawer = m_aisContext->DefaultDrawer();
+    drawer->SetWireAspect(new Prs3d_LineAspect(ColorExtensions::toQuantityColor(Colors::Selection), Aspect_TOL_SOLID, 1.0));
+    drawer->SetTypeOfHLR(Prs3d_TypeOfHLR::Prs3d_TOH_PolyAlgo);
+}
+
+void Workspace::_ApplyWorkingContext()
+{
+    if (!m_aisContext.IsNull())
+    {
+        // m_v3dViewer->SetPrivilegedPlane(_CurrentWorkingContext.WorkingPlane.Position);
+    }
 }
 
 //--------------------------------------------------------------------------------------------------
