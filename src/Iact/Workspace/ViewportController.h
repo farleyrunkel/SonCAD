@@ -55,6 +55,25 @@ public:
          WorkingPlane
      };
 
+     enum MouseMoveMode {
+         None,
+         Panning,
+         Rotating,
+         Twisting,
+         Zooming
+     };
+
+     void mouseMove(const QPointF& pos, Qt::KeyboardModifiers modifiers, MouseMoveMode mode = MouseMoveMode::None) {};
+     void mouseDown(Qt::KeyboardModifiers modifiers) {};
+     void mouseUp(Qt::KeyboardModifiers modifiers) {};
+     void startEditing() {};
+     void startRubberbandSelection() {};  // Add necessary parameters
+     void zoom(const QPointF& pos, double delta) {};
+     void rotate(double deltaX, double deltaY, double deltaZ) {};
+
+     bool isInRubberbandSelection() const {};  // Returns whether rubberband selection is active
+     bool isSelecting() const {};              // Returns whether selection mode is active
+     bool isLockedToPlane() const {};            // Returns whether the view is locked to a specific plane
      //--------------------------------------------------------------------------------------------------
 
      void setPredefinedView(PredefinedViews predefinedView);
