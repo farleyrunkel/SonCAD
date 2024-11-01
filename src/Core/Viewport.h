@@ -44,6 +44,9 @@ class Viewport : public QObject {
     // Constructor
     explicit Viewport(Workspace* workspace, QObject* parent = nullptr);
 
+    // Initialize Viewport with MSAA support
+    void init(bool useMsaa);
+
     // Getters and setters for properties
     gp_Pnt eyePoint();
 
@@ -64,9 +67,6 @@ class Viewport : public QObject {
     RenderModes renderMode() const;
 
     void setRenderMode(RenderModes mode);
-
-    // Initialize Viewport with MSAA support
-    void init(bool useMsaa);
 
     // Function to update render mode
     void updateRenderMode();

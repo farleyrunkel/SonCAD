@@ -7,8 +7,8 @@
 Viewport::Viewport(QObject* parent) : Viewport(nullptr, parent) {}
 
 Viewport::Viewport(Workspace* workspace, QObject* parent)
-    : QObject(parent), mWorkspace(workspace), mRenderMode(SolidShaded), mTwist(0.0), mScale(100.0) {
-
+    : QObject(parent), mWorkspace(workspace), 
+    mRenderMode(SolidShaded), mTwist(0.0), mScale(100.0) {
 }
 
  // Getters and setters for properties
@@ -94,7 +94,7 @@ Viewport::Viewport(Workspace* workspace, QObject* parent)
   }
 
   void Viewport::init(bool useMsaa) {
-    if (mV3dView) {
+    if (mV3dView || !mWorkspace) {
         return;
     }
 

@@ -305,7 +305,7 @@ void ViewportPanel::initializeGL() {
         QApplication::exit(1);
         return;
     }
-    // setupWindow(m_view);
+    setupWindow(m_view);
     dumpGlInfo(true, true);
 }
 

@@ -25,6 +25,7 @@ class Workspace : public QObject {
 
 public:
     Workspace();
+    Workspace(Model* model);;
     ~Workspace() {};
 
     // Initialize 3D viewer and context
@@ -58,16 +59,13 @@ public:
     QVector<Viewport*>& viewports() { return m_viewports; }
 
     // Model management
-    Model* model() const {
-        return m_model ;
-    }
-    void setModel(Model* model) {
-        m_model = model;
-    }
-signals:
+    Model* model() const { return m_model ; }
+    void setModel(Model* model) { m_model = model; }
+
+ signals:
     void gridChanged();
 
-private:
+ private:
     Handle(V3d_Viewer) m_v3dViewer;  // 3D viewer handle
     Handle(AIS_InteractiveContext) m_aisContext;  // AIS context handle
 
@@ -83,3 +81,4 @@ private:
 };
 
 #endif  // SRC_CORE_WORKSPACE_H_
+    

@@ -11,12 +11,37 @@
 WorkspaceController::WorkspaceController(Workspace* workspace) {
     m_workspace = workspace;
     connect(m_workspace, &Workspace::gridChanged, this, &WorkspaceController::onWorkspaceGridChanged);
+
+    initWorkspace();
+}
+
+void WorkspaceController::initWorkspace() {
+    // 初始化 V3dViewer 和 AisContext
+    workspace()->initV3dViewer();
+    workspace()->initAisContext();
+    // initVisualSettings();
+
+    // 遍历所有 Viewport 并添加到 _viewControllers 列表
+    for (auto& view : workspace()->viewports()) {
+        m_viewportControllers.append(new ViewportController(view, this));
+    }
+
+    // 创建并显示网格
+    //_grid = new AISX_Grid();
+    //AisHelper::disableGlobalClipPlanes(_grid);
+    //if (workspace.aisContext()) {
+    //    workspace.aisContext()->Display(_grid, 0, -1, false);
+    //}
+
+    //// 初始化 VisualObjects 并更新网格
+    //visualObjects.initEntities();
+    //updateGrid();
 }
 
 Tool* WorkspaceController::currentTool() const { return m_currentTool; }
 
 
- bool WorkspaceController::startTool(Tool* tool) {
+bool WorkspaceController::startTool(Tool* tool) {
     try {
         //if (currentTool() != nullptr && !cancelTool(currentTool(), true)) {
         //    return false;
@@ -40,7 +65,7 @@ Tool* WorkspaceController::currentTool() const { return m_currentTool; }
     }
 }
 
- void WorkspaceController::invalidate(bool immediateOnly, bool forceRedraw)
+void WorkspaceController::invalidate(bool immediateOnly, bool forceRedraw)
 {
     m_workspace->setNeedsImmediateRedraw(true);
     if (!immediateOnly)
@@ -50,14 +75,13 @@ Tool* WorkspaceController::currentTool() const { return m_currentTool; }
         _Redraw();
 }
 
- void WorkspaceController::_Redraw() {}
+void WorkspaceController::_Redraw() {}
 
- bool WorkspaceController::cancelTool(Tool* tool, bool force)
-{
+bool WorkspaceController::cancelTool(Tool* tool, bool force) {
     return true;
 }
 
- Workspace* WorkspaceController::workspace() const { return m_workspace; }
+Workspace* WorkspaceController::workspace() const { return m_workspace; }
 
 void WorkspaceController::setActiveViewport(Viewport* viewport) {
      m_activeViewport = viewport;
@@ -68,12 +92,12 @@ ViewportController* WorkspaceController::viewportController(Viewport* viewport) 
         return nullptr;
     }
 
-    auto it = std::find_if(_viewControllers.begin(), _viewControllers.end(),
+    auto it = std::find_if(m_viewportControllers.begin(), m_viewportControllers.end(),
         [viewport](const ViewportController* vc) {
             return vc->viewport() == viewport;
         });
 
-    return (it != _viewControllers.end()) ? *it : nullptr;
+    return (it != m_viewportControllers.end()) ? *it : nullptr;
 }
 
 void WorkspaceController::dispose() {}

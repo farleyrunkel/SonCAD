@@ -19,8 +19,11 @@ Workspace::Workspace()
     m_gridEnabled(false),
     m_needsRedraw(false),
     m_needsImmediateRedraw(false) {
-    initV3dViewer();  // Initialize 3D viewer and context
-    initAisContext();
+}
+
+Workspace::Workspace(Model* model) : Workspace() {
+    m_model = model;
+    m_viewports.append(new Viewport(this));
 }
 
 //Workspace::~Workspace() {

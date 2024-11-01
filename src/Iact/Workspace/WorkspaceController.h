@@ -19,7 +19,9 @@ class WorkspaceController : public BaseObject {
  public:
     explicit WorkspaceController(QObject* parent = nullptr) : BaseObject(parent) {}
 
-    explicit WorkspaceController(Workspace* workspace);;
+    explicit WorkspaceController(Workspace* workspace);
+
+    void initWorkspace();
 
     Tool* currentTool() const;
 
@@ -45,7 +47,7 @@ private:
     Editor* m_editor;
     Workspace* m_workspace;
     Viewport* m_activeViewport;
-    QList<ViewportController*> _viewControllers;
+    QList<ViewportController*> m_viewportControllers;
 };
 
 #endif // SRC_IACT_WORKSPACE_WORKSPACECONTROLLER_H_
