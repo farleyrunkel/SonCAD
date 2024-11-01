@@ -276,6 +276,19 @@ ViewportPanel::~ViewportPanel() {
     aDisp.Nullify();
 }
 
+
+void ViewportPanel::initializeGL() {
+    m_glContext = new OpenGl_Context();
+    if (!m_glContext->Init(m_isCoreProfile)) {
+        Message::SendFail() << "Error: OpenGl_Context is unable to wrap OpenGL context";
+        QMessageBox::critical(0, "Failure", "OpenGl_Context is unable to wrap OpenGL context");
+        QApplication::exit(1);
+        return;
+    }
+    setupWindow(m_view);
+    dumpGlInfo(true, true);
+}
+
 void ViewportPanel::setupWindow(const Handle(V3d_View)& theView) {
     const QRect aRect = rect();
     const Graphic3d_Vec2i aViewSize(aRect.right() - aRect.left(), aRect.bottom() - aRect.top());
@@ -296,19 +309,6 @@ void ViewportPanel::setupWindow(const Handle(V3d_View)& theView) {
     aWindow->SetSize(aViewSize.x(), aViewSize.y());
     theView->SetWindow(aWindow, m_glContext->RenderingContext());
 }
-
-void ViewportPanel::initializeGL() {
-    m_glContext = new OpenGl_Context();
-    if (!m_glContext->Init(m_isCoreProfile)) {
-        Message::SendFail() << "Error: OpenGl_Context is unable to wrap OpenGL context";
-        QMessageBox::critical(0, "Failure", "OpenGl_Context is unable to wrap OpenGL context");
-        QApplication::exit(1);
-        return;
-    }
-    setupWindow(m_view);
-    dumpGlInfo(true, true);
-}
-
 void ViewportPanel::paintGL() {
     if (m_view.IsNull() || m_view->Window().IsNull()) {
         return;

@@ -43,20 +43,20 @@ Tool* WorkspaceController::currentTool() const { return m_currentTool; }
 
 bool WorkspaceController::startTool(Tool* tool) {
     try {
-        //if (currentTool() != nullptr && !cancelTool(currentTool(), true)) {
-        //    return false;
-        //}
-        //if (tool != nullptr) {
-        //    tool->setWorkspaceController(this);
-        //    m_currentTool = tool;
-        //    if (m_editor) { m_editor->stopTool(); }
-        //    if (!tool->start()) {
-        //        return false;
-        //    }
+        if (currentTool() != nullptr && !cancelTool(currentTool(), true)) {
+            return false;
+        }
+        if (tool != nullptr) {
+            tool->setWorkspaceController(this);
+            m_currentTool = tool;
+            if (m_editor) { m_editor->stopTool(); }
+            if (!tool->start()) {
+                return false;
+            }
 
-        //    invalidate(true);
-        //    return true;
-        //}
+            invalidate(true);
+            return true;
+        }
         return false;
     }
     catch (std::exception& e) {

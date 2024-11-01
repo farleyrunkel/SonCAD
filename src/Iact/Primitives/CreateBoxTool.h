@@ -12,6 +12,11 @@ class CreateBoxTool : public Tool {
 
  public :
 	CreateBoxTool();
+
+	bool OnStart() override {
+
+		return true;
+	}
 };
 
 #endif // SRC_IACT_PRIMITIVES_CREATEBOXTOOL_H_
