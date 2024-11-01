@@ -16,9 +16,10 @@ class ToolAction : public WorkspaceControl {
 
     // Start and stop functions
     bool start() { return onStart(); }
-    virtual void reset() { isFinished = false; }
+    virtual void reset() { m_isFinished = false; }
     void stop() { onStop(); cleanup(); assert(cleanedUp()); }
 
+    bool isFinished() const { return m_isFinished; }
  protected:
     // Virtual function for subclasses to override
     virtual bool onStart() { return false; }
@@ -41,7 +42,7 @@ class ToolAction : public WorkspaceControl {
     }
 
 private:
-    bool isFinished = false;
+    bool m_isFinished = false;
 };
 
 #endif  // SRC_IACT_FRAMEWORK_TOOLACTION_H_
