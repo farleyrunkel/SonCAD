@@ -10,21 +10,22 @@
 #include <QMessageBox>
 #include <QMouseEvent>
 
-#include <OpenGl_GraphicDriver.hxx>
-#include <OpenGl_FrameBuffer.hxx>
-#include <OpenGl_Context.hxx>
-#include <OpenGl_Window.hxx>
+#include <Message.hxx>
 #include <OpenGl_View.hxx>
+#include <OpenGl_Window.hxx>
+#include <OpenGl_Context.hxx>
+#include <OpenGl_FrameBuffer.hxx>
+#include <OpenGl_GraphicDriver.hxx>
 #include <Standard_WarningsDisable.hxx>
 #include <Standard_WarningsRestore.hxx>
+#include <BRepPrimAPI_MakeBox.hxx>
+#include <Aspect_NeutralWindow.hxx>
+#include <Aspect_DisplayConnection.hxx>
 #include <AIS_Shape.hxx>
 #include <AIS_ViewCube.hxx>
-#include <Aspect_DisplayConnection.hxx>
-#include <Aspect_NeutralWindow.hxx>
-#include <BRepPrimAPI_MakeBox.hxx>
-#include <Message.hxx>
 
 #include "Core/Core.h"
+#include "Iact/Viewport/ViewportMouseControlDefault.h"
 
 namespace {
     //! Map Qt buttons bitmask to virtual keys.
@@ -197,6 +198,7 @@ namespace {
 
 ViewportPanel::ViewportPanel(QWidget* parent)
     : QOpenGLWidget(parent),
+    m_mouseControl(new ViewportMouseControlDefault),
     m_isCoreProfile(true),
     m_workspaceController(nullptr),
     m_viewportController(nullptr) {
@@ -410,6 +412,8 @@ void ViewportPanel::mouseReleaseEvent(QMouseEvent* theEvent) {
 
 void ViewportPanel::mouseMoveEvent(QMouseEvent* theEvent) {
     QOpenGLWidget::mouseMoveEvent(theEvent);
+    m_mouseControl->mouseMove(theEvent->pos(), theEvent, Qt::KeyboardModifier::NoModifier);
+
     const Graphic3d_Vec2i aNewPos(theEvent->pos().x(), theEvent->pos().y());
     if (!m_view.IsNull()
         && UpdateMousePosition(aNewPos,

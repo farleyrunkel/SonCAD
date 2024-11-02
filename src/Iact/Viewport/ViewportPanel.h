@@ -6,19 +6,19 @@
 #include <QOpenGLWidget>
 #include <QString>
 
-#include "AIS_ViewController.hxx"
+#include <OpenGl_Context.hxx>
 #include <Standard_WarningsDisable.hxx>
 #include <Standard_WarningsRestore.hxx>
-#include <AIS_InteractiveContext.hxx>
-#include <AIS_ViewController.hxx>
 #include <V3d_View.hxx>
 #include <AIS_ViewCube.hxx>
-#include <OpenGl_Context.hxx>
+#include <AIS_ViewController.hxx>
+#include <AIS_InteractiveContext.hxx>
 
 #include "Iact/Workspace/ViewportController.h"
 #include "Iact/Workspace/WorkspaceController.h"
+#include "Iact/Viewport/IViewportMouseControl.h"
 
-class ViewportPanel : public QOpenGLWidget,  public AIS_ViewController {
+class ViewportPanel : public QOpenGLWidget, public AIS_ViewController {
     Q_OBJECT
 
  public:
@@ -45,15 +45,13 @@ class ViewportPanel : public QOpenGLWidget,  public AIS_ViewController {
     //! Default widget size.
     virtual QSize sizeHint()        const override { return QSize(720, 480); }
 
-public:
-
+ public:
     //! Handle subview focus change.
     virtual void OnSubviewChanged(const Handle(AIS_InteractiveContext)&,
         const Handle(V3d_View)&,
         const Handle(V3d_View)& theNewView) override;
 
-protected: // user input events
-
+ protected: // user input events
     virtual void closeEvent(QCloseEvent* theEvent) override;
     virtual void keyPressEvent(QKeyEvent* theEvent) override;
     virtual void mousePressEvent(QMouseEvent* theEvent) override;
@@ -61,8 +59,7 @@ protected: // user input events
     virtual void mouseMoveEvent(QMouseEvent* theEvent) override;
     virtual void wheelEvent(QWheelEvent* theEvent) override;
 
-private:
-
+ private:
     //! Dump OpenGL info.
     void dumpGlInfo(bool theIsBasic, bool theToPrint);
 
@@ -74,17 +71,18 @@ private:
         const Handle(V3d_View)& theView) override;
 
  protected: // OpenGL events
-
     virtual void initializeGL() override;
     void setupWindow(const Handle(V3d_View)& theView);
     virtual void paintGL() override;
     virtual void resizeGL(int width, int height) override;
 
  private:
-     ViewportController* m_viewportController;
-     WorkspaceController* m_workspaceController;
+    ViewportController* m_viewportController;
+    WorkspaceController* m_workspaceController;
 
-private:
+ private:
+    IViewportMouseControl* m_mouseControl;
+ private:
     Handle(V3d_Viewer)             m_viewer;
     Handle(V3d_View)               m_view;
     Handle(AIS_InteractiveContext) m_context;

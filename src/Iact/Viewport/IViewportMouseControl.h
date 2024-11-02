@@ -11,8 +11,7 @@
 
 // Interface for viewport mouse control
 class IViewportMouseControl {
-public:
-
+ public:
     // Enum to represent mouse wheel direction
     enum class MouseWheel {
         Vertical,
@@ -42,4 +41,4 @@ public:
 
 //--------------------------------------------------------------------------------------------------
 
-#endif // SRC_IACT_VIEWPORT_IVIEWPORTMOUSECONTROL_H_
+#endif  // SRC_IACT_VIEWPORT_IVIEWPORTMOUSECONTROL_H_
