@@ -27,14 +27,20 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController {
     //! Destructor.
     virtual ~ViewportPanel();
 
+    //! Return AIS context.
+    const Handle(AIS_InteractiveContext)& Context() const { return m_context; }
+
     //! Return Viewer.
     const Handle(V3d_Viewer)& Viewer() const { return m_viewer; }
 
     //! Return View.
     const Handle(V3d_View)& View() const { return m_view; }
+    
+    void setAisContext(const Handle(AIS_InteractiveContext)& theCtx) { m_context = theCtx; }
 
-    //! Return AIS context.
-    const Handle(AIS_InteractiveContext)& Context() const { return m_context; }
+    void setViewer(const Handle(V3d_Viewer)& theViewer) { m_viewer = theViewer; }
+
+    void setView(const Handle(V3d_View)& theView) { m_view = theView; }
 
     //! Return OpenGL info.
     const QString& getGlInfo() const { return m_glInfo; }

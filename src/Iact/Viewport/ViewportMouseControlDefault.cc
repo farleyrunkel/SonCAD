@@ -2,6 +2,9 @@
 
 #include "Iact/Viewport/ViewportMouseControlDefault.h"
 
+ViewportMouseControlDefault::ViewportMouseControlDefault() : viewportController(nullptr), 
+    currentMouseMoveMode(ViewportController::MouseMoveMode::None) {}
+
 void ViewportMouseControlDefault::setViewportController(ViewportController* controller) {
     viewportController = controller;
 }

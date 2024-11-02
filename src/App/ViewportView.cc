@@ -6,12 +6,13 @@
 #include <QVBoxLayout>
 #include <QLabel>
 
+#include "Core/Core.h"
 #include "Iact/Viewport/ViewportPanel.h"
 
 ViewportView::ViewportView(QWidget* parent)
     : QScrollArea(parent) {
     // Create main panel for the viewport
-    QWidget* viewportPanel = new ViewportPanel();
+    ViewportPanel* viewportPanel = new ViewportPanel();
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
 
     // Tool and error message area
@@ -31,4 +32,24 @@ ViewportView::ViewportView(QWidget* parent)
     setLayout(mainLayout);
     setWidget(viewportPanel); // Set as the scrollable area
     setWidgetResizable(true); // Allow resizing
+
+    //connect(Core::appContext(), &AppContext::workspaceControllerChanged, viewportPanel, [viewportPanel] {
+    //    viewportPanel->setWorkspaceController(Core::appContext()->workspaceController());
+    //    });
+
+    //connect(Core::appContext(), &AppContext::viewportControllerChanged, viewportPanel, [viewportPanel] {
+    //    viewportPanel->setViewportController = Core::appContext()->viewportController(); });
+
+    connect(Core::appContext(), &AppContext::workspaceChanged, viewportPanel, [viewportPanel](Workspace* workspace) {
+        if (workspace) {
+            viewportPanel->setViewer(workspace->v3dViewer());
+            viewportPanel->setAisContext(workspace->aisContext());
+        }
+    });
+
+    connect(Core::appContext(), &AppContext::viewportChanged, viewportPanel, [viewportPanel](Viewport* viewport) {
+        if (viewport) {
+            viewportPanel->setView(viewport->v3dView());
+        }
+    });
 }

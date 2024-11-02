@@ -15,7 +15,7 @@
 
 class ViewportMouseControlDefault : public IViewportMouseControl {
  public:
-    explicit ViewportMouseControlDefault() : viewportController(nullptr), currentMouseMoveMode(ViewportController::MouseMoveMode::None) {}
+    explicit ViewportMouseControlDefault();
 
     void setViewportController(ViewportController* controller) override;
 

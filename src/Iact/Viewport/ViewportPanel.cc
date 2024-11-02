@@ -24,7 +24,6 @@
 #include <AIS_Shape.hxx>
 #include <AIS_ViewCube.hxx>
 
-#include "Core/Core.h"
 #include "Iact/Viewport/ViewportMouseControlDefault.h"
 
 namespace {
@@ -206,26 +205,6 @@ ViewportPanel::ViewportPanel(QWidget* parent)
     m_view = nullptr;
     m_viewer = nullptr;
     m_context = nullptr;
-
-    connect(Core::appContext(), &AppContext::workspaceControllerChanged, [this] {
-        m_workspaceController = Core::appContext()->workspaceController();            
-    });
-
-    connect(Core::appContext(), &AppContext::viewportControllerChanged, [this] {
-        m_viewportController = Core::appContext()->viewportController(); });
-
-    connect(Core::appContext(), &AppContext::workspaceChanged, [this](Workspace* workspace) {
-        if (workspace) {
-            m_viewer = workspace->v3dViewer();
-            m_context = workspace->aisContext();
-        }
-    });
-
-    connect(Core::appContext(), &AppContext::viewportChanged, [this](Viewport* viewport) {
-        if (viewport) {
-            m_view = viewport->v3dView();
-        }
-    });
 
     // Qt widget setup
     setMouseTracking(true);
