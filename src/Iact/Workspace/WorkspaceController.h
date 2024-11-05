@@ -9,10 +9,11 @@
 #include "Core/Workspace.h"
 #include "Core/Viewport.h"
 #include "Comm/BaseObject.h"
-#include "Iact/Framework/Tool.h"
 #include "Iact/Framework/Editor.h"
 
+class Tool;
 class ViewportController;
+
 class WorkspaceController : public BaseObject {
     Q_OBJECT
 

@@ -5,23 +5,20 @@
 
 #include <QObject>
 
-class WorkspaceController;
+#include "Iact/Framework/WorkspaceControl.h"
 
-class Tool : public QObject {
+class Tool : public WorkspaceControl {
 	Q_OBJECT
 
  public:
 	 explicit Tool(QObject* parent = nullptr);
 
-	 void setWorkspaceController(WorkspaceController* controller);
-
 	 bool start();;
 
 	 virtual bool OnStart();
 
-private:
+ private:
 	bool m_isActive;
-	WorkspaceController* m_workspaceController;
 };
 
 #endif  // SRC_IACT_FRAMEWORK_TOOL_H_

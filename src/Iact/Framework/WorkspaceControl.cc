@@ -2,8 +2,9 @@
 
 #include "Iact/Framework/WorkspaceControl.h"
 
+#include "Iact/Workspace/WorkspaceController.h"
+
 WorkspaceControl::WorkspaceControl(QObject* parent) {}
-//
-//WorkspaceController* WorkspaceControl::workspaceController() const { return m_WorkspaceController; }
-//
-//void WorkspaceControl::setWorkspaceController(WorkspaceController* controller) { m_WorkspaceController = controller; }
+
+WorkspaceController* WorkspaceControl::workspaceController() const { return m_workspaceController; }
+

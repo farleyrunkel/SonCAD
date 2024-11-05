@@ -2,18 +2,12 @@
 
 #include "Iact/Framework/Tool.h"
 
-#include "Iact/Workspace/WorkspaceController.h"
-
-Tool::Tool(QObject* parent) : QObject() {}
-
-void Tool::setWorkspaceController(WorkspaceController* controller) {
-	m_workspaceController = controller;
-}
+Tool::Tool(QObject* parent) : WorkspaceControl() {}
 
 bool Tool::start() {
 	if (OnStart()) {
 		m_isActive = true;
-		m_workspaceController->invalidate();
+		workspaceController()->invalidate();
 		return true;
 	}
 	return false;

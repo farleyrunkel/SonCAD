@@ -7,6 +7,7 @@
 #include <QDebug>
 
 #include "Iact/Workspace/ViewportController.h"
+#include "Iact/Framework/Tool.h"
 
 WorkspaceController::WorkspaceController(Workspace* workspace) {
     m_workspace = workspace;

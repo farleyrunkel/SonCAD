@@ -6,6 +6,8 @@
 #include <QObject>
 
 #include "Iact/Framework/Tool.h"
+#include "Iact/ToolActions/PointAction.h"
+#include "Iact/HudElements/Coord2DHudElement.h"
 
 class CreateBoxTool : public Tool {
 	Q_OBJECT
@@ -15,8 +17,13 @@ class CreateBoxTool : public Tool {
 
 	bool OnStart() override {
 
+		auto pointAction = new PointAction();
+
+
 		return true;
 	}
+ private:
+	Coord2DHudElement* m_coord2DHudElement;
 };
 
 #endif // SRC_IACT_PRIMITIVES_CREATEBOXTOOL_H_
