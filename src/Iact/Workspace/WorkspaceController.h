@@ -10,6 +10,7 @@
 #include "Core/Viewport.h"
 #include "Comm/BaseObject.h"
 #include "Iact/Framework/Editor.h"
+#include "Iact/Workspace/MouseEventData.h"
 
 class Tool;
 class ViewportController;
@@ -29,8 +30,7 @@ class WorkspaceController : public BaseObject {
     bool startTool(Tool* tool);
     bool isSelecting() { return false; }
     void invalidate(bool immediateOnly = false, bool forceRedraw = false);
-
-    void _Redraw();;
+;
     bool cancelTool(Tool* tool, bool force);
 
     Workspace* workspace() const;
@@ -40,15 +40,24 @@ class WorkspaceController : public BaseObject {
     ViewportController* viewportController(Viewport* viewport);
 
     void dispose();
+
+    QList<WorkspaceControl*> EnumerateControls();
+
+
+
 private:
     void onWorkspaceGridChanged() {}
+    void redraw();
+
+    void MouseMove(ViewportController* viewportController, QPointF pos, Qt::Modifier modifierKeys);
 
 private: 
     Tool* m_currentTool;
-    Editor* m_editor;
+    Editor* m_currentEditor;
     Workspace* m_workspace;
     Viewport* m_activeViewport;
     QList<ViewportController*> m_viewportControllers;
+    MouseEventData* _MouseEventData;
 };
 
 #endif // SRC_IACT_WORKSPACE_WORKSPACECONTROLLER_H_

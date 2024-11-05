@@ -21,16 +21,16 @@ class CreateBoxTool : public Tool {
 		Height
 	};
 
-	bool OnStart() override {
+ protected:
+	bool onStart() override;
 
-		auto pointAction = new PointAction();
-
-
-		return true;
-	}
+ private:
+	void _PivotAction_Finished() {};
+	void _PivotAction_Preview() {};
 
  private:
 	Coord2DHudElement* m_coord2DHudElement;
+	Phase m_currentPhase;
 };
 
 #endif // SRC_IACT_PRIMITIVES_CREATEBOXTOOL_H_

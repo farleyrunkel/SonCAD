@@ -27,7 +27,6 @@ ActionCommand& ModelCommands::CreateBox() {
         command.connect(Core::commandManager(), &CommandManager::updateEnabled,
             []() { command.setEnabled(command.canExecute()); }
         );
-
         command.connect(Core::appContext(), &InteractiveContext::workspaceControllerChanged,
             []() { command.setCheckable(
                 qobject_cast<CreateBoxTool*>(CommandHelper::currentTool()) != nullptr
@@ -35,6 +34,7 @@ ActionCommand& ModelCommands::CreateBox() {
             }
         );
     }
+
     return command;
 }
 

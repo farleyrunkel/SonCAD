@@ -5,7 +5,9 @@
 
 #include <QObject>
 
-class Editor : public QObject {
+#include "Iact/Framework/WorkspaceControl.h"
+
+class Editor : public WorkspaceControl {
 	Q_OBJECT
 
  public:

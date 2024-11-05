@@ -50,7 +50,7 @@ bool WorkspaceController::startTool(Tool* tool) {
         if (tool != nullptr) {
             tool->setWorkspaceController(this);
             m_currentTool = tool;
-            if (m_editor) { m_editor->stopTool(); }
+            if (m_currentEditor) { m_currentEditor->stopTool(); }
             if (!tool->start()) {
                 return false;
             }
@@ -73,10 +73,19 @@ void WorkspaceController::invalidate(bool immediateOnly, bool forceRedraw)
         m_workspace->setNeedsRedraw(true);
 
     if (forceRedraw)
-        _Redraw();
+        redraw();
 }
 
-void WorkspaceController::_Redraw() {}
+void WorkspaceController::redraw() {}
+
+void WorkspaceController::MouseMove(ViewportController* viewportController, QPointF pos, Qt::Modifier modifierKeys)
+{
+    for (const auto& handler : EnumerateControls())
+    {
+        //if (handler->OnMouseMove(_MouseEventData))
+        //    break;
+    }
+}
 
 bool WorkspaceController::cancelTool(Tool* tool, bool force) {
     return true;
@@ -102,3 +111,17 @@ ViewportController* WorkspaceController::viewportController(Viewport* viewport) 
 }
 
 void WorkspaceController::dispose() {}
+
+QList<WorkspaceControl*> WorkspaceController::EnumerateControls() {
+    QList<WorkspaceControl*> controls;
+
+    if (m_currentTool) {
+        controls.push_back(m_currentTool);
+    }
+
+    if (m_currentEditor) {
+        controls.push_back(m_currentEditor);
+    }
+
+    return controls;
+}

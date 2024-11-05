@@ -5,14 +5,12 @@
 
 #include <QWidget>
 
-#include "Iact/Workspace/WorkspaceController.h"
+class WorkspaceController;
 
 class HudElement : public QWidget {
  public:
-	 explicit HudElement(QWidget* parent = nullptr) : QWidget(parent) {
-		 setMinimumHeight(25);
-	 }
-	 WorkspaceController* workspaceController() const { return m_workspaceController; };
+	 explicit HudElement(QWidget* parent = nullptr);
+	 WorkspaceController* workspaceController() const;
 
 	 virtual void initialize() = 0;
 

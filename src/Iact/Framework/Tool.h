@@ -16,97 +16,35 @@ class Tool : public WorkspaceControl {
 	explicit Tool(QObject* parent = nullptr);
 
  public:
-	bool start();;
+	bool start();
 
-	virtual bool OnStart();
+	virtual bool onStart();
 
-	ToolAction* currentAction() const {
-		return m_toolActions.size() > 0 ? m_toolActions.first() : nullptr;
-	}
+	ToolAction* currentAction() const;
 
-	bool Cancel(bool force) {
-		if (!OnCancel() && !force)
-			return false;
+	bool cancel(bool force);
 
-		if (m_isActive)
-			Stop();
-		return true;
-	}
+	void stop();
 
-	void Stop() {
-		m_isActive = false;
-		OnStop();
-		Cleanup();
-
-		workspaceController()->removeTool(this);
-		workspaceController()->invalidate();
-	}
-
-	virtual bool prepareUndo() {
-		return Cancel(false);
-	}
+	virtual bool prepareUndo();
 
  protected:
-	virtual bool OnCancel() {
-		return true;
-	}
+	virtual bool onCancel();
 
-	virtual void OnStop() {}
+	virtual void onStop();
 
 
-	virtual void Cleanup() {
-		//StopAllActions();
-		//RestoreAllVisualShapes();
-		//BaseCleanup();
-	}
+	virtual void cleanup();
 
 	//void BaseCleanup() {
 	//	CleanedUp = true;
-	//	// 基类清理逻辑可以在此处实现
 	//}
 
-	bool startAction(ToolAction* toolAction, bool exclusive = true) {
-		if ( !m_toolActions.isEmpty() && std::find(m_toolActions.begin(), m_toolActions.end(), toolAction) != m_toolActions.end())
-			return true;
+	bool startAction(ToolAction* toolAction, bool exclusive = true);
 
-		try {
-			if (exclusive) {
-				stopAllActions();
-			}
+	void stopAction(ToolAction* toolAction);
 
-			if (toolAction != nullptr) {
-				toolAction->setWorkspaceController(workspaceController());
-				if (!toolAction->start())
-					return false;
-
-				m_toolActions.insert(m_toolActions.begin(), toolAction);
-				emit toolActionChanged(toolAction);
-			}
-			return true;
-		}
-		catch (const std::exception& e) {
-			std::cerr << "Starting tool action failed: " << e.what() << std::endl;
-			return false;
-		}
-	}
-
-	void stopAction(ToolAction* toolAction) {
-		if (toolAction == nullptr)
-			return;
-
-		if (!m_toolActions.isEmpty())
-			m_toolActions.erase(std::remove(m_toolActions.begin(), m_toolActions.end(), toolAction), m_toolActions.end());
-
-		toolAction->stop();
-		emit toolActionChanged(toolAction);
-	}
-
-	void stopAllActions() {
-		for (const auto& action : m_toolActions) {
-			stopAction(action);
-		}
-		m_toolActions.clear();
-	}
+	void stopAllActions();
 
  signals:
 	void toolActionChanged(ToolAction*);
