@@ -20,6 +20,9 @@ class CreateBoxTool : public Tool {
 		BaseRect,
 		Height
 	};
+	bool onMouseMove(MouseEventData* data) override { return false; };
+	bool onMouseDown(MouseEventData* data) override { return false; };
+	bool onMouseUp(MouseEventData* data) override { return false; };
 
  protected:
 	bool onStart() override;

@@ -7,10 +7,11 @@
 #include <QVector>
 #include <QList>
 #include "Iact/HudElements/HudElement.h"
+#include "Iact/Workspace/MouseEventData.h"
 
 class WorkspaceController;
 
-class WorkspaceControl : public QObject {
+class WorkspaceControl : public QObject, public IMouseEventHandler {
 	Q_OBJECT
 
  public:

@@ -18,6 +18,10 @@ class PointAction : public ToolAction {
         return false;
     }
 
+    bool onMouseMove(MouseEventData* data) override { return false; };
+    bool onMouseDown(MouseEventData* data) override { return false; };
+    bool onMouseUp(MouseEventData* data) override { return false; };
+
  signals:
     void preview();
     void finished();
