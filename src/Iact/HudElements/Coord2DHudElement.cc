@@ -8,8 +8,7 @@
 
 Coord2DHudElement::Coord2DHudElement(QWidget* parent)
     : HudElement(parent), _coordinateX(0.0), _coordinateY(0.0) {
-    auto layout = new QHBoxLayout(this);
-    setLayout(layout);
+    setLayout(new QHBoxLayout(this));
 
     m_label = new QLabel(this);
     connect(this, &Coord2DHudElement::coordinateXChanged, m_label, [this]() {
@@ -19,7 +18,7 @@ Coord2DHudElement::Coord2DHudElement(QWidget* parent)
         m_label->adjustSize();
     });
 
-    layout->addWidget(m_label);
+    layout()->addWidget(m_label);
 }
 
 void Coord2DHudElement::setCoordinateX(double x) {

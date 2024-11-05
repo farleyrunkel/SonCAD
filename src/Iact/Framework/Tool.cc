@@ -2,7 +2,9 @@
 
 #include "Iact/Framework/Tool.h"
 
-Tool::Tool(QObject* parent) : WorkspaceControl() {}
+Tool::Tool(QObject* parent) : WorkspaceControl(),
+	id(typeid(*this).name()) {
+}
 
 bool Tool::start() {
 	if (OnStart()) {

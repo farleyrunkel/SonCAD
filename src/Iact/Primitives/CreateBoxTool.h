@@ -12,8 +12,14 @@
 class CreateBoxTool : public Tool {
 	Q_OBJECT
 
- public :
+ public:
 	CreateBoxTool();
+
+	enum Phase {
+		PivotPoint,
+		BaseRect,
+		Height
+	};
 
 	bool OnStart() override {
 
@@ -22,6 +28,7 @@ class CreateBoxTool : public Tool {
 
 		return true;
 	}
+
  private:
 	Coord2DHudElement* m_coord2DHudElement;
 };

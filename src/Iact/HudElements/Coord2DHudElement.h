@@ -13,7 +13,7 @@ class Coord2DHudElement : public HudElement {
     Q_PROPERTY(double coordinateX READ getCoordinateX WRITE setCoordinateX)
     Q_PROPERTY(double coordinateY READ getCoordinateY WRITE setCoordinateY)
 
-public:
+ public:
     explicit Coord2DHudElement(QWidget* parent = nullptr);
 
     double getCoordinateX() const { return _coordinateX; }
@@ -22,17 +22,18 @@ public:
     void setCoordinateX(double x);
     void setCoordinateY(double y);
 
-    Q_INVOKABLE void setValues(double coordX, double coordY);
+    void setValues(double coordX, double coordY);
 
-signals:
+ signals:
     void coordinateXChanged();
     void coordinateYChanged();
 
-private:
+ private:
+    QLabel* m_label;
+
+ private:
     double _coordinateX;
     double _coordinateY;
-
-    QLabel* m_label;
 };
 
 #endif  // IACT_HUD_ELEMENTS_COORD2DHUDELEMENT_H_

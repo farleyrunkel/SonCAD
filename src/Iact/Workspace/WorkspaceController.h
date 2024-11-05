@@ -25,7 +25,7 @@ class WorkspaceController : public BaseObject {
     void initWorkspace();
 
     Tool* currentTool() const;
-
+    void removeTool(Tool* tool) {}
     bool startTool(Tool* tool);
     bool isSelecting() { return false; }
     void invalidate(bool immediateOnly = false, bool forceRedraw = false);
