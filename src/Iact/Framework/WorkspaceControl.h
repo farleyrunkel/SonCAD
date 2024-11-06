@@ -24,35 +24,34 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
     virtual QList<WorkspaceControl*> GetChildren() const;
 
  public:
-    virtual bool OnMouseMove(QMouseEvent* event) {
+    virtual bool onMouseMove(MouseEventData* data) {
         return std::any_of(GetChildren().begin(), GetChildren().end(),
-            [event](WorkspaceControl* child) { return child->OnMouseMove(event); });
+            [data](WorkspaceControl* child) { return child->onMouseMove(data); });
     }
 
-    virtual bool OnMouseDown(QMouseEvent* event) {
+    virtual bool onMouseDown(MouseEventData* data) {
         return std::any_of(GetChildren().begin(), GetChildren().end(),
-            [event](WorkspaceControl* child) { return child->OnMouseDown(event); });
+            [data](WorkspaceControl* child) { return child->onMouseDown(data); });
     }
 
-    virtual bool OnMouseUp(QMouseEvent* event) {
+    virtual bool onMouseUp(MouseEventData* data) {
         return std::any_of(GetChildren().begin(), GetChildren().end(),
-            [event](WorkspaceControl* child) { return child->OnMouseUp(event); });
+            [data](WorkspaceControl* child) { return child->onMouseUp(data); });
     }
 
-    virtual void EnrichContextMenu(QList<QAction*>& itemList) {
+    virtual void enrichContextMenu(QList<QAction*>& itemList) {
         std::for_each(GetChildren().begin(), GetChildren().end(),
-            [&itemList](WorkspaceControl* child) { child->EnrichContextMenu(itemList); });
+            [&itemList](WorkspaceControl* child) { child->enrichContextMenu(itemList); });
     }
 
-    virtual bool OnKeyPressed(QKeyEvent* event) {
+    virtual bool onKeyPressed(MouseEventData* data) {
         return std::any_of(GetChildren().begin(), GetChildren().end(),
-            [event](WorkspaceControl* child) { return child->OnKeyPressed(event); });
+            [data](WorkspaceControl* child) { return child->onKeyPressed(data); });
     }
 
  private: 
 	WorkspaceController* m_workspaceController;
 	QVector<HudElement*> m_hudElements;
-
 };
 
 #endif  // SRC_IACT_FRAMEWORK_WORKSPACECONTROLL_H_

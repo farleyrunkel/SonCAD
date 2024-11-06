@@ -80,14 +80,15 @@ void WorkspaceController::invalidate(bool immediateOnly, bool forceRedraw)
         redraw();
 }
 
-void WorkspaceController::redraw() {}
+void WorkspaceController::redraw() {
+}
 
-void WorkspaceController::MouseMove(ViewportController* viewportController, QPointF pos, Qt::Modifier modifierKeys)
+void WorkspaceController::mouseMove(ViewportController* viewportController, QPointF pos, Qt::KeyboardModifiers modifiers)
 {
     for (const auto& handler : enumerateControls())
     {
-        //if (handler->OnMouseMove(_MouseEventData))
-        //    break;
+        if (handler->onMouseMove(_MouseEventData))
+            break;
     }
 }
 

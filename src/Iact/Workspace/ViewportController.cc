@@ -40,6 +40,11 @@ QString ViewportController::dumpInfo(bool theIsBasic, bool theToPrint) {
     return QString::fromUtf8(anInfo.ToCString());
 }
 
+void ViewportController::mouseMove(const QPointF& pos, Qt::KeyboardModifiers modifiers, MouseMoveMode mode) {
+    workspaceController()->mouseMove(this, pos, modifiers);
+    workspaceController()->invalidate();
+}
+
 void ViewportController::setPredefinedView(PredefinedViews predefinedView) {
 
     if (predefinedView == PredefinedViews::WorkingPlane) {

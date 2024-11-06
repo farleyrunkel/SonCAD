@@ -43,13 +43,13 @@ class WorkspaceController : public BaseObject {
 
     QList<WorkspaceControl*> enumerateControls();
 
-private:
+    void mouseMove(ViewportController* viewportController, QPointF pos, Qt::KeyboardModifiers modifiers);
+
+ private:
     void onWorkspaceGridChanged() {}
     void redraw();
 
-    void MouseMove(ViewportController* viewportController, QPointF pos, Qt::Modifier modifierKeys);
-
-private: 
+ private: 
     QList<ViewportController*> m_viewportControllers;
     MouseEventData* _MouseEventData;
     Tool* m_currentTool;

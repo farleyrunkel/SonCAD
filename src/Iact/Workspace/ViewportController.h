@@ -43,7 +43,9 @@ public:
 
      QString dumpInfo(bool theIsBasic, bool theToPrint);
 
-     WorkspaceController* workspaceController() const { return m_workspaceController; }
+     WorkspaceController* workspaceController() const { 
+         return m_workspaceController;
+     }
 
      enum class PredefinedViews {
          Top,
@@ -63,7 +65,7 @@ public:
          Zooming
      };
 
-     void mouseMove(const QPointF& pos, Qt::KeyboardModifiers modifiers, MouseMoveMode mode = MouseMoveMode::None) {};
+     void mouseMove(const QPointF& pos, Qt::KeyboardModifiers modifiers, MouseMoveMode mode = MouseMoveMode::None);;
      void mouseDown(Qt::KeyboardModifiers modifiers) {};
      void mouseUp(Qt::KeyboardModifiers modifiers) {};
      void startEditing() {};
