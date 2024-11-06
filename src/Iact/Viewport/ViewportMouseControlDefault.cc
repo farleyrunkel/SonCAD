@@ -2,8 +2,10 @@
 
 #include "Iact/Viewport/ViewportMouseControlDefault.h"
 #include <QMessageBox>
-ViewportMouseControlDefault::ViewportMouseControlDefault() : viewportController(nullptr), 
-    currentMouseMoveMode(ViewportController::MouseMoveMode::None) {}
+ViewportMouseControlDefault::ViewportMouseControlDefault() : 
+    viewportController(nullptr), 
+    currentMouseMoveMode(ViewportController::MouseMoveMode::None) {
+}
 
 void ViewportMouseControlDefault::setViewportController(ViewportController* controller) {
     viewportController = controller;

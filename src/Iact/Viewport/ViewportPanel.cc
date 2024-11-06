@@ -279,6 +279,7 @@ ViewportController* ViewportPanel::viewportController() const {
 void ViewportPanel::setViewportController(ViewportController* controller) {
     if (m_viewportController != controller) {
         m_viewportController = controller;
+        m_mouseControl->setViewportController(controller);
         emit viewportControllerChanged();
     }
 }

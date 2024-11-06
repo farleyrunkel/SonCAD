@@ -21,9 +21,9 @@ InteractiveContext::~InteractiveContext() {
     m_viewportController = nullptr;
 }
 
-// ModelController getter/setter
-
-ModelController* InteractiveContext::documentController() const { return m_documentController; }
+ModelController* InteractiveContext::documentController() const { 
+    return m_documentController; 
+}
 
 void InteractiveContext::setDocumentController(ModelController* controller) {
     if (m_documentController != controller) {
@@ -32,13 +32,13 @@ void InteractiveContext::setDocumentController(ModelController* controller) {
         }
         m_documentController = controller;
 
-        emit propertyChanged("documentController");
+        emit documentControllerChanged(controller);
     }
 }
 
-// WorkspaceController getter/setter
-
-WorkspaceController* InteractiveContext::workspaceController() const { return m_workspaceController; }
+WorkspaceController* InteractiveContext::workspaceController() const { 
+    return m_workspaceController; 
+}
 
 void InteractiveContext::setWorkspaceController(WorkspaceController* controller) {
     if (m_workspaceController != controller) {
@@ -59,7 +59,7 @@ void InteractiveContext::setViewportController(ViewportController* controller) {
     if (m_viewportController != controller) {
         m_viewportController = controller;
 
-       //  emit viewportControllerChanged(controller);
+        emit viewportControllerChanged(controller);
     }
 }
 

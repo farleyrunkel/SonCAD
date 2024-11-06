@@ -33,11 +33,11 @@ ViewportView::ViewportView(QWidget* parent)
     setWidget(viewportPanel); // Set as the scrollable area
     setWidgetResizable(true); // Allow resizing
 
-    //connect(Core::appContext(), &AppContext::workspaceControllerChanged, 
-    //    viewportPanel, &ViewportPanel::setWorkspaceController);
+    connect(Core::appContext(), &AppContext::workspaceControllerChanged, 
+        viewportPanel, &ViewportPanel::setWorkspaceController);
 
-    //connect(Core::appContext(), &AppContext::viewportControllerChanged,
-    //    viewportPanel, &ViewportPanel::setViewportController);
+    connect(Core::appContext(), &AppContext::viewportControllerChanged,
+        viewportPanel, &ViewportPanel::setViewportController);
 
     connect(Core::appContext(), &AppContext::workspaceChanged, [viewportPanel](Workspace* workspace) {
         if (workspace) {
