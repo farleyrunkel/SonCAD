@@ -3,10 +3,11 @@
 #include "Iact/Workspace/ViewportController.h"
 
 ViewportController::ViewportController(Viewport* viewport, WorkspaceController* workspacecontroller) 
-    : QObject() ,
+    : QObject(nullptr),
     m_viewport(viewport),
-    m_workspaceController(workspacecontroller) {
-
+    m_workspaceController(workspacecontroller),
+    m_viewCube(nullptr),
+    m_lockedToPlane(false) {
     init();
 }
 
@@ -58,7 +59,7 @@ void ViewportController::setPredefinedView(PredefinedViews predefinedView) {
     }
 
     // 确保视图锁定或无视图立方体时无法进行旋转
-    if (_LockedToPlane || !m_viewCube)
+    if (m_lockedToPlane || !m_viewCube)
         return;
 
     V3d_TypeOfOrientation orientation;
