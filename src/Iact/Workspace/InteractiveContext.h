@@ -10,9 +10,9 @@
 #include <QScopedPointer>
 #include <QSharedPointer>
 
+#include "Comm/BaseObject.h"
 #include "Core/CoreContext.h"
 #include "Core/Viewport.h"
-#include "Comm/BaseObject.h"
 #include "Iact/Workspace/WorkspaceController.h"
 #include "Iact/Workspace/ModelController.h"
 #include "Iact/Workspace/ViewportController.h"
@@ -54,9 +54,9 @@ class InteractiveContext : public CoreContext {
      void initialize();
 
  signals:
-    void workspaceControllerChanged();
-    void documentControllerChanged();
-    void viewportControllerChanged();
+    void workspaceControllerChanged(WorkspaceController*);
+    void documentControllerChanged(ModelController*);
+    void viewportControllerChanged(ViewportController*);
 
  private:
     ModelController* m_documentController;

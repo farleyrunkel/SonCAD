@@ -30,10 +30,13 @@ Application::Application(int& argc, char** argv)
         mWelcomeDialog->show(); // Show the WelcomeDialog
     }
 
+    m_commandManager = new CommandManager;
+
     // Init context
+    m_appContext = new AppContext;
     m_appContext->initialize(cmdLine);
 
-    m_mainWindow = new MainWindow();
+    m_mainWindow = new MainWindow;
     m_mainWindow->show(); // Show the main window
 
     // Install the event filter for global key handling

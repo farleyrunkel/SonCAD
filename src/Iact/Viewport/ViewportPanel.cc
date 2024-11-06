@@ -239,8 +239,9 @@ ViewportPanel::ViewportPanel(QWidget* parent)
     //QCoreApplication::setAttribute (Qt::AA_UseOpenGLES);
 #endif
 
-
-    viewportControllerChanged();
+    connect(this, &ViewportPanel::viewportControllerChanged, 
+        [this]() {m_mouseControl->setViewportController(m_viewportController); }
+    );
 }
 
 ViewportPanel::~ViewportPanel() {
@@ -260,21 +261,25 @@ ViewportPanel::~ViewportPanel() {
     aDisp.Nullify();
 }
 
-WorkspaceController* ViewportPanel::workspaceController() const { return m_workspaceController; }
+WorkspaceController* ViewportPanel::workspaceController() const { 
+    return m_workspaceController; 
+}
 
 void ViewportPanel::setWorkspaceController(WorkspaceController* controller) {
     if (m_workspaceController != controller) {
         m_workspaceController = controller;
+        emit workspaceControllerChanged();
     }
 }
 
-// ViewportController getter/setter
-
-ViewportController* ViewportPanel::viewportController() const { return m_viewportController; }
+ViewportController* ViewportPanel::viewportController() const { 
+    return m_viewportController; 
+}
 
 void ViewportPanel::setViewportController(ViewportController* controller) {
     if (m_viewportController != controller) {
         m_viewportController = controller;
+        emit viewportControllerChanged();
     }
 }
 
@@ -411,7 +416,7 @@ void ViewportPanel::mouseReleaseEvent(QMouseEvent* theEvent) {
 
 void ViewportPanel::mouseMoveEvent(QMouseEvent* theEvent) {
     QOpenGLWidget::mouseMoveEvent(theEvent);
-    m_mouseControl->mouseMove(theEvent->pos(), theEvent, Qt::KeyboardModifier::NoModifier);
+    m_mouseControl->mouseMove(theEvent->pos(), theEvent, theEvent->modifiers());
 
     const Graphic3d_Vec2i aNewPos(theEvent->pos().x(), theEvent->pos().y());
     if (!m_view.IsNull()
@@ -448,11 +453,6 @@ void ViewportPanel::wheelEvent(QWheelEvent* theEvent) {
     if (UpdateZoom(Aspect_ScrollDelta(aPos, double(theEvent->angleDelta().y()) / 8.0))) {
         updateView();
     }
-}
-
-void ViewportPanel::viewportControllerChanged() {
-    if (m_mouseControl)
-        m_mouseControl->setViewportController(m_viewportController);
 }
 
 void ViewportPanel::updateView() {

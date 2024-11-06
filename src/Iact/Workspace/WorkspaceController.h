@@ -50,12 +50,12 @@ private:
     void MouseMove(ViewportController* viewportController, QPointF pos, Qt::Modifier modifierKeys);
 
 private: 
+    QList<ViewportController*> m_viewportControllers;
+    MouseEventData* _MouseEventData;
     Tool* m_currentTool;
     Editor* m_currentEditor;
     Workspace* m_workspace;
     Viewport* m_activeViewport;
-    QList<ViewportController*> m_viewportControllers;
-    MouseEventData* _MouseEventData;
 };
 
 #endif // SRC_IACT_WORKSPACE_WORKSPACECONTROLLER_H_

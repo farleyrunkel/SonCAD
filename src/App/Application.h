@@ -28,8 +28,8 @@ class Application : public QApplication {
  private:
     friend class Core;
 
-    CommandManager* m_commandManager = new CommandManager;
-    AppContext* m_appContext = new AppContext;
+    CommandManager* m_commandManager = nullptr;
+    AppContext* m_appContext = nullptr;
 
  private:
     WelcomeDialog* mWelcomeDialog = nullptr;

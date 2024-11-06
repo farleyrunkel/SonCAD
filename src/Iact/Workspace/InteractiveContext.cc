@@ -47,7 +47,7 @@ void InteractiveContext::setWorkspaceController(WorkspaceController* controller)
         }
         m_workspaceController = controller;
 
-        emit propertyChanged("workspaceController");
+        emit workspaceControllerChanged(controller);
     }
 }
 
@@ -59,7 +59,7 @@ void InteractiveContext::setViewportController(ViewportController* controller) {
     if (m_viewportController != controller) {
         m_viewportController = controller;
 
-        emit propertyChanged("viewportController");
+       //  emit viewportControllerChanged(controller);
     }
 }
 

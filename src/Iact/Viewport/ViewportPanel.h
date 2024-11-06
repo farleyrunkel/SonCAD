@@ -74,8 +74,6 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController {
     virtual void wheelEvent(QWheelEvent* theEvent) override;
 
  private:
-     void viewportControllerChanged();
-     
     //! Dump OpenGL info.
     void dumpGlInfo(bool theIsBasic, bool theToPrint);
 
@@ -91,6 +89,10 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController {
     void setupWindow(const Handle(V3d_View)& theView);
     virtual void paintGL() override;
     virtual void resizeGL(int width, int height) override;
+
+ signals:
+    void workspaceControllerChanged();
+    void viewportControllerChanged();
 
  private:
     ViewportController* m_viewportController;

@@ -9,7 +9,9 @@
 #include "Iact/Workspace/ViewportController.h"
 #include "Iact/Framework/Tool.h"
 
-WorkspaceController::WorkspaceController(Workspace* workspace) {
+WorkspaceController::WorkspaceController(Workspace* workspace):
+    m_currentTool(nullptr) ,
+    m_currentEditor(nullptr) {
     m_workspace = workspace;
     connect(m_workspace, &Workspace::gridChanged, this, &WorkspaceController::onWorkspaceGridChanged);
 

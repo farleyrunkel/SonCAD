@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
 #include "Iact/Viewport/ViewportMouseControlDefault.h"
-
+#include <QMessageBox>
 ViewportMouseControlDefault::ViewportMouseControlDefault() : viewportController(nullptr), 
     currentMouseMoveMode(ViewportController::MouseMoveMode::None) {}
 

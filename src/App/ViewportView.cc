@@ -33,24 +33,22 @@ ViewportView::ViewportView(QWidget* parent)
     setWidget(viewportPanel); // Set as the scrollable area
     setWidgetResizable(true); // Allow resizing
 
-    connect(Core::appContext(), &AppContext::workspaceControllerChanged, viewportPanel, [viewportPanel] {
-        viewportPanel->setWorkspaceController(Core::appContext()->workspaceController());
-    });
+    //connect(Core::appContext(), &AppContext::workspaceControllerChanged, 
+    //    viewportPanel, &ViewportPanel::setWorkspaceController);
 
-    connect(Core::appContext(), &AppContext::viewportControllerChanged, viewportPanel, [viewportPanel] {
-        viewportPanel->setViewportController(Core::appContext()->viewportController());
-    });
+    //connect(Core::appContext(), &AppContext::viewportControllerChanged,
+    //    viewportPanel, &ViewportPanel::setViewportController);
 
-    connect(Core::appContext(), &AppContext::workspaceChanged, viewportPanel, [viewportPanel](Workspace* workspace) {
+    connect(Core::appContext(), &AppContext::workspaceChanged, [viewportPanel](Workspace* workspace) {
         if (workspace) {
             viewportPanel->setViewer(workspace->v3dViewer());
             viewportPanel->setAisContext(workspace->aisContext());
-        }
-    });
+        }}
+    );
 
-    connect(Core::appContext(), &AppContext::viewportChanged, viewportPanel, [viewportPanel](Viewport* viewport) {
+    connect(Core::appContext(), &AppContext::viewportChanged, [viewportPanel](Viewport* viewport) {
         if (viewport) {
             viewportPanel->setView(viewport->v3dView());
-        }
-    });
+        }}
+    );
 }
