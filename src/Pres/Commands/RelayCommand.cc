@@ -3,19 +3,19 @@
 #include "Pres/Commands/RelayCommand.h"
 
 RelayCommand::RelayCommand(std::function<void()> execute)
-    : _execute(std::move(execute)), _canExecute(nullptr) {
+    : m_execute(std::move(execute)), m_canExecute(nullptr) {
 }
 
 RelayCommand::RelayCommand(std::function<void()> execute, std::function<bool()> canExecute)
-    : _execute(std::move(execute)), _canExecute(std::move(canExecute)) {
+    : m_execute(std::move(execute)), m_canExecute(std::move(canExecute)) {
 }
 
 void RelayCommand::execute() {
-    if (_execute) {
-        _execute();
+    if (m_execute) {
+        m_execute();
     }
 }
 
 bool RelayCommand::canExecute() const {
-    return _canExecute ? _canExecute() : true;
+    return m_canExecute ? m_canExecute() : true;
 }

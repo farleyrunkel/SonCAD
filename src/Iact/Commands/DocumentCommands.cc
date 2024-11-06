@@ -14,9 +14,7 @@
 ActionCommand& DocumentCommands::CreateNewModel() {
     static ActionCommand command(
         []() { if (CommandHelper::documentController()->askForSavingModelChanges()) {
-                    CommandHelper::documentController()->newModel();
-            }
-        },
+                    CommandHelper::documentController()->newModel(); }},
         []() { return CommandHelper::documentController() != nullptr; }
     );
 

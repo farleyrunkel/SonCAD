@@ -316,6 +316,7 @@ void ViewportPanel::setupWindow(const Handle(V3d_View)& theView) {
     aWindow->SetSize(aViewSize.x(), aViewSize.y());
     theView->SetWindow(aWindow, m_glContext->RenderingContext());
 }
+
 void ViewportPanel::paintGL() {
     if (m_view.IsNull() || m_view->Window().IsNull()) {
         return;

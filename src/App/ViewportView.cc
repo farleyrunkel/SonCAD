@@ -10,10 +10,12 @@
 #include "Iact/Viewport/ViewportPanel.h"
 
 ViewportView::ViewportView(QWidget* parent)
-    : QScrollArea(parent) {
-    // Create main panel for the viewport
-    ViewportPanel* viewportPanel = new ViewportPanel();
+    : QScrollArea(parent),
+    m_viewportPanel(nullptr) {
+
+    // Set layout for the main panel
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    setLayout(mainLayout);
 
     // Tool and error message area
     QLabel* messageBar = new QLabel("Tool and error message area");
@@ -28,27 +30,30 @@ ViewportView::ViewportView(QWidget* parent)
     gridInfo->setStyleSheet("background-color: lightyellow;");
     mainLayout->addWidget(gridInfo);
 
-    // Set layout for the main panel
-    setLayout(mainLayout);
-    setWidget(viewportPanel); // Set as the scrollable area
-    setWidgetResizable(true); // Allow resizing
-
-    connect(Core::appContext(), &AppContext::workspaceControllerChanged, 
-        viewportPanel, &ViewportPanel::setWorkspaceController);
-
-    connect(Core::appContext(), &AppContext::viewportControllerChanged,
-        viewportPanel, &ViewportPanel::setViewportController);
-
-    connect(Core::appContext(), &AppContext::workspaceChanged, [viewportPanel](Workspace* workspace) {
+    connect(Core::appContext(), &AppContext::workspaceChanged, [this](Workspace* workspace) {
         if (workspace) {
-            viewportPanel->setViewer(workspace->v3dViewer());
-            viewportPanel->setAisContext(workspace->aisContext());
-        }}
-    );
+            if (m_viewportPanel) {
+                delete m_viewportPanel;
+            }
+            // Create main panel for the viewport
+            m_viewportPanel = new ViewportPanel();
+            m_viewportPanel->setViewer(workspace->v3dViewer());
+            m_viewportPanel->setAisContext(workspace->aisContext());
 
-    connect(Core::appContext(), &AppContext::viewportChanged, [viewportPanel](Viewport* viewport) {
-        if (viewport) {
-            viewportPanel->setView(viewport->v3dView());
+            connect(Core::appContext(), &AppContext::viewportChanged, [this](Viewport* viewport) {
+                if (viewport) {
+                    m_viewportPanel->setView(viewport->v3dView());
+                    setWidget(m_viewportPanel); // Set as the scrollable area
+                    setWidgetResizable(true); // Allow resizing
+                    update();
+                }}
+            );
+
+            connect(Core::appContext(), &AppContext::workspaceControllerChanged,
+                m_viewportPanel, &ViewportPanel::setWorkspaceController);
+
+            connect(Core::appContext(), &AppContext::viewportControllerChanged,
+                m_viewportPanel, &ViewportPanel::setViewportController);
         }}
     );
 }

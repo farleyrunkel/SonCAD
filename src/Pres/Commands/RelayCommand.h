@@ -23,8 +23,8 @@ class RelayCommand : public ICommand {
     bool canExecute() const override;
 
  private:
-    std::function<void()> _execute;      // Function to execute the command
-    std::function<bool()> _canExecute;   // Function to check if the command can be executed
+    std::function<void()> m_execute;      // Function to execute the command
+    std::function<bool()> m_canExecute;   // Function to check if the command can be executed
 };
 
 #endif  // SRC_PRES_COMMANDS_RELAYCOMMAND_H_
