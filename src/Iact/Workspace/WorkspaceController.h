@@ -41,9 +41,7 @@ class WorkspaceController : public BaseObject {
 
     void dispose();
 
-    QList<WorkspaceControl*> EnumerateControls();
-
-
+    QList<WorkspaceControl*> enumerateControls();
 
 private:
     void onWorkspaceGridChanged() {}

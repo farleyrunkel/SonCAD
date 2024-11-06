@@ -27,6 +27,14 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController {
     //! Destructor.
     virtual ~ViewportPanel();
 
+    // WorkspaceController getter/setter
+    WorkspaceController* workspaceController() const;
+    void setWorkspaceController(WorkspaceController* controller);
+
+    // ViewportController getter/setter
+    ViewportController* viewportController() const;
+    void setViewportController(ViewportController* controller);
+
     //! Return AIS context.
     const Handle(AIS_InteractiveContext)& Context() const { return m_context; }
 
@@ -66,6 +74,8 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController {
     virtual void wheelEvent(QWheelEvent* theEvent) override;
 
  private:
+     void viewportControllerChanged();
+     
     //! Dump OpenGL info.
     void dumpGlInfo(bool theIsBasic, bool theToPrint);
 
@@ -88,6 +98,7 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController {
 
  private:
     IViewportMouseControl* m_mouseControl;
+
  private:
     Handle(V3d_Viewer)             m_viewer;
     Handle(V3d_View)               m_view;

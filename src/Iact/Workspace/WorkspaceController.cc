@@ -80,7 +80,7 @@ void WorkspaceController::redraw() {}
 
 void WorkspaceController::MouseMove(ViewportController* viewportController, QPointF pos, Qt::Modifier modifierKeys)
 {
-    for (const auto& handler : EnumerateControls())
+    for (const auto& handler : enumerateControls())
     {
         //if (handler->OnMouseMove(_MouseEventData))
         //    break;
@@ -112,7 +112,7 @@ ViewportController* WorkspaceController::viewportController(Viewport* viewport) 
 
 void WorkspaceController::dispose() {}
 
-QList<WorkspaceControl*> WorkspaceController::EnumerateControls() {
+QList<WorkspaceControl*> WorkspaceController::enumerateControls() {
     QList<WorkspaceControl*> controls;
 
     if (m_currentTool) {

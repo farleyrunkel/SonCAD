@@ -238,6 +238,9 @@ ViewportPanel::ViewportPanel(QWidget* parent)
     QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
     //QCoreApplication::setAttribute (Qt::AA_UseOpenGLES);
 #endif
+
+
+    viewportControllerChanged();
 }
 
 ViewportPanel::~ViewportPanel() {
@@ -257,6 +260,23 @@ ViewportPanel::~ViewportPanel() {
     aDisp.Nullify();
 }
 
+WorkspaceController* ViewportPanel::workspaceController() const { return m_workspaceController; }
+
+void ViewportPanel::setWorkspaceController(WorkspaceController* controller) {
+    if (m_workspaceController != controller) {
+        m_workspaceController = controller;
+    }
+}
+
+// ViewportController getter/setter
+
+ViewportController* ViewportPanel::viewportController() const { return m_viewportController; }
+
+void ViewportPanel::setViewportController(ViewportController* controller) {
+    if (m_viewportController != controller) {
+        m_viewportController = controller;
+    }
+}
 
 void ViewportPanel::initializeGL() {
     m_glContext = new OpenGl_Context();
@@ -428,6 +448,11 @@ void ViewportPanel::wheelEvent(QWheelEvent* theEvent) {
     if (UpdateZoom(Aspect_ScrollDelta(aPos, double(theEvent->angleDelta().y()) / 8.0))) {
         updateView();
     }
+}
+
+void ViewportPanel::viewportControllerChanged() {
+    if (m_mouseControl)
+        m_mouseControl->setViewportController(m_viewportController);
 }
 
 void ViewportPanel::updateView() {
