@@ -12,17 +12,19 @@ class Model : public QObject {
 	Q_OBJECT
 
  public:
-	Model()  {
+	Model();
 
-	}
+	QVector<Workspace*>& workspaces();
 
-	QVector<Workspace*>& workspaces() { return m_workspaces; }
+ public:
+	static QString fileExtension() { return "model"; };
+	QString filePath() { return ""; }
+	bool save() { return false; }
 
  signals:
 	void resetUnsavedChanges();
 
  private:
-
 	QVector<Workspace*> m_workspaces;
 };
 

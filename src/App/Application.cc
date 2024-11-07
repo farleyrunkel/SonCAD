@@ -16,7 +16,11 @@
 #include "Pres/GlobalEventHandler.h"
 
 Application::Application(int& argc, char** argv)
-    : QApplication(argc, argv) {
+    : QApplication(argc, argv),
+    m_mainWindow(nullptr),
+    m_welcomeDialog(nullptr), 
+    m_appContext(nullptr),
+    m_commandManager(nullptr) {
 
     initTranslation();
 
@@ -25,9 +29,9 @@ Application::Application(int& argc, char** argv)
     // Show Welcome Dialog if not skipped
     bool bSkipWelcome = cmdLine->isWelcomeDialogDisabled() || cmdLine->hasPathToOpen() || cmdLine->hasScriptToRun();
     if (!bSkipWelcome && false) {
-        mWelcomeDialog = new WelcomeDialog; // Create the WelcomeDialog
-        mWelcomeDialog->setWindowFlags(mWelcomeDialog->windowFlags() | Qt::WindowStaysOnTopHint);
-        mWelcomeDialog->show(); // Show the WelcomeDialog
+        m_welcomeDialog = new WelcomeDialog; // Create the WelcomeDialog
+        m_welcomeDialog->setWindowFlags(m_welcomeDialog->windowFlags() | Qt::WindowStaysOnTopHint);
+        m_welcomeDialog->show(); // Show the WelcomeDialog
     }
 
     m_commandManager = new CommandManager;
@@ -43,6 +47,8 @@ Application::Application(int& argc, char** argv)
     GlobalEventHandler* globalEventHandler = new GlobalEventHandler(this);
     this->installEventFilter(globalEventHandler); // Install the event filter
 }
+
+Application::~Application() {}
 
 // Initialize synchronization mechanisms
 void Application::initTranslation() {

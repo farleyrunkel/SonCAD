@@ -8,7 +8,7 @@
 class Core {
  public:
      static Application* application() noexcept {
-         return static_cast<Application*>(QCoreApplication::instance());
+         return static_cast<Application*>(Application::instance());
      }
 
      static CommandManager* commandManager() noexcept {

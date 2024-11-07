@@ -11,6 +11,7 @@ class AppCommands {
     static  RelayCommand& initApplication();
     static ActionCommand& exitApplication();
     static ActionCommand& showAboutDialog();
+    static ActionCommand& settings();
     static ActionCommand& resetWindowLayout();
     static ActionCommand& showDocumentExplorer();
 };

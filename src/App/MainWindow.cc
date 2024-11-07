@@ -23,7 +23,6 @@
 
 #include "Iact/Commands/ModelCommands.h"
 #include "Iact/Commands/DocumentCommands.h"
-using namespace ads;
 
 MainWindow::MainWindow(QWidget *parent)
     : SARibbonMainWindow(parent) {
@@ -77,9 +76,13 @@ void MainWindow::setupAppButton() {
 
     if (!m_appButton) {
         m_appButton = new SARibbonMenu(this);
-        m_appButton->addAction(&DocumentCommands::CreateNewModel());
+        m_appButton->addAction(&DocumentCommands::createNewModel());
+        m_appButton->addAction(&DocumentCommands::openModelFrom());
+        m_appButton->addSeparator();
+        m_appButton->addAction(&AppCommands::settings());
         m_appButton->addSeparator();
         m_appButton->addAction(&AppCommands::showAboutDialog());
+        m_appButton->addSeparator();
         m_appButton->addAction(&AppCommands::exitApplication());
     }
     SARibbonApplicationButton* appBtn = qobject_cast<SARibbonApplicationButton*>(btn);
@@ -122,7 +125,7 @@ void MainWindow::setupCategories() {
 void MainWindow::setupDockWidgets() {
     // Set up a central dock widget 
 
-    CDockWidget* CentralDockWidget = new CDockWidget("Workspace");
+    ads::CDockWidget* CentralDockWidget = new ads::CDockWidget("Workspace");
     CentralDockWidget->setWidget(new ViewportView());
     auto* CentralDockArea = m_dockManager->setCentralWidget(CentralDockWidget);
 

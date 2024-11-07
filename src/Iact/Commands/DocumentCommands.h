@@ -7,8 +7,8 @@
 
 class DocumentCommands {
 public:
-    static ActionCommand& CreateNewModel();
-
+    static ActionCommand& createNewModel();
+    static ActionCommand& openModelFrom();
 };
 
 #endif  // SRC_IACT_COMMANDS_DOCUMENTCOMMANDS_H_

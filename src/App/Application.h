@@ -5,7 +5,6 @@
 
 #include <QString>
 #include <QApplication>
-#include <QCoreApplication>
 
 #include "App/MainWindow.h"
 #include "App/WelcomeDialog.h"
@@ -20,7 +19,7 @@ class Application : public QApplication {
 
  public:
     Application(int& argc, char** argv);
-    ~Application() {}
+    ~Application();
 
  private:
     void initTranslation();
@@ -28,12 +27,11 @@ class Application : public QApplication {
  private:
     friend class Core;
 
-    CommandManager* m_commandManager = nullptr;
-    AppContext* m_appContext = nullptr;
-
  private:
-    WelcomeDialog* mWelcomeDialog = nullptr;
-    MainWindow* m_mainWindow = nullptr;
+    MainWindow* m_mainWindow;
+    WelcomeDialog* m_welcomeDialog;
+    AppContext* m_appContext;
+    CommandManager* m_commandManager;
 };
 
 #endif  // SRC_APP_APPLICATION_H_

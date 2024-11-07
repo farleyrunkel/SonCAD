@@ -12,7 +12,7 @@
 
 RelayCommand& AppCommands::initApplication() {
     static RelayCommand command(
-        []() { DocumentCommands::CreateNewModel().execute(); }
+        []() { DocumentCommands::createNewModel().execute(); }
     );
 
     return command;
@@ -37,9 +37,19 @@ ActionCommand& AppCommands::showAboutDialog() {
     );
     // Initialize command properties if not already set
     if (command.text().isEmpty()) {
-        command.setText(QObject::tr("About SunCAD..."));
+        command.setText(QObject::tr("About SunCAD"));
         command.setToolTip(QObject::tr("Shows version and license information."));
         command.setIcon(ResourceUtils::icon("App/App-AboutDialog"));
+    }
+    return command;
+}
+
+ActionCommand& AppCommands::settings() {
+    static ActionCommand command;
+    // Initialize command properties if not already set
+    if (command.text().isEmpty()) {
+        command.setText(QObject::tr("Settings"));
+        command.setIcon(ResourceUtils::icon("App/App-Settings"));
     }
     return command;
 }
@@ -62,7 +72,7 @@ ActionCommand& AppCommands::showDocumentExplorer() {
     // Initialize command properties if not already set
     if (command.text().isEmpty()) {
         command.setText(QObject::tr("Show Document Explorer"));
-        command.setText(QObject::tr("Opens the Document Explorer"));
+        command.setToolTip(QObject::tr("Opens the Document Explorer"));
         command.setIcon(ResourceUtils::icon("App/App-ShowDocu"));
     }
     return command;
