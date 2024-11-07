@@ -9,17 +9,11 @@
 #include "Iact/Commands/CommandHelper.h"
 #include "Iact/Commands/DocumentCommands.h"
 
-ActionCommand& AppCommands::showAboutDialog() {
-    static AboutDialog aboutDialog(nullptr);
-    static ActionCommand command(
-        []() { aboutDialog.show(); }
+RelayCommand& AppCommands::initApplication() {
+    static RelayCommand command(
+        []() { DocumentCommands::CreateNewModel().execute(); }
     );
-    // Initialize command properties if not already set
-    if (command.text().isEmpty()) {
-        command.setText(QObject::tr("About SunCAD..."));
-        command.setToolTip(QObject::tr("Shows version and license information."));
-        command.setIcon(ResourceUtils::icon("App/App-AboutDialog"));
-    }
+
     return command;
 }
 
@@ -35,10 +29,39 @@ ActionCommand& AppCommands::exitApplication() {
     return command;
 }
 
-RelayCommand& AppCommands::initApplication() {
-    static RelayCommand command(
-        []() { DocumentCommands::CreateNewModel().execute(); }
+ActionCommand& AppCommands::showAboutDialog() {
+    static AboutDialog aboutDialog(Core::mainWindow());
+    static ActionCommand command(
+        []() { aboutDialog.show(); }
     );
+    // Initialize command properties if not already set
+    if (command.text().isEmpty()) {
+        command.setText(QObject::tr("About SunCAD..."));
+        command.setToolTip(QObject::tr("Shows version and license information."));
+        command.setIcon(ResourceUtils::icon("App/App-AboutDialog"));
+    }
+    return command;
+}
 
+ActionCommand& AppCommands::resetWindowLayout() {
+    static ActionCommand command(
+        []() { /*Core::mainWindow()->Docking.LoadWindowLayout("Default");*/ }
+    );
+    // Initialize command properties if not already set
+    if (command.text().isEmpty()) {
+        command.setText(QObject::tr("Reset Window Layout"));
+        command.setToolTip(QObject::tr("Resets the window layout to the default layout."));
+        command.setIcon(ResourceUtils::icon("App/App-RestoreLayout"));
+    }
+    return command;
+}
+
+ActionCommand& AppCommands::showDocumentExplorer() {
+    static ActionCommand command;
+    // Initialize command properties if not already set
+    if (command.text().isEmpty()) {
+        command.setText(QObject::tr("Show Document Explorer"));
+        command.setIcon(ResourceUtils::icon("App/App-ShowDocu"));
+    }
     return command;
 }

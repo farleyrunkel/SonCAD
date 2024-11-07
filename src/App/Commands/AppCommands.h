@@ -9,11 +9,11 @@
 
 class AppCommands {
  public:
-    static ActionCommand& showAboutDialog();
-
+    static  RelayCommand& initApplication();
     static ActionCommand& exitApplication();
-
-    static RelayCommand& initApplication();
+    static ActionCommand& showAboutDialog();
+    static ActionCommand& resetWindowLayout();
+    static ActionCommand& showDocumentExplorer();
 };
 
 #endif  // SRC_APP_COMMANDS_APPCOMMANDS_H_

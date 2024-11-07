@@ -21,7 +21,7 @@ class MainWindow : public SARibbonMainWindow {
 
  private:
     void setupUi();
-    void setupWelcomePage();
+    void setupDockWidgets();
     void setupAppButton();
     void setupCategories();
 

@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     setupAppButton();
     setupCategories();
 
-    setupWelcomePage();
+    setupDockWidgets();
 
     onMainWindowLoaded();
 }
@@ -64,37 +64,6 @@ void MainWindow::setupUi() {
     m_ribbonBar->setContentsMargins(5, 0, 5, 0);
 }
 
-void MainWindow::setupWelcomePage() {
-    // Set up a central dock widget 
-
-    CDockWidget* CentralDockWidget = new CDockWidget("Workspace");
-    CentralDockWidget->setWidget(new ViewportView());
-    auto* CentralDockArea = m_dockManager->setCentralWidget(CentralDockWidget);
-
-    // Set up additional dock widgets for various panels
-    ads::CDockWidget* documentDock = new ads::CDockWidget("Document");
-    documentDock->setWidget(new WelcomeDialog());
-
-    ads::CDockWidget* layersDock = new ads::CDockWidget("Layers");
-    layersDock->setWidget(new WelcomeDialog());
-
-    ads::CDockWidget* propertiesDock = new ads::CDockWidget("Properties");
-    propertiesDock->setWidget(new WelcomeDialog());
-
-    ads::CDockWidget* messageDock = new ads::CDockWidget("Message");
-    messageDock->setWidget(new WelcomeDialog());
-
-    // Add dock widgets to specific dock areas
-    m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarRight, propertiesDock)->setSize(240);
-    m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarLeft, documentDock)->setSize(240);
-    m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarLeft, layersDock)->setSize(240);
-    m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarBottom, messageDock)->setSize(240);
-
-    // Add workspace toggle action (if required in app button)
-    m_appButton->addAction(CentralDockWidget->toggleViewAction());
-}
-
-
 void MainWindow::setupAppButton() {
     if (!m_ribbonBar) {
         return;
@@ -109,7 +78,7 @@ void MainWindow::setupAppButton() {
     if (!m_appButton) {
         m_appButton = new SARibbonMenu(this);
         m_appButton->addAction(&DocumentCommands::CreateNewModel());
-        m_appButton->addAction(createAction("test2", "://icon/action2.svg"));
+        m_appButton->addSeparator();
         m_appButton->addAction(&AppCommands::showAboutDialog());
         m_appButton->addAction(&AppCommands::exitApplication());
     }
@@ -144,7 +113,39 @@ void MainWindow::setupCategories() {
         if (SARibbonPannel* aPannel = aCategory->addPannel(tr("Widgets"))) {
             aPannel->addAction(&ModelCommands::CreateBox(), SARibbonPannelItem::Large);
         }
+        if (SARibbonPannel* aPannel = aCategory->addPannel(tr("Panels"))) {
+            aPannel->addAction(&AppCommands::showDocumentExplorer(), SARibbonPannelItem::Large);
+        }
     }
+}
+
+void MainWindow::setupDockWidgets() {
+    // Set up a central dock widget 
+
+    CDockWidget* CentralDockWidget = new CDockWidget("Workspace");
+    CentralDockWidget->setWidget(new ViewportView());
+    auto* CentralDockArea = m_dockManager->setCentralWidget(CentralDockWidget);
+
+    // Set up additional dock widgets for various panels
+    ads::CDockWidget* documentDock = new ads::CDockWidget("Document");
+    documentDock->setWidget(new WelcomeDialog());
+
+    ads::CDockWidget* layersDock = new ads::CDockWidget("Layers");
+    layersDock->setWidget(new WelcomeDialog());
+
+    ads::CDockWidget* propertiesDock = new ads::CDockWidget("Properties");
+    propertiesDock->setWidget(new WelcomeDialog());
+
+    ads::CDockWidget* messageDock = new ads::CDockWidget("Message");
+    messageDock->setWidget(new WelcomeDialog());
+
+    // Add dock widgets to specific dock areas
+    m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarRight, propertiesDock)->setSize(240);
+    m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarLeft, documentDock)->setSize(240);
+    m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarLeft, layersDock)->setSize(240);
+    m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarBottom, messageDock)->setSize(240);
+
+    connect(&AppCommands::showDocumentExplorer(), &QAction::triggered, documentDock->toggleViewAction(), &QAction::trigger);
 }
 
 void MainWindow::onMainWindowLoaded() {
