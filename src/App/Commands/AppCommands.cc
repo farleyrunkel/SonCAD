@@ -3,9 +3,10 @@
 #include <QIcon>
 
 #include "ResourceUtils.h"
-#include "App/Application.h"
-#include "App/Commands/AppCommands.h"
 #include "Core/Core.h"
+#include "App/Application.h"
+#include "App/AboutDialog.h"
+#include "App/Commands/AppCommands.h"
 #include "Iact/Commands/CommandHelper.h"
 #include "Iact/Commands/DocumentCommands.h"
 
@@ -61,6 +62,7 @@ ActionCommand& AppCommands::showDocumentExplorer() {
     // Initialize command properties if not already set
     if (command.text().isEmpty()) {
         command.setText(QObject::tr("Show Document Explorer"));
+        command.setText(QObject::tr("Opens the Document Explorer"));
         command.setIcon(ResourceUtils::icon("App/App-ShowDocu"));
     }
     return command;
