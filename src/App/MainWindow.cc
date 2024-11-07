@@ -110,6 +110,8 @@ void MainWindow::setupAppButton() {
         m_appButton = new SARibbonMenu(this);
         m_appButton->addAction(&DocumentCommands::CreateNewModel());
         m_appButton->addAction(createAction("test2", "://icon/action2.svg"));
+        m_appButton->addAction(&AppCommands::showAboutDialog());
+        m_appButton->addAction(&AppCommands::exitApplication());
     }
     SARibbonApplicationButton* appBtn = qobject_cast<SARibbonApplicationButton*>(btn);
     if (!appBtn) {

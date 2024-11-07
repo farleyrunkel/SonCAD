@@ -14,7 +14,7 @@ class ActionCommand final : public QAction, public RelayCommand {
 
  public:
     // Constructor
-    ActionCommand(std::function<void()> execute, std::function<bool()> canExecute);
+    ActionCommand(std::function<void()> execute, std::function<bool()> canExecute = nullptr);
 };
 
 #endif  // SRC_PRES_COMMANDS_ACTIONCOMMAND_H_

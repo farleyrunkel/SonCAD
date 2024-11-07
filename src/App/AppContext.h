@@ -8,10 +8,8 @@
 
 class AppContext : public InteractiveContext {
  public:
-    // Private constructor to prevent external instantiation
     AppContext() = default;
 
-    // Private destructor to control instance destruction
     ~AppContext() = default;
 
     void initialize(CommandLine* cmdLine) {}

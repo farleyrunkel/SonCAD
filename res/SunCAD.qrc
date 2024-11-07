@@ -43,6 +43,8 @@
         <file>icons/App/App-Settings.svg</file>
         <file>icons/App/App-ShortcutHelp.svg</file>
         <file>icons/App/App-UserGuide.svg</file>
+        <file>icons/App/App-AboutDialog.svg</file>
+        <file>icons/App/App-ExitApp.svg</file>
         <file>icons/App/App-MainLogo.ico</file>
     </qresource>
 </RCC>
