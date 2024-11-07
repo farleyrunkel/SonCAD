@@ -17,7 +17,7 @@ class Model : public QObject {
 	QVector<Workspace*>& workspaces();
 
  public:
-	static QString fileExtension() { return "model"; };
+	static QString fileExtension() { return "step"; };
 	QString filePath() { return ""; }
 	bool save() { return false; }
 
@@ -27,6 +27,5 @@ class Model : public QObject {
  private:
 	QVector<Workspace*> m_workspaces;
 };
-
 
 #endif  // SRC_CORE_TOPOLOGY_MODEL_H_

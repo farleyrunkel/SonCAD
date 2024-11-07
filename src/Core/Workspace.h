@@ -32,7 +32,7 @@ public:
     void initV3dViewer();
     void initAisContext();
 
-    void _ApplyWorkingContext();
+    void applyWorkingContext();
 
     // Getters
     Handle(V3d_Viewer) v3dViewer() const;

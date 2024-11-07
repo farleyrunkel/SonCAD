@@ -5,8 +5,48 @@
 #include <QFileDialog>
 #include <QElapsedTimer>
 
+// OpenCascade includes
+#include <BinXCAFDrivers.hxx>
+#include <STEPCAFControl_Reader.hxx>
+#include <TDocStd_Application.hxx>
+#include <TDocStd_Document.hxx>
+
 #include "Core/Core.h"
 #include "Core/Topology/Model.h"
+#include "Iact/Workspace/DisplayScene.h"
+
+namespace {
+    Handle(TDocStd_Document) ReadStepWithMeta(const char* filename) {
+        STEPCAFControl_Reader Reader;
+
+        // Create XDE document.
+        Handle(TDocStd_Application) app = new TDocStd_Application;
+        BinXCAFDrivers::DefineFormat(app);
+        Handle(TDocStd_Document) doc;
+        app->NewDocument("BinXCAF", doc);
+
+        // Read CAD and associated data from file
+        try {
+            IFSelect_ReturnStatus outcome = Reader.ReadFile(filename);
+            //
+            if (outcome != IFSelect_RetDone) {
+                app->Close(doc);
+                return nullptr;
+            }
+
+            if (!Reader.Transfer(doc)) {
+                app->Close(doc);
+                return nullptr;
+            }
+        }
+        catch (...) {
+            app->Close(doc);
+            return nullptr;
+        }
+
+        return doc;
+    }
+}
 
 ModelController::ModelController(QObject* parent) {}
 
@@ -22,7 +62,7 @@ bool ModelController::openModelFrom(const QString& initialDirectory) {
     QFileDialog dlg;
     dlg.setWindowTitle("Open Model...");
     dlg.setFileMode(QFileDialog::ExistingFile);
-    dlg.setNameFilter("SunCAD Models (*." + Model::fileExtension() + ")");
+    dlg.setNameFilter("Step files (*." + Model::fileExtension() + ")");
     dlg.setDefaultSuffix(Model::fileExtension());
     dlg.setDirectory(initialDirectory.isEmpty() ? QString() : initialDirectory);
 
@@ -41,7 +81,21 @@ bool ModelController::openModelFrom(const QString& initialDirectory) {
 }
 
 bool ModelController::openModel(const QString& file) {
-    return false;
+    Handle(TDocStd_Document) doc = ::ReadStepWithMeta(file.toStdString().c_str());
+
+    if (doc.IsNull()) {
+        std::cout << "Failed to read STEP model from file " << file.toStdString() << std::endl;
+        return false;
+    }
+    if (auto workspace = Core::appContext()->workspace(); workspace != nullptr) {
+        DisplayScene cmd(doc, workspace->aisContext());
+        if (!cmd.Execute()) {
+            std::cout << "Failed to visualize CAD model with `DisplayScene` command." << std::endl;
+            return false;
+        }
+        workspace->aisContext()->UpdateCurrentViewer();
+    }
+    return true;
 }
 
 bool ModelController::saveModel() {

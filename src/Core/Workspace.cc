@@ -2,13 +2,16 @@
 
 #include "Core/Workspace.h"
 
-#include <V3d_View.hxx>
+#include <AIS_ViewCube.hxx>
+#include <Aspect_Handle.hxx>
 #include <Aspect_DisplayConnection.hxx>
 #include <Graphic3d_GraphicDriver.hxx>
+#include <Prs3d_ArrowAspect.hxx>
 #include <OpenGl_GraphicDriver.hxx>
-#include <Aspect_Handle.hxx>
-#include "Viewport.h"
-//#include "Model.h"
+#include <V3d_View.hxx>
+
+#include "Core/Viewport.h"
+#include "Core/Topology/Model.h"
 
 //--------------------------------------------------------------------------------------------------
 // Constructor and Destructor
@@ -54,17 +57,14 @@ void Workspace::initV3dViewer() {
     m_v3dViewer->SetDefaultLights();
     m_v3dViewer->SetLightOn();
     m_v3dViewer->ActivateGrid(Aspect_GT_Rectangular, Aspect_GDM_Lines);
-
-    // Create AIS context for interactive objects
-    m_aisContext = new AIS_InteractiveContext(m_v3dViewer);
 }
 
 void Workspace::initAisContext() {
-    if (m_v3dViewer.IsNull())
+    if (m_v3dViewer.IsNull()) {
         initV3dViewer();
+    }
 
-    if (m_aisContext.IsNull())
-    {
+    if (m_aisContext.IsNull()) {
         m_aisContext = new AIS_InteractiveContext(m_v3dViewer);
         m_aisContext->UpdateCurrentViewer();
     }
@@ -72,29 +72,33 @@ void Workspace::initAisContext() {
     m_aisContext->SetAutoActivateSelection(true);
     m_aisContext->SetToHilightSelected(false);
     m_aisContext->SetPickingStrategy(SelectMgr_PickingStrategy_OnlyTopmost);
-    m_aisContext->SetDisplayMode((int)AIS_Shaded, false);
+    m_aisContext->SetDisplayMode(AIS_Shaded, Standard_True);
+
+    // try to set all AIS_InteractiveContext options for test 
+    auto style = new Prs3d_Drawer();
+    style->SetFaceBoundaryDraw(true);
+    style->SetArrowAspect(new Prs3d_ArrowAspect(1.0, 35.0));
+    style->SetFaceBoundaryAspect(new Prs3d_LineAspect(Quantity_NOC_BLACK, Aspect_TOL_SOLID, 1.0));
+    m_aisContext->SetHighlightStyle(style);
+
     m_v3dViewer->DisplayPrivilegedPlane(false, 1.0);
-    m_aisContext->EnableDrawHiddenLine();
 
     // Reinit ais parameters
-    _ApplyWorkingContext();
+    applyWorkingContext();
     m_aisContext->SetPixelTolerance(2);
 
-    auto drawer = m_aisContext->DefaultDrawer();
-    drawer->SetWireAspect(new Prs3d_LineAspect(ColorExtensions::toQuantityColor(Colors::Selection), Aspect_TOL_SOLID, 1.0));
-    drawer->SetTypeOfHLR(Prs3d_TypeOfHLR::Prs3d_TOH_PolyAlgo);
+    m_aisContext->Display(new AIS_ViewCube(), 0, 0, false);
+
+    //auto drawer = m_aisContext->DefaultDrawer();
+    //drawer->SetWireAspect(new Prs3d_LineAspect(ColorExtensions::toQuantityColor(Colors::Selection), Aspect_TOL_SOLID, 1.0));
+    //drawer->SetTypeOfHLR(Prs3d_TypeOfHLR::Prs3d_TOH_PolyAlgo);
 }
 
-void Workspace::_ApplyWorkingContext()
-{
-    if (!m_aisContext.IsNull())
-    {
+void Workspace::applyWorkingContext() {
+    if (!m_aisContext.IsNull()) {
         // m_v3dViewer->SetPrivilegedPlane(_CurrentWorkingContext.WorkingPlane.Position);
     }
 }
-
-//--------------------------------------------------------------------------------------------------
-// Getters
 
 Handle(V3d_Viewer) Workspace::v3dViewer() const {
     return m_v3dViewer;
