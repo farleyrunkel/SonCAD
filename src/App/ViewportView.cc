@@ -45,7 +45,6 @@ ViewportView::ViewportView(QWidget* parent)
                     m_viewportPanel->setView(viewport->v3dView());
                     setWidget(m_viewportPanel); // Set as the scrollable area
                     setWidgetResizable(true); // Allow resizing
-                    update();
                 }}
             );
 
