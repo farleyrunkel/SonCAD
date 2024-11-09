@@ -13,7 +13,7 @@ class MouseEventData;
 //--------------------------------------------------------------------------------------------------
 // 鼠标事件处理接口
 class IMouseEventHandler {
-public:
+ public:
     virtual ~IMouseEventHandler() = default;
     virtual bool onMouseMove(MouseEventData* data) = 0;
     virtual bool onMouseDown(MouseEventData* data) = 0;
@@ -29,7 +29,7 @@ class Viewport;
 //--------------------------------------------------------------------------------------------------
 // 鼠标事件数据结构
 class MouseEventData {
-public:
+ public:
     // 定义元素类，包含交互对象、实体和形状信息
     struct Element {
         AIS_InteractiveObject* aisObject;
