@@ -2,11 +2,7 @@
 
 #include "Core/Topology/Entity.h"
 
-// For debugging or logging purposes
-
-
 // Constructor
-
  Entity::Entity(QObject* parent)
     : QObject(parent), _guid(QUuid::createUuid()),  _hasErrors(false) {
     qDebug() << "Entity created with GUID:" << _guid.toString();
@@ -21,13 +17,11 @@ void Entity::setGuid(const QUuid& guid) {
 }
 
 // Type name property
-
 QString Entity::typeName() const {
     return QString(metaObject()->className());
 }
 
 // Name property, virtual
-
 QString Entity::name() const {
     return "Unknown";
 }
@@ -37,7 +31,6 @@ void Entity::setName(const QString&) {
 }
 
 // Error handling
-
 bool Entity::hasErrors() const {
     return _hasErrors;
 }

@@ -2,10 +2,12 @@
 
 #include "Iact/Workspace/InteractiveContext.h"
 
-InteractiveContext::InteractiveContext() : CoreContext(),
-    m_documentController(new ModelController(this)),
-    m_viewportController(nullptr),
-    m_workspaceController(nullptr) {
+InteractiveContext::InteractiveContext() 
+    : CoreContext(),
+      m_editorState(nullptr),
+      m_documentController(new ModelController(this)),
+      m_viewportController(nullptr),
+      m_workspaceController(nullptr) {
     initialize();
 }
 
@@ -53,7 +55,9 @@ void InteractiveContext::setWorkspaceController(WorkspaceController* controller)
 
 // ViewportController getter/setter
 
-ViewportController* InteractiveContext::viewportController() const { return m_viewportController; }
+ViewportController* InteractiveContext::viewportController() const { 
+    return m_viewportController; 
+}
 
 void InteractiveContext::setViewportController(ViewportController* controller) {
     if (m_viewportController != controller) {
@@ -121,7 +125,13 @@ void InteractiveContext::addToScriptMruList(const QString& filePath) {
 }
 
 void InteractiveContext::initialize() {
-    connect(this, &InteractiveContext::workspaceControllerChanged, [this]() {emit propertyChanged("workspaceController"); });
-    connect(this, &InteractiveContext::documentControllerChanged, [this]() {emit propertyChanged("documentController"); });
-    connect(this, &InteractiveContext::viewportControllerChanged, [this]() {emit propertyChanged("viewportController"); });
+    connect(this, &InteractiveContext::workspaceControllerChanged, 
+        [this]() {emit propertyChanged("workspaceController"); }
+    );
+    connect(this, &InteractiveContext::documentControllerChanged, 
+        [this]() {emit propertyChanged("documentController"); }
+    );
+    connect(this, &InteractiveContext::viewportControllerChanged, 
+        [this]() {emit propertyChanged("viewportController"); }
+    );
 }

@@ -21,6 +21,8 @@ class Model : public QObject {
 	QString filePath() { return ""; }
 	bool save() { return false; }
 
+	bool hasUnsavedChanges() { return false; }
+
  signals:
 	void resetUnsavedChanges();
 

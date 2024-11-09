@@ -11,7 +11,7 @@
 
 ViewportView::ViewportView(QWidget* parent)
     : QScrollArea(parent),
-    m_viewportPanel(nullptr) {
+      m_viewportPanel(nullptr) {
 
     // Set layout for the main panel
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
@@ -33,7 +33,7 @@ ViewportView::ViewportView(QWidget* parent)
     connect(Core::appContext(), &AppContext::workspaceChanged, [this](Workspace* workspace) {
         if (workspace) {
             if (m_viewportPanel) {
-                delete m_viewportPanel;
+                m_viewportPanel->deleteLater();
             }
             // Create main panel for the viewport
             m_viewportPanel = new ViewportPanel();

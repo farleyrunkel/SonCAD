@@ -87,11 +87,9 @@ void Workspace::initAisContext() {
     applyWorkingContext();
     m_aisContext->SetPixelTolerance(2);
 
-    m_aisContext->Display(new AIS_ViewCube(), 0, 0, false);
-
-    //auto drawer = m_aisContext->DefaultDrawer();
-    //drawer->SetWireAspect(new Prs3d_LineAspect(ColorExtensions::toQuantityColor(Colors::Selection), Aspect_TOL_SOLID, 1.0));
-    //drawer->SetTypeOfHLR(Prs3d_TypeOfHLR::Prs3d_TOH_PolyAlgo);
+    auto drawer = m_aisContext->DefaultDrawer();
+    drawer->SetWireAspect(new Prs3d_LineAspect(ColorExtensions::toQuantityColor(Colors::Selection), Aspect_TOL_SOLID, 1.0));
+    drawer->SetTypeOfHLR(Prs3d_TypeOfHLR::Prs3d_TOH_PolyAlgo);
 }
 
 void Workspace::applyWorkingContext() {

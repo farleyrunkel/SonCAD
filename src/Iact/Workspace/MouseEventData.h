@@ -22,7 +22,7 @@ public:
 
 //--------------------------------------------------------------------------------------------------
 // 定义交互式实体的基本接口
-class InteractiveEntity : public QObject {};
+class InteractiveEntity;
 class AIS_InteractiveObject;
 class TopoDS_Shape;
 class Viewport;

@@ -1,9 +1,13 @@
 // Copyright [2024] SunCAD
 
+// Own include
 #include "Iact/Workspace/ModelController.h"
 
+// Qt includes
 #include <QFileDialog>
 #include <QElapsedTimer>
+#include <QMessageBox>
+#include <QDebug>
 
 // OpenCascade includes
 #include <BinXCAFDrivers.hxx>
@@ -11,9 +15,12 @@
 #include <TDocStd_Application.hxx>
 #include <TDocStd_Document.hxx>
 
+// SunCAD includes
 #include "Core/Core.h"
 #include "Core/Topology/Model.h"
 #include "Iact/Workspace/DisplayScene.h"
+
+//-----------------------------------------------------------------------------
 
 namespace {
     Handle(TDocStd_Document) ReadStepWithMeta(const char* filename) {
@@ -116,6 +123,26 @@ bool ModelController::saveModelAs() {
 }
 
 bool ModelController::askForSavingModelChanges() { 
+    if (Core::appContext()->document() == nullptr) {
+        return true;
+    }
+
+    if (Core::appContext()->document()->hasUnsavedChanges()) {
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(nullptr, "Confirmation", "Are you sure you want to proceed?",
+            QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+
+        if (reply == QMessageBox::Yes) {
+            qDebug() << "User selected Yes";
+        }
+        else if (reply == QMessageBox::No) {
+            qDebug() << "User selected No";
+        }
+        else if (reply == QMessageBox::Cancel) {
+            qDebug() << "User selected Cancel";
+        }
+    }
+
     return true; 
 }
 

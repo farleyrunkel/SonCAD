@@ -35,7 +35,7 @@ ActionCommand& ModelCommands::CreateBox() {
         );
     }
 
-    return command;
+    return command; 
 }
 
 ActionCommand& ModelCommands::CreateCylinder()

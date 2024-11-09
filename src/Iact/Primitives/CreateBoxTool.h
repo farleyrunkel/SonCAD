@@ -5,6 +5,9 @@
 
 #include <QObject>
 
+#include <gp_Pln.hxx>
+#include <gp_Pnt2d.hxx>
+
 #include "Iact/Framework/Tool.h"
 #include "Iact/ToolActions/PointAction.h"
 #include "Iact/HudElements/Coord2DHudElement.h"
@@ -20,6 +23,7 @@ class CreateBoxTool : public Tool {
 		BaseRect,
 		Height
 	};
+
 	bool onMouseMove(MouseEventData* data) override { return false; };
 	bool onMouseDown(MouseEventData* data) override { return false; };
 	bool onMouseUp(MouseEventData* data) override { return false; };
@@ -32,8 +36,12 @@ class CreateBoxTool : public Tool {
 	void _PivotAction_Preview() {};
 
  private:
-	Coord2DHudElement* m_coord2DHudElement;
+
 	Phase m_currentPhase;
+	gp_Pln _Plane;
+	double _Height;
+	bool _IsTemporaryVisual;
+	Coord2DHudElement* m_coord2DHudElement;
 };
 
 #endif // SRC_IACT_PRIMITIVES_CREATEBOXTOOL_H_

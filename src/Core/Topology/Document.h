@@ -12,6 +12,7 @@
 #include <QList>
 #include <QVariant>
 #include <QScopedPointer>
+
 #include "Core/EntityContainer.h"
 #include "Core/Topology/Entity.h"
 

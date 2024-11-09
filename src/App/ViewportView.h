@@ -12,7 +12,7 @@ class ViewportView : public QScrollArea {
  public:
     explicit ViewportView(QWidget* parent = nullptr);
 
-private:
+ private:
     ViewportPanel* m_viewportPanel;
 };
 #endif  // SRC_APP_VIEWPORTVIEW_H_

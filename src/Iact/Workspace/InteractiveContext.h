@@ -16,6 +16,9 @@
 #include "Iact/Workspace/WorkspaceController.h"
 #include "Iact/Workspace/ModelController.h"
 #include "Iact/Workspace/ViewportController.h"
+#include "Iact/Workspace/EditorState.h"
+
+//-----------------------------------------------------------------------------
 
 class InteractiveContext : public CoreContext {
     Q_OBJECT
@@ -59,6 +62,7 @@ class InteractiveContext : public CoreContext {
     void viewportControllerChanged(ViewportController*);
 
  private:
+    EditorState* m_editorState;
     ModelController* m_documentController;
     WorkspaceController* m_workspaceController;
     ViewportController* m_viewportController;

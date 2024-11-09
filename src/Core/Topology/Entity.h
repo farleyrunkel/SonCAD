@@ -6,8 +6,6 @@
 #include <QObject>
 #include <QUuid>
 #include <QDebug>
-#include <QJsonObject>
-#include <QJsonDocument>
 
 // Base class for Entity, assuming Entity is derived from QObject for signal/slot support
 class Entity : public QObject {
@@ -26,9 +24,8 @@ class Entity : public QObject {
     QString typeName() const;
 
     // Name property, virtual
-    virtual QString name() const;
-
-    virtual void setName(const QString& /*unused*/);
+    virtual QString name() const = 0;
+    virtual void setName(const QString&) = 0;
 
     // Error handling
     bool hasErrors() const;
