@@ -34,7 +34,7 @@ class PointAction : public ToolAction {
     bool onMouseUp(MouseEventData* data) override;
 
  private:
-     void ensureMarker() {}
+     void ensureMarker();
      void processMouseInput(MouseEventData* data);
 
  signals:

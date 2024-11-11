@@ -47,6 +47,13 @@ bool PointAction::onMouseUp(MouseEventData* data) {
     }
     return false; }
 
+void PointAction::ensureMarker() {
+    if (_Marker == nullptr) {
+        _Marker = new Marker(workspaceController(), Marker::Styles::Bitmap, Marker::PlusImage);
+        // Add(_Marker);
+    }
+}
+
 void PointAction::processMouseInput(MouseEventData* data) {
     qDebug() << "Debug: PointAction::processMouseInput";
 }

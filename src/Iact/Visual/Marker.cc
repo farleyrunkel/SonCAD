@@ -74,3 +74,10 @@ void Marker::_updatePresentation() {
         //_AisPoint->SetColor(_ColorBg.toQuantityColor());
     }
 }
+
+const QImage Marker::BallImage = Marker::GetMarkerImage("Ball", 8);
+const QImage Marker::RectImage = Marker::GetMarkerImage("Rect", 8);
+const QImage Marker::RingImage = Marker::GetMarkerImage("Ring", 16);
+const QImage Marker::PlusImage = Marker::GetMarkerImage("Plus", 16);
+const QImage Marker::XImage = Marker::GetMarkerImage("X", 16);
+const QImage Marker::ErrorImage = Marker::GetMarkerImage("Error", 24);

@@ -102,7 +102,49 @@ private:
     //    return new Prs3d_PointAspect(image);
     //}
 
-private:
+    // Static method to load marker images
+
+    static QImage GetMarkerImage(const QString& name, int size)
+    {
+        //QString cacheName = QString("%1@%2").arg(name).arg(size);
+
+        //// Check if the image is already cached
+        //if (_ImageCache.contains(cacheName))
+        //{
+        //    return _ImageCache.value(cacheName);
+        //}
+
+        //// Try to load the marker as a XAML or image (method to load resources)
+        //QPixmap pixmap = TryGetMarkerAsXaml(name, size); // Method to load image from XAML
+        //if (pixmap.isNull())
+        //{
+        //    pixmap = TryGetMarkerAsImage(name); // Fallback to loading from an image file
+        //}
+
+        //if (pixmap.isNull())
+        //{
+        //    // Handle error
+        //    //MessageBox::Error(QString("Could not load marker image %1 from resource.").arg(name));
+        //    _ImageCache.insert(cacheName, QImage());
+        //    return QImage(); // Return an empty image on failure
+        //}
+
+        // Store image in cache
+        QImage image; /*= pixmap.toImage();
+        _ImageCache.insert(cacheName, image);*/
+
+        return image;
+    }
+
+ public:
+    static const QImage BallImage;
+    static const QImage RectImage;
+    static const QImage RingImage;
+    static const QImage PlusImage;
+    static const QImage XImage;
+    static const QImage ErrorImage;
+
+ private:
     Styles _Styles;
     QImage _Image;
     Handle(AIS_Point) _AisPoint = nullptr; // OCCT µ„∂‘œÛ
