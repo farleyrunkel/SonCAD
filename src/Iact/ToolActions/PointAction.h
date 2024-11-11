@@ -3,12 +3,14 @@
 #ifndef SRC_IACT_TOOLACTION_POINTACTION_H_
 #define SRC_IACT_TOOLACTION_POINTACTION_H_
 
-#include "Iact/Framework/ToolAction.h"
-#include "Iact/Workspace/MouseEventData.h"
+#include <QMessageBox>
 
 #include <gp_Pnt.hxx>
 #include <gp_Pnt2d.hxx>
-#include <QMessageBox>
+
+#include "Iact/Visual/Marker.h"
+#include "Iact/Framework/ToolAction.h"
+#include "Iact/Workspace/MouseEventData.h"
 
 class PointAction : public ToolAction {
     Q_OBJECT
@@ -41,6 +43,7 @@ class PointAction : public ToolAction {
 
 private:
     bool m_isFinished;
+    Marker* _Marker;
 };
 
 #endif  // SRC_IACT_TOOLACTION_POINTACTION_H_
