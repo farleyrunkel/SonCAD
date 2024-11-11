@@ -4,22 +4,24 @@
 
 #include "Iact/Workspace/WorkspaceController.h"
 
-PointAction::PointAction() :
-    m_isFinished(false) {
+PointAction::PointAction() 
+    : m_isFinished(false) {
+    qDebug() << "Debug: PointAction::PointAction";
 }
 
 bool PointAction::onStart() {
-    QMessageBox::warning(nullptr, "adsd", "dasds");
+    // QMessageBox::warning(nullptr, "adsd", "dasds");
+    qDebug() << "Debug: PointAction::onStart";
 
-    return false;
+    return true;
 }
 
 bool PointAction::onMouseMove(MouseEventData* data) {
+    qDebug() << "Debug: PointAction::onMouseMove";
     if (!m_isFinished) {
         ensureMarker();
         processMouseInput(data);
         EventArgs* args = new EventArgs(
-
         );
 
         emit preview(args);
@@ -31,5 +33,5 @@ bool PointAction::onMouseMove(MouseEventData* data) {
 }
 
 void PointAction::processMouseInput(MouseEventData* data) {
-
+    qDebug() << "Debug: PointAction::processMouseInput\n";
 }

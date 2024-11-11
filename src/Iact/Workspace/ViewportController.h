@@ -74,7 +74,6 @@ class ViewportController : public QObject {
     bool isInRubberbandSelection() const { return false; };   // Returns whether rubberband selection is active
     bool isSelecting() const { return false; };           // Returns whether selection mode is active
     bool isLockedToPlane() const { return false; };            // Returns whether the view is locked to a specific plane
-    //--------------------------------------------------------------------------------------------------
 
     void setPredefinedView(PredefinedViews predefinedView);
 

@@ -5,7 +5,7 @@
 #include "Iact/Workspace/WorkspaceController.h"
 
 Tool::Tool(QObject* parent) : WorkspaceControl(),
-	id(typeid(*this).name()) {
+	m_id(typeid(*this).name()) {
 }
 
 bool Tool::start() {
@@ -41,8 +41,15 @@ void Tool::stop() {
 	workspaceController()->invalidate();
 }
 
+QString Tool::id() const { return m_id; }
+
 bool Tool::prepareUndo() {
 	return cancel(false);
+}
+
+QList<WorkspaceControl*> Tool::getChildren() const {
+	qDebug() << "Debug: Tool::getChildren";
+	return {m_toolActions.begin(), m_toolActions.end()};
 }
 
 bool Tool::onCancel() {

@@ -24,10 +24,6 @@ class CreateBoxTool : public Tool {
 		Height
 	};
 
-	bool onMouseMove(MouseEventData* data) override { return false; };
-	bool onMouseDown(MouseEventData* data) override { return false; };
-	bool onMouseUp(MouseEventData* data) override { return false; };
-
  protected:
 	bool onStart() override;
 
@@ -36,7 +32,6 @@ class CreateBoxTool : public Tool {
 	void _PivotAction_Preview() {};
 
  private:
-
 	Phase m_currentPhase;
 	gp_Pln _Plane;
 	double _Height;

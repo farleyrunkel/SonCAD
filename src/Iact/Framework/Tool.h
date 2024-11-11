@@ -5,6 +5,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QList>
 
 #include "Iact/Framework/WorkspaceControl.h"
 #include "Iact/Framework/ToolAction.h"
@@ -26,9 +27,13 @@ class Tool : public WorkspaceControl {
 
 	void stop();
 
+	QString id() const;
+
 	virtual bool prepareUndo();
 
  protected:
+	virtual QList<WorkspaceControl*> getChildren() const;
+
 	virtual bool onCancel();
 
 	virtual void onStop();
@@ -50,8 +55,8 @@ class Tool : public WorkspaceControl {
 	void toolActionChanged(ToolAction*);
 
  private:
-	QVector<ToolAction*> m_toolActions;
-	QString id;
+	QList<ToolAction*> m_toolActions;
+	QString m_id;
 	bool m_isActive;
 };
 

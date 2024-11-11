@@ -47,6 +47,7 @@ Tool* WorkspaceController::currentTool() const { return m_currentTool; }
 
 
 bool WorkspaceController::startTool(Tool* tool) {
+    qDebug() << "Debug: WorkspaceController::startTool";
     try {
         if (currentTool() != nullptr && !cancelTool(currentTool(), true)) {
             return false;
@@ -54,7 +55,9 @@ bool WorkspaceController::startTool(Tool* tool) {
         if (tool != nullptr) {
             tool->setWorkspaceController(this);
             m_currentTool = tool;
-            if (m_currentEditor) { m_currentEditor->stopTool(); }
+            if (m_currentEditor) { 
+                m_currentEditor->stopTool(); 
+            }
             if (!tool->start()) {
                 return false;
             }
@@ -70,8 +73,7 @@ bool WorkspaceController::startTool(Tool* tool) {
     }
 }
 
-void WorkspaceController::invalidate(bool immediateOnly, bool forceRedraw)
-{
+void WorkspaceController::invalidate(bool immediateOnly, bool forceRedraw) {
     m_workspace->setNeedsImmediateRedraw(true);
     if (!immediateOnly)
         m_workspace->setNeedsRedraw(true);
@@ -83,10 +85,9 @@ void WorkspaceController::invalidate(bool immediateOnly, bool forceRedraw)
 void WorkspaceController::redraw() {
 }
 
-void WorkspaceController::mouseMove(ViewportController* viewportController, QPointF pos, Qt::KeyboardModifiers modifiers)
-{
-    for (const auto& handler : enumerateControls())
-    {
+void WorkspaceController::mouseMove(ViewportController* viewportController, QPointF pos, Qt::KeyboardModifiers modifiers) {
+    qDebug() << "Debug: WorkspaceController::mouseMove: " << pos;
+    for (const auto& handler : enumerateControls()) {
         if (handler->onMouseMove(_MouseEventData))
             break;
     }
@@ -96,7 +97,9 @@ bool WorkspaceController::cancelTool(Tool* tool, bool force) {
     return true;
 }
 
-Workspace* WorkspaceController::workspace() const { return m_workspace; }
+Workspace* WorkspaceController::workspace() const { 
+    return m_workspace; 
+}
 
 void WorkspaceController::setActiveViewport(Viewport* viewport) {
      m_activeViewport = viewport;
@@ -118,6 +121,7 @@ ViewportController* WorkspaceController::viewportController(Viewport* viewport) 
 void WorkspaceController::dispose() {}
 
 QList<WorkspaceControl*> WorkspaceController::enumerateControls() {
+    qDebug() << "Debug: WorkspaceController::enumerateControls";
     QList<WorkspaceControl*> controls;
 
     if (m_currentTool) {

@@ -14,7 +14,7 @@ void WorkspaceControl::setWorkspaceController(WorkspaceController* workspaceCont
 	m_workspaceController = workspaceController;
 }
 
-QList<WorkspaceControl*> WorkspaceControl::GetChildren() const {
+QList<WorkspaceControl*> WorkspaceControl::getChildren() const {
 	return {};
 }
 

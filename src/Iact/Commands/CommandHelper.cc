@@ -17,6 +17,7 @@
 }
 
  bool CommandHelper::startTool(Tool* tool) {
+     qDebug() << "Debug: CommandHelper::startTool";
     return workspaceController() && workspaceController()->startTool(tool);
 }
 

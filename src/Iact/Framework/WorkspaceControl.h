@@ -21,32 +21,43 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
 	void setWorkspaceController(WorkspaceController* workspaceController);
 
  protected:
-    virtual QList<WorkspaceControl*> GetChildren() const;
+    virtual QList<WorkspaceControl*> getChildren() const;
 
  public:
     virtual bool onMouseMove(MouseEventData* data) {
-        return std::any_of(GetChildren().begin(), GetChildren().end(),
-            [data](WorkspaceControl* child) { return child->onMouseMove(data); });
+        auto children = getChildren();
+        return std::any_of(children.begin(), children.end(),
+            [data](WorkspaceControl* child) { 
+                auto a = child;
+                return child->onMouseMove(data); 
+            });
     }
 
     virtual bool onMouseDown(MouseEventData* data) {
-        return std::any_of(GetChildren().begin(), GetChildren().end(),
-            [data](WorkspaceControl* child) { return child->onMouseDown(data); });
+        auto children = getChildren();
+        return std::any_of(children.begin(), children.end(),
+            [data](WorkspaceControl* child) {
+                auto a = child; return child->onMouseDown(data); });
     }
 
     virtual bool onMouseUp(MouseEventData* data) {
-        return std::any_of(GetChildren().begin(), GetChildren().end(),
-            [data](WorkspaceControl* child) { return child->onMouseUp(data); });
+        auto children = getChildren();
+        return std::any_of(children.begin(), children.end(),
+            [data](WorkspaceControl* child) {
+                auto a = child; return child->onMouseUp(data); });
     }
 
     virtual void enrichContextMenu(QList<QAction*>& itemList) {
-        std::for_each(GetChildren().begin(), GetChildren().end(),
+        auto children = getChildren();
+        std::for_each(children.begin(), children.end(),
             [&itemList](WorkspaceControl* child) { child->enrichContextMenu(itemList); });
     }
 
     virtual bool onKeyPressed(MouseEventData* data) {
-        return std::any_of(GetChildren().begin(), GetChildren().end(),
-            [data](WorkspaceControl* child) { return child->onKeyPressed(data); });
+        auto children = getChildren();
+        return std::any_of(children.begin(), children.end(),
+            [data](WorkspaceControl* child) {
+                auto a = child; return child->onKeyPressed(data); });
     }
 
  private: 

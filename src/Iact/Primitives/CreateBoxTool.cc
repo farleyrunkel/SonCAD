@@ -5,6 +5,7 @@
 CreateBoxTool::CreateBoxTool() : Tool() {}
 
 bool CreateBoxTool::onStart() {
+	qDebug() << "Debug: CreateBoxTool::onStart";
 	m_currentPhase = Phase::PivotPoint;
 	auto pointAction = new PointAction();
 	if (!startAction(pointAction)) {

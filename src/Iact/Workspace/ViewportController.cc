@@ -47,7 +47,6 @@ void ViewportController::mouseMove(const QPointF& pos, Qt::KeyboardModifiers mod
 }
 
 void ViewportController::setPredefinedView(PredefinedViews predefinedView) {
-
     if (predefinedView == PredefinedViews::WorkingPlane) {
         const auto& plane = workspaceController()->workspace()->workingPlane();
         const auto& dir = plane.Axis().Direction();
