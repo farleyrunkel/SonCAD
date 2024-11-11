@@ -2,18 +2,15 @@
 
 #include "Iact/Visual/Marker.h"
 
-Marker::Marker(WorkspaceController* workspaceController, Styles styles, QImage image)
-    : VisualObject(workspaceController, nullptr), _Styles(styles), _Image(image), _Color(Qt::yellow), _ColorBg(Qt::lightGray), _IsSelectable(false),
+Marker::Marker(WorkspaceController* workspaceController, Styles styles, const Handle(Graphic3d_MarkerImage)& image)
+    : VisualObject(workspaceController, nullptr), 
+    _Styles(styles), 
+    _Image(image), 
+    _Color(Qt::yellow), 
+    _ColorBg(Qt::lightGray), 
+    _IsSelectable(false),
     _P(nullptr) {
 }
-
-// 更新展示设置
-
-
-// 确保 _AisPoint 被正确初始化
-
-
-// 更新显示
 
 void Marker::update() {
     // 确保 AIS_Point 对象存在
@@ -75,9 +72,36 @@ void Marker::_updatePresentation() {
     }
 }
 
-const QImage Marker::BallImage = Marker::GetMarkerImage("Ball", 8);
-const QImage Marker::RectImage = Marker::GetMarkerImage("Rect", 8);
-const QImage Marker::RingImage = Marker::GetMarkerImage("Ring", 16);
-const QImage Marker::PlusImage = Marker::GetMarkerImage("Plus", 16);
-const QImage Marker::XImage = Marker::GetMarkerImage("X", 16);
-const QImage Marker::ErrorImage = Marker::GetMarkerImage("Error", 24);
+Handle(Graphic3d_MarkerImage) Marker::markerImage(const QString& name, int size) {
+    auto a = tryGetMarkerAsImage(name, size);
+    Handle(Graphic3d_MarkerImage) res;
+    if (a) {
+        res = new Graphic3d_MarkerImage(a);
+    }
+    return res;
+}
+
+Handle(Image_PixMap) Marker::tryGetMarkerAsImage(const QString& name, int size) {
+    int dpiScale = 1;
+    int finalSize = static_cast<int>(size * dpiScale);
+
+    QString imagePath = ResourceUtils::iconPath("Marker/" + name);
+
+    QImage image(imagePath);
+    if (!image.load(imagePath, "svg")) {
+        qDebug() << "Error: Failed to load image:" << imagePath;
+        return nullptr;
+    }
+
+    Handle(Image_PixMap) pixmap = PixMapHelper::convertFromBitmap(image.scaled(finalSize, finalSize));
+    if (pixmap.IsNull()) {
+        qDebug() << "Could not load marker image " << name << " into pixmap.";
+        return nullptr;
+    }
+    return pixmap;
+}
+
+Handle(Graphic3d_MarkerImage) Marker::plusImage() {
+    static Handle(Graphic3d_MarkerImage) RectImage = markerImage("Plus", 16);
+    return RectImage;
+}

@@ -10,18 +10,22 @@
 #include <QtCore>
 
 #include <gp_Pnt.hxx>
-#include <AIS_Point.hxx>
 #include <Geom_CartesianPoint.hxx>
+#include <AIS_Point.hxx>
+#include <Image_PixMap.hxx>
+#include <Graphic3d_MarkerImage.hxx>
 #include <Prs3d_PointAspect.hxx>
 
+#include "ResourceUtils.h"
 #include "Comm/Types/Color.h"
+#include "Comm/PixMapHelper.h"
 #include "Iact/Visual/VisualObject.h"
 
 class Marker : public VisualObject {
     Q_OBJECT
 
  public:
-     // 使用 OCCT 枚举
+
      enum Styles {
          Bitmap = 1,
          Image = 2,
@@ -32,7 +36,7 @@ class Marker : public VisualObject {
      };
 
  public:
-    Marker(WorkspaceController* workspaceController, Styles styles, QImage image);
+    Marker(WorkspaceController* workspaceController, Styles styles, const Handle(Graphic3d_MarkerImage)& image);
 
     // 获取/设置颜色
     Color color() const { return _Color; }
@@ -65,13 +69,13 @@ class Marker : public VisualObject {
         update();
     }
 
-    // 设置图像
-    void setImage(const QImage& image) {
-        if (_Image == image)
-            return;
-        _Image = image;
-        update();
-    }
+    //// 设置图像
+    //void setImage(const QImage& image) {
+    //    if (_Image == image)
+    //        return;
+    //    _Image = image;
+    //    update();
+    //}
 
     // 更新显示
     void update();
@@ -83,7 +87,7 @@ class Marker : public VisualObject {
 
     virtual void remove() {}
 
-private:
+ private:
     // 确保 _AisPoint 被正确初始化
     bool _ensureAisObject();
 
@@ -104,49 +108,16 @@ private:
 
     // Static method to load marker images
 
-    static QImage GetMarkerImage(const QString& name, int size)
-    {
-        //QString cacheName = QString("%1@%2").arg(name).arg(size);
+    static Handle(Graphic3d_MarkerImage) markerImage(const QString& name, int size);
 
-        //// Check if the image is already cached
-        //if (_ImageCache.contains(cacheName))
-        //{
-        //    return _ImageCache.value(cacheName);
-        //}
-
-        //// Try to load the marker as a XAML or image (method to load resources)
-        //QPixmap pixmap = TryGetMarkerAsXaml(name, size); // Method to load image from XAML
-        //if (pixmap.isNull())
-        //{
-        //    pixmap = TryGetMarkerAsImage(name); // Fallback to loading from an image file
-        //}
-
-        //if (pixmap.isNull())
-        //{
-        //    // Handle error
-        //    //MessageBox::Error(QString("Could not load marker image %1 from resource.").arg(name));
-        //    _ImageCache.insert(cacheName, QImage());
-        //    return QImage(); // Return an empty image on failure
-        //}
-
-        // Store image in cache
-        QImage image; /*= pixmap.toImage();
-        _ImageCache.insert(cacheName, image);*/
-
-        return image;
-    }
+    static Handle(Image_PixMap) tryGetMarkerAsImage(const QString& name, int size);
 
  public:
-    static const QImage BallImage;
-    static const QImage RectImage;
-    static const QImage RingImage;
-    static const QImage PlusImage;
-    static const QImage XImage;
-    static const QImage ErrorImage;
+     static Handle(Graphic3d_MarkerImage) plusImage();;
 
  private:
     Styles _Styles;
-    QImage _Image;
+    Handle(Graphic3d_MarkerImage) _Image;
     Handle(AIS_Point) _AisPoint = nullptr; // OCCT 点对象
     Handle(Geom_CartesianPoint) _P; // OCCT 坐标点
     Color _Color; // 标记颜色

@@ -5,6 +5,7 @@
 #include <QString>
 #include <QIcon>
 #include <QFile>
+#include <QDebug>
 
 class ResourceUtils {
  public:

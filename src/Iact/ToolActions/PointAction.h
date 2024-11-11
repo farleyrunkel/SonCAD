@@ -43,7 +43,7 @@ class PointAction : public ToolAction {
 
 private:
     bool m_isFinished;
-    Marker* _Marker;
+    Marker* m_marker;
 };
 
 #endif  // SRC_IACT_TOOLACTION_POINTACTION_H_

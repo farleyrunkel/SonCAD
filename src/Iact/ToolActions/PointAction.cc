@@ -5,7 +5,9 @@
 #include "Iact/Workspace/WorkspaceController.h"
 
 PointAction::PointAction() 
-    : ToolAction(), m_isFinished(false) {
+    : ToolAction(),
+      m_isFinished(false),
+      m_marker(nullptr){
     qDebug() << "Debug: PointAction::PointAction";
 }
 
@@ -48,8 +50,8 @@ bool PointAction::onMouseUp(MouseEventData* data) {
     return false; }
 
 void PointAction::ensureMarker() {
-    if (_Marker == nullptr) {
-        _Marker = new Marker(workspaceController(), Marker::Styles::Bitmap, Marker::PlusImage);
+    if (m_marker == nullptr) {
+        m_marker = new Marker(workspaceController(), Marker::Styles::Bitmap, Marker::plusImage());
         // Add(_Marker);
     }
 }
