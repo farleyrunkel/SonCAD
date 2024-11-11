@@ -11,6 +11,7 @@
 #include "Comm/BaseObject.h"
 #include "Iact/Framework/Editor.h"
 #include "Iact/Workspace/MouseEventData.h"
+#include "Iact/HudElements/IHudManager.h"
 
 class Tool;
 class ViewportController;
@@ -19,8 +20,6 @@ class WorkspaceController : public BaseObject {
     Q_OBJECT
 
  public:
-    explicit WorkspaceController(QObject* parent = nullptr) : BaseObject(parent) {}
-
     explicit WorkspaceController(Workspace* workspace);
 
     void initWorkspace();
@@ -35,6 +34,7 @@ class WorkspaceController : public BaseObject {
 
     Workspace* workspace() const;
 
+    void setHudManager(IHudManager* hudManager);
     void setActiveViewport(Viewport* viewport);
 
     ViewportController* viewportController(Viewport* viewport);
@@ -44,6 +44,8 @@ class WorkspaceController : public BaseObject {
     QList<WorkspaceControl*> enumerateControls();
 
     void mouseMove(ViewportController* viewportController, QPointF pos, Qt::KeyboardModifiers modifiers);
+    void mouseDown(ViewportController* viewportController, Qt::KeyboardModifiers modifiers);
+    void mouseUp(ViewportController* viewportController, Qt::KeyboardModifiers modifiers);
 
  private:
     void onWorkspaceGridChanged() {}
@@ -51,11 +53,12 @@ class WorkspaceController : public BaseObject {
 
  private: 
     QList<ViewportController*> m_viewportControllers;
-    MouseEventData* _MouseEventData;
+    MouseEventData* m_mouseEventData;
     Tool* m_currentTool;
     Editor* m_currentEditor;
     Workspace* m_workspace;
     Viewport* m_activeViewport;
+    IHudManager* m_hudManager;
 };
 
 #endif // SRC_IACT_WORKSPACE_WORKSPACECONTROLLER_H_

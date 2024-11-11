@@ -24,6 +24,8 @@ class Coord2DHudElement : public HudElement {
 
     void setValues(double coordX, double coordY);
 
+    virtual void initialize() override {};
+
  signals:
     void coordinateXChanged();
     void coordinateYChanged();

@@ -27,9 +27,9 @@ class PointAction : public ToolAction {
  protected:
     bool onStart() override;
 
-    bool onMouseMove(MouseEventData* data) override;;
-    bool onMouseDown(MouseEventData* data) override { return false; };
-    bool onMouseUp(MouseEventData* data) override { return false; };
+    bool onMouseMove(MouseEventData* data) override;
+    bool onMouseDown(MouseEventData* data) override;
+    bool onMouseUp(MouseEventData* data) override;
 
  private:
      void ensureMarker() {}
@@ -37,7 +37,7 @@ class PointAction : public ToolAction {
 
  signals:
     void preview(EventArgs* args);
-    void finished();
+    void finished(EventArgs* args);
 
 private:
     bool m_isFinished;

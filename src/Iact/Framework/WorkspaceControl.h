@@ -22,6 +22,7 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
 
  protected:
     virtual QList<WorkspaceControl*> getChildren() const;
+    void add(HudElement* hudElement);
 
  public:
     virtual bool onMouseMove(MouseEventData* data) {

@@ -4,7 +4,10 @@
 
 #include "Iact/Workspace/WorkspaceController.h"
 
-WorkspaceControl::WorkspaceControl(QObject* parent) {}
+WorkspaceControl::WorkspaceControl(QObject* parent) 
+	: QObject(parent) ,
+	m_workspaceController(nullptr) {
+}
 
 WorkspaceController* WorkspaceControl::workspaceController() const { 
 	return m_workspaceController; 
@@ -16,5 +19,12 @@ void WorkspaceControl::setWorkspaceController(WorkspaceController* workspaceCont
 
 QList<WorkspaceControl*> WorkspaceControl::getChildren() const {
 	return {};
+}
+
+void WorkspaceControl::add(HudElement* hudElement) {
+	if (hudElement == nullptr || m_hudElements.contains(hudElement)) {
+		return;
+	}
+	m_hudElements.append(hudElement);
 }
 

@@ -28,8 +28,8 @@ class CreateBoxTool : public Tool {
 	bool onStart() override;
 
  private:
-	void _PivotAction_Finished() {};
-	void _PivotAction_Preview() {};
+	void pivotAction_preview();;
+	void pivotAction_finished();;
 
  private:
 	Phase m_currentPhase;

@@ -268,7 +268,14 @@ WorkspaceController* ViewportPanel::workspaceController() const {
 void ViewportPanel::setWorkspaceController(WorkspaceController* controller) {
     if (m_workspaceController != controller) {
         m_workspaceController = controller;
-        emit workspaceControllerChanged();
+        if (m_workspaceController != nullptr) {
+            m_workspaceController->setHudManager(this);
+        }
+        else {
+            m_hudElements.clear();
+        }
+        m_workspaceController = controller;
+        emit workspaceControllerChanged(m_workspaceController);
     }
 }
 
@@ -280,7 +287,7 @@ void ViewportPanel::setViewportController(ViewportController* controller) {
     if (m_viewportController != controller) {
         m_viewportController = controller;
         m_mouseControl->setViewportController(controller);
-        emit viewportControllerChanged();
+        emit viewportControllerChanged(m_viewportController);
     }
 }
 
@@ -392,6 +399,9 @@ void ViewportPanel::keyPressEvent(QKeyEvent* theEvent) {
 
 void ViewportPanel::mousePressEvent(QMouseEvent* theEvent) {
     QOpenGLWidget::mousePressEvent(theEvent);
+
+    m_mouseControl->mouseDown(theEvent->pos(), theEvent->button(), 0, theEvent, theEvent->modifiers());
+
     const Graphic3d_Vec2i aPnt(theEvent->pos().x(), theEvent->pos().y());
     const Aspect_VKeyFlags aFlags = qtMouseModifiers2VKeys(theEvent->modifiers());
     if (!m_view.IsNull()
@@ -405,6 +415,9 @@ void ViewportPanel::mousePressEvent(QMouseEvent* theEvent) {
 
 void ViewportPanel::mouseReleaseEvent(QMouseEvent* theEvent) {
     QOpenGLWidget::mouseReleaseEvent(theEvent);
+
+    m_mouseControl->mouseUp(theEvent->pos(), theEvent->button(), theEvent, theEvent->modifiers());
+
     const Graphic3d_Vec2i aPnt(theEvent->pos().x(), theEvent->pos().y());
     const Aspect_VKeyFlags aFlags = qtMouseModifiers2VKeys(theEvent->modifiers());
     if (!m_view.IsNull()
@@ -418,6 +431,7 @@ void ViewportPanel::mouseReleaseEvent(QMouseEvent* theEvent) {
 
 void ViewportPanel::mouseMoveEvent(QMouseEvent* theEvent) {
     QOpenGLWidget::mouseMoveEvent(theEvent);
+
     m_mouseControl->mouseMove(theEvent->pos(), theEvent, theEvent->modifiers());
 
     const Graphic3d_Vec2i aNewPos(theEvent->pos().x(), theEvent->pos().y());

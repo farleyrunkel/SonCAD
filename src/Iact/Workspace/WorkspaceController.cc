@@ -9,19 +9,21 @@
 #include "Iact/Workspace/ViewportController.h"
 #include "Iact/Framework/Tool.h"
 
-WorkspaceController::WorkspaceController(Workspace* workspace):
-    _MouseEventData(nullptr),
-    m_currentTool(nullptr),
-    m_currentEditor(nullptr),
-    m_activeViewport(nullptr),
-    m_workspace(workspace) {
+WorkspaceController::WorkspaceController(Workspace* workspace)
+    : m_workspace(workspace),
+      m_mouseEventData(nullptr),
+      m_currentTool(nullptr),
+      m_currentEditor(nullptr),
+      m_activeViewport(nullptr),
+      m_hudManager(nullptr) {
+
     connect(m_workspace, &Workspace::gridChanged, this, &WorkspaceController::onWorkspaceGridChanged);
 
     initWorkspace();
 }
 
 void WorkspaceController::initWorkspace() {
-    // ³õÊ¼»¯ V3dViewer ºÍ AisContext
+    // init V3dViewer and AisContext
     workspace()->initV3dViewer();
     workspace()->initAisContext();
     // initVisualSettings();
@@ -88,7 +90,23 @@ void WorkspaceController::redraw() {
 void WorkspaceController::mouseMove(ViewportController* viewportController, QPointF pos, Qt::KeyboardModifiers modifiers) {
     qDebug() << "Debug: WorkspaceController::mouseMove: " << pos;
     for (const auto& handler : enumerateControls()) {
-        if (handler->onMouseMove(_MouseEventData))
+        if (handler->onMouseMove(m_mouseEventData))
+            break;
+    }
+}
+
+void WorkspaceController::mouseDown(ViewportController* viewportController, Qt::KeyboardModifiers modifiers) {
+    qDebug() << "Debug: WorkspaceController::mouseDown: " << modifiers;
+    for (const auto& handler : enumerateControls()) {
+        if (handler->onMouseDown(m_mouseEventData))
+            break;
+    }
+}
+
+void WorkspaceController::mouseUp(ViewportController* viewportController, Qt::KeyboardModifiers modifiers) {
+    qDebug() << "Debug: WorkspaceController::mouseUp: " << modifiers;
+    for (const auto& handler : enumerateControls()) {
+        if (handler->onMouseUp(m_mouseEventData))
             break;
     }
 }
@@ -104,6 +122,10 @@ Workspace* WorkspaceController::workspace() const {
 void WorkspaceController::setActiveViewport(Viewport* viewport) {
      m_activeViewport = viewport;
  }
+
+void WorkspaceController::setHudManager(IHudManager* hudManager) { 
+    m_hudManager = hudManager; 
+}
 
 ViewportController* WorkspaceController::viewportController(Viewport* viewport) {
     if (viewport == nullptr) {

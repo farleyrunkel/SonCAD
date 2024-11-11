@@ -14,7 +14,7 @@ Coord2DHudElement::Coord2DHudElement(QWidget* parent)
     connect(this, &Coord2DHudElement::coordinateXChanged, m_label, [this]() {
         QString xStr = QString::number(_coordinateX, 'f', 3);
         QString yStr = QString::number(_coordinateY, 'f', 3);
-        m_label->setText(xStr + "   " + yStr);
+        m_label->setText(xStr + " " + yStr);
         m_label->adjustSize();
     });
 

@@ -5,7 +5,7 @@
 #include "Iact/Workspace/WorkspaceController.h"
 
 PointAction::PointAction() 
-    : m_isFinished(false) {
+    : ToolAction(), m_isFinished(false) {
     qDebug() << "Debug: PointAction::PointAction";
 }
 
@@ -32,6 +32,21 @@ bool PointAction::onMouseMove(MouseEventData* data) {
     return false;
 }
 
+bool PointAction::onMouseDown(MouseEventData* data) { 
+    return false; }
+
+bool PointAction::onMouseUp(MouseEventData* data) {
+    if (!m_isFinished) {
+        
+        processMouseInput(data);
+        m_isFinished = true;
+        EventArgs* args = new EventArgs(
+        );
+
+        emit finished(args);
+    }
+    return false; }
+
 void PointAction::processMouseInput(MouseEventData* data) {
-    qDebug() << "Debug: PointAction::processMouseInput\n";
+    qDebug() << "Debug: PointAction::processMouseInput";
 }

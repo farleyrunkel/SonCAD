@@ -46,6 +46,16 @@ void ViewportController::mouseMove(const QPointF& pos, Qt::KeyboardModifiers mod
     workspaceController()->invalidate();
 }
 
+void ViewportController::mouseDown(Qt::KeyboardModifiers modifiers) {
+    workspaceController()->mouseDown(this, modifiers);
+    workspaceController()->invalidate();
+}
+
+void ViewportController::mouseUp(Qt::KeyboardModifiers modifiers) {
+    workspaceController()->mouseUp(this, modifiers);
+    workspaceController()->invalidate();
+}
+
 void ViewportController::setPredefinedView(PredefinedViews predefinedView) {
     if (predefinedView == PredefinedViews::WorkingPlane) {
         const auto& plane = workspaceController()->workspace()->workingPlane();

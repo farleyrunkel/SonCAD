@@ -5,6 +5,7 @@
 
 #include <QOpenGLWidget>
 #include <QString>
+#include <QList>
 
 #include <OpenGl_Context.hxx>
 #include <Standard_WarningsDisable.hxx>
@@ -17,8 +18,9 @@
 #include "Iact/Workspace/ViewportController.h"
 #include "Iact/Workspace/WorkspaceController.h"
 #include "Iact/Viewport/IViewportMouseControl.h"
+#include "Iact/HudElements/IHudManager.h"
 
-class ViewportPanel : public QOpenGLWidget, public AIS_ViewController {
+class ViewportPanel : public QOpenGLWidget, public AIS_ViewController, public IHudManager {
     Q_OBJECT
 
  public:
@@ -27,8 +29,16 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController {
     //! Destructor.
     virtual ~ViewportPanel();
 
+    virtual void AddElement(HudElement* element) {}
+    virtual void RemoveElement(HudElement* element) {}
+    virtual void RemoveElements(std::function<bool(HudElement*)> predicate) {}
+
+    // virtual void SetCursor(QObject* owner, Cursor* cursor)  {}
+    virtual void SetHintMessage(QObject* owner, const std::string& message) {}
+
     // WorkspaceController getter/setter
     WorkspaceController* workspaceController() const;
+
     void setWorkspaceController(WorkspaceController* controller);
 
     // ViewportController getter/setter
@@ -74,6 +84,7 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController {
     virtual void wheelEvent(QWheelEvent* theEvent) override;
 
  private:
+
     //! Dump OpenGL info.
     void dumpGlInfo(bool theIsBasic, bool theToPrint);
 
@@ -91,14 +102,14 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController {
     virtual void resizeGL(int width, int height) override;
 
  signals:
-    void workspaceControllerChanged();
-    void viewportControllerChanged();
+    void workspaceControllerChanged(WorkspaceController*);
+    void viewportControllerChanged(ViewportController*);
+    void hudElementCollectionChanged();
 
  private:
     ViewportController* m_viewportController;
     WorkspaceController* m_workspaceController;
-
- private:
+    QList<HudElement*> m_hudElements;
     IViewportMouseControl* m_mouseControl;
 
  private:

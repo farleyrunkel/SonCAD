@@ -64,8 +64,8 @@ class ViewportController : public QObject {
     };
 
     void mouseMove(const QPointF& pos, Qt::KeyboardModifiers modifiers, MouseMoveMode mode = MouseMoveMode::None);;
-    void mouseDown(Qt::KeyboardModifiers modifiers) {};
-    void mouseUp(Qt::KeyboardModifiers modifiers) {};
+    void mouseDown(Qt::KeyboardModifiers modifiers);;
+    void mouseUp(Qt::KeyboardModifiers modifiers);;
     void startEditing() {};
     void startRubberbandSelection() {};  // Add necessary parameters
     void zoom(const QPointF& pos, double delta) {};
