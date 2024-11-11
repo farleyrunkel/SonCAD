@@ -49,7 +49,7 @@ Tool* WorkspaceController::currentTool() const { return m_currentTool; }
 
 
 bool WorkspaceController::startTool(Tool* tool) {
-    qDebug() << "Debug: WorkspaceController::startTool";
+    qDebug() << "Debug: m_workspaceController::startTool";
     try {
         if (currentTool() != nullptr && !cancelTool(currentTool(), true)) {
             return false;
@@ -88,7 +88,7 @@ void WorkspaceController::redraw() {
 }
 
 void WorkspaceController::mouseMove(ViewportController* viewportController, QPointF pos, Qt::KeyboardModifiers modifiers) {
-    qDebug() << "Debug: WorkspaceController::mouseMove: " << pos;
+    qDebug() << "Debug: m_workspaceController::mouseMove: " << pos;
     for (const auto& handler : enumerateControls()) {
         if (handler->onMouseMove(m_mouseEventData))
             break;
@@ -96,7 +96,7 @@ void WorkspaceController::mouseMove(ViewportController* viewportController, QPoi
 }
 
 void WorkspaceController::mouseDown(ViewportController* viewportController, Qt::KeyboardModifiers modifiers) {
-    qDebug() << "Debug: WorkspaceController::mouseDown: " << modifiers;
+    qDebug() << "Debug: m_workspaceController::mouseDown: " << modifiers;
     for (const auto& handler : enumerateControls()) {
         if (handler->onMouseDown(m_mouseEventData))
             break;
@@ -104,7 +104,7 @@ void WorkspaceController::mouseDown(ViewportController* viewportController, Qt::
 }
 
 void WorkspaceController::mouseUp(ViewportController* viewportController, Qt::KeyboardModifiers modifiers) {
-    qDebug() << "Debug: WorkspaceController::mouseUp: " << modifiers;
+    qDebug() << "Debug: m_workspaceController::mouseUp: " << modifiers;
     for (const auto& handler : enumerateControls()) {
         if (handler->onMouseUp(m_mouseEventData))
             break;
@@ -143,7 +143,7 @@ ViewportController* WorkspaceController::viewportController(Viewport* viewport) 
 void WorkspaceController::dispose() {}
 
 QList<WorkspaceControl*> WorkspaceController::enumerateControls() {
-    qDebug() << "Debug: WorkspaceController::enumerateControls";
+    qDebug() << "Debug: m_workspaceController::enumerateControls";
     QList<WorkspaceControl*> controls;
 
     if (m_currentTool) {

@@ -8,13 +8,16 @@
 #include <array>
 #include <stdexcept>
 
+#include <QColor>
+
 #include <Quantity_Color.hxx>
 
-class Color {
-public:
+class Color : public QColor {
+ public:
     static const Color Black;
     static const Color White;
 
+    Color(Qt::GlobalColor color) : QColor(color) {}
     Color(float r, float g, float b);
     Color(const std::string& s);
     //--------------------------------------------------------------------------------------------------
@@ -28,7 +31,6 @@ public:
     Quantity_Color toQuantityColor() const {
         return Quantity_Color(Red, Green, Blue, Quantity_TOC_sRGB);
     }
-
 
     std::string toString() const;
 

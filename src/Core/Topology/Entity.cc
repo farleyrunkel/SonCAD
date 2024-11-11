@@ -5,7 +5,7 @@
 // Constructor
  Entity::Entity(QObject* parent)
     : QObject(parent), _guid(QUuid::createUuid()),  _hasErrors(false) {
-    qDebug() << "Entity created with GUID:" << _guid.toString();
+    qDebug() << "m_entity created with GUID:" << _guid.toString();
 }
 
 // Guid property (using QUuid)
