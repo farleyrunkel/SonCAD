@@ -6,7 +6,7 @@
 #include <functional>
 #include <utility>
 
-#include "Intf/ICommand.h"
+#include "Pres/Commands/ICommand.h"
 
 class RelayCommand : public ICommand {
  public:

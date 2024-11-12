@@ -28,7 +28,7 @@ class AISX_Grid : public AIS_InteractiveObject {
 
     DEFINE_STANDARD_RTTIEXT(AISX_Grid, AIS_InteractiveObject)
 
-        //--------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------
 
 private:
     void _ComputeRectangular(const Handle(Graphic3d_Group)& theGroup);

@@ -9,7 +9,7 @@ class Pln : public gp_Pln {
 public:
 	using gp_Pln::gp_Pln;
 
-	static Pln XOY() { return Pln(); }
+	static Pln XOY();
 };
 
 #endif // OCCT_VALUETYPES_PLN_H_
