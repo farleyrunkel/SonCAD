@@ -84,7 +84,17 @@ void WorkspaceController::invalidate(bool immediateOnly, bool forceRedraw) {
         redraw();
 }
 
+void WorkspaceController::onWorkspaceGridChanged() {
+    
+}
+
 void WorkspaceController::redraw() {
+
+}
+
+void WorkspaceController::updateGrid() {
+
+
 }
 
 void WorkspaceController::mouseMove(ViewportController* viewportController, QPointF pos, Qt::KeyboardModifiers modifiers) {

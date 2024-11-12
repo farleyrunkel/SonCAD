@@ -113,7 +113,7 @@ class Marker : public VisualObject {
     static Handle(Image_PixMap) tryGetMarkerAsImage(const QString& name, int size);
 
  public:
-     static Handle(Graphic3d_MarkerImage) plusImage();;
+    static Handle(Graphic3d_MarkerImage) plusImage();;
 
  private:
     Styles _Styles;

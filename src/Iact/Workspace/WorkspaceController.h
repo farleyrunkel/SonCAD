@@ -12,6 +12,7 @@
 #include "Iact/Framework/Editor.h"
 #include "Iact/Workspace/MouseEventData.h"
 #include "Iact/HudElements/IHudManager.h"
+#include "Occt/AisExtensions/AISX_Grid.h"
 
 class Tool;
 class ViewportController;
@@ -48,8 +49,9 @@ class WorkspaceController : public BaseObject {
     void mouseUp(ViewportController* viewportController, Qt::KeyboardModifiers modifiers);
 
  private:
-    void onWorkspaceGridChanged() {}
+    void onWorkspaceGridChanged();
     void redraw();
+    void updateGrid();
 
  private: 
     QList<ViewportController*> m_viewportControllers;
@@ -59,6 +61,9 @@ class WorkspaceController : public BaseObject {
     Workspace* m_workspace;
     Viewport* m_activeViewport;
     IHudManager* m_hudManager;
+
+    bool _GridNeedsUpdate;
+    Handle(AISX_Grid) _Grid;
 };
 
 #endif // SRC_IACT_WORKSPACE_WORKSPACECONTROLLER_H_

@@ -15,15 +15,22 @@
 
 #include "Core/Project/VisualStyles.h"
 #include "Core/Extensions/ColorExtensions.h"
-#include "Core/Project/WorkingContext.h"
+#include "Occt/ValueTypes/Pln.h"
 
 class Model;
 class Viewport;
+class WorkingContext;
 
 class Workspace : public QObject {
     Q_OBJECT
 
-public:
+ public:
+    enum GridTypes {
+        Rectangular,
+        Circular
+    };
+
+ public:
     Workspace();
     Workspace(Model* model);;
     ~Workspace() {};
@@ -76,9 +83,8 @@ public:
     QVector<Viewport*> m_viewports;  // List of viewports
     Model* m_model;  // The active model
 
-    gp_Pln WorkingPlane; 
+    Pln WorkingPlane;
     WorkingContext* _CurrentWorkingContext;
 };
 
 #endif  // SRC_CORE_WORKSPACE_H_
-    
