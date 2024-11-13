@@ -39,8 +39,6 @@ class Workspace : public QObject {
     void initV3dViewer();
     void initAisContext();
 
-    void applyWorkingContext();
-
     // Getters
     Handle(V3d_Viewer) v3dViewer() const;
     Handle(AIS_InteractiveContext) aisContext() const;
@@ -73,6 +71,10 @@ class Workspace : public QObject {
     void gridChanged();
 
  private:
+     void init();
+     void applyWorkingContext();
+
+ private:
     Handle(V3d_Viewer) m_v3dViewer;  // 3D viewer handle
     Handle(AIS_InteractiveContext) m_aisContext;  // AIS context handle
 
@@ -84,7 +86,8 @@ class Workspace : public QObject {
     Model* m_model;  // The active model
 
     Pln WorkingPlane;
-    WorkingContext* _CurrentWorkingContext;
+    WorkingContext* m_currentWorkingContext;
+    WorkingContext* m_globalWorkingContext;
 };
 
 #endif  // SRC_CORE_WORKSPACE_H_
