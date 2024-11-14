@@ -23,22 +23,22 @@
 // Constructor and Destructor
 
 Workspace::Workspace()
-    : m_v3dViewer(nullptr),
-      m_aisContext(nullptr),
-      m_gridEnabled(true),
-      m_needsRedraw(false),
-      m_needsImmediateRedraw(false),
-      m_currentWorkingContext(nullptr),
-      m_globalWorkingContext(new WorkingContext),
-      m_model(nullptr) {
+    : _V3dViewer(nullptr),
+      _AisContext(nullptr),
+      _GridEnabled(true),
+      _NeedsRedraw(false),
+      _NeedsImmediateRedraw(false),
+      _CurrentWorkingContext(nullptr),
+      _GlobalWorkingContext(new WorkingContext),
+      _Model(nullptr) {
     init();
 }
 
 Workspace::Workspace(Model* model) 
     : Workspace() {
     init();
-    m_model = model;
-    m_viewports.append(new Viewport(this));
+    _Model = model;
+    _Viewports.append(new Viewport(this));
 }
 
 //Workspace::~Workspace() {
@@ -50,22 +50,22 @@ Workspace::Workspace(Model* model)
 //}
 
 void Workspace::init() {
-    m_currentWorkingContext = m_globalWorkingContext;
+    _CurrentWorkingContext = _GlobalWorkingContext;
 }
 
-void Workspace::applyWorkingContext() {
-    if (m_aisContext.IsNull()) {
-        m_v3dViewer->SetPrivilegedPlane(m_currentWorkingContext->WorkingPlane.Position());
+void Workspace::_ApplyWorkingContext() {
+    if (_AisContext.IsNull()) {
+        _V3dViewer->SetPrivilegedPlane(_CurrentWorkingContext->WorkingPlane.Position());
     }
     //RaisePropertyChanged(nameof(WorkingPlane));
-    //_RaiseGridChanged();
+    emit gridChanged(this);
 }
 
 //--------------------------------------------------------------------------------------------------
 // Initialize V3d_Viewer and AIS_InteractiveContext
 
 void Workspace::initV3dViewer() {
-    if (m_v3dViewer.IsNull()) {
+    if (_V3dViewer.IsNull()) {
         Handle(Aspect_DisplayConnection) aDisp = new Aspect_DisplayConnection();
         Handle(OpenGl_GraphicDriver) aDriver = new OpenGl_GraphicDriver(aDisp, false);
         //// lets QOpenGLWidget to manage buffer swap
@@ -78,42 +78,43 @@ void Workspace::initV3dViewer() {
         aDriver->ChangeOptions().contextDebug = false;
 
         // create viewer
-        m_v3dViewer = new V3d_Viewer(aDriver);
+        _V3dViewer = new V3d_Viewer(aDriver);
     }
 
     // Initialize 3D viewer with graphic driver
 
-    m_v3dViewer->SetDefaultViewSize(1000.0);
-    m_v3dViewer->SetDefaultViewProj(V3d_TypeOfOrientation::V3d_XposYposZpos);
-    m_v3dViewer->SetDefaultBackgroundColor(Quantity_Color(NCollection_Vec3{ 0.3f, 0.3f, 0.3f }));
-    m_v3dViewer->SetDefaultVisualization(V3d_TypeOfVisualization::V3d_ZBUFFER);
-    m_v3dViewer->SetLightOn(new V3d_DirectionalLight(V3d_TypeOfOrientation::V3d_Zneg, Quantity_Color(Quantity_NOC_WHITE), true));
-    m_v3dViewer->SetLightOn(new V3d_AmbientLight(Quantity_Color(Quantity_NOC_WHITE)));
-    applyWorkingContext();
+    _V3dViewer->SetDefaultViewSize(1000.0);
+    _V3dViewer->SetDefaultViewProj(V3d_TypeOfOrientation::V3d_XposYposZpos);
+    _V3dViewer->SetDefaultBackgroundColor(Quantity_Color(NCollection_Vec3{ 0.3f, 0.3f, 0.3f }));
+    _V3dViewer->SetDefaultVisualization(V3d_TypeOfVisualization::V3d_ZBUFFER);
+    _V3dViewer->SetLightOn(new V3d_DirectionalLight(V3d_TypeOfOrientation::V3d_Zneg, Quantity_Color(Quantity_NOC_WHITE), true));
+    _V3dViewer->SetLightOn(new V3d_AmbientLight(Quantity_Color(Quantity_NOC_WHITE)));
+
+    _ApplyWorkingContext();
 }
 
 void Workspace::initAisContext() {
-    if (m_v3dViewer.IsNull()) {
+    if (_V3dViewer.IsNull()) {
         initV3dViewer();
     }
 
-    if (m_aisContext.IsNull()) {
-        m_aisContext = new AIS_InteractiveContext(m_v3dViewer);
-        m_aisContext->UpdateCurrentViewer();
+    if (_AisContext.IsNull()) {
+        _AisContext = new AIS_InteractiveContext(_V3dViewer);
+        _AisContext->UpdateCurrentViewer();
     }
 
-    m_aisContext->SetAutoActivateSelection(true);
-    m_aisContext->SetToHilightSelected(false);
-    m_aisContext->SetPickingStrategy(SelectMgr_PickingStrategy::SelectMgr_PickingStrategy_OnlyTopmost);
-    m_aisContext->SetDisplayMode(AIS_DisplayMode::AIS_Shaded, false);
-    m_v3dViewer->DisplayPrivilegedPlane(false, 1.0);
-    m_aisContext->EnableDrawHiddenLine();
+    _AisContext->SetAutoActivateSelection(true);
+    _AisContext->SetToHilightSelected(false);
+    _AisContext->SetPickingStrategy(SelectMgr_PickingStrategy::SelectMgr_PickingStrategy_OnlyTopmost);
+    _AisContext->SetDisplayMode(AIS_DisplayMode::AIS_Shaded, false);
+    _V3dViewer->DisplayPrivilegedPlane(false, 1.0);
+    _AisContext->EnableDrawHiddenLine();
 
     // Reinit ais parameters
-    applyWorkingContext();
-    m_aisContext->SetPixelTolerance(2);
+    _ApplyWorkingContext();
+    _AisContext->SetPixelTolerance(2);
 
-    auto drawer = m_aisContext->DefaultDrawer();
+    auto drawer = _AisContext->DefaultDrawer();
     drawer->SetWireAspect(new Prs3d_LineAspect(ColorExtensions::toQuantityColor(Colors::Selection), Aspect_TOL_SOLID, 1.0));
     drawer->SetTypeOfHLR(Prs3d_TypeOfHLR::Prs3d_TOH_PolyAlgo);
 
@@ -122,34 +123,42 @@ void Workspace::initAisContext() {
     style->SetFaceBoundaryDraw(true);
     style->SetArrowAspect(new Prs3d_ArrowAspect(1.0, 35.0));
     style->SetFaceBoundaryAspect(new Prs3d_LineAspect(Quantity_NOC_BLACK, Aspect_TOL_SOLID, 1.0));
-    m_aisContext->SetHighlightStyle(style);
+    _AisContext->SetHighlightStyle(style);
 }
 
 Handle(V3d_Viewer) Workspace::v3dViewer() const {
-    return m_v3dViewer;
+    return _V3dViewer;
 }
 
 Handle(AIS_InteractiveContext) Workspace::aisContext() const {
-    return m_aisContext;
+    return _AisContext;
 }
 
 bool Workspace::needsRedraw() const {
-    return m_needsRedraw;
+    return _NeedsRedraw;
 }
 
 bool Workspace::needsImmediateRedraw() const {
-    return m_needsImmediateRedraw;
+    return _NeedsImmediateRedraw;
+}
+
+Workspace::GridTypes Workspace::gridType() const { 
+    return _CurrentWorkingContext->GridType; 
+}
+
+WorkingContext* Workspace::workingContext() const {
+    return _CurrentWorkingContext; 
 }
 
 //--------------------------------------------------------------------------------------------------
 // Setters
 
 void Workspace::setNeedsRedraw(bool value) {
-    m_needsRedraw = value;
+    _NeedsRedraw = value;
 }
 
 void Workspace::setNeedsImmediateRedraw(bool value) {
-    m_needsImmediateRedraw = value;
+    _NeedsImmediateRedraw = value;
 }
 
 //--------------------------------------------------------------------------------------------------

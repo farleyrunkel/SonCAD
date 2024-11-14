@@ -12,18 +12,17 @@ class VisualObject : public QObject {
     Q_OBJECT
 
 public:
-    explicit VisualObject(WorkspaceController* workspaceController, InteractiveEntity* entity, QObject* parent = nullptr)
-        : QObject(parent), m_workspaceController(workspaceController), m_entity(entity) {}
+    explicit VisualObject(WorkspaceController* workspaceController, InteractiveEntity* entity, QObject* parent = nullptr);
 
     virtual ~VisualObject() {}
 
     //--------------------------------------------------------------------------------------------------
 
-    WorkspaceController* workspaceController() const { return m_workspaceController; }
+    WorkspaceController* workspaceController() const;
 
     //--------------------------------------------------------------------------------------------------
 
-    Handle(AIS_InteractiveContext) aisContext() const { return m_workspaceController->workspace()->aisContext(); }
+    Handle(AIS_InteractiveContext) aisContext() const;
 
     //--------------------------------------------------------------------------------------------------
 
@@ -37,15 +36,9 @@ public:
 
     //--------------------------------------------------------------------------------------------------
 
-    bool isSelected() const {
-        return aisContext()->IsSelected(aisObject());
-    }
+    bool isSelected() const;
 
-    void setIsSelected(bool value) {
-        if (aisContext()->IsSelected(aisObject()) != value) {
-            aisContext()->AddOrRemoveSelected(aisObject(), false);
-        }
-    }
+    void setIsSelected(bool value);
 
     //--------------------------------------------------------------------------------------------------
 

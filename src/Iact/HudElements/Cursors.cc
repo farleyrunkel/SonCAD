@@ -24,7 +24,7 @@ inline QCursor Cursors::setRadius() { return getOrCreate("SetRadius"); }
 
 inline QCursor Cursors::setHeight() { return getOrCreate("SetHeight"); }
 
-inline QCursor Cursors::workingPlane() { return getOrCreate("WorkingPlane"); }
+inline QCursor Cursors::workingPlane() { return getOrCreate("_WorkingPlane"); }
 
 inline QCursor Cursors::plus() { return getOrCreate("Plus"); }
 

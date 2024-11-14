@@ -30,12 +30,13 @@ class AISX_Grid : public AIS_InteractiveObject {
 
     //--------------------------------------------------------------------------------------------------
 
-private:
+ private:
     void _ComputeRectangular(const Handle(Graphic3d_Group)& theGroup);
     void _ComputeCircular(const Handle(Graphic3d_Group)& theGroup);
     void _ComputeAxes(const Handle(Graphic3d_Group)& theGroup);
     void _InitAttributes();
 
+ private:
     gp_Ax3 _Position;
     gp_XY _Extents;
     double _LinearStep;

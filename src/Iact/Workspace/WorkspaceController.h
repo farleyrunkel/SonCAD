@@ -13,7 +13,9 @@
 #include "Iact/Workspace/MouseEventData.h"
 #include "Iact/HudElements/IHudManager.h"
 #include "Occt/AisExtensions/AISX_Grid.h"
+#include "Occt/OcctHelper/AisHelper.h"
 
+class Marker;
 class Tool;
 class ViewportController;
 
@@ -48,10 +50,12 @@ class WorkspaceController : public BaseObject {
     void mouseDown(ViewportController* viewportController, Qt::KeyboardModifiers modifiers);
     void mouseUp(ViewportController* viewportController, Qt::KeyboardModifiers modifiers);
 
+    void recalculateGridSize();
  private:
-    void onWorkspaceGridChanged();
+    void onWorkspaceGridChanged(Workspace*);
     void redraw();
     void updateGrid();
+    void initVisualSettings();
 
  private: 
     QList<ViewportController*> m_viewportControllers;

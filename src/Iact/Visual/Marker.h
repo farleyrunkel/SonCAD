@@ -81,11 +81,11 @@ class Marker : public VisualObject {
     void update();
 
     // 获取 AIS_Object（OCCT）
-    Handle(AIS_InteractiveObject) aisObject() const {
-        return _AisPoint;
-    }
+    Handle(AIS_InteractiveObject) aisObject() const;
 
-    virtual void remove() {}
+    virtual void remove();
+
+    static Handle(Prs3d_PointAspect) CreateBitmapPointAspect(const Handle(Graphic3d_MarkerImage)& image, Color color);
 
  private:
     // 确保 _AisPoint 被正确初始化
@@ -113,7 +113,8 @@ class Marker : public VisualObject {
     static Handle(Image_PixMap) tryGetMarkerAsImage(const QString& name, int size);
 
  public:
-    static Handle(Graphic3d_MarkerImage) plusImage();;
+    static Handle(Graphic3d_MarkerImage) plusImage();
+    static Handle(Graphic3d_MarkerImage) ballImage();
 
  private:
     Styles _Styles;

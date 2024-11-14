@@ -2,6 +2,8 @@
 
 #include "Iact/Visual/Marker.h"
 
+#include "Iact/Workspace/WorkspaceController.h"
+
 Marker::Marker(WorkspaceController* workspaceController, Styles styles, const Handle(Graphic3d_MarkerImage)& image)
     : VisualObject(workspaceController, nullptr), 
     _Styles(styles), 
@@ -29,6 +31,25 @@ void Marker::update() {
     else {
         aisContext()->Deactivate(_AisPoint);
     }
+}
+
+// »ñÈ¡ AIS_Object£¨OCCT£©
+
+Handle(AIS_InteractiveObject) Marker::aisObject() const {
+    return _AisPoint;
+}
+
+void Marker::remove() {}
+
+Handle(Prs3d_PointAspect) Marker::CreateBitmapPointAspect(const Handle(Graphic3d_MarkerImage)& image, Color color) {
+    if (image && image->GetBitMapArray()->IsEmpty()) {
+        return new Prs3d_PointAspect(Aspect_TypeOfMarker::Aspect_TOM_BALL, color.toQuantityColor(), 1.0);
+    }
+
+    int width = 0;
+    int height = 0;
+    image->GetTextureSize(width, height);
+    return new Prs3d_PointAspect(color.toQuantityColor(), width, height, image->GetBitMapArray());
 }
 
 bool Marker::_ensureAisObject() {
@@ -103,5 +124,10 @@ Handle(Image_PixMap) Marker::tryGetMarkerAsImage(const QString& name, int size) 
 
 Handle(Graphic3d_MarkerImage) Marker::plusImage() {
     static Handle(Graphic3d_MarkerImage) RectImage = markerImage("Plus", 16);
+    return RectImage;
+}
+
+Handle(Graphic3d_MarkerImage) Marker::ballImage() {
+    static Handle(Graphic3d_MarkerImage) RectImage = markerImage("Ball", 16);
     return RectImage;
 }

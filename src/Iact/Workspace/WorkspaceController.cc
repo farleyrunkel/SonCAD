@@ -8,6 +8,7 @@
 
 #include "Iact/Workspace/ViewportController.h"
 #include "Iact/Framework/Tool.h"
+#include "Iact/Visual/Marker.h"
 
 WorkspaceController::WorkspaceController(Workspace* workspace)
     : m_workspace(workspace),
@@ -26,7 +27,7 @@ void WorkspaceController::initWorkspace() {
     // init V3dViewer and AisContext
     workspace()->initV3dViewer();
     workspace()->initAisContext();
-    // initVisualSettings();
+    initVisualSettings();
 
     // 遍历所有 Viewport 并添加到 _viewControllers 列表
     for (auto& view : workspace()->viewports()) {
@@ -34,19 +35,22 @@ void WorkspaceController::initWorkspace() {
     }
 
     // 创建并显示网格
-    //_grid = new AISX_Grid();
-    //AisHelper::disableGlobalClipPlanes(_grid);
-    //if (workspace.aisContext()) {
-    //    workspace.aisContext()->Display(_grid, 0, -1, false);
-    //}
+    _Grid = new AISX_Grid();
+
+    AisHelper::disableGlobalClipPlanes(_Grid);
+
+    if (workspace()->aisContext()) {
+       workspace()->aisContext()->Display(_Grid, 1, -1, true);
+    }
 
     //// 初始化 VisualObjects 并更新网格
     //visualObjects.initEntities();
-    //updateGrid();
+    updateGrid();
 }
 
-Tool* WorkspaceController::currentTool() const { return m_currentTool; }
-
+Tool* WorkspaceController::currentTool() const { 
+    return m_currentTool; 
+}
 
 bool WorkspaceController::startTool(Tool* tool) {
     qDebug() << "Debug: m_workspaceController::startTool";
@@ -84,8 +88,13 @@ void WorkspaceController::invalidate(bool immediateOnly, bool forceRedraw) {
         redraw();
 }
 
-void WorkspaceController::onWorkspaceGridChanged() {
-    
+void WorkspaceController::onWorkspaceGridChanged(Workspace* sender) {
+    if (m_workspace == sender) {
+        recalculateGridSize();
+        _GridNeedsUpdate = true;
+        updateGrid();
+        invalidate();
+    }
 }
 
 void WorkspaceController::redraw() {
@@ -93,8 +102,98 @@ void WorkspaceController::redraw() {
 }
 
 void WorkspaceController::updateGrid() {
+    if (!_GridNeedsUpdate)
+        return;
 
+    if (_Grid.IsNull())
+        return;
 
+    WorkingContext* wc = workspace()->workingContext();
+
+    if (workspace()->gridEnabled())
+    {
+    //    Ax3 position = wc->WorkingPlane.Position;
+    //    if (wc.GridRotation != 0)
+    //    {
+    //        position.Rotate(wc.WorkingPlane.Axis, wc.GridRotation.ToRad());
+    //    }
+    //    _Grid.SetPosition(position);
+    //    _Grid.SetExtents(_LastGridSize.X, _LastGridSize.Y);
+    //    _Grid.SetDivisions(wc.GridStep, wc.GridDivisions);
+
+    //    if (wc.GridType == Workspace.GridTypes.Rectangular)
+    //    {
+    //        Workspace.AisContext ? .SetDisplayMode(_Grid, 1, false);
+    //    }
+    //    else
+    //    {
+    //        Workspace.AisContext ? .SetDisplayMode(_Grid, 2, false);
+    //    }
+    //}
+    //else
+    //{
+    //    Workspace.AisContext ? .SetDisplayMode(_Grid, 0, false);
+    }
+
+    _GridNeedsUpdate = false;
+}
+
+void WorkspaceController::initVisualSettings() {
+    auto aisContext = workspace()->aisContext();
+
+    // _UpdateParameter();
+
+    // Higlight Selected
+    auto selectionDrawer = new Prs3d_Drawer();
+    selectionDrawer->SetupOwnDefaults();
+    selectionDrawer->SetColor(Colors::Selection.toQuantityColor());
+    selectionDrawer->SetDisplayMode(0);
+    selectionDrawer->SetZLayer(0); // Graphic3d_ZLayerId_Default
+    selectionDrawer->SetTypeOfDeflection(Aspect_TypeOfDeflection::Aspect_TOD_RELATIVE);
+    selectionDrawer->SetDeviationAngle(aisContext->DeviationAngle());
+    selectionDrawer->SetDeviationCoefficient(aisContext->DeviationCoefficient());
+    aisContext->SetSelectionStyle(selectionDrawer);
+    aisContext->SetHighlightStyle(Prs3d_TypeOfHighlight::Prs3d_TypeOfHighlight_Selected, selectionDrawer);
+    aisContext->SetHighlightStyle(Prs3d_TypeOfHighlight::Prs3d_TypeOfHighlight_LocalSelected, selectionDrawer);
+    aisContext->SetHighlightStyle(Prs3d_TypeOfHighlight::Prs3d_TypeOfHighlight_SubIntensity, selectionDrawer);
+
+    // Higlight Dynamic
+    auto hilightDrawer = new Prs3d_Drawer();
+    hilightDrawer->SetupOwnDefaults();
+    hilightDrawer->SetColor(Colors::Highlight.toQuantityColor());
+    hilightDrawer->SetDisplayMode(0);
+    hilightDrawer->SetZLayer(-2); // Graphic3d_ZLayerId_Top
+    hilightDrawer->SetTypeOfDeflection(Aspect_TypeOfDeflection::Aspect_TOD_RELATIVE);
+    hilightDrawer->SetDeviationAngle(aisContext->DeviationAngle());
+    hilightDrawer->SetDeviationCoefficient(aisContext->DeviationCoefficient());
+    aisContext->SetHighlightStyle(Prs3d_TypeOfHighlight::Prs3d_TypeOfHighlight_Dynamic, hilightDrawer);
+
+    // Higlight Local
+    auto hilightLocalDrawer = new Prs3d_Drawer();
+    hilightLocalDrawer->SetupOwnDefaults();
+    hilightLocalDrawer->SetColor(Colors::Highlight.toQuantityColor());
+    hilightLocalDrawer->SetDisplayMode(1);
+    hilightLocalDrawer->SetZLayer(-2); // Graphic3d_ZLayerId_Top
+    hilightLocalDrawer->SetTypeOfDeflection(Aspect_TypeOfDeflection::Aspect_TOD_RELATIVE);
+    hilightLocalDrawer->SetDeviationAngle(aisContext->DeviationAngle());
+    hilightLocalDrawer->SetDeviationCoefficient(aisContext->DeviationCoefficient());
+
+    auto shadingAspect = new Prs3d_ShadingAspect();
+    shadingAspect->SetColor(Colors::Highlight.toQuantityColor());
+    shadingAspect->SetTransparency(0);
+    shadingAspect->Aspect()->SetPolygonOffsets(Aspect_PolygonOffsetMode::Aspect_POM_Fill, 0.99f, 0.0f);
+    hilightLocalDrawer->SetShadingAspect(shadingAspect);
+
+    auto lineAspect = new Prs3d_LineAspect(Colors::Highlight.toQuantityColor(), Aspect_TypeOfLine::Aspect_TOL_SOLID, 3.0);
+    hilightLocalDrawer->SetLineAspect(lineAspect);
+    hilightLocalDrawer->SetSeenLineAspect(lineAspect);
+    hilightLocalDrawer->SetWireAspect(lineAspect);
+    hilightLocalDrawer->SetFaceBoundaryAspect(lineAspect);
+    hilightLocalDrawer->SetFreeBoundaryAspect(lineAspect);
+    hilightLocalDrawer->SetUnFreeBoundaryAspect(lineAspect);
+    hilightLocalDrawer->SetPointAspect(Marker::CreateBitmapPointAspect(Marker::ballImage(), Colors::Highlight));
+
+    aisContext->SetHighlightStyle(Prs3d_TypeOfHighlight::Prs3d_TypeOfHighlight_LocalDynamic, hilightLocalDrawer);
 }
 
 void WorkspaceController::mouseMove(ViewportController* viewportController, QPointF pos, Qt::KeyboardModifiers modifiers) {
@@ -119,6 +218,9 @@ void WorkspaceController::mouseUp(ViewportController* viewportController, Qt::Ke
         if (handler->onMouseUp(m_mouseEventData))
             break;
     }
+}
+
+void WorkspaceController::recalculateGridSize() {
 }
 
 bool WorkspaceController::cancelTool(Tool* tool, bool force) {
