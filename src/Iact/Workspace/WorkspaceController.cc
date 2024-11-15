@@ -6,9 +6,14 @@
 
 #include <QDebug>
 
+#include "Core/Project/WorkingContext.h"
 #include "Iact/Workspace/ViewportController.h"
 #include "Iact/Framework/Tool.h"
 #include "Iact/Visual/Marker.h"
+#include "Occt/ValueTypes/Ax3.h"
+
+#include <gp_Ax3.hxx>
+
 
 WorkspaceController::WorkspaceController(Workspace* workspace)
     : m_workspace(workspace),
@@ -45,7 +50,7 @@ void WorkspaceController::initWorkspace() {
 
     //// 初始化 VisualObjects 并更新网格
     //visualObjects.initEntities();
-    updateGrid();
+    _UpdateGrid();
 }
 
 Tool* WorkspaceController::currentTool() const { 
@@ -85,23 +90,24 @@ void WorkspaceController::invalidate(bool immediateOnly, bool forceRedraw) {
         m_workspace->setNeedsRedraw(true);
 
     if (forceRedraw)
-        redraw();
+        _Redraw();
 }
 
 void WorkspaceController::onWorkspaceGridChanged(Workspace* sender) {
     if (m_workspace == sender) {
         recalculateGridSize();
         _GridNeedsUpdate = true;
-        updateGrid();
+        _UpdateGrid();
         invalidate();
     }
 }
 
-void WorkspaceController::redraw() {
-
+void WorkspaceController::_Redraw() 
+{
 }
 
-void WorkspaceController::updateGrid() {
+void WorkspaceController::_UpdateGrid() 
+{
     if (!_GridNeedsUpdate)
         return;
 
@@ -112,33 +118,34 @@ void WorkspaceController::updateGrid() {
 
     if (workspace()->gridEnabled())
     {
-    //    Ax3 position = wc->WorkingPlane.Position;
-    //    if (wc.GridRotation != 0)
-    //    {
-    //        position.Rotate(wc.WorkingPlane.Axis, wc.GridRotation.ToRad());
-    //    }
-    //    _Grid.SetPosition(position);
-    //    _Grid.SetExtents(_LastGridSize.X, _LastGridSize.Y);
-    //    _Grid.SetDivisions(wc.GridStep, wc.GridDivisions);
+        gp_Ax3 position = wc->workingPlane().Position();
+        if (wc->gridRotation() != 0)
+        {
+            position.Rotate(wc->workingPlane().Axis(), wc->gridRotation());
+        }
+        _Grid->SetPosition(position);
+        _Grid->SetExtents(_LastGridSize.X(), _LastGridSize.Y());
+        _Grid->SetDivisions(wc->gridStep(), wc->gridDivisions() * M_PI / 180.0);
 
-    //    if (wc.GridType == Workspace.GridTypes.Rectangular)
-    //    {
-    //        Workspace.AisContext ? .SetDisplayMode(_Grid, 1, false);
-    //    }
-    //    else
-    //    {
-    //        Workspace.AisContext ? .SetDisplayMode(_Grid, 2, false);
-    //    }
-    //}
-    //else
-    //{
-    //    Workspace.AisContext ? .SetDisplayMode(_Grid, 0, false);
+        if (wc->gridType() == Workspace::GridTypes::Rectangular)
+        {
+            workspace()->aisContext()->SetDisplayMode(_Grid, 1, false);
+        }
+        else
+        {
+            workspace()->aisContext()->SetDisplayMode(_Grid, 2, false);
+        }
+    }
+    else
+    {
+        workspace()->aisContext()->SetDisplayMode(_Grid, 0, false);
     }
 
     _GridNeedsUpdate = false;
 }
 
-void WorkspaceController::initVisualSettings() {
+void WorkspaceController::initVisualSettings() 
+{
     auto aisContext = workspace()->aisContext();
 
     // _UpdateParameter();

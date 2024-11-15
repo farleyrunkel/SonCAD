@@ -23,12 +23,12 @@ class WorkingContext;
 class Workspace : public BaseObject 
 {
     Q_OBJECT
-    Q_PROPERTY(Model* Model READ model)
     Q_PROPERTY(QList<Viewport*> Viewports READ viewports)
     Q_PROPERTY(Handle(V3d_Viewer) V3dViewer READ v3dViewer)
     Q_PROPERTY(Handle(AIS_InteractiveContext) AisContext READ aisContext)
     Q_PROPERTY(bool NeedsRedraw READ needsRedraw WRITE setNeedsRedraw)
     Q_PROPERTY(bool NeedsImmediateRedraw READ needsImmediateRedraw WRITE setNeedsImmediateRedraw)
+    Q_PROPERTY(Model* Model READ model)
     Q_PROPERTY(bool GridEnabled READ gridEnabled WRITE setGridEnabled)
     Q_PROPERTY(GridTypes GridType READ gridType WRITE setGridType)
     Q_PROPERTY(double GridStep)
@@ -54,7 +54,7 @@ public:
     void initAisContext();
 
     bool gridEnabled() const { return _GridEnabled; }
-    void setGridEnabled(bool )  { return ; }
+    void setGridEnabled(bool value);
 
     GridTypes gridType() const;
     void setGridType(GridTypes) { return; }

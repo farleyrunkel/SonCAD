@@ -15,6 +15,8 @@
 #include "Occt/AisExtensions/AISX_Grid.h"
 #include "Occt/OcctHelper/AisHelper.h"
 
+#include <gp_XY.hxx>
+
 class Marker;
 class Tool;
 class ViewportController;
@@ -53,8 +55,8 @@ class WorkspaceController : public BaseObject {
     void recalculateGridSize();
  private:
     void onWorkspaceGridChanged(Workspace*);
-    void redraw();
-    void updateGrid();
+    void _Redraw();
+    void _UpdateGrid();
     void initVisualSettings();
 
  private: 
@@ -68,6 +70,7 @@ class WorkspaceController : public BaseObject {
 
     bool _GridNeedsUpdate;
     Handle(AISX_Grid) _Grid;
+    gp_XY _LastGridSize = gp_XY(200.0, 200.0);
 };
 
 #endif // SRC_IACT_WORKSPACE_WORKSPACECONTROLLER_H_

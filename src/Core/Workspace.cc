@@ -55,7 +55,7 @@ void Workspace::init() {
 
 void Workspace::_ApplyWorkingContext() {
     if (_AisContext.IsNull()) {
-        _V3dViewer->SetPrivilegedPlane(_CurrentWorkingContext->WorkingPlane.Position());
+        //_V3dViewer->SetPrivilegedPlane(_CurrentWorkingContext->WorkingPlane.Position());
     }
     //RaisePropertyChanged(nameof(WorkingPlane));
     emit gridChanged(this);
@@ -142,8 +142,17 @@ bool Workspace::needsImmediateRedraw() const {
     return _NeedsImmediateRedraw;
 }
 
-Workspace::GridTypes Workspace::gridType() const { 
-    return _CurrentWorkingContext->GridType; 
+void Workspace::setGridEnabled(bool value) {
+    if (_GridEnabled != value) {
+        _GridEnabled = value;
+        //Model.MarkAsUnsaved();
+        RaisePropertyChanged();
+        _RaiseGridChanged();
+    }
+}
+
+Workspace::GridTypes Workspace::gridType() const {
+    return _CurrentWorkingContext->gridType(); 
 }
 
 WorkingContext* Workspace::workingContext() const {
