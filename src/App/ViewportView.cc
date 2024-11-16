@@ -18,7 +18,7 @@ ViewportView::ViewportView(QWidget* parent)
     setLayout(mainLayout);
 
     // Tool and error message area
-    QLabel* messageBar = new QLabel("Tool and error message area");
+    messageBar = new QLabel("Tool and error message area");
     messageBar->setStyleSheet("background-color: lightyellow;");
     mainLayout->addWidget(messageBar);
 
@@ -30,15 +30,22 @@ ViewportView::ViewportView(QWidget* parent)
     gridInfo->setStyleSheet("background-color: lightyellow;");
     mainLayout->addWidget(gridInfo);
 
-    connect(Core::appContext(), &AppContext::workspaceChanged, [this](Workspace* workspace) {
-        if (workspace) {
+    connect(Core::appContext(), &AppContext::workspaceControllerChanged, [this](WorkspaceController* controller) {
+        if (controller) {
             if (m_viewportPanel) {
                 m_viewportPanel->deleteLater();
             }
             // Create main panel for the viewport
             m_viewportPanel = new ViewportPanel();
+
+            auto workspace = controller->workspace();
             m_viewportPanel->setViewer(workspace->v3dViewer());
             m_viewportPanel->setAisContext(workspace->aisContext());
+            m_viewportPanel->setWorkspaceController(controller);
+
+            connect(m_viewportPanel, &ViewportPanel::hintMessageChanged, [this](const QString& message) {
+                messageBar->setText(message); }
+            );
 
             connect(Core::appContext(), &AppContext::viewportChanged, [this](Viewport* viewport) {
                 if (viewport) {
@@ -47,9 +54,6 @@ ViewportView::ViewportView(QWidget* parent)
                     setWidgetResizable(true); // Allow resizing
                 }}
             );
-
-            connect(Core::appContext(), &AppContext::workspaceControllerChanged,
-                m_viewportPanel, &ViewportPanel::setWorkspaceController);
 
             connect(Core::appContext(), &AppContext::viewportControllerChanged,
                 m_viewportPanel, &ViewportPanel::setViewportController);

@@ -3,7 +3,9 @@
 #ifndef SRC_APP_VIEWPORTVIEW_H_
 #define SRC_APP_VIEWPORTVIEW_H_
 
+#include <QLabel>
 #include <QScrollArea>
+
 #include "Iact/Viewport/ViewportPanel.h"
 
 class ViewportView : public QScrollArea {
@@ -14,5 +16,6 @@ class ViewportView : public QScrollArea {
 
  private:
     ViewportPanel* m_viewportPanel;
+    QLabel* messageBar;
 };
 #endif  // SRC_APP_VIEWPORTVIEW_H_

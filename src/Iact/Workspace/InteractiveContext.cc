@@ -53,8 +53,6 @@ void InteractiveContext::setWorkspaceController(WorkspaceController* controller)
     }
 }
 
-// ViewportController getter/setter
-
 ViewportController* InteractiveContext::viewportController() const { 
     return m_viewportController; 
 }
@@ -78,7 +76,6 @@ void InteractiveContext::setWorkspace(Workspace* workspace) {
 
 void InteractiveContext::setViewport(Viewport* viewport) {
     if (m_viewport != viewport) {
-
         if (viewport) {
             if (workspaceController()) {
                 workspaceController()->setActiveViewport(viewport);
@@ -91,18 +88,13 @@ void InteractiveContext::setViewport(Viewport* viewport) {
                 workspaceController()->setActiveViewport(nullptr);
             }
         }
-
         CoreContext::setViewport(viewport);
     }
 }
 
-// RecentUsedColors getter
-
 QList<QColor> InteractiveContext::recentUsedColors() const {
     return m_recentUsedColors;
 }
-
-// RecentUsedScripts getter
 
 QList<QString> InteractiveContext::recentUsedScripts() const {
     return m_recentUsedScripts;

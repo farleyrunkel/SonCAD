@@ -261,7 +261,17 @@ ViewportPanel::~ViewportPanel() {
     aDisp.Nullify();
 }
 
-WorkspaceController* ViewportPanel::workspaceController() const { 
+
+// virtual void SetCursor(QObject* owner, Cursor* cursor)  {}
+
+void ViewportPanel::setHintMessage(const QString& message) {
+    if (HintMessage != message) {
+        HintMessage = message;
+        emit hintMessageChanged(message);
+    }
+}
+
+WorkspaceController* ViewportPanel::workspaceController() const {
     return m_workspaceController; 
 }
 

@@ -20,7 +20,8 @@
 
 //-----------------------------------------------------------------------------
 
-class InteractiveContext : public CoreContext {
+class InteractiveContext : public CoreContext 
+{
     Q_OBJECT
     Q_PROPERTY(ModelController* documentController READ documentController WRITE setDocumentController)
     Q_PROPERTY(WorkspaceController* workspaceController READ workspaceController WRITE setWorkspaceController)

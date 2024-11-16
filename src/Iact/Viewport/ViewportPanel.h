@@ -15,13 +15,16 @@
 #include <AIS_ViewController.hxx>
 #include <AIS_InteractiveContext.hxx>
 
+#include "Comm/BaseObject.h"
 #include "Iact/Workspace/ViewportController.h"
 #include "Iact/Workspace/WorkspaceController.h"
 #include "Iact/Viewport/IViewportMouseControl.h"
 #include "Iact/HudElements/IHudManager.h"
 
-class ViewportPanel : public QOpenGLWidget, public AIS_ViewController, public IHudManager {
+class ViewportPanel : public QOpenGLWidget, public AIS_ViewController, public IHudManager
+{
     Q_OBJECT
+    Q_PROPERTY(QString HintMessage WRITE setHintMessage)
 
  public:
     explicit ViewportPanel(QWidget* parent = nullptr);
@@ -29,12 +32,12 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController, public IH
     //! Destructor.
     virtual ~ViewportPanel();
 
-    virtual void AddElement(HudElement* element) {}
-    virtual void RemoveElement(HudElement* element) {}
-    virtual void RemoveElements(std::function<bool(HudElement*)> predicate) {}
+    virtual void AddElement(HudElement* element) override {}
+    virtual void RemoveElement(HudElement* element) override {}
+    virtual void RemoveElements(std::function<bool(HudElement*)> predicate) override {}
 
     // virtual void SetCursor(QObject* owner, Cursor* cursor)  {}
-    virtual void SetHintMessage(QObject* owner, const std::string& message) {}
+    virtual void setHintMessage(const QString& message) override;
 
     // WorkspaceController getter/setter
     WorkspaceController* workspaceController() const;
@@ -105,6 +108,7 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController, public IH
     void workspaceControllerChanged(WorkspaceController*);
     void viewportControllerChanged(ViewportController*);
     void hudElementCollectionChanged();
+    void hintMessageChanged(const QString& property);
 
  private:
     ViewportController* m_viewportController;
@@ -117,11 +121,13 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController, public IH
     Handle(V3d_View)               m_view;
     Handle(AIS_InteractiveContext) m_context;
     Handle(AIS_ViewCube)           m_viewCube;
-
     Handle(V3d_View)               m_focusView;
     Handle(OpenGl_Context)         m_glContext;
+
     QString m_glInfo;
     bool m_isCoreProfile;
+
+    QString HintMessage;
 };
 
 #endif  // SRC_IACT_VIEWPORT_VIEWPORTPANEL_H_

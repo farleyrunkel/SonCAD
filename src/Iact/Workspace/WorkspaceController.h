@@ -38,6 +38,7 @@ class WorkspaceController : public BaseObject {
     bool cancelTool(Tool* tool, bool force);
 
     Workspace* workspace() const;
+    IHudManager* hudManager() const { return _HudManager; }
 
     void setHudManager(IHudManager* hudManager);
     void setActiveViewport(Viewport* viewport);
@@ -66,7 +67,7 @@ class WorkspaceController : public BaseObject {
     Editor* m_currentEditor;
     Workspace* m_workspace;
     Viewport* m_activeViewport;
-    IHudManager* m_hudManager;
+    IHudManager* _HudManager;
 
     bool _GridNeedsUpdate;
     Handle(AISX_Grid) _Grid;

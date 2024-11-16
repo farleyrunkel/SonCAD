@@ -24,13 +24,15 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
     virtual QList<WorkspaceControl*> getChildren() const;
     void add(HudElement* hudElement);
 
+    void setHintMessage(const QString& message);
+
  public:
     virtual bool onMouseMove(MouseEventData* data) {
         auto children = getChildren();
         return std::any_of(children.begin(), children.end(),
             [data](WorkspaceControl* child) { 
                 auto a = child;
-                return child->onMouseMove(data); 
+                return child->onMouseMove(data);
             });
     }
 

@@ -21,7 +21,7 @@ WorkspaceController::WorkspaceController(Workspace* workspace)
       m_currentTool(nullptr),
       m_currentEditor(nullptr),
       m_activeViewport(nullptr),
-      m_hudManager(nullptr) {
+      _HudManager(nullptr) {
 
     connect(m_workspace, &Workspace::gridChanged, this, &WorkspaceController::onWorkspaceGridChanged);
 
@@ -45,7 +45,7 @@ void WorkspaceController::initWorkspace() {
     AisHelper::disableGlobalClipPlanes(_Grid);
 
     if (workspace()->aisContext()) {
-       workspace()->aisContext()->Display(_Grid, 1, -1, true);
+       workspace()->aisContext()->Display(_Grid, 0, -1, false);
     }
 
     //// 初始化 VisualObjects 并更新网格
@@ -243,7 +243,7 @@ void WorkspaceController::setActiveViewport(Viewport* viewport) {
  }
 
 void WorkspaceController::setHudManager(IHudManager* hudManager) { 
-    m_hudManager = hudManager; 
+    _HudManager = hudManager; 
 }
 
 ViewportController* WorkspaceController::viewportController(Viewport* viewport) {

@@ -21,7 +21,7 @@ class IHudManager {
     virtual void RemoveElements(std::function<bool(HudElement*)> predicate) = 0;
 
     // virtual void SetCursor(QObject* owner, Cursor* cursor) = 0;
-    virtual void SetHintMessage(QObject* owner, const std::string& message) = 0;
+    virtual void setHintMessage(const QString& message) = 0;
 };
 
 #endif  // IACT_HUD_ELEMENTS_IHUDMANAGER_H_

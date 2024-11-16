@@ -19,6 +19,8 @@ bool CreateBoxTool::onStart() {
 	connect(pointAction, &PointAction::preview, this, &CreateBoxTool::pivotAction_preview);
 	connect(pointAction, &PointAction::finished, this, &CreateBoxTool::pivotAction_finished);
 
+	setHintMessage("__Select corner point.__");
+
 	m_coord2DHudElement = new Coord2DHudElement;
 	add(m_coord2DHudElement);
 	return true;
