@@ -7,7 +7,7 @@
 
 #include "Iact/Workspace/WorkspaceController.h"
 
-VisualObject::VisualObject(workspaceController* workspaceController, InteractiveEntity* entity)
+VisualObject::VisualObject(WorkspaceController* workspaceController, InteractiveEntity* entity)
     : QObject(nullptr), _WorkspaceController(workspaceController), _Entity(entity) {}
 
 WorkspaceController* VisualObject::workspaceController() const { 
@@ -15,7 +15,7 @@ WorkspaceController* VisualObject::workspaceController() const {
 }
 
 Handle(AIS_InteractiveContext) VisualObject::AisContext() const { 
-    return _WorkspaceController->workspace()->aisContext(); 
+    return _WorkspaceController->workspace()->aisContext();
 }
 
 bool VisualObject::IsSelected() const {
