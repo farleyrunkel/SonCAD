@@ -198,7 +198,7 @@ void WorkspaceController::initVisualSettings()
     hilightLocalDrawer->SetFaceBoundaryAspect(lineAspect);
     hilightLocalDrawer->SetFreeBoundaryAspect(lineAspect);
     hilightLocalDrawer->SetUnFreeBoundaryAspect(lineAspect);
-    hilightLocalDrawer->SetPointAspect(Marker::CreateBitmapPointAspect(Marker::ballImage(), Colors::Highlight));
+    hilightLocalDrawer->SetPointAspect(Marker::CreateBitmapPointAspect(Marker::BallImage(), Colors::Highlight));
 
     aisContext->SetHighlightStyle(Prs3d_TypeOfHighlight::Prs3d_TypeOfHighlight_LocalDynamic, hilightLocalDrawer);
 }

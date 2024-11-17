@@ -25,15 +25,15 @@ public:
 
     //--------------------------------------------------------------------------------------------------
 
-    Handle(AIS_InteractiveContext) aisContext() const;
+    Handle(AIS_InteractiveContext) AisContext() const;
 
     //--------------------------------------------------------------------------------------------------
 
-    virtual Handle(AIS_InteractiveObject) aisObject() const = 0;
+    virtual Handle(AIS_InteractiveObject) AisObject() const = 0;
 
     //--------------------------------------------------------------------------------------------------
 
-    virtual bool isSelectable() const { return false; }
+    virtual bool IsSelectable() const { return false; }
 
     void setIsSelectable(bool value) { Q_UNUSED(value); }
 
@@ -55,9 +55,9 @@ public:
 
     //--------------------------------------------------------------------------------------------------
 
-    virtual void remove() = 0;
+    virtual void Remove() = 0;
 
-    virtual void update() = 0;
+    virtual void Update() = 0;
 
     //--------------------------------------------------------------------------------------------------
 

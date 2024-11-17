@@ -12,6 +12,8 @@
 
 #include <Quantity_Color.hxx>
 
+namespace Sun {
+
 class Color : public QColor {
  public:
     static const Color Black;
@@ -67,5 +69,7 @@ class Color : public QColor {
     // Hash function for Color (example)
     size_t getHashCode() const;
 };
+
+}  // end namespace sun
 
 #endif // SRC_COMMON_TYPES_COLOR_H_

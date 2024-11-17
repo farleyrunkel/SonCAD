@@ -59,7 +59,7 @@ bool PointAction::onMouseUp(MouseEventData* data) {
 
 void PointAction::_EnsureMarker() {
     if (_Marker == nullptr) {
-        _Marker = new Marker(workspaceController(), Marker::Styles::Bitmap, Marker::plusImage());
+        _Marker = new Marker(workspaceController(), Marker::Styles::Bitmap, Marker::PlusImage());
         add(_Marker);
     }
 }

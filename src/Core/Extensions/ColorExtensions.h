@@ -9,20 +9,20 @@
 class ColorExtensions {
 public:
     // Convert Quantity_Color to Color
-    static Color toColor(const Quantity_Color& color) {
+    static Sun::Color toColor(const Quantity_Color& color) {
         float red = static_cast<float>(color.Red());
         float green = static_cast<float>(color.Green());
         float blue = static_cast<float>(color.Blue());
-        return Color(red, green, blue);
+        return Sun::Color(red, green, blue);
     }
 
     // Convert Quantity_NameOfColor to Color
-    static Color toColor(const Quantity_NameOfColor& colorName) {
+    static Sun::Color toColor(const Quantity_NameOfColor& colorName) {
         return toColor(Quantity_Color(colorName));
     }
 
     // Convert Color to Quantity_Color
-    static Quantity_Color toQuantityColor(const Color& color) {
+    static Quantity_Color toQuantityColor(const Sun::Color& color) {
         return Quantity_Color(color.Red, color.Green, color.Blue, Quantity_TOC_sRGB);
     }
 

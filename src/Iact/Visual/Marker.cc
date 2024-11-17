@@ -2,21 +2,36 @@
 
 #include "Iact/Visual/Marker.h"
 
+#include <QSharedPointer>
+
 #include "Iact/Workspace/WorkspaceController.h"
 #include "Occt/Managed/AIS_PointEx.h"
 
 
-Marker::Marker(WorkspaceController* workspaceController, Styles styles, const Handle(Graphic3d_MarkerImage)& image)
+Marker::Marker(WorkspaceController* workspaceController, Styles styles, const MarkerImage& image)
     : VisualObject(workspaceController, nullptr), 
     _Styles(styles), 
-    _Image(image), 
+    _Image(image),
     _Color(Qt::yellow), 
     _ColorBg(Qt::lightGray), 
     _IsSelectable(false),
-    _P(nullptr) {
+    _P(nullptr) 
+{
 }
 
-void Marker::update() {
+Marker::Marker(WorkspaceController* workspaceController, Styles styles, QString imageName, int size)
+    : VisualObject(workspaceController, nullptr),
+    _Styles(styles),
+    _Image(_GetMarkerImage(imageName, size)),
+    _Color(Qt::yellow),
+    _ColorBg(Qt::lightGray),
+    _IsSelectable(false),
+    _P(nullptr)
+{
+}
+
+void Marker::Update() 
+{
     // 确保 AIS_Point 对象存在
     if (_AisPoint.IsNull()) {
         _EnsureAisObject();
@@ -24,64 +39,121 @@ void Marker::update() {
     else {
         _UpdatePresentation();
         // 在 AisContext 上进行重新显示
-        aisContext()->Redisplay(_AisPoint, false);
+        AisContext()->Redisplay(_AisPoint, false);
     }
 
     if (_IsSelectable) {
-        aisContext()->Activate(_AisPoint);
+        AisContext()->Activate(_AisPoint);
     }
     else {
-        aisContext()->Deactivate(_AisPoint);
+        AisContext()->Deactivate(_AisPoint);
     }
+}
+
+inline void Marker::Set(const gp_Pnt& p)
+{
+    Set(new Geom_CartesianPoint(p));
+}
+
+inline void Marker::Set(const Handle(Geom_CartesianPoint)& p)
+{
+    _P = p;
+
+    if (!_EnsureAisObject())
+        return;
+
+    _AisPoint->SetComponent(_P);
+    Update();
+}
+
+void Marker::Set(const gp_Pnt2d& p, const gp_Pln& plane)
+{
+    gp_Pnt pnt;
+    ElSLib::D0(p.X(), p.Y(), plane, pnt);
+    Set(pnt);
+}
+
+void Marker::SetImage(MarkerImage image)
+{
+    if (_Image.PixMap == image.PixMap)
+        return;
+
+    _Image = image;
+
+    Remove();
+    _EnsureAisObject();
 }
 
 // 获取 AIS_Object（OCCT）
 
-Handle(AIS_InteractiveObject) Marker::aisObject() const 
+Handle(AIS_InteractiveObject) Marker::AisObject() const 
 {
     return _AisPoint;
 }
 
-void Marker::remove() {}
+void Marker::Remove() 
+{
+    if (!_AisPoint.IsNull())
+    {
+        AisContext()->Erase(_AisPoint, false);
+        _AisPoint.Nullify();
+    }
+}
 
 Handle(Prs3d_PointAspect) Marker::CreateBitmapPointAspect(
-    const Handle(Graphic3d_MarkerImage)& image, Color color) 
+    const MarkerImage& image, Sun::Color color)
 {
-    if (!image.IsNull() && image->GetBitMapArray()->IsEmpty()) 
+    if (image.Bytes->IsEmpty())
     {
         return new Prs3d_PointAspect(Aspect_TypeOfMarker::Aspect_TOM_BALL, color.toQuantityColor(), 1.0);
     }
 
-    int width = 0;
-    int height = 0;
-    image->GetTextureSize(width, height);
-    return new Prs3d_PointAspect(color.toQuantityColor(), width, height, image->GetBitMapArray());
+    return new Prs3d_PointAspect(color.toQuantityColor(), image.Width, image.Height, image.Bytes);
 }
 
-Handle(Prs3d_PointAspect) Marker::CreateImagePointAspect(const Handle(Graphic3d_MarkerImage)& image)
+Handle(Prs3d_PointAspect) Marker::CreateImagePointAspect(const MarkerImage& image)
 {
-    if (!image.IsNull() && image->GetImage()->IsEmpty())
+    if (image.PixMap->IsEmpty())
     {
         return new Prs3d_PointAspect(Aspect_TypeOfMarker::Aspect_TOM_BALL, Colors::Marker.toQuantityColor(), 1.0);
     }
 
-    auto aspectMarker = new Graphic3d_AspectMarker3d(image->GetImage());
+    auto aspectMarker = new Graphic3d_AspectMarker3d(image.PixMap);
     auto aspectPoint = new Prs3d_PointAspect(aspectMarker);
 
     return aspectPoint;
 }
 
-bool Marker::_EnsureAisObject() {
-    if (_AisPoint.IsNull()) {
-        _AisPoint = new AIS_PointEx(_P);
-        // 设置点位置
-        _AisPoint->SetComponent(_P);
-        _AisPoint->SetMarker(Aspect_TOM_USERDEFINED);
+bool Marker::_EnsureAisObject() 
+{
+    if (!_AisPoint.IsNull()) 
+        return true;
+
+    if (_P.IsNull()) 
+        return false;
+
+    _AisPoint = new AIS_PointEx(_P);
+
+    if (_Styles == Styles::NoClipPlane)
+        AisHelper::disableGlobalClipPlanes(_AisPoint);
+
+    _UpdatePresentation();
+    if (_Styles == Styles::Topmost) {
+        _AisPoint->SetZLayer(-4); // TopOSD
+        _AisPoint->HilightAttributes()->SetZLayer(-4);
+        _AisPoint->DynamicHilightAttributes()->SetZLayer(-4);
     }
-    return (!_AisPoint.IsNull());
+
+    AisContext()->Display(_AisPoint, 0, 0, false);
+
+
+    AisContext()->SetSelectionSensitivity(_AisPoint, 0, std::min(_Image.Height, _Image.Width));
+
+    return true;
 }
 
-void Marker::_UpdatePresentation() {
+void Marker::_UpdatePresentation() 
+{
     if (_AisPoint.IsNull()) return;
 
     _AisPoint->SetMarker(Aspect_TOM_USERDEFINED);
@@ -114,41 +186,79 @@ void Marker::_UpdatePresentation() {
     }
 }
 
-Handle(Graphic3d_MarkerImage) Marker::markerImage(const QString& name, int size) {
-    auto a = tryGetMarkerAsImage(name, size);
-    Handle(Graphic3d_MarkerImage) res;
-    if (a) {
-        res = new Graphic3d_MarkerImage(a);
-    }
-    return res;
+Marker::MarkerImage Marker::_GetMarkerImage(const QString& name, int size)
+{
+    auto pixmap = _TryGetMarkerAsImage(name, size);
+
+    MarkerImage image;
+    image.PixMap = pixmap;
+    image.Width  = pixmap->Width();
+    image.Height = (int)pixmap->Height();
+    image.Bytes  = (new Graphic3d_MarkerImage(pixmap))->GetBitMapArray();   
+
+    return image;
 }
 
-Handle(Image_PixMap) Marker::tryGetMarkerAsImage(const QString& name, int size) {
+Handle(Image_PixMap) Marker::_TryGetMarkerAsImage(const QString& name, int size) 
+{
     int dpiScale = 1;
     int finalSize = static_cast<int>(size * dpiScale);
 
     QString imagePath = ResourceUtils::iconPath("Marker/" + name);
 
     QImage image(imagePath);
-    if (!image.load(imagePath, "svg")) {
+    if (!image.load(imagePath, "svg")) 
+    {
         qDebug() << "Error: Failed to load image:" << imagePath;
         return nullptr;
     }
 
     Handle(Image_PixMap) pixmap = PixMapHelper::convertFromBitmap(image.scaled(finalSize, finalSize));
-    if (pixmap.IsNull()) {
+    if (pixmap.IsNull()) 
+    {
         qDebug() << "Could not load marker image " << name << " into pixmap.";
         return nullptr;
     }
     return pixmap;
 }
 
-Handle(Graphic3d_MarkerImage) Marker::plusImage() {
-    static Handle(Graphic3d_MarkerImage) RectImage = markerImage("Plus", 16);
-    return RectImage;
+Marker::MarkerImage& Marker::PlusImage()
+{
+    static MarkerImage a = _GetMarkerImage("Plus", 16);
+    return a;
 }
 
-Handle(Graphic3d_MarkerImage) Marker::ballImage() {
-    static Handle(Graphic3d_MarkerImage) RectImage = markerImage("Ball", 16);
-    return RectImage;
+Marker::MarkerImage& Marker::BallImage()
+{
+    static MarkerImage a = _GetMarkerImage("Ball", 16);
+    return a;
+}
+
+// 获取/设置颜色
+
+Sun::Color Marker::Color() const { return _Color; }
+
+void Marker::SetColor(const Sun::Color& color) {
+    if (_Color == color)
+        return;
+    _Color = color;
+    Update();
+}
+
+Sun::Color Marker::BackgroundColor() const { return _ColorBg; }
+
+void Marker::SetBackgroundColor(const Sun::Color& color) {
+    if (_ColorBg == color)
+        return;
+    _ColorBg = color;
+    Update();
+}
+
+bool Marker::IsSelectable() const { return _IsSelectable; }
+
+void Marker::SetSelectable(bool selectable) {
+    if (_IsSelectable == selectable)
+        return;
+    _IsSelectable = selectable;
+    Update();
 }

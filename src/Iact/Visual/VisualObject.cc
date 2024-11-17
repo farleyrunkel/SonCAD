@@ -13,16 +13,16 @@ WorkspaceController* VisualObject::workspaceController() const {
     return m_workspaceController; 
 }
 
-Handle(AIS_InteractiveContext) VisualObject::aisContext() const { 
+Handle(AIS_InteractiveContext) VisualObject::AisContext() const { 
     return m_workspaceController->workspace()->aisContext(); 
 }
 
 bool VisualObject::isSelected() const {
-    return aisContext()->IsSelected(aisObject());
+    return AisContext()->IsSelected(AisObject());
 }
 
 void VisualObject::setIsSelected(bool value) {
-    if (aisContext()->IsSelected(aisObject()) != value) {
-        aisContext()->AddOrRemoveSelected(aisObject(), false);
+    if (AisContext()->IsSelected(AisObject()) != value) {
+        AisContext()->AddOrRemoveSelected(AisObject(), false);
     }
 }

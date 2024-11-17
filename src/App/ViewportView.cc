@@ -19,7 +19,7 @@ ViewportView::ViewportView(QWidget* parent)
 
     // Tool and error message area
     messageBar = new QLabel("Tool and error message area");
-    messageBar->setStyleSheet("background-color: lightyellow;");
+    messageBar->setStyleSheet("background-Color: lightyellow;");
     mainLayout->addWidget(messageBar);
 
     // Add spacer between the labels
@@ -27,7 +27,7 @@ ViewportView::ViewportView(QWidget* parent)
 
     // Grid information display
     QLabel* gridInfo = new QLabel("Grid information display area");
-    gridInfo->setStyleSheet("background-color: lightyellow;");
+    gridInfo->setStyleSheet("background-Color: lightyellow;");
     mainLayout->addWidget(gridInfo);
 
     connect(Core::appContext(), &AppContext::workspaceControllerChanged, [this](WorkspaceController* controller) {

@@ -3,12 +3,12 @@
 #include "Comm/Types/Color.h"
 
 // Define static colors
-const Color Color::Black(0, 0, 0);
-const Color Color::White(1, 1, 1);
+const Sun::Color Sun::Color::Black(0, 0, 0);
+const Sun::Color Sun::Color::White(1, 1, 1);
 
-Color::Color(float r, float g, float b) : Red(r), Green(g), Blue(b) {}
+Sun::Color::Color(float r, float g, float b) : Red(r), Green(g), Blue(b) {}
 
-Color::Color(const std::string& s) {
+Sun::Color::Color(const std::string& s) {
     if ((s.length() == 7 || s.length() == 9) && s[0] == '#') {
         size_t i = 1;
         if (s.length() == 9) {
@@ -27,13 +27,13 @@ Color::Color(const std::string& s) {
     throw std::invalid_argument("Color can not be decoded.");
 }
 
-std::string Color::toString() const {
+std::string Sun::Color::toString() const {
     std::ostringstream oss;
     oss << "[" << Red << "," << Green << "," << Blue << "]";
     return oss.str();
 }
 
-std::string Color::toHexString() const {
+std::string Sun::Color::toHexString() const {
     std::ostringstream oss;
     oss << "#" << std::hex << std::setfill('0')
         << std::setw(2) << static_cast<int>(Red * 255)
@@ -42,13 +42,13 @@ std::string Color::toHexString() const {
     return oss.str();
 }
 
-Color Color::scaled(float scale) const {
-    return Color(Red * scale, Green * scale, Blue * scale);
+Sun::Color Sun::Color::scaled(float scale) const {
+    return Sun::Color(Red * scale, Green * scale, Blue * scale);
 }
 
 // Hash function for Color (example)
 
-size_t Color::getHashCode() const {
+size_t Sun::Color::getHashCode() const {
     return static_cast<size_t>((static_cast<int>(Red * 255) << 16) |
         (static_cast<int>(Green * 255) << 8) |
         (static_cast<int>(Blue * 255)));
