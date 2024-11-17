@@ -9,15 +9,15 @@ Tool::Tool(QObject* parent) : WorkspaceControl(),
 }
 
 bool Tool::start() {
-	if (onStart()) {
+	if (OnStart()) {
 		m_isActive = true;
-		workspaceController()->invalidate();
+		workspaceController()->Invalidate();
 		return true;
 	}
 	return false;
 }
 
-bool Tool::onStart() { return false; }
+bool Tool::OnStart() { return false; }
 
 ToolAction* Tool::currentAction() const {
 	return m_toolActions.size() > 0 ? m_toolActions.first() : nullptr;
@@ -38,7 +38,7 @@ void Tool::stop() {
 	cleanup();
 
 	workspaceController()->removeTool(this);
-	workspaceController()->invalidate();
+	workspaceController()->Invalidate();
 }
 
 QString Tool::id() const { return m_id; }
@@ -47,8 +47,8 @@ bool Tool::prepareUndo() {
 	return cancel(false);
 }
 
-QList<WorkspaceControl*> Tool::getChildren() const {
-	qDebug() << "Debug: Tool::getChildren";
+QList<WorkspaceControl*> Tool::GetChildren() const {
+	qDebug() << "Debug: Tool::GetChildren";
 	return {m_toolActions.begin(), m_toolActions.end()};
 }
 

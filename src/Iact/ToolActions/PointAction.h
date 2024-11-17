@@ -42,8 +42,8 @@ class PointAction : public ToolAction {
      void processMouseInput(MouseEventData* data);
 
  signals:
-    void preview(EventArgs* args);
-    void finished(EventArgs* args);
+    void Preview(EventArgs* args);
+    void Finished(EventArgs* args);
 
 private:
     bool m_isFinished;

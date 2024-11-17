@@ -23,15 +23,15 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
 	void setWorkspaceController(WorkspaceController* workspaceController);
 
  protected:
-    virtual QList<WorkspaceControl*> getChildren() const;
-    void add(HudElement* hudElement);
+    virtual QList<WorkspaceControl*> GetChildren() const;
+    void SetHintMessage(const QString& message);
 
-    void setHintMessage(const QString& message);
-    void add(VisualObject* visual);
+    void Add(VisualObject* visual);
+    void Add(HudElement* hudElement);
 
  public:
-    virtual bool onMouseMove(MouseEventData* data) {
-        auto children = getChildren();
+    virtual bool onMouseMove(MouseEventData* data) override {
+        auto children = GetChildren();
         return std::any_of(children.begin(), children.end(),
             [data](WorkspaceControl* child) { 
                 auto a = child;
@@ -39,36 +39,36 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
             });
     }
 
-    virtual bool onMouseDown(MouseEventData* data) {
-        auto children = getChildren();
+    virtual bool onMouseDown(MouseEventData* data) override {
+        auto children = GetChildren();
         return std::any_of(children.begin(), children.end(),
             [data](WorkspaceControl* child) {
                 auto a = child; return child->onMouseDown(data); });
     }
 
-    virtual bool onMouseUp(MouseEventData* data) {
-        auto children = getChildren();
+    virtual bool onMouseUp(MouseEventData* data) override {
+        auto children = GetChildren();
         return std::any_of(children.begin(), children.end(),
             [data](WorkspaceControl* child) {
                 auto a = child; return child->onMouseUp(data); });
     }
 
     virtual void enrichContextMenu(QList<QAction*>& itemList) {
-        auto children = getChildren();
+        auto children = GetChildren();
         std::for_each(children.begin(), children.end(),
             [&itemList](WorkspaceControl* child) { child->enrichContextMenu(itemList); });
     }
 
     virtual bool onKeyPressed(MouseEventData* data) {
-        auto children = getChildren();
+        auto children = GetChildren();
         return std::any_of(children.begin(), children.end(),
             [data](WorkspaceControl* child) {
                 auto a = child; return child->onKeyPressed(data); });
     }
 
  private: 
-	WorkspaceController* m_workspaceController;
-	QList<HudElement*> m_hudElements;
+	WorkspaceController* _WorkspaceController;
+	QList<HudElement*> _HudElements;
     QList<VisualObject*> _VisualObjects;
 
 };

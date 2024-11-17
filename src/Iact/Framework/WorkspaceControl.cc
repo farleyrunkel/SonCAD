@@ -7,38 +7,37 @@
 
 WorkspaceControl::WorkspaceControl(QObject* parent) 
 	: QObject(parent) ,
-	m_workspaceController(nullptr) {
+	_WorkspaceController(nullptr) {
 }
 
 WorkspaceController* WorkspaceControl::workspaceController() const { 
-	return m_workspaceController; 
+	return _WorkspaceController; 
 }
 
 void WorkspaceControl::setWorkspaceController(WorkspaceController* workspaceController) {
-	m_workspaceController = workspaceController;
+	_WorkspaceController = workspaceController;
 }
 
-QList<WorkspaceControl*> WorkspaceControl::getChildren() const {
+QList<WorkspaceControl*> WorkspaceControl::GetChildren() const {
 	return {};
 }
 
-void WorkspaceControl::add(HudElement* hudElement) {
-	if (hudElement == nullptr || m_hudElements.contains(hudElement)) {
+void WorkspaceControl::Add(HudElement* hudElement) {
+	if (hudElement == nullptr || _HudElements.contains(hudElement)) {
 		return;
 	}
-	m_hudElements.append(hudElement);
+	_HudElements.append(hudElement);
 }
 
-void WorkspaceControl::setHintMessage(const QString& message) {
+void WorkspaceControl::SetHintMessage(const QString& message) {
 	auto hudManager = workspaceController()->hudManager();
 	if (hudManager)
-		hudManager->setHintMessage(message);
+		hudManager->SetHintMessage(message);
 }
 
-void WorkspaceControl::add(VisualObject* visual) {
+void WorkspaceControl::Add(VisualObject* visual) {
 	if (_VisualObjects.contains(visual))
 		return;
 	_VisualObjects.append(visual);
-	workspaceController()->invalidate();
+	workspaceController()->Invalidate();
 }
-

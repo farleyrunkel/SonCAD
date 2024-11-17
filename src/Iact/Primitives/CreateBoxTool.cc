@@ -5,34 +5,34 @@
 
 CreateBoxTool::CreateBoxTool() 
 	: Tool(),
-	m_coord2DHudElement(nullptr) {
+	_Coord2DHudElement(nullptr) {
 	
 }
 
-bool CreateBoxTool::onStart() {
-	qDebug() << "Debug: CreateBoxTool::onStart";
+bool CreateBoxTool::OnStart() {
+	qDebug() << "Debug: CreateBoxTool::OnStart";
 	m_currentPhase = Phase::PivotPoint;
 	auto pointAction = new PointAction();
 	if (!startAction(pointAction)) {
 		return false;
 	}
-	connect(pointAction, &PointAction::preview, this, &CreateBoxTool::pivotAction_preview);
-	connect(pointAction, &PointAction::finished, this, &CreateBoxTool::pivotAction_finished);
+	connect(pointAction, &PointAction::Preview, this, &CreateBoxTool::_PivotAction_Preview);
+	connect(pointAction, &PointAction::Finished, this, &CreateBoxTool::_PivotAction_Finished);
 
-	setHintMessage("Select corner point.");
+	SetHintMessage("Select corner point.");
 
-	m_coord2DHudElement = new Coord2DHudElement;
-	add(m_coord2DHudElement);
+	_Coord2DHudElement = new Coord2DHudElement;
+	Add(_Coord2DHudElement);
 	return true;
 }
 
-void CreateBoxTool::pivotAction_preview() {
-	qDebug() << "Debug: CreateBoxTool::pivotAction_preview";
-	// m_coord2DHudElement
-
+void CreateBoxTool::_PivotAction_Preview(PointAction::EventArgs* args) {
+	qDebug() << "Debug: CreateBoxTool::_PivotAction_Preview";
+	if (_Coord2DHudElement) {
+		_Coord2DHudElement->setValues(args->Point.X(), args->Point.Y());
+	}
 }
 
-
-void CreateBoxTool::pivotAction_finished() {
-	qDebug() << "Debug: CreateBoxTool::pivotAction_finished";
+void CreateBoxTool::_PivotAction_Finished(PointAction::EventArgs* args) {
+	qDebug() << "Debug: CreateBoxTool::_PivotAction_Finished";
 }

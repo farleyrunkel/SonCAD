@@ -15,7 +15,7 @@ PointAction::PointAction()
 
 bool PointAction::onStart() {
     // QMessageBox::warning(nullptr, "adsd", "dasds");
-    qDebug() << "Debug: PointAction::onStart";
+    qDebug() << "Debug: PointAction::OnStart";
 
     return true;
 }
@@ -32,8 +32,8 @@ bool PointAction::onMouseMove(MouseEventData* data) {
             data
         );
 
-        emit preview(args);
-        workspaceController()->invalidate();
+        emit Preview(args);
+        workspaceController()->Invalidate();
         return ToolAction::onMouseMove(data);
     }
 
@@ -52,7 +52,7 @@ bool PointAction::onMouseUp(MouseEventData* data) {
         EventArgs* args = new EventArgs(
         );
 
-        emit finished(args);
+        emit Finished(args);
     }
     return false; 
 }
@@ -60,7 +60,7 @@ bool PointAction::onMouseUp(MouseEventData* data) {
 void PointAction::_EnsureMarker() {
     if (_Marker == nullptr) {
         _Marker = new Marker(workspaceController(), Marker::Styles::Bitmap, Marker::PlusImage());
-        add(_Marker);
+        Add(_Marker);
     }
 }
 

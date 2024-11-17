@@ -33,7 +33,7 @@ class WorkspaceController : public BaseObject {
     void removeTool(Tool* tool) {}
     bool startTool(Tool* tool);
     bool isSelecting() { return false; }
-    void invalidate(bool immediateOnly = false, bool forceRedraw = false);
+    void Invalidate(bool immediateOnly = false, bool forceRedraw = false);
 ;
     bool cancelTool(Tool* tool, bool force);
 

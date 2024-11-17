@@ -58,7 +58,7 @@ Tool* WorkspaceController::currentTool() const {
 }
 
 bool WorkspaceController::startTool(Tool* tool) {
-    qDebug() << "Debug: m_workspaceController::startTool";
+    qDebug() << "Debug: _WorkspaceController::startTool";
     try {
         if (currentTool() != nullptr && !cancelTool(currentTool(), true)) {
             return false;
@@ -73,7 +73,7 @@ bool WorkspaceController::startTool(Tool* tool) {
                 return false;
             }
 
-            invalidate(true);
+            Invalidate(true);
             return true;
         }
         return false;
@@ -84,7 +84,7 @@ bool WorkspaceController::startTool(Tool* tool) {
     }
 }
 
-void WorkspaceController::invalidate(bool immediateOnly, bool forceRedraw) {
+void WorkspaceController::Invalidate(bool immediateOnly, bool forceRedraw) {
     m_workspace->setNeedsImmediateRedraw(true);
     if (!immediateOnly)
         m_workspace->setNeedsRedraw(true);
@@ -98,7 +98,7 @@ void WorkspaceController::onWorkspaceGridChanged(Workspace* sender) {
         recalculateGridSize();
         _GridNeedsUpdate = true;
         _UpdateGrid();
-        invalidate();
+        Invalidate();
     }
 }
 
@@ -204,7 +204,7 @@ void WorkspaceController::initVisualSettings()
 }
 
 void WorkspaceController::mouseMove(ViewportController* viewportController, QPointF pos, Qt::KeyboardModifiers modifiers) {
-    qDebug() << "Debug: m_workspaceController::mouseMove: " << pos;
+    qDebug() << "Debug: _WorkspaceController::mouseMove: " << pos;
     for (const auto& handler : enumerateControls()) {
         if (handler->onMouseMove(m_mouseEventData))
             break;
@@ -212,7 +212,7 @@ void WorkspaceController::mouseMove(ViewportController* viewportController, QPoi
 }
 
 void WorkspaceController::mouseDown(ViewportController* viewportController, Qt::KeyboardModifiers modifiers) {
-    qDebug() << "Debug: m_workspaceController::mouseDown: " << modifiers;
+    qDebug() << "Debug: _WorkspaceController::mouseDown: " << modifiers;
     for (const auto& handler : enumerateControls()) {
         if (handler->onMouseDown(m_mouseEventData))
             break;
@@ -220,7 +220,7 @@ void WorkspaceController::mouseDown(ViewportController* viewportController, Qt::
 }
 
 void WorkspaceController::mouseUp(ViewportController* viewportController, Qt::KeyboardModifiers modifiers) {
-    qDebug() << "Debug: m_workspaceController::mouseUp: " << modifiers;
+    qDebug() << "Debug: _WorkspaceController::mouseUp: " << modifiers;
     for (const auto& handler : enumerateControls()) {
         if (handler->onMouseUp(m_mouseEventData))
             break;
@@ -262,7 +262,7 @@ ViewportController* WorkspaceController::viewportController(Viewport* viewport) 
 void WorkspaceController::dispose() {}
 
 QList<WorkspaceControl*> WorkspaceController::enumerateControls() {
-    qDebug() << "Debug: m_workspaceController::enumerateControls";
+    qDebug() << "Debug: _WorkspaceController::enumerateControls";
     QList<WorkspaceControl*> controls;
 
     if (m_currentTool) {

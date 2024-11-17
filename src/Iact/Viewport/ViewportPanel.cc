@@ -264,7 +264,7 @@ ViewportPanel::~ViewportPanel() {
 
 // virtual void SetCursor(QObject* owner, Cursor* cursor)  {}
 
-void ViewportPanel::setHintMessage(const QString& message) {
+void ViewportPanel::SetHintMessage(const QString& message) {
     if (HintMessage != message) {
         HintMessage = message;
         emit hintMessageChanged(message);

@@ -17,7 +17,7 @@ class IMouseEventHandler {
     virtual ~IMouseEventHandler() = default;
     virtual bool onMouseMove(MouseEventData* data) = 0;
     virtual bool onMouseDown(MouseEventData* data) = 0;
-          virtual bool onMouseUp(MouseEventData* data) = 0;
+    virtual bool onMouseUp(MouseEventData* data) = 0;
 };
 
 //--------------------------------------------------------------------------------------------------

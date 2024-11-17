@@ -24,7 +24,7 @@
 class ViewportPanel : public QOpenGLWidget, public AIS_ViewController, public IHudManager
 {
     Q_OBJECT
-    Q_PROPERTY(QString HintMessage WRITE setHintMessage)
+    Q_PROPERTY(QString HintMessage WRITE SetHintMessage)
 
  public:
     explicit ViewportPanel(QWidget* parent = nullptr);
@@ -37,7 +37,7 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController, public IH
     virtual void RemoveElements(std::function<bool(HudElement*)> predicate) override {}
 
     // virtual void SetCursor(QObject* owner, Cursor* cursor)  {}
-    virtual void setHintMessage(const QString& message) override;
+    virtual void SetHintMessage(const QString& message) override;
 
     // WorkspaceController getter/setter
     WorkspaceController* workspaceController() const;

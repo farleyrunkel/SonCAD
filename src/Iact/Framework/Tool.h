@@ -19,7 +19,7 @@ class Tool : public WorkspaceControl {
  public:
 	bool start();
 
-	virtual bool onStart();
+	virtual bool OnStart();
 
 	ToolAction* currentAction() const;
 
@@ -32,7 +32,7 @@ class Tool : public WorkspaceControl {
 	virtual bool prepareUndo();
 
  protected:
-	virtual QList<WorkspaceControl*> getChildren() const;
+	virtual QList<WorkspaceControl*> GetChildren() const;
 
 	virtual bool onCancel();
 

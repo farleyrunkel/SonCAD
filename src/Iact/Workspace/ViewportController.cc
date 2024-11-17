@@ -43,17 +43,17 @@ QString ViewportController::dumpInfo(bool theIsBasic, bool theToPrint) {
 
 void ViewportController::mouseMove(const QPointF& pos, Qt::KeyboardModifiers modifiers, MouseMoveMode mode) {
     workspaceController()->mouseMove(this, pos, modifiers);
-    workspaceController()->invalidate();
+    workspaceController()->Invalidate();
 }
 
 void ViewportController::mouseDown(Qt::KeyboardModifiers modifiers) {
     workspaceController()->mouseDown(this, modifiers);
-    workspaceController()->invalidate();
+    workspaceController()->Invalidate();
 }
 
 void ViewportController::mouseUp(Qt::KeyboardModifiers modifiers) {
     workspaceController()->mouseUp(this, modifiers);
-    workspaceController()->invalidate();
+    workspaceController()->Invalidate();
 }
 
 void ViewportController::setPredefinedView(PredefinedViews predefinedView) {
@@ -99,7 +99,7 @@ void ViewportController::setPredefinedView(PredefinedViews predefinedView) {
     m_viewCube->HandleClick(viewCubeOwner);
     viewCubeOwner->~AIS_ViewCubeOwner();
 
-    workspaceController()->invalidate();
+    workspaceController()->Invalidate();
 }
 
 void ViewportController::setViewCube(bool isVisible) {
@@ -110,11 +110,11 @@ void ViewportController::setViewCube(bool isVisible) {
 
     if (isVisible && !aisContext->IsDisplayed(m_viewCube)) {
         aisContext->Display(m_viewCube, false);
-        workspaceController()->invalidate(true);
+        workspaceController()->Invalidate(true);
     }
     else if (!isVisible && aisContext->IsDisplayed(m_viewCube)) {
         aisContext->Remove(m_viewCube, false);
-        workspaceController()->invalidate(true);
+        workspaceController()->Invalidate(true);
     }
 }
 
@@ -192,5 +192,5 @@ void ViewportController::setViewCube(bool isVisible, uint32_t size, double durat
     //    }
     //}
 
-    workspaceController()->invalidate(true);
+    workspaceController()->Invalidate(true);
 }

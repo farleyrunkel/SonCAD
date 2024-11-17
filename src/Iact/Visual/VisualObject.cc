@@ -3,26 +3,32 @@
 #include "Iact/Visual/VisualObject.h"
 
 #include <AIS_InteractiveContext.hxx>
+#include <gp_Trsf.hxx>
 
 #include "Iact/Workspace/WorkspaceController.h"
 
-VisualObject::VisualObject(WorkspaceController* workspaceController, InteractiveEntity* entity, QObject* parent)
-    : QObject(parent), m_workspaceController(workspaceController), m_entity(entity) {}
+VisualObject::VisualObject(workspaceController* workspaceController, InteractiveEntity* entity)
+    : QObject(nullptr), _WorkspaceController(workspaceController), _Entity(entity) {}
 
 WorkspaceController* VisualObject::workspaceController() const { 
-    return m_workspaceController; 
+    return _WorkspaceController; 
 }
 
 Handle(AIS_InteractiveContext) VisualObject::AisContext() const { 
-    return m_workspaceController->workspace()->aisContext(); 
+    return _WorkspaceController->workspace()->aisContext(); 
 }
 
-bool VisualObject::isSelected() const {
+bool VisualObject::IsSelected() const {
     return AisContext()->IsSelected(AisObject());
 }
 
-void VisualObject::setIsSelected(bool value) {
+void VisualObject::SetIsSelected(bool value) {
     if (AisContext()->IsSelected(AisObject()) != value) {
         AisContext()->AddOrRemoveSelected(AisObject(), false);
     }
+}
+
+void VisualObject::SetLocalTransformation(const gp_Trsf& transformation) {
+    if (!AisObject()) return;
+    AisObject()->SetLocalTransformation(transformation);
 }
