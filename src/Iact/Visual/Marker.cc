@@ -3,6 +3,8 @@
 #include "Iact/Visual/Marker.h"
 
 #include "Iact/Workspace/WorkspaceController.h"
+#include "Occt/Managed/AIS_PointEx.h"
+
 
 Marker::Marker(WorkspaceController* workspaceController, Styles styles, const Handle(Graphic3d_MarkerImage)& image)
     : VisualObject(workspaceController, nullptr), 
@@ -17,10 +19,10 @@ Marker::Marker(WorkspaceController* workspaceController, Styles styles, const Ha
 void Marker::update() {
     // 确保 AIS_Point 对象存在
     if (_AisPoint.IsNull()) {
-        _ensureAisObject();
+        _EnsureAisObject();
     }
     else {
-        _updatePresentation();
+        _UpdatePresentation();
         // 在 AisContext 上进行重新显示
         aisContext()->Redisplay(_AisPoint, false);
     }
@@ -35,14 +37,18 @@ void Marker::update() {
 
 // 获取 AIS_Object（OCCT）
 
-Handle(AIS_InteractiveObject) Marker::aisObject() const {
+Handle(AIS_InteractiveObject) Marker::aisObject() const 
+{
     return _AisPoint;
 }
 
 void Marker::remove() {}
 
-Handle(Prs3d_PointAspect) Marker::CreateBitmapPointAspect(const Handle(Graphic3d_MarkerImage)& image, Color color) {
-    if (image && image->GetBitMapArray()->IsEmpty()) {
+Handle(Prs3d_PointAspect) Marker::CreateBitmapPointAspect(
+    const Handle(Graphic3d_MarkerImage)& image, Color color) 
+{
+    if (!image.IsNull() && image->GetBitMapArray()->IsEmpty()) 
+    {
         return new Prs3d_PointAspect(Aspect_TypeOfMarker::Aspect_TOM_BALL, color.toQuantityColor(), 1.0);
     }
 
@@ -52,9 +58,22 @@ Handle(Prs3d_PointAspect) Marker::CreateBitmapPointAspect(const Handle(Graphic3d
     return new Prs3d_PointAspect(color.toQuantityColor(), width, height, image->GetBitMapArray());
 }
 
-bool Marker::_ensureAisObject() {
+Handle(Prs3d_PointAspect) Marker::CreateImagePointAspect(const Handle(Graphic3d_MarkerImage)& image)
+{
+    if (!image.IsNull() && image->GetImage()->IsEmpty())
+    {
+        return new Prs3d_PointAspect(Aspect_TypeOfMarker::Aspect_TOM_BALL, Colors::Marker.toQuantityColor(), 1.0);
+    }
+
+    auto aspectMarker = new Graphic3d_AspectMarker3d(image->GetImage());
+    auto aspectPoint = new Prs3d_PointAspect(aspectMarker);
+
+    return aspectPoint;
+}
+
+bool Marker::_EnsureAisObject() {
     if (_AisPoint.IsNull()) {
-        _AisPoint = new AIS_Point(_P);
+        _AisPoint = new AIS_PointEx(_P);
         // 设置点位置
         _AisPoint->SetComponent(_P);
         _AisPoint->SetMarker(Aspect_TOM_USERDEFINED);
@@ -62,24 +81,26 @@ bool Marker::_ensureAisObject() {
     return (!_AisPoint.IsNull());
 }
 
-void Marker::_updatePresentation() {
+void Marker::_UpdatePresentation() {
     if (_AisPoint.IsNull()) return;
 
-    Prs3d_PointAspect* pointAspect = nullptr;
+    _AisPoint->SetMarker(Aspect_TOM_USERDEFINED);
 
-    //// 根据 Styles 设置不同的展示效果
-    //switch (_Styles & Styles::ModeMask) {
-    //case Styles::Bitmap:
-    //    pointAspect = CreateBitmapPointAspect(_Image, _Color);
-    //    break;
-    //case Styles::Image:
-    //    pointAspect = CreateImagePointAspect(_Image);
-    //    break;
-    //default:
-    //    break;
-    //}
+    Handle(Prs3d_PointAspect) pointAspect = nullptr;
 
-    if (pointAspect != nullptr) {
+    // 根据 Styles 设置不同的展示效果
+    switch (_Styles & Styles::ModeMask) {
+    case Styles::Bitmap:
+        pointAspect = CreateBitmapPointAspect(_Image, _Color);
+        break;
+    case Styles::Image:
+        pointAspect = CreateImagePointAspect(_Image);
+        break;
+    default:
+        break;
+    }
+
+    if (!pointAspect.IsNull()) {
         _AisPoint->Attributes()->SetPointAspect(pointAspect);
         _AisPoint->HilightAttributes()->SetPointAspect(pointAspect);
         _AisPoint->HilightAttributes()->SetColor(Quantity_Color(Colors::Highlight.toQuantityColor()));
@@ -88,8 +109,8 @@ void Marker::_updatePresentation() {
     }
 
     if (_Styles & Styles::Background) {
-        //_AisPoint->EnableBackground(0.75);
-        //_AisPoint->SetColor(_ColorBg.toQuantityColor());
+        _AisPoint->EnableBackground(0.75);
+        _AisPoint->SetColor(_ColorBg.toQuantityColor());
     }
 }
 

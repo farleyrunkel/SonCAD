@@ -4,10 +4,12 @@
 #define SRC_IACT_FRAMEWORK_WORKSPACECONTROLL_H_
 
 #include <QObject>
-#include <QVector>
 #include <QList>
+
 #include "Iact/HudElements/HudElement.h"
 #include "Iact/Workspace/MouseEventData.h"
+
+#include "Iact/Visual/VisualObject.h"
 
 class WorkspaceController;
 
@@ -25,6 +27,7 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
     void add(HudElement* hudElement);
 
     void setHintMessage(const QString& message);
+    void add(VisualObject* visual);
 
  public:
     virtual bool onMouseMove(MouseEventData* data) {
@@ -65,7 +68,9 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
 
  private: 
 	WorkspaceController* m_workspaceController;
-	QVector<HudElement*> m_hudElements;
+	QList<HudElement*> m_hudElements;
+    QList<VisualObject*> _VisualObjects;
+
 };
 
 #endif  // SRC_IACT_FRAMEWORK_WORKSPACECONTROLL_H_

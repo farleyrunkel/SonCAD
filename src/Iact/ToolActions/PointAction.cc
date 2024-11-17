@@ -2,12 +2,14 @@
 
 #include "Iact/ToolActions/PointAction.h"
 
+#include <ProjLib.hxx>
+
 #include "Iact/Workspace/WorkspaceController.h"
 
 PointAction::PointAction() 
     : ToolAction(),
       m_isFinished(false),
-      m_marker(nullptr){
+      _Marker(nullptr){
     qDebug() << "Debug: PointAction::PointAction";
 }
 
@@ -21,9 +23,13 @@ bool PointAction::onStart() {
 bool PointAction::onMouseMove(MouseEventData* data) {
     qDebug() << "Debug: PointAction::onMouseMove";
     if (!m_isFinished) {
-        ensureMarker();
+        _EnsureMarker();
         processMouseInput(data);
         EventArgs* args = new EventArgs(
+            _CurrentPoint,
+            ProjLib::Project(workspaceController()->workspace()->workingPlane(), _CurrentPoint),
+            _CurrentPoint,
+            data
         );
 
         emit preview(args);
@@ -35,7 +41,8 @@ bool PointAction::onMouseMove(MouseEventData* data) {
 }
 
 bool PointAction::onMouseDown(MouseEventData* data) { 
-    return false; }
+    return false; 
+}
 
 bool PointAction::onMouseUp(MouseEventData* data) {
     if (!m_isFinished) {
@@ -47,12 +54,13 @@ bool PointAction::onMouseUp(MouseEventData* data) {
 
         emit finished(args);
     }
-    return false; }
+    return false; 
+}
 
-void PointAction::ensureMarker() {
-    if (m_marker == nullptr) {
-        m_marker = new Marker(workspaceController(), Marker::Styles::Bitmap, Marker::plusImage());
-        // Add(_Marker);
+void PointAction::_EnsureMarker() {
+    if (_Marker == nullptr) {
+        _Marker = new Marker(workspaceController(), Marker::Styles::Bitmap, Marker::plusImage());
+        add(_Marker);
     }
 }
 

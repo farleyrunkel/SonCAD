@@ -16,11 +16,15 @@ class PointAction : public ToolAction {
     Q_OBJECT
 
  public:
-    struct EventArgs {
+    class EventArgs {
+    public:
+        EventArgs() {}
+        EventArgs(const gp_Pnt& p, const gp_Pnt2d& pp, const gp_Pnt& mp, MouseEventData* m)
+             : Point(p), PointOnPlane(pp), MarkerPosition(mp), MouseEventData(m) {}
         gp_Pnt Point;
         gp_Pnt2d PointOnPlane;
-        //MouseEventData MouseEventData{ get; init; }
-        //gp_Pnt MarkerPosition{ get; set; }
+        MouseEventData* MouseEventData;
+        gp_Pnt MarkerPosition;
     };
 
  public:
@@ -34,7 +38,7 @@ class PointAction : public ToolAction {
     bool onMouseUp(MouseEventData* data) override;
 
  private:
-     void ensureMarker();
+     void _EnsureMarker();
      void processMouseInput(MouseEventData* data);
 
  signals:
@@ -43,7 +47,8 @@ class PointAction : public ToolAction {
 
 private:
     bool m_isFinished;
-    Marker* m_marker;
+    Marker* _Marker;
+    gp_Pnt _CurrentPoint;
 };
 
 #endif  // SRC_IACT_TOOLACTION_POINTACTION_H_

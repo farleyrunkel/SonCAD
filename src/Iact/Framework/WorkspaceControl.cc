@@ -3,6 +3,7 @@
 #include "Iact/Framework/WorkspaceControl.h"
 
 #include "Iact/Workspace/WorkspaceController.h"
+#include "Iact/Visual/VisualObject.h"
 
 WorkspaceControl::WorkspaceControl(QObject* parent) 
 	: QObject(parent) ,
@@ -32,5 +33,12 @@ void WorkspaceControl::setHintMessage(const QString& message) {
 	auto hudManager = workspaceController()->hudManager();
 	if (hudManager)
 		hudManager->setHintMessage(message);
+}
+
+void WorkspaceControl::add(VisualObject* visual) {
+	if (_VisualObjects.contains(visual))
+		return;
+	_VisualObjects.append(visual);
+	workspaceController()->invalidate();
 }
 

@@ -5,8 +5,11 @@
 
 #include <QObject>
 
-#include "Iact/Workspace/WorkspaceController.h"
+#include <AIS_InteractiveContext.hxx>
+
 #include "Core/Topology/InteractiveEntity.h"
+
+class WorkspaceController;
 
 class VisualObject : public QObject {
     Q_OBJECT

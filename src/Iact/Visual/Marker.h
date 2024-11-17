@@ -20,6 +20,7 @@
 #include "Comm/Types/Color.h"
 #include "Comm/PixMapHelper.h"
 #include "Iact/Visual/VisualObject.h"
+#include "Occt/Managed/AIS_PointEx.h"
 
 class Marker : public VisualObject {
     Q_OBJECT
@@ -85,14 +86,18 @@ class Marker : public VisualObject {
 
     virtual void remove();
 
-    static Handle(Prs3d_PointAspect) CreateBitmapPointAspect(const Handle(Graphic3d_MarkerImage)& image, Color color);
+    static Handle(Prs3d_PointAspect) CreateBitmapPointAspect(
+        const Handle(Graphic3d_MarkerImage)& image, Color color);
+
+    static Handle(Prs3d_PointAspect) CreateImagePointAspect(
+        const Handle(Graphic3d_MarkerImage)& image);
 
  private:
     // 确保 _AisPoint 被正确初始化
-    bool _ensureAisObject();
+    bool _EnsureAisObject();
 
     // 更新展示设置
-    void _updatePresentation();
+    void _UpdatePresentation();
 
     //// 根据图像和颜色创建 Bitmap Point Aspect
     //Handle(Prs3d_PointAspect) CreateBitmapPointAspect(const QImage& image, const Color& color) {
@@ -119,7 +124,7 @@ class Marker : public VisualObject {
  private:
     Styles _Styles;
     Handle(Graphic3d_MarkerImage) _Image;
-    Handle(AIS_Point) _AisPoint = nullptr; // OCCT 点对象
+    Handle(AIS_PointEx) _AisPoint = nullptr; // OCCT 点对象
     Handle(Geom_CartesianPoint) _P; // OCCT 坐标点
     Color _Color; // 标记颜色
     Color _ColorBg; // 背景颜色
