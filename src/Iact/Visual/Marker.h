@@ -64,8 +64,12 @@ public:
     void SetSelectable(bool selectable);
 
 public:
-    static MarkerImage& PlusImage();
-    static MarkerImage& BallImage();
+    static Marker::MarkerImage& BallImage();
+    static Marker::MarkerImage& RectImage();
+    static Marker::MarkerImage& RingImage();
+    static Marker::MarkerImage& PlusImage();
+    static Marker::MarkerImage& XImage();
+    static Marker::MarkerImage& ErrorImage();
 
 public:
     // ªÒ»° AIS_Object£®OCCT£©

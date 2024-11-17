@@ -222,15 +222,39 @@ Handle(Image_PixMap) Marker::_TryGetMarkerAsImage(const QString& name, int size)
     return pixmap;
 }
 
+Marker::MarkerImage& Marker::BallImage()
+{
+    static MarkerImage a = _GetMarkerImage("Ball", 8);
+    return a;
+}
+
+Marker::MarkerImage& Marker::RectImage()
+{
+    static MarkerImage a = _GetMarkerImage("Rect", 8);
+    return a;
+}
+
+Marker::MarkerImage& Marker::RingImage()
+{
+    static MarkerImage a = _GetMarkerImage("Ring", 16);
+    return a;
+}
+
 Marker::MarkerImage& Marker::PlusImage()
 {
     static MarkerImage a = _GetMarkerImage("Plus", 16);
     return a;
 }
 
-Marker::MarkerImage& Marker::BallImage()
+Marker::MarkerImage& Marker::XImage()
 {
-    static MarkerImage a = _GetMarkerImage("Ball", 16);
+    static MarkerImage a = _GetMarkerImage("X", 16);
+    return a;
+}
+
+Marker::MarkerImage& Marker::ErrorImage()
+{
+    static MarkerImage a = _GetMarkerImage("Error", 32);
     return a;
 }
 
@@ -238,7 +262,8 @@ Marker::MarkerImage& Marker::BallImage()
 
 Sun::Color Marker::Color() const { return _Color; }
 
-void Marker::SetColor(const Sun::Color& color) {
+void Marker::SetColor(const Sun::Color& color) 
+{
     if (_Color == color)
         return;
     _Color = color;
@@ -247,7 +272,8 @@ void Marker::SetColor(const Sun::Color& color) {
 
 Sun::Color Marker::BackgroundColor() const { return _ColorBg; }
 
-void Marker::SetBackgroundColor(const Sun::Color& color) {
+void Marker::SetBackgroundColor(const Sun::Color& color)
+{
     if (_ColorBg == color)
         return;
     _ColorBg = color;
@@ -256,7 +282,8 @@ void Marker::SetBackgroundColor(const Sun::Color& color) {
 
 bool Marker::IsSelectable() const { return _IsSelectable; }
 
-void Marker::SetSelectable(bool selectable) {
+void Marker::SetSelectable(bool selectable) 
+{
     if (_IsSelectable == selectable)
         return;
     _IsSelectable = selectable;
