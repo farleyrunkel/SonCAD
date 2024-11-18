@@ -266,13 +266,6 @@ ViewportPanel::~ViewportPanel() {
 
 // virtual void SetCursor(QObject* owner, Cursor* cursor)  {}
 
-void ViewportPanel::SetHintMessage(const QString& message) {
-    if (HintMessage != message) {
-        HintMessage = message;
-        emit hintMessageChanged(message);
-    }
-}
-
 WorkspaceController* ViewportPanel::workspaceController() const {
     return m_workspaceController; 
 }
@@ -281,7 +274,7 @@ void ViewportPanel::setWorkspaceController(WorkspaceController* controller) {
     if (m_workspaceController != controller) {
         m_workspaceController = controller;
         if (m_workspaceController != nullptr) {
-            m_workspaceController->setHudManager(this);
+            m_workspaceController->setHudManager(_HudContainer);
         }
         else {
             m_hudElements.clear();
@@ -484,6 +477,22 @@ void ViewportPanel::wheelEvent(QWheelEvent* theEvent) {
     if (UpdateZoom(Aspect_ScrollDelta(aPos, double(theEvent->angleDelta().y()) / 8.0))) {
         updateView();
     }
+}
+
+void ViewportPanel::_InitHudContainer() {
+    _HudContainer = new HudContainer(this);
+    connect(_HudContainer, &HudContainer::MouseMoved, [this](int x, int y) {
+        emit MouseMoved(x + _HudContainer->x(), y + _HudContainer->y()); }
+    );
+    connect(this, &ViewportPanel::MouseMoved, [this](int x, int y) {
+        if (_HudContainer->HudElements().count() == 0) {
+            _HudContainer->hide();
+        }
+        else {
+            _HudContainer->show();
+            _HudContainer->move(x + 10, y - _HudContainer->height() - 10);
+        }
+        });
 }
 
 void ViewportPanel::updateView() {

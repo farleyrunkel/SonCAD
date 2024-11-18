@@ -5,16 +5,30 @@
 
 #include <QWidget>
 #include <QMouseEvent>
+#include <QShowEvent>
+#include <QString>
+#include <QList>
 
+#include "Iact/HudElements/IHudManager.h"
+#include "Iact/HudElements/HudElement.h"
 
-class HudContainer : public QWidget 
+class HudContainer : public QWidget, public IHudManager
 {
 	Q_OBJECT
+	Q_PROPERTY(QString _HintMessage WRITE SetHintMessage)
+
 public:
-	explicit HudContainer(QWidget* parent = nullptr) : QWidget(parent) {
-		setAutoFillBackground(true);
-		setFixedSize(60, 40);
-		setMouseTracking(true);
+	explicit HudContainer(QWidget* parent = nullptr);
+
+	virtual void AddElement(HudElement* element) override;
+	virtual void RemoveElement(HudElement* element) override {}
+	virtual void RemoveElements(std::function<bool(HudElement*)> predicate) override {}
+
+	// virtual void SetCursor(QObject* owner, Cursor* cursor)  {}
+	virtual void SetHintMessage(const QString& message) override;
+
+	QList<HudElement*>& HudElements() {
+		return _HudElements;
 	}
 
 protected:
@@ -24,6 +38,11 @@ protected:
 
 signals:
 	void MouseMoved(int x, int y);
+	void HintMessageChanged(const QString& message);
+
+private:
+	QString _HintMessage;
+	QList<HudElement*> _HudElements;
 };
 
 #endif  // IACT_HUD_ELEMENTS_HUDCONATAINER_H_

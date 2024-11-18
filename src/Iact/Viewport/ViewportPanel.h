@@ -21,27 +21,18 @@
 #include "Iact/Workspace/ViewportController.h"
 #include "Iact/Workspace/WorkspaceController.h"
 #include "Iact/Viewport/IViewportMouseControl.h"
-#include "Iact/HudElements/IHudManager.h"
 #include "Iact/HudElements/HudContainer.h"
 
 
-class ViewportPanel : public QOpenGLWidget, public AIS_ViewController, public IHudManager
+class ViewportPanel : public QOpenGLWidget, public AIS_ViewController
 {
     Q_OBJECT
-    Q_PROPERTY(QString HintMessage WRITE SetHintMessage)
 
  public:
     explicit ViewportPanel(QWidget* parent = nullptr);
 
     //! Destructor.
     virtual ~ViewportPanel();
-
-    virtual void AddElement(HudElement* element) override {}
-    virtual void RemoveElement(HudElement* element) override {}
-    virtual void RemoveElements(std::function<bool(HudElement*)> predicate) override {}
-
-    // virtual void SetCursor(QObject* owner, Cursor* cursor)  {}
-    virtual void SetHintMessage(const QString& message) override;
 
     // WorkspaceController getter/setter
     WorkspaceController* workspaceController() const;
@@ -91,15 +82,7 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController, public IH
     virtual void wheelEvent(QWheelEvent* theEvent) override;
 
 private:
-    void _InitHudContainer() {
-        _HudContainer = new HudContainer(this);
-        connect(_HudContainer, &HudContainer::MouseMoved, [this](int x, int y) {
-            emit MouseMoved(x + _HudContainer->x(), y + _HudContainer->y()); }
-        );
-        connect(this, &ViewportPanel::MouseMoved, [this](int x, int y) { 
-            _HudContainer->move(x + 10, y - _HudContainer->height() - 10); 
-            });
-    }
+    void _InitHudContainer();
 
     //! Dump OpenGL info.
     void dumpGlInfo(bool theIsBasic, bool theToPrint);
@@ -142,8 +125,6 @@ private:
 
     QString m_glInfo;
     bool m_isCoreProfile;
-
-    QString HintMessage;
 };
 
 #endif  // SRC_IACT_VIEWPORT_VIEWPORTPANEL_H_

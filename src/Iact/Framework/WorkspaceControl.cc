@@ -4,6 +4,7 @@
 
 #include "Iact/Workspace/WorkspaceController.h"
 #include "Iact/Visual/VisualObject.h"
+#include "Core/Core.h"
 
 WorkspaceControl::WorkspaceControl(QObject* parent) 
 	: QObject(parent) ,
@@ -27,6 +28,9 @@ void WorkspaceControl::Add(HudElement* hudElement) {
 		return;
 	}
 	_HudElements.append(hudElement);
+	if (auto wc = Core::appContext()->workspaceController(); wc->hudManager()) {
+		wc->hudManager()->AddElement(hudElement);
+	}
 }
 
 void WorkspaceControl::SetHintMessage(const QString& message) {
