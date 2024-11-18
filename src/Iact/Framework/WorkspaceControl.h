@@ -24,6 +24,8 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
 
  protected:
     virtual QList<WorkspaceControl*> GetChildren() const;
+    virtual void Cleanup() {}
+
     void SetHintMessage(const QString& message);
 
     void Add(VisualObject* visual);

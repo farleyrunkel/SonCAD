@@ -38,8 +38,7 @@ class Tool : public WorkspaceControl {
 
 	virtual void onStop();
 
-
-	virtual void cleanup();
+	virtual void Cleanup() override;
 
 	//void BaseCleanup() {
 	//	CleanedUp = true;

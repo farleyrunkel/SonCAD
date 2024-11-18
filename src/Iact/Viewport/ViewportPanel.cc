@@ -206,6 +206,8 @@ ViewportPanel::ViewportPanel(QWidget* parent)
     m_viewer = nullptr;
     m_context = nullptr;
 
+    _InitHudContainer();
+
     // Qt widget setup
     setMouseTracking(true);
     setBackgroundRole(QPalette::NoRole); // or NoBackground
@@ -441,10 +443,13 @@ void ViewportPanel::mouseReleaseEvent(QMouseEvent* theEvent) {
 
 void ViewportPanel::mouseMoveEvent(QMouseEvent* theEvent) {
     QOpenGLWidget::mouseMoveEvent(theEvent);
+    qDebug() << "ViewportPanel::mouseMoveEvent:" << theEvent;
+
+    emit MouseMoved(theEvent->x(), theEvent->y());
 
     m_mouseControl->mouseMove(theEvent->pos(), theEvent, theEvent->modifiers());
 
-    const Graphic3d_Vec2i aNewPos(theEvent->pos().x(), theEvent->pos().y());
+    const Graphic3d_Vec2i aNewPos(theEvent->x(), theEvent->y());
     if (!m_view.IsNull()
         && UpdateMousePosition(aNewPos,
             qtMouseButtons2VKeys(theEvent->buttons()),
@@ -483,7 +488,9 @@ void ViewportPanel::wheelEvent(QWheelEvent* theEvent) {
 
 void ViewportPanel::updateView() {
     update();
-    //if (window() != NULL) { window()->update(); }
+    if (window() != nullptr) { 
+        window()->update();
+    }
 }
 
 void ViewportPanel::handleViewRedraw(const Handle(AIS_InteractiveContext)& theCtx,

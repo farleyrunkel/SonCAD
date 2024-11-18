@@ -35,7 +35,7 @@ bool Tool::cancel(bool force) {
 void Tool::stop() {
 	m_isActive = false;
 	onStop();
-	cleanup();
+	Cleanup();
 
 	workspaceController()->removeTool(this);
 	workspaceController()->Invalidate();
@@ -58,7 +58,7 @@ bool Tool::onCancel() {
 
 void Tool::onStop() {}
 
-void Tool::cleanup() {
+void Tool::Cleanup() {
 	//StopAllActions();
 	//RestoreAllVisualShapes();
 	//BaseCleanup();

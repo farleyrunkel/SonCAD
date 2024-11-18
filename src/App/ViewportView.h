@@ -8,13 +8,14 @@
 
 #include "Iact/Viewport/ViewportPanel.h"
 
-class ViewportView : public QScrollArea {
+class ViewportView : public QScrollArea 
+{
     Q_OBJECT
 
- public:
+public:
     explicit ViewportView(QWidget* parent = nullptr);
 
- private:
+private:
     ViewportPanel* m_viewportPanel;
     QLabel* messageBar;
 };

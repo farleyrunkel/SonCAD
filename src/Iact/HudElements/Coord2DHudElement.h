@@ -10,25 +10,21 @@
 
 class Coord2DHudElement : public HudElement {
     Q_OBJECT
-    Q_PROPERTY(double coordinateX READ getCoordinateX WRITE setCoordinateX)
-    Q_PROPERTY(double coordinateY READ getCoordinateY WRITE setCoordinateY)
+    Q_PROPERTY(double coordinateX READ CoordinateX)
+    Q_PROPERTY(double coordinateY READ CoordinateY)
 
  public:
     explicit Coord2DHudElement(QWidget* parent = nullptr);
 
-    double getCoordinateX() const { return _coordinateX; }
-    double getCoordinateY() const { return _coordinateY; }
+    double CoordinateX() const { return _coordinateX; }
+    double CoordinateY() const { return _coordinateY; }
 
-    void setCoordinateX(double x);
-    void setCoordinateY(double y);
-
-    void setValues(double coordX, double coordY);
+    void SetValues(double coordX, double coordY);
 
     virtual void initialize() override {};
 
  signals:
-    void coordinateXChanged();
-    void coordinateYChanged();
+    void CoordinateChanged(double coordX, double coordY);
 
  private:
     QLabel* m_label;

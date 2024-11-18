@@ -29,7 +29,7 @@ bool CreateBoxTool::OnStart() {
 void CreateBoxTool::_PivotAction_Preview(PointAction::EventArgs* args) {
 	qDebug() << "Debug: CreateBoxTool::_PivotAction_Preview";
 	if (_Coord2DHudElement) {
-		_Coord2DHudElement->setValues(args->Point.X(), args->Point.Y());
+		_Coord2DHudElement->SetValues(args->Point.X(), args->Point.Y());
 	}
 }
 

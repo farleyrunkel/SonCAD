@@ -15,7 +15,8 @@
 #include "Iact/ToolActions/PointAction.h"
 #include "Iact/Visual/VisualObject.h"
 
-class CreateBoxTool : public Tool {
+class CreateBoxTool : public Tool 
+{
 	Q_OBJECT
 
 public:
@@ -30,6 +31,7 @@ public:
 
 protected:
 	virtual bool OnStart() override;
+	virtual void Cleanup() override {}
 
 private:
 	void _PivotAction_Preview(PointAction::EventArgs* args);

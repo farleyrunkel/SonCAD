@@ -32,7 +32,7 @@ class ViewportController : public QObject {
         return m_viewCube;
     }
 
-    const Handle(Aspect_Window)& window() const {
+    const Handle(Aspect_Window)& Window() const {
         return !view().IsNull() ? view()->Window() : nullptr;
     }
 

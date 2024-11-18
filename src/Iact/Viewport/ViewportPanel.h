@@ -6,6 +6,8 @@
 #include <QOpenGLWidget>
 #include <QString>
 #include <QList>
+#include <QPointer>
+#include <QMouseEvent>
 
 #include <OpenGl_Context.hxx>
 #include <Standard_WarningsDisable.hxx>
@@ -20,6 +22,8 @@
 #include "Iact/Workspace/WorkspaceController.h"
 #include "Iact/Viewport/IViewportMouseControl.h"
 #include "Iact/HudElements/IHudManager.h"
+#include "Iact/HudElements/HudContainer.h"
+
 
 class ViewportPanel : public QOpenGLWidget, public AIS_ViewController, public IHudManager
 {
@@ -86,7 +90,16 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController, public IH
     virtual void mouseMoveEvent(QMouseEvent* theEvent) override;
     virtual void wheelEvent(QWheelEvent* theEvent) override;
 
- private:
+private:
+    void _InitHudContainer() {
+        _HudContainer = new HudContainer(this);
+        connect(_HudContainer, &HudContainer::MouseMoved, [this](int x, int y) {
+            emit MouseMoved(x + _HudContainer->x(), y + _HudContainer->y()); }
+        );
+        connect(this, &ViewportPanel::MouseMoved, [this](int x, int y) { 
+            _HudContainer->move(x + 10, y - _HudContainer->height() - 10); 
+            });
+    }
 
     //! Dump OpenGL info.
     void dumpGlInfo(bool theIsBasic, bool theToPrint);
@@ -109,12 +122,15 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController, public IH
     void viewportControllerChanged(ViewportController*);
     void hudElementCollectionChanged();
     void hintMessageChanged(const QString& property);
+    void MouseMoved(int x, int y);
 
- private:
+private:
+    IViewportMouseControl* m_mouseControl;
     ViewportController* m_viewportController;
     WorkspaceController* m_workspaceController;
+
+    HudContainer* _HudContainer;
     QList<HudElement*> m_hudElements;
-    IViewportMouseControl* m_mouseControl;
 
  private:
     Handle(V3d_Viewer)             m_viewer;

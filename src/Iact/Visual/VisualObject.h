@@ -17,7 +17,8 @@
 
 class WorkspaceController;
 
-class VisualObject : public QObject {
+class VisualObject : public QObject 
+{
     Q_OBJECT
     Q_PROPERTY(bool Selectable READ IsSelectable WRITE SetIsSelectable)
     Q_PROPERTY(bool Selected READ IsSelected WRITE SetIsSelected)
