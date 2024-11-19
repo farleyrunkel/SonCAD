@@ -20,6 +20,8 @@ class Model;
 class Viewport;
 class WorkingContext;
 
+namespace Sun {
+
 class Workspace : public BaseObject 
 {
     Q_OBJECT
@@ -86,7 +88,7 @@ public:
     Model* model() const { return _Model ; }
 
 signals:
-    void gridChanged(Workspace*);
+    void gridChanged(Sun::Workspace*);
 
 private:
      void init();
@@ -111,4 +113,5 @@ private:
     WorkingContext* _GlobalWorkingContext;
 };
 
+}
 #endif  // SRC_CORE_WORKSPACE_H_

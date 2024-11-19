@@ -8,9 +8,9 @@ gp_Pln WorkingContext::workingPlane() const { return _WorkingPlane; }
 
 void WorkingContext::setWorkingPlane(const gp_Pln& plane) { _WorkingPlane = plane; }
 
-Workspace::GridTypes WorkingContext::gridType() const { return _GridType; }
+Sun::Workspace::GridTypes WorkingContext::gridType() const { return _GridType; }
 
-void WorkingContext::setGridType(Workspace::GridTypes type) { _GridType = type; }
+void WorkingContext::setGridType(Sun::Workspace::GridTypes type) { _GridType = type; }
 
 double WorkingContext::gridStep() const { return _GridStep; }
 

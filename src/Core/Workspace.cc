@@ -22,7 +22,7 @@
 //--------------------------------------------------------------------------------------------------
 // Constructor and Destructor
 
-Workspace::Workspace()
+Sun::Workspace::Workspace()
     : _V3dViewer(nullptr),
       _AisContext(nullptr),
       _GridEnabled(true),
@@ -34,8 +34,8 @@ Workspace::Workspace()
     init();
 }
 
-Workspace::Workspace(Model* model) 
-    : Workspace() {
+Sun::Workspace::Workspace(Model* model) 
+    : Sun::Workspace() {
     init();
     _Model = model;
     _Viewports.append(new Viewport(this));
@@ -49,11 +49,11 @@ Workspace::Workspace(Model* model)
 //    m_viewports.clear();
 //}
 
-void Workspace::init() {
+void Sun::Workspace::init() {
     _CurrentWorkingContext = _GlobalWorkingContext;
 }
 
-void Workspace::_ApplyWorkingContext() {
+void Sun::Workspace::_ApplyWorkingContext() {
     if (_AisContext.IsNull()) {
         //_V3dViewer->SetPrivilegedPlane(_CurrentWorkingContext->WorkingPlane.Position());
     }
@@ -64,7 +64,7 @@ void Workspace::_ApplyWorkingContext() {
 //--------------------------------------------------------------------------------------------------
 // Initialize V3d_Viewer and AIS_InteractiveContext
 
-void Workspace::initV3dViewer() {
+void Sun::Workspace::initV3dViewer() {
     if (_V3dViewer.IsNull()) {
         Handle(Aspect_DisplayConnection) aDisp = new Aspect_DisplayConnection();
         Handle(OpenGl_GraphicDriver) aDriver = new OpenGl_GraphicDriver(aDisp, false);
@@ -93,7 +93,7 @@ void Workspace::initV3dViewer() {
     _ApplyWorkingContext();
 }
 
-void Workspace::initAisContext() {
+void Sun::Workspace::initAisContext() {
     if (_V3dViewer.IsNull()) {
         initV3dViewer();
     }
@@ -126,23 +126,23 @@ void Workspace::initAisContext() {
     _AisContext->SetHighlightStyle(style);
 }
 
-Handle(V3d_Viewer) Workspace::v3dViewer() const {
+Handle(V3d_Viewer) Sun::Workspace::v3dViewer() const {
     return _V3dViewer;
 }
 
-Handle(AIS_InteractiveContext) Workspace::aisContext() const {
+Handle(AIS_InteractiveContext) Sun::Workspace::aisContext() const {
     return _AisContext;
 }
 
-bool Workspace::needsRedraw() const {
+bool Sun::Workspace::needsRedraw() const {
     return _NeedsRedraw;
 }
 
-bool Workspace::needsImmediateRedraw() const {
+bool Sun::Workspace::needsImmediateRedraw() const {
     return _NeedsImmediateRedraw;
 }
 
-void Workspace::setGridEnabled(bool value) {
+void Sun::Workspace::setGridEnabled(bool value) {
     if (_GridEnabled != value) {
         _GridEnabled = value;
         //Model.MarkAsUnsaved();
@@ -151,22 +151,22 @@ void Workspace::setGridEnabled(bool value) {
     }
 }
 
-Workspace::GridTypes Workspace::gridType() const {
+Sun::Workspace::GridTypes Sun::Workspace::gridType() const {
     return _CurrentWorkingContext->gridType(); 
 }
 
-WorkingContext* Workspace::workingContext() const {
+WorkingContext* Sun::Workspace::workingContext() const {
     return _CurrentWorkingContext; 
 }
 
 //--------------------------------------------------------------------------------------------------
 // Setters
 
-void Workspace::setNeedsRedraw(bool value) {
+void Sun::Workspace::setNeedsRedraw(bool value) {
     _NeedsRedraw = value;
 }
 
-void Workspace::setNeedsImmediateRedraw(bool value) {
+void Sun::Workspace::setNeedsImmediateRedraw(bool value) {
     _NeedsImmediateRedraw = value;
 }
 

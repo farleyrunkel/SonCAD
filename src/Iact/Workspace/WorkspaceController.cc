@@ -15,28 +15,28 @@
 #include <gp_Ax3.hxx>
 
 
-WorkspaceController::WorkspaceController(Workspace* workspace)
-    : m_workspace(workspace),
-      m_mouseEventData(nullptr),
-      m_currentTool(nullptr),
-      m_currentEditor(nullptr),
-      m_activeViewport(nullptr),
+WorkspaceController::WorkspaceController(Sun::Workspace* workspace)
+    : _Workspace(workspace),
+      _MouseEventData(nullptr),
+      _CurrentTool(nullptr),
+      _CurrentEditor(nullptr),
+      _ActiveViewport(nullptr),
       _HudManager(nullptr) {
 
-    connect(m_workspace, &Workspace::gridChanged, this, &WorkspaceController::onWorkspaceGridChanged);
+    connect(_Workspace, &Sun::Workspace::gridChanged, this, &WorkspaceController::onWorkspaceGridChanged);
 
     initWorkspace();
 }
 
 void WorkspaceController::initWorkspace() {
     // init V3dViewer and AisContext
-    workspace()->initV3dViewer();
-    workspace()->initAisContext();
+    Workspace()->initV3dViewer();
+    Workspace()->initAisContext();
     initVisualSettings();
 
     // 遍历所有 Viewport 并添加到 _viewControllers 列表
-    for (auto& view : workspace()->viewports()) {
-        m_viewportControllers.append(new ViewportController(view, this));
+    for (auto& view : Workspace()->viewports()) {
+        _ViewportControllers.append(new ViewportController(view, this));
     }
 
     // 创建并显示网格
@@ -44,8 +44,8 @@ void WorkspaceController::initWorkspace() {
 
     AisHelper::disableGlobalClipPlanes(_Grid);
 
-    if (workspace()->aisContext()) {
-       workspace()->aisContext()->Display(_Grid, 0, -1, false);
+    if (Workspace()->aisContext()) {
+       Workspace()->aisContext()->Display(_Grid, 0, -1, false);
     }
 
     //// 初始化 VisualObjects 并更新网格
@@ -54,7 +54,7 @@ void WorkspaceController::initWorkspace() {
 }
 
 Tool* WorkspaceController::currentTool() const { 
-    return m_currentTool; 
+    return _CurrentTool; 
 }
 
 bool WorkspaceController::startTool(Tool* tool) {
@@ -65,9 +65,9 @@ bool WorkspaceController::startTool(Tool* tool) {
         }
         if (tool != nullptr) {
             tool->setWorkspaceController(this);
-            m_currentTool = tool;
-            if (m_currentEditor) { 
-                m_currentEditor->stopTool(); 
+            _CurrentTool = tool;
+            if (_CurrentEditor) { 
+                _CurrentEditor->stopTool(); 
             }
             if (!tool->start()) {
                 return false;
@@ -85,16 +85,16 @@ bool WorkspaceController::startTool(Tool* tool) {
 }
 
 void WorkspaceController::Invalidate(bool immediateOnly, bool forceRedraw) {
-    m_workspace->setNeedsImmediateRedraw(true);
+    _Workspace->setNeedsImmediateRedraw(true);
     if (!immediateOnly)
-        m_workspace->setNeedsRedraw(true);
+        _Workspace->setNeedsRedraw(true);
 
     if (forceRedraw)
         _Redraw();
 }
 
-void WorkspaceController::onWorkspaceGridChanged(Workspace* sender) {
-    if (m_workspace == sender) {
+void WorkspaceController::onWorkspaceGridChanged(Sun::Workspace* sender) {
+    if (_Workspace == sender) {
         recalculateGridSize();
         _GridNeedsUpdate = true;
         _UpdateGrid();
@@ -114,9 +114,9 @@ void WorkspaceController::_UpdateGrid()
     if (_Grid.IsNull())
         return;
 
-    WorkingContext* wc = workspace()->workingContext();
+    WorkingContext* wc = Workspace()->workingContext();
 
-    if (workspace()->gridEnabled())
+    if (Workspace()->gridEnabled())
     {
         gp_Ax3 position = wc->workingPlane().Position();
         if (wc->gridRotation() != 0)
@@ -127,18 +127,18 @@ void WorkspaceController::_UpdateGrid()
         _Grid->SetExtents(_LastGridSize.X(), _LastGridSize.Y());
         _Grid->SetDivisions(wc->gridStep(), wc->gridDivisions() * M_PI / 180.0);
 
-        if (wc->gridType() == Workspace::GridTypes::Rectangular)
+        if (wc->gridType() == Sun::Workspace::GridTypes::Rectangular)
         {
-            workspace()->aisContext()->SetDisplayMode(_Grid, 1, false);
+            Workspace()->aisContext()->SetDisplayMode(_Grid, 1, false);
         }
         else
         {
-            workspace()->aisContext()->SetDisplayMode(_Grid, 2, false);
+            Workspace()->aisContext()->SetDisplayMode(_Grid, 2, false);
         }
     }
     else
     {
-        workspace()->aisContext()->SetDisplayMode(_Grid, 0, false);
+        Workspace()->aisContext()->SetDisplayMode(_Grid, 0, false);
     }
 
     _GridNeedsUpdate = false;
@@ -146,7 +146,7 @@ void WorkspaceController::_UpdateGrid()
 
 void WorkspaceController::initVisualSettings() 
 {
-    auto aisContext = workspace()->aisContext();
+    auto aisContext = Workspace()->aisContext();
 
     // _UpdateParameter();
 
@@ -204,9 +204,11 @@ void WorkspaceController::initVisualSettings()
 }
 
 void WorkspaceController::mouseMove(ViewportController* viewportController, QPointF pos, Qt::KeyboardModifiers modifiers) {
+    
+    
     qDebug() << "Debug: _WorkspaceController::mouseMove: " << pos;
     for (const auto& handler : enumerateControls()) {
-        if (handler->onMouseMove(m_mouseEventData))
+        if (handler->onMouseMove(_MouseEventData))
             break;
     }
 }
@@ -214,7 +216,7 @@ void WorkspaceController::mouseMove(ViewportController* viewportController, QPoi
 void WorkspaceController::mouseDown(ViewportController* viewportController, Qt::KeyboardModifiers modifiers) {
     qDebug() << "Debug: _WorkspaceController::mouseDown: " << modifiers;
     for (const auto& handler : enumerateControls()) {
-        if (handler->onMouseDown(m_mouseEventData))
+        if (handler->onMouseDown(_MouseEventData))
             break;
     }
 }
@@ -222,7 +224,7 @@ void WorkspaceController::mouseDown(ViewportController* viewportController, Qt::
 void WorkspaceController::mouseUp(ViewportController* viewportController, Qt::KeyboardModifiers modifiers) {
     qDebug() << "Debug: _WorkspaceController::mouseUp: " << modifiers;
     for (const auto& handler : enumerateControls()) {
-        if (handler->onMouseUp(m_mouseEventData))
+        if (handler->onMouseUp(_MouseEventData))
             break;
     }
 }
@@ -234,12 +236,12 @@ bool WorkspaceController::cancelTool(Tool* tool, bool force) {
     return true;
 }
 
-Workspace* WorkspaceController::workspace() const { 
-    return m_workspace; 
+Sun::Workspace* WorkspaceController::Workspace() const { 
+    return _Workspace; 
 }
 
-void WorkspaceController::setActiveViewport(Viewport* viewport) {
-     m_activeViewport = viewport;
+void WorkspaceController::SetActiveViewport(Viewport* viewport) {
+     _ActiveViewport = viewport;
  }
 
 void WorkspaceController::setHudManager(IHudManager* hudManager) { 
@@ -251,12 +253,12 @@ ViewportController* WorkspaceController::viewportController(Viewport* viewport) 
         return nullptr;
     }
 
-    auto it = std::find_if(m_viewportControllers.begin(), m_viewportControllers.end(),
+    auto it = std::find_if(_ViewportControllers.begin(), _ViewportControllers.end(),
         [viewport](const ViewportController* vc) {
             return vc->viewport() == viewport;
         });
 
-    return (it != m_viewportControllers.end()) ? *it : nullptr;
+    return (it != _ViewportControllers.end()) ? *it : nullptr;
 }
 
 void WorkspaceController::dispose() {}
@@ -265,12 +267,12 @@ QList<WorkspaceControl*> WorkspaceController::enumerateControls() {
     qDebug() << "Debug: _WorkspaceController::enumerateControls";
     QList<WorkspaceControl*> controls;
 
-    if (m_currentTool) {
-        controls.push_back(m_currentTool);
+    if (_CurrentTool) {
+        controls.push_back(_CurrentTool);
     }
 
-    if (m_currentEditor) {
-        controls.push_back(m_currentEditor);
+    if (_CurrentEditor) {
+        controls.push_back(_CurrentEditor);
     }
 
     return controls;

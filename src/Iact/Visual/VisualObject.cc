@@ -15,7 +15,7 @@ WorkspaceController* VisualObject::workspaceController() const {
 }
 
 Handle(AIS_InteractiveContext) VisualObject::AisContext() const { 
-    return _WorkspaceController->workspace()->aisContext();
+    return _WorkspaceController->Workspace()->aisContext();
 }
 
 bool VisualObject::IsSelected() const {

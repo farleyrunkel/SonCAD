@@ -43,7 +43,7 @@ class Viewport : public QObject
     explicit Viewport(QObject* parent = nullptr);
 
     // Constructor
-    explicit Viewport(Workspace* workspace, QObject* parent = nullptr);
+    explicit Viewport(Sun::Workspace* workspace, QObject* parent = nullptr);
 
     // Initialize Viewport with MSAA support
     void init(bool useMsaa);
@@ -91,7 +91,7 @@ class Viewport : public QObject
     void renderModeChanged();
 
  private:
-    Workspace* mWorkspace;
+    Sun::Workspace* mWorkspace;
     gp_Pnt mEyePoint = gp_Pnt(10, 10, 10);
     gp_Pnt mTargetPoint = gp_Pnt(0, 0, 0);
     double mTwist = 0.0;

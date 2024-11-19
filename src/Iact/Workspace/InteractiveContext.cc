@@ -65,7 +65,7 @@ void InteractiveContext::setViewportController(ViewportController* controller) {
     }
 }
 
-void InteractiveContext::setWorkspace(Workspace* workspace) {
+void InteractiveContext::setWorkspace(Sun::Workspace* workspace) {
     if (m_workspace != workspace) {
         if (workspace) {
             setWorkspaceController(new WorkspaceController(workspace));
@@ -78,14 +78,14 @@ void InteractiveContext::setViewport(Viewport* viewport) {
     if (m_viewport != viewport) {
         if (viewport) {
             if (workspaceController()) {
-                workspaceController()->setActiveViewport(viewport);
+                workspaceController()->SetActiveViewport(viewport);
                 setViewportController(workspaceController()->viewportController(viewport));
             }
         }
         else {
             setViewportController(nullptr);
             if (workspaceController()) {
-                workspaceController()->setActiveViewport(nullptr);
+                workspaceController()->SetActiveViewport(nullptr);
             }
         }
         CoreContext::setViewport(viewport);

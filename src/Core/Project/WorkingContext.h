@@ -17,7 +17,7 @@ public:
     explicit WorkingContext(QObject* parent = nullptr)
         : QObject(parent),
         _WorkingPlane(gp::XOY()),
-        _GridType(Workspace::GridTypes::Rectangular),
+        _GridType(Sun::Workspace::GridTypes::Rectangular),
         _GridStep(1.0),
         _GridRotation(0),
         _GridDivisions(8) {}
@@ -26,8 +26,8 @@ public:
     gp_Pln workingPlane() const;
     void setWorkingPlane(const gp_Pln& plane);
 
-    Workspace::GridTypes gridType() const;
-    void setGridType(Workspace::GridTypes type);
+    Sun::Workspace::GridTypes gridType() const;
+    void setGridType(Sun::Workspace::GridTypes type);
 
     double gridStep() const;
     void setGridStep(double step);
@@ -40,7 +40,7 @@ public:
 
 private:
     gp_Pln _WorkingPlane;
-    Workspace::GridTypes _GridType;
+    Sun::Workspace::GridTypes _GridType;
     double _GridStep;
     double _GridRotation;
     int _GridDivisions;

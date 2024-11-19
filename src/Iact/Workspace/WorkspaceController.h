@@ -21,12 +21,25 @@ class Marker;
 class Tool;
 class ViewportController;
 
-class WorkspaceController : public BaseObject {
+
+class WorkspaceController : public QObject
+{
     Q_OBJECT
+        Q_PROPERTY(Sun::Workspace* Workspace READ Workspace CONSTANT)
+        Q_PROPERTY(Viewport* ActiveViewport READ ActiveViewport WRITE SetActiveViewport NOTIFY ActiveViewportChanged)
+        //Q_PROPERTY(ViewportController* ActiveViewController READ ActiveViewControlller CONSTANT)
+        //Q_PROPERTY(IHudManager* HudManager READ HudManager WRITE SetHudManager NOTIFY HudManagerChanged)
+        //Q_PROPERTY(bool LockWorkingPlane READ LockWorkingPlane WRITE SetLockWorkingPlane NOTIFY LockWorkingPlaneChanged)
+        //Q_PROPERTY(SelectionManager* Selection READ Selection CONSTANT)
+        //Q_PROPERTY(bool IsSelecting READ IsSelecting WRITE SetIsSelecting NOTIFY IsSelectingChanged)
+        //Q_PROPERTY(VisualObjectManager* VisualObjects READ VisualObjects CONSTANT)
+        //Q_PROPERTY(Pnt ? CursorPosition READ CursorPosition WRITE SetCursorPosition NOTIFY CursorPositionChanged)
+        //Q_PROPERTY(Pnt2d ? CursorPosition2d READ CursorPosition2d WRITE SetCursorPosition2d NOTIFY CursorPosition2dChanged)
 
- public:
-    explicit WorkspaceController(Workspace* workspace);
+public:
+    explicit WorkspaceController(Sun::Workspace* workspace);
 
+public:
     void initWorkspace();
 
     Tool* currentTool() const;
@@ -34,14 +47,13 @@ class WorkspaceController : public BaseObject {
     bool startTool(Tool* tool);
     bool isSelecting() { return false; }
     void Invalidate(bool immediateOnly = false, bool forceRedraw = false);
-;
+    ;
     bool cancelTool(Tool* tool, bool force);
 
-    Workspace* workspace() const;
     IHudManager* hudManager() const { return _HudManager; }
 
     void setHudManager(IHudManager* hudManager);
-    void setActiveViewport(Viewport* viewport);
+    void SetActiveViewport(Viewport* viewport);
 
     ViewportController* viewportController(Viewport* viewport);
 
@@ -54,24 +66,43 @@ class WorkspaceController : public BaseObject {
     void mouseUp(ViewportController* viewportController, Qt::KeyboardModifiers modifiers);
 
     void recalculateGridSize();
- private:
-    void onWorkspaceGridChanged(Workspace*);
+
+public:
+    Sun::Workspace* Workspace() const;
+    Viewport* ActiveViewport() const { return _ActiveViewport; }
+
+private:
+    void onWorkspaceGridChanged(Sun::Workspace *);
     void _Redraw();
     void _UpdateGrid();
     void initVisualSettings();
 
- private: 
-    QList<ViewportController*> m_viewportControllers;
-    MouseEventData* m_mouseEventData;
-    Tool* m_currentTool;
-    Editor* m_currentEditor;
-    Workspace* m_workspace;
-    Viewport* m_activeViewport;
+signals:
+    void ActiveViewportChanged(Viewport*);
+
+private:
+    Tool* _CurrentTool;
+    Editor* _CurrentEditor;
+    Sun::Workspace* _Workspace;
+    Viewport* _ActiveViewport;
     IHudManager* _HudManager;
 
     bool _GridNeedsUpdate;
     Handle(AISX_Grid) _Grid;
     gp_XY _LastGridSize = gp_XY(200.0, 200.0);
+
+private:
+    QList<ViewportController*> _ViewportControllers;
+
+    MouseEventData* _MouseEventData;
+    QPointF _LastMouseMovePosition;
+    ViewportController* _LastMouseMoveViewportController;
+    Qt::Modifiers _LastModifierKeys;
+    Handle(AIS_InteractiveObject) _LastDetectedAisObject;
+    Handle(SelectMgr_EntityOwner) _LastDetectedOwner;
+    gp_Pnt _CursorPosition;
+    gp_Pnt2d _CursorPosition2d;
 };
+
 
 #endif // SRC_IACT_WORKSPACE_WORKSPACECONTROLLER_H_

@@ -125,7 +125,7 @@ void MainWindow::setupCategories() {
 void MainWindow::setupDockWidgets() {
     // Set up a central dock widget 
 
-    ads::CDockWidget* CentralDockWidget = new ads::CDockWidget("Workspace");
+    ads::CDockWidget* CentralDockWidget = new ads::CDockWidget("Sun::Workspace");
     CentralDockWidget->setWidget(new ViewportView());
     auto* CentralDockArea = m_dockManager->setCentralWidget(CentralDockWidget);
 

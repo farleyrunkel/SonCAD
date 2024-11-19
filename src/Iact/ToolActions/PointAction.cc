@@ -27,7 +27,7 @@ bool PointAction::onMouseMove(MouseEventData* data) {
         ProcessMouseInput(data);
         EventArgs* args = new EventArgs(
             _CurrentPoint,
-            ProjLib::Project(workspaceController()->workspace()->workingPlane(), _CurrentPoint),
+            ProjLib::Project(workspaceController()->Workspace()->workingPlane(), _CurrentPoint),
             _CurrentPoint,
             data
         );
@@ -52,7 +52,7 @@ bool PointAction::onMouseUp(MouseEventData* data) {
         _IsFinished = true;
         auto args = new EventArgs(
             _CurrentPoint,
-            ProjLib::Project(workspaceController()->workspace()->workingPlane(), _CurrentPoint),
+            ProjLib::Project(workspaceController()->Workspace()->workingPlane(), _CurrentPoint),
             _CurrentPoint,
             data
         );
@@ -71,8 +71,6 @@ void PointAction::_EnsureMarker() {
 
 void PointAction::ProcessMouseInput(MouseEventData* data) {
     qDebug() << "Debug: PointAction::ProcessMouseInput";
-
-
     {
         //_CurrentPoint = data->PointOnPlane;
         //Remove(_HintLine);

@@ -14,7 +14,7 @@ class Model : public QObject {
  public:
 	Model();
 
-	QVector<Workspace*>& workspaces();
+	QVector<Sun::Workspace*>& workspaces();
 
  public:
 	static QString fileExtension() { return "step"; };
@@ -27,7 +27,7 @@ class Model : public QObject {
 	void resetUnsavedChanges();
 
  private:
-	QVector<Workspace*> m_workspaces;
+	QVector<Sun::Workspace*> m_workspaces;
 };
 
 #endif  // SRC_CORE_TOPOLOGY_MODEL_H_

@@ -6,7 +6,7 @@
 
 Viewport::Viewport(QObject* parent) : Viewport(nullptr, parent) {}
 
-Viewport::Viewport(Workspace* workspace, QObject* parent)
+Viewport::Viewport(Sun::Workspace* workspace, QObject* parent)
     : QObject(parent), mWorkspace(workspace), 
     mRenderMode(SolidShaded), mTwist(0.0), mScale(100.0) {
 }

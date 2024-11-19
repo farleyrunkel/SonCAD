@@ -58,7 +58,7 @@ void ViewportController::mouseUp(Qt::KeyboardModifiers modifiers) {
 
 void ViewportController::setPredefinedView(PredefinedViews predefinedView) {
     if (predefinedView == PredefinedViews::WorkingPlane) {
-        const auto& plane = workspaceController()->workspace()->workingPlane();
+        const auto& plane = workspaceController()->Workspace()->workingPlane();
         const auto& dir = plane.Axis().Direction();
         viewport()->view()->SetProj(dir.X(), dir.Y(), dir.Z());
 
@@ -103,7 +103,7 @@ void ViewportController::setPredefinedView(PredefinedViews predefinedView) {
 }
 
 void ViewportController::setViewCube(bool isVisible) {
-    auto aisContext = workspaceController()->workspace()->aisContext();
+    auto aisContext = workspaceController()->Workspace()->aisContext();
 
     if (m_viewCube.IsNull())
         return;
@@ -119,7 +119,7 @@ void ViewportController::setViewCube(bool isVisible) {
 }
 
 void ViewportController::setViewCube(bool isVisible, uint32_t size, double duration) {
-    auto aisContext = workspaceController()->workspace()->aisContext();
+    auto aisContext = workspaceController()->Workspace()->aisContext();
 
     // 如果视图立方体已存在，则使用现有方法更新其显示状态
     if (!m_viewCube.IsNull()) {
