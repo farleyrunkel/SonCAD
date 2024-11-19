@@ -49,7 +49,7 @@ bool Tool::prepareUndo() {
 
 QList<WorkspaceControl*> Tool::GetChildren() const {
 	qDebug() << "Debug: Tool::GetChildren";
-	return {m_toolActions.begin(), m_toolActions.end()};
+	return { m_toolActions.begin(), m_toolActions.end() };
 }
 
 bool Tool::onCancel() {

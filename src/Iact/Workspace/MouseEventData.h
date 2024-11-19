@@ -17,9 +17,9 @@ class MouseEventData;
 class IMouseEventHandler {
  public:
     virtual ~IMouseEventHandler() = default;
-    virtual bool onMouseMove(const std::shared_ptr<MouseEventData>& data) = 0;
-    virtual bool onMouseDown(const std::shared_ptr<MouseEventData>& data) = 0;
-    virtual bool onMouseUp(const std::shared_ptr<MouseEventData>& data) = 0;
+    virtual bool onMouseMove(MouseEventData* data) = 0;
+    virtual bool onMouseDown(MouseEventData* data) = 0;
+    virtual bool onMouseUp(MouseEventData* data) = 0;
 };
 
 //--------------------------------------------------------------------------------------------------

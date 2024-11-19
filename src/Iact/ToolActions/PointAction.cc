@@ -20,12 +20,12 @@ bool PointAction::onStart() {
     return true;
 }
 
-bool PointAction::onMouseMove(const std::shared_ptr<MouseEventData>& data) {
+bool PointAction::onMouseMove(MouseEventData* data) {
     qDebug() << "Debug: PointAction::onMouseMove";
     if (!_IsFinished) {
         _EnsureMarker();
         ProcessMouseInput(data);
-        auto args = std::make_shared<EventArgs>(
+        EventArgs* args = new EventArgs(
             _CurrentPoint,
             ProjLib::Project(workspaceController()->workspace()->workingPlane(), _CurrentPoint),
             _CurrentPoint,
@@ -41,16 +41,16 @@ bool PointAction::onMouseMove(const std::shared_ptr<MouseEventData>& data) {
     return false;
 }
 
-bool PointAction::onMouseDown(const std::shared_ptr<MouseEventData>& data) { 
+bool PointAction::onMouseDown(MouseEventData* data) { 
     return false; 
 }
 
-bool PointAction::onMouseUp(const std::shared_ptr<MouseEventData>& data) {
+bool PointAction::onMouseUp(MouseEventData* data) {
     if (!_IsFinished) {
         
         ProcessMouseInput(data);
         _IsFinished = true;
-        auto args = std::make_shared<EventArgs>(
+        auto args = new EventArgs(
             _CurrentPoint,
             ProjLib::Project(workspaceController()->workspace()->workingPlane(), _CurrentPoint),
             _CurrentPoint,
@@ -69,12 +69,12 @@ void PointAction::_EnsureMarker() {
     }
 }
 
-void PointAction::ProcessMouseInput(const std::shared_ptr<MouseEventData>& data) {
+void PointAction::ProcessMouseInput(MouseEventData* data) {
     qDebug() << "Debug: PointAction::ProcessMouseInput";
 
 
     {
-        _CurrentPoint = data->PointOnPlane;
+        //_CurrentPoint = data->PointOnPlane;
         //Remove(_HintLine);
     }
 }

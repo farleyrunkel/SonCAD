@@ -19,7 +19,7 @@ class PointAction : public ToolAction {
     class EventArgs {
     public:
         EventArgs() {}
-        EventArgs(const gp_Pnt& p, const gp_Pnt2d& pp, const gp_Pnt& mp, std::shared_ptr<MouseEventData> m)
+        EventArgs(const gp_Pnt& p, const gp_Pnt2d& pp, const gp_Pnt& mp, MouseEventData* m)
              : Point(p), PointOnPlane(pp), MarkerPosition(mp), MouseEventData(m) {}
         gp_Pnt Point;
         gp_Pnt2d PointOnPlane;
@@ -33,17 +33,17 @@ class PointAction : public ToolAction {
  protected:
     bool onStart() override;
 
-    bool onMouseMove(const std::shared_ptr<MouseEventData>& data) override;
-    bool onMouseDown(const std::shared_ptr<MouseEventData>& data) override;
-    bool onMouseUp(const std::shared_ptr<MouseEventData>& data) override;
+    bool onMouseMove(MouseEventData* data) override;
+    bool onMouseDown(MouseEventData* data) override;
+    bool onMouseUp(MouseEventData* data) override;
 
  private:
      void _EnsureMarker();
-     void ProcessMouseInput(const std::shared_ptr<MouseEventData>& data);
+     void ProcessMouseInput(MouseEventData* data);
 
  signals:
-    void Preview(const std::shared_ptr<EventArgs>& args);
-    void Finished(const std::shared_ptr<EventArgs>& args);
+    void Preview(PointAction::EventArgs* args);
+    void Finished(PointAction::EventArgs* args);
 
 private:
     bool _IsFinished;

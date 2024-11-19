@@ -32,27 +32,28 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
     void Add(IHudElement* hudElement);
 
  public:
-    virtual bool onMouseMove(const std::shared_ptr<MouseEventData>& data) override {
+    virtual bool onMouseMove(MouseEventData* data) override {
         auto children = GetChildren();
         return std::any_of(children.begin(), children.end(),
             [data](WorkspaceControl* child) { 
                 auto a = child;
+                if (a) {}
                 return child->onMouseMove(data);
             });
     }
 
-    virtual bool onMouseDown(const std::shared_ptr<MouseEventData>& data) override {
+    virtual bool onMouseDown(MouseEventData* data) override {
         auto children = GetChildren();
         return std::any_of(children.begin(), children.end(),
             [data](WorkspaceControl* child) {
-                auto a = child; return child->onMouseDown(data); });
+                return child->onMouseDown(data); });
     }
 
-    virtual bool onMouseUp(const std::shared_ptr<MouseEventData>& data) override {
+    virtual bool onMouseUp(MouseEventData* data) override {
         auto children = GetChildren();
         return std::any_of(children.begin(), children.end(),
             [data](WorkspaceControl* child) {
-                auto a = child; return child->onMouseUp(data); });
+                return child->onMouseUp(data); });
     }
 
     virtual void enrichContextMenu(QList<QAction*>& itemList) {
@@ -61,11 +62,11 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
             [&itemList](WorkspaceControl* child) { child->enrichContextMenu(itemList); });
     }
 
-    virtual bool onKeyPressed(const std::shared_ptr<MouseEventData>& data) {
+    virtual bool onKeyPressed(MouseEventData* data) {
         auto children = GetChildren();
         return std::any_of(children.begin(), children.end(),
             [data](WorkspaceControl* child) {
-                auto a = child; return child->onKeyPressed(data); });
+               return child->onKeyPressed(data); });
     }
 
  private:

@@ -62,7 +62,7 @@ class WorkspaceController : public BaseObject {
 
  private: 
     QList<ViewportController*> m_viewportControllers;
-    std::shared_ptr<MouseEventData> m_mouseEventData;
+    MouseEventData* m_mouseEventData;
     Tool* m_currentTool;
     Editor* m_currentEditor;
     Workspace* m_workspace;
