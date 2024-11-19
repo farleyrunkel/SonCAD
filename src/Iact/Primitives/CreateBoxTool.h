@@ -35,7 +35,7 @@ protected:
 
 private:
 	void _PivotAction_Preview(const std::shared_ptr<PointAction::EventArgs>& args);
-	void _PivotAction_Finished(PointAction::EventArgs* args);
+	void _PivotAction_Finished(const std::shared_ptr<PointAction::EventArgs>& args);
 
 private:
 	Phase m_currentPhase;

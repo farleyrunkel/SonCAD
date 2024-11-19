@@ -43,7 +43,7 @@ class PointAction : public ToolAction {
 
  signals:
     void Preview(const std::shared_ptr<EventArgs>& args);
-    void Finished(EventArgs* args);
+    void Finished(const std::shared_ptr<EventArgs>& args);
 
 private:
     bool _IsFinished;

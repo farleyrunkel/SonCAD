@@ -9,6 +9,8 @@
 #include <QMouseEvent>
 #include <optional>
 
+#include <gp_Pnt.hxx>
+
 class MouseEventData;
 //--------------------------------------------------------------------------------------------------
 // 鼠标事件处理接口
@@ -65,14 +67,14 @@ class MouseEventData {
     // 鼠标事件数据的主要属性
     Viewport* viewport = nullptr;
     QPoint screenPoint;
-    QVector3D pointOnPlane;
+    gp_Pnt PointOnPlane;
     Qt::KeyboardModifiers modifierKeys;
     QList<Element> detectedElements;
     ReturnOptions returnOptions;
 
     // 构造函数
-    MouseEventData(Viewport* vp, const QPoint& sp, const QVector3D& pp, Qt::KeyboardModifiers mk)
-        : viewport(vp), screenPoint(sp), pointOnPlane(pp), modifierKeys(mk) {}
+    MouseEventData(Viewport* vp, const QPoint& sp, const gp_Pnt& pp, Qt::KeyboardModifiers mk)
+        : viewport(vp), screenPoint(sp), PointOnPlane(pp), modifierKeys(mk) {}
 
     // 检测到的主要实体
     InteractiveEntity* detectedEntity() const;
@@ -87,7 +89,7 @@ class MouseEventData {
     void clear();
 
     // 设置事件数据
-    void set(Viewport* vp, const QPoint& sp, const QVector3D& pp, Qt::KeyboardModifiers mk);
+    void set(Viewport* vp, const QPoint& sp, const gp_Pnt& pp, Qt::KeyboardModifiers mk);
 
     // 设置检测元素的列表
     void setDetectedElements(const QList<AIS_InteractiveObject*>& aisObjects,

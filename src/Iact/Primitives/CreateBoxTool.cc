@@ -12,12 +12,13 @@ CreateBoxTool::CreateBoxTool()
 bool CreateBoxTool::OnStart() {
 	qDebug() << "Debug: CreateBoxTool::OnStart";
 	m_currentPhase = Phase::PivotPoint;
-	auto pointAction = new PointAction();
-	if (!startAction(pointAction)) {
+	auto pointAction = std::make_shared<PointAction>();
+	if (!startAction(pointAction.get())) {
 		return false;
 	}
-	connect(pointAction, &PointAction::Preview, this, &CreateBoxTool::_PivotAction_Preview);
-	connect(pointAction, &PointAction::Finished, this, &CreateBoxTool::_PivotAction_Finished);
+
+	connect(pointAction.get(), &PointAction::Preview, this, &CreateBoxTool::_PivotAction_Preview);
+	connect(pointAction.get(), &PointAction::Finished, this, &CreateBoxTool::_PivotAction_Finished);
 
 	SetHintMessage("Select corner point.");
 
@@ -33,6 +34,6 @@ void CreateBoxTool::_PivotAction_Preview(const std::shared_ptr<PointAction::Even
 	}
 }
 
-void CreateBoxTool::_PivotAction_Finished(PointAction::EventArgs* args) {
+void CreateBoxTool::_PivotAction_Finished(const std::shared_ptr<PointAction::EventArgs>& args) {
 	qDebug() << "Debug: CreateBoxTool::_PivotAction_Finished";
 }
