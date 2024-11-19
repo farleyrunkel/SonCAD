@@ -8,7 +8,8 @@
 
 #include "Iact/HudElements/HudElement.h"
 
-class Coord2DHudElement : public QLabel, public IHudElement {
+class Coord2DHudElement : public QLabel, public IHudElement 
+{
     Q_OBJECT
     Q_PROPERTY(double coordinateX READ CoordinateX)
     Q_PROPERTY(double coordinateY READ CoordinateY)

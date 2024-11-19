@@ -105,17 +105,17 @@ Handle(Prs3d_PointAspect) Marker::CreateBitmapPointAspect(
 {
     if (image.Bytes->IsEmpty())
     {
-        return new Prs3d_PointAspect(Aspect_TypeOfMarker::Aspect_TOM_BALL, color.toQuantityColor(), 1.0);
+        return new Prs3d_PointAspect(Aspect_TypeOfMarker::Aspect_TOM_BALL, color.ToQuantityColor(), 1.0);
     }
 
-    return new Prs3d_PointAspect(color.toQuantityColor(), image.Width, image.Height, image.Bytes);
+    return new Prs3d_PointAspect(color.ToQuantityColor(), image.Width, image.Height, image.Bytes);
 }
 
 Handle(Prs3d_PointAspect) Marker::CreateImagePointAspect(const MarkerImage& image)
 {
     if (image.PixMap->IsEmpty())
     {
-        return new Prs3d_PointAspect(Aspect_TypeOfMarker::Aspect_TOM_BALL, Colors::Marker.toQuantityColor(), 1.0);
+        return new Prs3d_PointAspect(Aspect_TypeOfMarker::Aspect_TOM_BALL, Colors::Marker.ToQuantityColor(), 1.0);
     }
 
     auto aspectMarker = new Graphic3d_AspectMarker3d(image.PixMap);
@@ -175,14 +175,14 @@ void Marker::_UpdatePresentation()
     if (!pointAspect.IsNull()) {
         _AisPoint->Attributes()->SetPointAspect(pointAspect);
         _AisPoint->HilightAttributes()->SetPointAspect(pointAspect);
-        _AisPoint->HilightAttributes()->SetColor(Quantity_Color(Colors::Highlight.toQuantityColor()));
+        _AisPoint->HilightAttributes()->SetColor(Quantity_Color(Colors::Highlight.ToQuantityColor()));
         _AisPoint->DynamicHilightAttributes()->SetPointAspect(pointAspect);
-        _AisPoint->DynamicHilightAttributes()->SetColor(Quantity_Color(Colors::Highlight.toQuantityColor()));
+        _AisPoint->DynamicHilightAttributes()->SetColor(Quantity_Color(Colors::Highlight.ToQuantityColor()));
     }
 
     if (_Styles & Styles::Background) {
         _AisPoint->EnableBackground(0.75);
-        _AisPoint->SetColor(_ColorBg.toQuantityColor());
+        _AisPoint->SetColor(_ColorBg.ToQuantityColor());
     }
 }
 

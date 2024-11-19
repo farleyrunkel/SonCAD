@@ -7,11 +7,11 @@
 
 class WorkspaceController;
 
-class IHudElement {
- public:
-	 virtual ~IHudElement() = default;
-
+class IHudElement 
+{
+public:
 	 WorkspaceController* workspaceController() const;
+	 void setWorkspaceController(WorkspaceController* controller);
 
 	 virtual void Initialize() = 0;
 	 virtual QWidget* Widget() = 0;

@@ -153,7 +153,7 @@ void WorkspaceController::initVisualSettings()
     // Higlight Selected
     auto selectionDrawer = new Prs3d_Drawer();
     selectionDrawer->SetupOwnDefaults();
-    selectionDrawer->SetColor(Colors::Selection.toQuantityColor());
+    selectionDrawer->SetColor(Colors::Selection.ToQuantityColor());
     selectionDrawer->SetDisplayMode(0);
     selectionDrawer->SetZLayer(0); // Graphic3d_ZLayerId_Default
     selectionDrawer->SetTypeOfDeflection(Aspect_TypeOfDeflection::Aspect_TOD_RELATIVE);
@@ -167,7 +167,7 @@ void WorkspaceController::initVisualSettings()
     // Higlight Dynamic
     auto hilightDrawer = new Prs3d_Drawer();
     hilightDrawer->SetupOwnDefaults();
-    hilightDrawer->SetColor(Colors::Highlight.toQuantityColor());
+    hilightDrawer->SetColor(Colors::Highlight.ToQuantityColor());
     hilightDrawer->SetDisplayMode(0);
     hilightDrawer->SetZLayer(-2); // Graphic3d_ZLayerId_Top
     hilightDrawer->SetTypeOfDeflection(Aspect_TypeOfDeflection::Aspect_TOD_RELATIVE);
@@ -178,7 +178,7 @@ void WorkspaceController::initVisualSettings()
     // Higlight Local
     auto hilightLocalDrawer = new Prs3d_Drawer();
     hilightLocalDrawer->SetupOwnDefaults();
-    hilightLocalDrawer->SetColor(Colors::Highlight.toQuantityColor());
+    hilightLocalDrawer->SetColor(Colors::Highlight.ToQuantityColor());
     hilightLocalDrawer->SetDisplayMode(1);
     hilightLocalDrawer->SetZLayer(-2); // Graphic3d_ZLayerId_Top
     hilightLocalDrawer->SetTypeOfDeflection(Aspect_TypeOfDeflection::Aspect_TOD_RELATIVE);
@@ -186,12 +186,12 @@ void WorkspaceController::initVisualSettings()
     hilightLocalDrawer->SetDeviationCoefficient(aisContext->DeviationCoefficient());
 
     auto shadingAspect = new Prs3d_ShadingAspect();
-    shadingAspect->SetColor(Colors::Highlight.toQuantityColor());
+    shadingAspect->SetColor(Colors::Highlight.ToQuantityColor());
     shadingAspect->SetTransparency(0);
     shadingAspect->Aspect()->SetPolygonOffsets(Aspect_PolygonOffsetMode::Aspect_POM_Fill, 0.99f, 0.0f);
     hilightLocalDrawer->SetShadingAspect(shadingAspect);
 
-    auto lineAspect = new Prs3d_LineAspect(Colors::Highlight.toQuantityColor(), Aspect_TypeOfLine::Aspect_TOL_SOLID, 3.0);
+    auto lineAspect = new Prs3d_LineAspect(Colors::Highlight.ToQuantityColor(), Aspect_TypeOfLine::Aspect_TOL_SOLID, 3.0);
     hilightLocalDrawer->SetLineAspect(lineAspect);
     hilightLocalDrawer->SetSeenLineAspect(lineAspect);
     hilightLocalDrawer->SetWireAspect(lineAspect);

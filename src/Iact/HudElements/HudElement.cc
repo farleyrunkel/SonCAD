@@ -7,3 +7,10 @@
 WorkspaceController* IHudElement::workspaceController() const { 
 	return m_workspaceController; 
 }
+
+void IHudElement::setWorkspaceController(WorkspaceController* controller) {
+	if (m_workspaceController != nullptr && m_workspaceController != controller) {
+		throw std::logic_error("WorkspaceController cannot be changed");
+	}
+	m_workspaceController = controller;
+}

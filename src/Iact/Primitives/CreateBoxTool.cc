@@ -26,7 +26,7 @@ bool CreateBoxTool::OnStart() {
 	return true;
 }
 
-void CreateBoxTool::_PivotAction_Preview(PointAction::EventArgs* args) {
+void CreateBoxTool::_PivotAction_Preview(const std::shared_ptr<PointAction::EventArgs>& args) {
 	qDebug() << "Debug: CreateBoxTool::_PivotAction_Preview";
 	if (_Coord2DHudElement) {
 		_Coord2DHudElement->SetValues(args->Point.X(), args->Point.Y());

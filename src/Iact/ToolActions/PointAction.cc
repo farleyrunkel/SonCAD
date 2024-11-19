@@ -8,7 +8,7 @@
 
 PointAction::PointAction() 
     : ToolAction(),
-      m_isFinished(false),
+      _IsFinished(false),
       _Marker(nullptr){
     qDebug() << "Debug: PointAction::PointAction";
 }
@@ -20,12 +20,12 @@ bool PointAction::onStart() {
     return true;
 }
 
-bool PointAction::onMouseMove(MouseEventData* data) {
+bool PointAction::onMouseMove(const std::shared_ptr<MouseEventData>& data) {
     qDebug() << "Debug: PointAction::onMouseMove";
-    if (!m_isFinished) {
+    if (!_IsFinished) {
         _EnsureMarker();
-        processMouseInput(data);
-        EventArgs* args = new EventArgs(
+        ProcessMouseInput(data);
+        auto args = std::make_shared<EventArgs>(
             _CurrentPoint,
             ProjLib::Project(workspaceController()->workspace()->workingPlane(), _CurrentPoint),
             _CurrentPoint,
@@ -33,6 +33,7 @@ bool PointAction::onMouseMove(MouseEventData* data) {
         );
 
         emit Preview(args);
+        _Marker->Set(args->Point);
         workspaceController()->Invalidate();
         return ToolAction::onMouseMove(data);
     }
@@ -40,15 +41,15 @@ bool PointAction::onMouseMove(MouseEventData* data) {
     return false;
 }
 
-bool PointAction::onMouseDown(MouseEventData* data) { 
+bool PointAction::onMouseDown(const std::shared_ptr<MouseEventData>& data) { 
     return false; 
 }
 
-bool PointAction::onMouseUp(MouseEventData* data) {
-    if (!m_isFinished) {
+bool PointAction::onMouseUp(const std::shared_ptr<MouseEventData>& data) {
+    if (!_IsFinished) {
         
-        processMouseInput(data);
-        m_isFinished = true;
+        ProcessMouseInput(data);
+        _IsFinished = true;
         EventArgs* args = new EventArgs(
         );
 
@@ -64,6 +65,7 @@ void PointAction::_EnsureMarker() {
     }
 }
 
-void PointAction::processMouseInput(MouseEventData* data) {
-    qDebug() << "Debug: PointAction::processMouseInput";
+void PointAction::ProcessMouseInput(const std::shared_ptr<MouseEventData>& data) {
+    qDebug() << "Debug: PointAction::ProcessMouseInput";
+
 }

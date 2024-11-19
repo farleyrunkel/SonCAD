@@ -32,7 +32,7 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
     void Add(IHudElement* hudElement);
 
  public:
-    virtual bool onMouseMove(MouseEventData* data) override {
+    virtual bool onMouseMove(const std::shared_ptr<MouseEventData>& data) override {
         auto children = GetChildren();
         return std::any_of(children.begin(), children.end(),
             [data](WorkspaceControl* child) { 
@@ -41,14 +41,14 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
             });
     }
 
-    virtual bool onMouseDown(MouseEventData* data) override {
+    virtual bool onMouseDown(const std::shared_ptr<MouseEventData>& data) override {
         auto children = GetChildren();
         return std::any_of(children.begin(), children.end(),
             [data](WorkspaceControl* child) {
                 auto a = child; return child->onMouseDown(data); });
     }
 
-    virtual bool onMouseUp(MouseEventData* data) override {
+    virtual bool onMouseUp(const std::shared_ptr<MouseEventData>& data) override {
         auto children = GetChildren();
         return std::any_of(children.begin(), children.end(),
             [data](WorkspaceControl* child) {
@@ -61,14 +61,14 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
             [&itemList](WorkspaceControl* child) { child->enrichContextMenu(itemList); });
     }
 
-    virtual bool onKeyPressed(MouseEventData* data) {
+    virtual bool onKeyPressed(const std::shared_ptr<MouseEventData>& data) {
         auto children = GetChildren();
         return std::any_of(children.begin(), children.end(),
             [data](WorkspaceControl* child) {
                 auto a = child; return child->onKeyPressed(data); });
     }
 
- private: 
+ private:
 	WorkspaceController* _WorkspaceController;
 	QList<IHudElement*> _HudElements;
     QList<VisualObject*> _VisualObjects;

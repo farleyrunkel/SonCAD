@@ -27,12 +27,12 @@ ActionCommand& ModelCommands::CreateBox() {
         command.connect(Core::commandManager(), &CommandManager::updateEnabled,
             []() { command.setEnabled(command.canExecute()); }
         );
-        command.connect(Core::appContext(), &InteractiveContext::workspaceControllerChanged,
-            [](WorkspaceController* controller) { 
-                auto currentTool = controller->currentTool();
-                command.setCheckable(currentTool && qobject_cast<CreateBoxTool*>(currentTool) != nullptr);
-            }
-        );
+        //command.connect(Core::appContext(), &InteractiveContext::workspaceControllerChanged,
+        //    [](WorkspaceController* controller) { 
+        //        auto currentTool = controller->currentTool();
+        //        command.setCheckable(currentTool && qobject_cast<CreateBoxTool*>(currentTool) != nullptr);
+        //    }
+        //);
     }
 
     return command; 

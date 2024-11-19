@@ -179,7 +179,7 @@ void ViewportController::setViewCube(bool isVisible, uint32_t size, double durat
     m_viewCube->SetMaterial(*material);
 
     // ¸ßÁÁÊôÐÔ
-    auto highlightColor = Colors::Highlight.toQuantityColor();
+    auto highlightColor = Colors::Highlight.ToQuantityColor();
     m_viewCube->DynamicHilightAttributes()->ShadingAspect()->SetColor(highlightColor);
     m_viewCube->DynamicHilightAttributes()->ShadingAspect()->SetMaterial(*material);
 

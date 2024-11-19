@@ -14,8 +14,9 @@
 
 namespace Sun {
 
-class Color : public QColor {
- public:
+class Color : public QColor 
+{
+public:
     static const Color Black;
     static const Color White;
 
@@ -24,50 +25,22 @@ class Color : public QColor {
     Color(const std::string& s);
     //--------------------------------------------------------------------------------------------------
 
-    float Red;
-    float Green;
-    float Blue;
+    float Red() const { return this->redF() / 255.0; }
+    float Green() const { return this->greenF() / 255.0; }
+    float Blue() const { return this->blueF() / 255.0; }
 
     //--------------------------------------------------------------------------------------------------
         // Convert Color to Quantity_Color
-    Quantity_Color toQuantityColor() const {
-        return Quantity_Color(Red, Green, Blue, Quantity_TOC_sRGB);
-    }
+    Quantity_Color ToQuantityColor() const;
 
-    std::string toString() const;
-
-    //--------------------------------------------------------------------------------------------------
-
+    std::string ToString() const;
     std::string toHexString() const;
 
-    //--------------------------------------------------------------------------------------------------
-
-    bool operator==(const Color& other) const {
-        return (Red == other.Red) && (Green == other.Green) && (Blue == other.Blue);
-    }
-
-    //--------------------------------------------------------------------------------------------------
-
-    bool operator!=(const Color& other) const {
-        return !(*this == other);
-    }
-
-    //--------------------------------------------------------------------------------------------------
-
-    Color scaled(float scale) const;
-
-    //--------------------------------------------------------------------------------------------------
-
-    Color Lerp(const Color& other, float f) const {
-        return Color(
-            Red + (other.Red - Red) * f,
-            Green + (other.Green - Green) * f,
-            Blue + (other.Blue - Blue) * f
-        );
-    }
+    Color Scaled(float scale) const;
+    Color Lerp(const Color& other, float f) const;
 
     // Hash function for Color (example)
-    size_t getHashCode() const;
+    size_t GetHashCode() const;
 };
 
 }  // end namespace sun

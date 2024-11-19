@@ -23,7 +23,7 @@ public:
 
     // Convert Color to Quantity_Color
     static Quantity_Color toQuantityColor(const Sun::Color& color) {
-        return Quantity_Color(color.Red, color.Green, color.Blue, Quantity_TOC_sRGB);
+        return Quantity_Color(color.Red(), color.Green(), color.Blue(), Quantity_TOC_sRGB);
     }
 
     // Convert Quantity_NameOfColor to Quantity_Color
