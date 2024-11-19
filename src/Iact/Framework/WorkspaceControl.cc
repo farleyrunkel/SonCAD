@@ -23,7 +23,7 @@ QList<WorkspaceControl*> WorkspaceControl::GetChildren() const {
 	return {};
 }
 
-void WorkspaceControl::Add(HudElement* hudElement) {
+void WorkspaceControl::Add(IHudElement* hudElement) {
 	if (hudElement == nullptr || _HudElements.contains(hudElement)) {
 		return;
 	}

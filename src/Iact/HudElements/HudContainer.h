@@ -3,7 +3,7 @@
 #ifndef IACT_HUD_ELEMENTS_HUDCONATAINER_H_
 #define IACT_HUD_ELEMENTS_HUDCONATAINER_H_
 
-#include <QWidget>
+#include <QFrame>
 #include <QMouseEvent>
 #include <QShowEvent>
 #include <QString>
@@ -12,7 +12,7 @@
 #include "Iact/HudElements/IHudManager.h"
 #include "Iact/HudElements/HudElement.h"
 
-class HudContainer : public QWidget, public IHudManager
+class HudContainer : public QFrame, public IHudManager
 {
 	Q_OBJECT
 	Q_PROPERTY(QString _HintMessage WRITE SetHintMessage)
@@ -20,14 +20,14 @@ class HudContainer : public QWidget, public IHudManager
 public:
 	explicit HudContainer(QWidget* parent = nullptr);
 
-	virtual void AddElement(HudElement* element) override;
-	virtual void RemoveElement(HudElement* element) override {}
-	virtual void RemoveElements(std::function<bool(HudElement*)> predicate) override {}
+	virtual void AddElement(IHudElement* element) override;
+	virtual void RemoveElement(IHudElement* element) override {}
+	virtual void RemoveElements(std::function<bool(IHudElement*)> predicate) override {}
 
 	// virtual void SetCursor(QObject* owner, Cursor* cursor)  {}
 	virtual void SetHintMessage(const QString& message) override;
 
-	QList<HudElement*>& HudElements() {
+	QList<IHudElement*>& HudElements() {
 		return _HudElements;
 	}
 
@@ -42,7 +42,7 @@ signals:
 
 private:
 	QString _HintMessage;
-	QList<HudElement*> _HudElements;
+	QList<IHudElement*> _HudElements;
 };
 
 #endif  // IACT_HUD_ELEMENTS_HUDCONATAINER_H_

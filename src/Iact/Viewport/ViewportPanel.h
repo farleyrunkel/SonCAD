@@ -113,7 +113,7 @@ private:
     WorkspaceController* m_workspaceController;
 
     HudContainer* _HudContainer;
-    QList<HudElement*> m_hudElements;
+    QList<IHudElement*> m_hudElements;
 
  private:
     Handle(V3d_Viewer)             m_viewer;

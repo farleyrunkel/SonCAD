@@ -29,7 +29,7 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
     void SetHintMessage(const QString& message);
 
     void Add(VisualObject* visual);
-    void Add(HudElement* hudElement);
+    void Add(IHudElement* hudElement);
 
  public:
     virtual bool onMouseMove(MouseEventData* data) override {
@@ -70,7 +70,7 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
 
  private: 
 	WorkspaceController* _WorkspaceController;
-	QList<HudElement*> _HudElements;
+	QList<IHudElement*> _HudElements;
     QList<VisualObject*> _VisualObjects;
 
 };

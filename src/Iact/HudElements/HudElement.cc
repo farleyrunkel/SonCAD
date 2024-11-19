@@ -4,10 +4,6 @@
 
 #include "Iact/Workspace/WorkspaceController.h"
 
-HudElement::HudElement(QWidget* parent) : QWidget(parent) {
-	setMinimumHeight(25);
-}
-
-WorkspaceController* HudElement::workspaceController() const { 
+WorkspaceController* IHudElement::workspaceController() const { 
 	return m_workspaceController; 
 }

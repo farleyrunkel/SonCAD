@@ -7,12 +7,14 @@
 
 class WorkspaceController;
 
-class HudElement : public QWidget {
+class IHudElement {
  public:
-	 explicit HudElement(QWidget* parent = nullptr);
+	 virtual ~IHudElement() = default;
+
 	 WorkspaceController* workspaceController() const;
 
-	 virtual void initialize() = 0;
+	 virtual void Initialize() = 0;
+	 virtual QWidget* Widget() = 0;
 
 private:
 	WorkspaceController* m_workspaceController;

@@ -8,30 +8,25 @@
 
 #include "Iact/HudElements/HudElement.h"
 
-class Coord2DHudElement : public HudElement {
+class Coord2DHudElement : public QLabel, public IHudElement {
     Q_OBJECT
     Q_PROPERTY(double coordinateX READ CoordinateX)
     Q_PROPERTY(double coordinateY READ CoordinateY)
 
- public:
+public:
     explicit Coord2DHudElement(QWidget* parent = nullptr);
 
-    double CoordinateX() const { return _coordinateX; }
-    double CoordinateY() const { return _coordinateY; }
+    double CoordinateX() const { return _CoordinateX; }
+    double CoordinateY() const { return _CoordinateY; }
 
     void SetValues(double coordX, double coordY);
 
-    virtual void initialize() override {};
+    virtual void Initialize() override;
+    virtual QWidget* Widget() override;
 
- signals:
-    void CoordinateChanged(double coordX, double coordY);
-
- private:
-    QLabel* m_label;
-
- private:
-    double _coordinateX;
-    double _coordinateY;
+private:
+    double _CoordinateX;
+    double _CoordinateY;
 };
 
 #endif  // IACT_HUD_ELEMENTS_COORD2DHUDELEMENT_H_

@@ -7,24 +7,28 @@
 #include <QString>
 
 Coord2DHudElement::Coord2DHudElement(QWidget* parent)
-    : HudElement(parent), _coordinateX(0.0), _coordinateY(0.0) 
+    : QLabel(parent), _CoordinateX(0.0), _CoordinateY(0.0)
 {
-    setLayout(new QHBoxLayout(this));
-
-    m_label = new QLabel(this);
-
-    connect(this, &Coord2DHudElement::CoordinateChanged, m_label, [this]() {
-        QString xStr = QString::number(_coordinateX, 'f', 3);
-        QString yStr = QString::number(_coordinateY, 'f', 3);
-        m_label->setText(xStr + " " + yStr);
-        m_label->adjustSize();
-    });
-
-    layout()->addWidget(m_label);
+    Initialize();
 }
 
-void Coord2DHudElement::SetValues(double coordX, double coordY) {
-    _coordinateX = coordX;
-    _coordinateY = coordY;
-    emit CoordinateChanged(coordX, coordY);
+
+void Coord2DHudElement::SetValues(double coordX, double coordY) 
+{
+    _CoordinateX = coordX;
+    _CoordinateY = coordY;
+    QString xStr = QString::number(_CoordinateX, 'f', 3);
+    QString yStr = QString::number(_CoordinateY, 'f', 3);
+    setText(xStr + " " + yStr);
+    adjustSize();
+}
+
+void Coord2DHudElement::Initialize()
+{
+    setAlignment(Qt::AlignCenter);
+    setStyleSheet("color: white; font-size: 14px; background: none;");
+}
+
+QWidget* Coord2DHudElement::Widget() {
+    return qobject_cast<QWidget*>(this);
 }

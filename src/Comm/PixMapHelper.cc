@@ -30,7 +30,7 @@ Handle(Image_PixMap) PixMapHelper::convertFromBitmap(const QImage& image) {
     // 创建 Image_PixMap 对象
     Handle(Image_PixMap) pixmap = new Image_PixMap;
     if (!pixmap->InitZero(imageFormat, image.width(), image.height())) {
-        throw std::runtime_error("Failed to initialize Image_PixMap.");
+        throw std::runtime_error("Failed to Initialize Image_PixMap.");
     }
 
     // 拷贝数据
