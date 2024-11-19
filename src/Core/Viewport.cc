@@ -8,12 +8,15 @@ Viewport::Viewport(QObject* parent) : Viewport(nullptr, parent) {}
 
 Viewport::Viewport(Sun::Workspace* workspace, QObject* parent)
     : QObject(parent), mWorkspace(workspace), 
-    mRenderMode(SolidShaded), mTwist(0.0), mScale(100.0) {
+    mRenderMode(SolidShaded), mTwist(0.0), mScale(100.0) 
+{
+    connect(this, &Viewport::ViewportChanged, SignalHub(), &ViewPortSignalHub::ViewportChanged);
 }
 
  // Getters and setters for properties
 
-  gp_Pnt Viewport::eyePoint() {
+  gp_Pnt Viewport::eyePoint() 
+  {
      if (mV3dView) {
          double xEye = 0, yEye = 0, zEye = 0;
          mV3dView->Eye(xEye, yEye, zEye);

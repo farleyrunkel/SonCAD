@@ -36,8 +36,6 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
         auto children = GetChildren();
         return std::any_of(children.begin(), children.end(),
             [data](WorkspaceControl* child) { 
-                auto a = child;
-                if (a) {}
                 return child->onMouseMove(data);
             });
     }

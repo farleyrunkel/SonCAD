@@ -58,7 +58,7 @@ void Sun::Workspace::_ApplyWorkingContext() {
         //_V3dViewer->SetPrivilegedPlane(_CurrentWorkingContext->WorkingPlane.Position());
     }
     //RaisePropertyChanged(nameof(WorkingPlane));
-    emit gridChanged(this);
+    emit GridChanged(this);
 }
 
 //--------------------------------------------------------------------------------------------------

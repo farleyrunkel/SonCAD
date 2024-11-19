@@ -88,13 +88,13 @@ public:
     Model* model() const { return _Model ; }
 
 signals:
-    void gridChanged(Sun::Workspace*);
+    void GridChanged(Sun::Workspace*);
 
 private:
      void init();
      void _ApplyWorkingContext();
      void _RaiseGridChanged() {
-         emit gridChanged(this);
+         emit GridChanged(this);
      }
 
 private:

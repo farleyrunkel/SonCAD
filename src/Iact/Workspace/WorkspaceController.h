@@ -20,7 +20,12 @@
 class Marker;
 class Tool;
 class ViewportController;
+class WorkspaceController;
 
+class VisualObjectManager {
+public:
+    VisualObjectManager(WorkspaceController*) {}
+};
 
 class WorkspaceController : public QObject
 {
@@ -32,15 +37,16 @@ class WorkspaceController : public QObject
         //Q_PROPERTY(bool LockWorkingPlane READ LockWorkingPlane WRITE SetLockWorkingPlane NOTIFY LockWorkingPlaneChanged)
         //Q_PROPERTY(SelectionManager* Selection READ Selection CONSTANT)
         //Q_PROPERTY(bool IsSelecting READ IsSelecting WRITE SetIsSelecting NOTIFY IsSelectingChanged)
-        //Q_PROPERTY(VisualObjectManager* VisualObjects READ VisualObjects CONSTANT)
+        Q_PROPERTY(VisualObjectManager* VisualObjects READ VisualObjects CONSTANT)
         //Q_PROPERTY(Pnt ? CursorPosition READ CursorPosition WRITE SetCursorPosition NOTIFY CursorPositionChanged)
         //Q_PROPERTY(Pnt2d ? CursorPosition2d READ CursorPosition2d WRITE SetCursorPosition2d NOTIFY CursorPosition2dChanged)
 
 public:
     explicit WorkspaceController(Sun::Workspace* workspace);
+    ~WorkspaceController() {}
 
 public:
-    void initWorkspace();
+    void InitWorkspace();
 
     Tool* currentTool() const;
     void removeTool(Tool* tool) {}
@@ -70,12 +76,17 @@ public:
 public:
     Sun::Workspace* Workspace() const;
     Viewport* ActiveViewport() const { return _ActiveViewport; }
+    VisualObjectManager* VisualObjects() const { return _VisualObjectManager; }
 
 private:
-    void onWorkspaceGridChanged(Sun::Workspace *);
+    void _Workspace_GridChanged(Sun::Workspace *);
+    void _Viewport_ViewportChanged(Viewport*);
     void _Redraw();
     void _UpdateGrid();
     void initVisualSettings();
+    void _RecalculateGridSize() {}
+    void _UpdateParameter() {}
+    void _RedrawTimer_Tick() {}
 
 signals:
     void ActiveViewportChanged(Viewport*);
@@ -86,6 +97,9 @@ private:
     Sun::Workspace* _Workspace;
     Viewport* _ActiveViewport;
     IHudManager* _HudManager;
+    VisualObjectManager* _VisualObjectManager;
+
+    QTimer* _RedrawTimer;
 
     bool _GridNeedsUpdate;
     Handle(AISX_Grid) _Grid;

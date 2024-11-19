@@ -21,14 +21,23 @@ WorkspaceController::WorkspaceController(Sun::Workspace* workspace)
       _CurrentTool(nullptr),
       _CurrentEditor(nullptr),
       _ActiveViewport(nullptr),
-      _HudManager(nullptr) {
+      _HudManager(nullptr) 
+{
+    assert(_Workspace != nullptr);
+    connect(_Workspace, &Sun::Workspace::GridChanged, this, &WorkspaceController::_Workspace_GridChanged);
+    connect(Viewport::SignalHub(), &ViewPortSignalHub::ViewportChanged, this, &WorkspaceController::_Viewport_ViewportChanged);
 
-    connect(_Workspace, &Sun::Workspace::gridChanged, this, &WorkspaceController::onWorkspaceGridChanged);
+    _VisualObjectManager = new VisualObjectManager(this);
 
-    initWorkspace();
+    _RedrawTimer = new QTimer(this);
+    _RedrawTimer->setInterval(1000 / 60); 
+    connect(_RedrawTimer, &QTimer::timeout, this, &WorkspaceController::_RedrawTimer_Tick);
+    _RedrawTimer->start();
+
+    InitWorkspace();
 }
 
-void WorkspaceController::initWorkspace() {
+void WorkspaceController::InitWorkspace() {
     // init V3dViewer and AisContext
     Workspace()->initV3dViewer();
     Workspace()->initAisContext();
@@ -93,11 +102,24 @@ void WorkspaceController::Invalidate(bool immediateOnly, bool forceRedraw) {
         _Redraw();
 }
 
-void WorkspaceController::onWorkspaceGridChanged(Sun::Workspace* sender) {
+void WorkspaceController::_Workspace_GridChanged(Sun::Workspace* sender) 
+{
     if (_Workspace == sender) {
         recalculateGridSize();
         _GridNeedsUpdate = true;
         _UpdateGrid();
+        Invalidate();
+    }
+}
+
+void WorkspaceController::_Viewport_ViewportChanged(Viewport* sender) 
+{
+    if (std::any_of(_ViewportControllers.begin(), _ViewportControllers.end(),
+        [sender](ViewportController* vc) {
+            return vc->viewport() == sender;
+        })) {
+        _RecalculateGridSize();
+        _UpdateParameter();
         Invalidate();
     }
 }

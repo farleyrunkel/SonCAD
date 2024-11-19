@@ -21,6 +21,18 @@
 
 #include "Core/Workspace.h"
 
+class Viewport;
+
+
+class ViewPortSignalHub : public QObject
+{
+    Q_OBJECT
+public:
+    ViewPortSignalHub() = default;
+signals:
+    void ViewportChanged(Viewport*);
+};
+
 class Viewport : public QObject 
 {
     Q_OBJECT
@@ -44,6 +56,9 @@ class Viewport : public QObject
 
     // Constructor
     explicit Viewport(Sun::Workspace* workspace, QObject* parent = nullptr);
+
+    // Destructor
+    ~Viewport();
 
     // Initialize Viewport with MSAA support
     void init(bool useMsaa);
@@ -80,8 +95,12 @@ class Viewport : public QObject
         return mV3dView;
     }
 
-    // Destructor
-    ~Viewport();
+
+public:
+    static ViewPortSignalHub* SignalHub() {
+        static ViewPortSignalHub hub;
+        return &hub;
+    }
 
  signals:
     void eyePointChanged();
@@ -89,6 +108,7 @@ class Viewport : public QObject
     void twistChanged();
     void scaleChanged();
     void renderModeChanged();
+    void ViewportChanged(Viewport*);
 
  private:
     Sun::Workspace* mWorkspace;
