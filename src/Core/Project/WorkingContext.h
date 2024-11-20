@@ -3,40 +3,49 @@
 
 #include <QObject>
 
-#include "Core/Workspace.h"
-
 #include <gp_Pln.hxx>
 #include <gp.hxx>
 
+#include "Core/Workspace.h"
 
-class WorkingContext : public QObject 
+class Sun_WorkingContext : public QObject 
 {
     Q_OBJECT
+    Q_PROPERTY(gp_Pln WorkingPlane READ WorkingPlane WRITE SetWorkingPlane NOTIFY WorkingPlaneChanged)
+    Q_PROPERTY(Sun::Workspace::GridTypes GridType READ GridType WRITE SetGridType NOTIFY GridTypeChanged)
+    Q_PROPERTY(double GridStep READ GridStep WRITE SetGridStep NOTIFY GridStepChanged)
+    Q_PROPERTY(double GridRotation READ GridRotation WRITE SetGridRotation NOTIFY GridRotationChanged)
+    Q_PROPERTY(int GridDivisions READ GridDivisions WRITE SetGridDivisions NOTIFY GridDivisionsChanged)
 
 public:
-    explicit WorkingContext(QObject* parent = nullptr)
-        : QObject(parent),
-        _WorkingPlane(gp::XOY()),
-        _GridType(Sun::Workspace::GridTypes::Rectangular),
-        _GridStep(1.0),
-        _GridRotation(0),
-        _GridDivisions(8) {}
+    explicit Sun_WorkingContext();
 
-    // Getter 和 Setter 方法
-    gp_Pln workingPlane() const;
-    void setWorkingPlane(const gp_Pln& plane);
+    Sun_WorkingContext* Clone() const;
 
-    Sun::Workspace::GridTypes gridType() const;
-    void setGridType(Sun::Workspace::GridTypes type);
+    // CopyFrom 方法
+    void CopyFrom(const Sun_WorkingContext& other);
 
-    double gridStep() const;
-    void setGridStep(double step);
+    gp_Pln WorkingPlane() const;
+    void SetWorkingPlane(const gp_Pln& plane);
 
-    double gridRotation() const;
-    void setGridRotation(double rotation);
+    Sun::Workspace::GridTypes GridType() const;
+    void SetGridType(Sun::Workspace::GridTypes type);
 
-    int gridDivisions() const;
-    void setGridDivisions(int divisions);
+    double GridStep() const;
+    void SetGridStep(double step);
+
+    double GridRotation() const;
+    void SetGridRotation(double rotation);
+
+    int GridDivisions() const;
+    void SetGridDivisions(int divisions);
+
+signals:
+    void WorkingPlaneChanged(const gp_Pln&);
+    void GridTypeChanged(Sun::Workspace::GridTypes);
+    void GridStepChanged(double);
+    void GridRotationChanged(double);
+    void GridDivisionsChanged(int);
 
 private:
     gp_Pln _WorkingPlane;

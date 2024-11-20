@@ -21,7 +21,7 @@ class Cursors {
     static QCursor setPoint();
     static QCursor setRadius();
     static QCursor setHeight();
-    static QCursor workingPlane();
+    static QCursor WorkingPlane();
     static QCursor plus();
     static QCursor minus();
 

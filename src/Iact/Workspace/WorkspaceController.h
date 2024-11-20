@@ -16,6 +16,8 @@
 #include "Occt/OcctHelper/AisHelper.h"
 
 #include <gp_XY.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Pnt2d.hxx>
 
 class Marker;
 class Tool;
@@ -30,16 +32,16 @@ public:
 class WorkspaceController : public QObject
 {
     Q_OBJECT
-        Q_PROPERTY(Sun::Workspace* Workspace READ Workspace CONSTANT)
-        Q_PROPERTY(Viewport* ActiveViewport READ ActiveViewport WRITE SetActiveViewport NOTIFY ActiveViewportChanged)
-        //Q_PROPERTY(ViewportController* ActiveViewController READ ActiveViewControlller CONSTANT)
-        //Q_PROPERTY(IHudManager* HudManager READ HudManager WRITE SetHudManager NOTIFY HudManagerChanged)
-        //Q_PROPERTY(bool LockWorkingPlane READ LockWorkingPlane WRITE SetLockWorkingPlane NOTIFY LockWorkingPlaneChanged)
-        //Q_PROPERTY(SelectionManager* Selection READ Selection CONSTANT)
-        //Q_PROPERTY(bool IsSelecting READ IsSelecting WRITE SetIsSelecting NOTIFY IsSelectingChanged)
-        Q_PROPERTY(VisualObjectManager* VisualObjects READ VisualObjects CONSTANT)
-        //Q_PROPERTY(Pnt ? CursorPosition READ CursorPosition WRITE SetCursorPosition NOTIFY CursorPositionChanged)
-        //Q_PROPERTY(Pnt2d ? CursorPosition2d READ CursorPosition2d WRITE SetCursorPosition2d NOTIFY CursorPosition2dChanged)
+    Q_PROPERTY(Sun::Workspace* Workspace READ Workspace CONSTANT)
+    Q_PROPERTY(Viewport* ActiveViewport READ ActiveViewport WRITE SetActiveViewport NOTIFY ActiveViewportChanged)
+    //Q_PROPERTY(ViewportController* ActiveViewController READ ActiveViewControlller CONSTANT)
+    //Q_PROPERTY(IHudManager* HudManager READ HudManager WRITE SetHudManager NOTIFY HudManagerChanged)
+    //Q_PROPERTY(bool LockWorkingPlane READ LockWorkingPlane WRITE SetLockWorkingPlane NOTIFY LockWorkingPlaneChanged)
+    //Q_PROPERTY(SelectionManager* Selection READ Selection CONSTANT)
+    //Q_PROPERTY(bool IsSelecting READ IsSelecting WRITE SetIsSelecting NOTIFY IsSelectingChanged)
+    Q_PROPERTY(VisualObjectManager* VisualObjects READ VisualObjects CONSTANT)
+    Q_PROPERTY(gp_Pnt CursorPosition READ CursorPosition WRITE SetCursorPosition NOTIFY CursorPositionChanged)
+    Q_PROPERTY(gp_Pnt2d CursorPosition2d READ CursorPosition2d WRITE SetCursorPosition2d NOTIFY CursorPosition2dChanged)
 
 public:
     explicit WorkspaceController(Sun::Workspace* workspace);
@@ -77,6 +79,10 @@ public:
     Sun::Workspace* Workspace() const;
     Viewport* ActiveViewport() const { return _ActiveViewport; }
     VisualObjectManager* VisualObjects() const { return _VisualObjectManager; }
+    gp_Pnt CursorPosition() const { return _CursorPosition; }
+    void SetCursorPosition(const gp_Pnt& pnt) {}
+    gp_Pnt2d CursorPosition2d() const { return _CursorPosition2d; }
+    void SetCursorPosition2d(const gp_Pnt2d& pnt2d) {}
 
 private:
     void _Workspace_GridChanged(Sun::Workspace *);
@@ -90,6 +96,8 @@ private:
 
 signals:
     void ActiveViewportChanged(Viewport*);
+    void CursorPositionChanged(const gp_Pnt&);
+    void CursorPosition2dChanged(const gp_Pnt2d&);
 
 private:
     Tool* _CurrentTool;

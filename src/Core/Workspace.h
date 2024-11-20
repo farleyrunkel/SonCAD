@@ -18,7 +18,7 @@
 
 class Model;
 class Viewport;
-class WorkingContext;
+class Sun_WorkingContext;
 
 namespace Sun {
 
@@ -32,13 +32,13 @@ class Workspace : public BaseObject
     Q_PROPERTY(bool NeedsImmediateRedraw READ needsImmediateRedraw WRITE setNeedsImmediateRedraw)
     Q_PROPERTY(Model* Model READ model)
     Q_PROPERTY(bool GridEnabled READ gridEnabled WRITE setGridEnabled)
-    Q_PROPERTY(GridTypes GridType READ gridType WRITE setGridType)
+    Q_PROPERTY(GridTypes GridType READ GridType WRITE SetGridType)
     Q_PROPERTY(double GridStep)
     Q_PROPERTY(double GridRotation)
     Q_PROPERTY(int GridDivisions)
     Q_PROPERTY(Pln _WorkingPlane)
-    Q_PROPERTY(WorkingContext WorkingContext)
-    Q_PROPERTY(WorkingContext GlobalWorkingContext)
+    Q_PROPERTY(Sun_WorkingContext Sun_WorkingContext)
+    Q_PROPERTY(Sun_WorkingContext GlobalWorkingContext)
 
 public:
     enum GridTypes {
@@ -58,20 +58,14 @@ public:
     bool gridEnabled() const { return _GridEnabled; }
     void setGridEnabled(bool value);
 
-    GridTypes gridType() const;
-    void setGridType(GridTypes) { return; }
+    GridTypes GridType() const;
+    void SetGridType(GridTypes) { return; }
 
-    WorkingContext* workingContext() const;
+    Sun_WorkingContext* workingContext() const;
 
-    const gp_Pln& workingPlane() const {
-        return gp_Pln();//_CurrentWorkingContext.WorkingPlane;
-    }
+    const gp_Pln& WorkingPlane() const;
 
-    void setWorkingPlane(const gp_Pln& value) {
-        //_CurrentWorkingContext.WorkingPlane = value;
-        //Model::MarkAsUnsaved();
-        //_ApplyWorkingContext();
-    }
+    void SetWorkingPlane(const gp_Pln& value);
 
     // Viewports management
     QList<Viewport*>& viewports() { return _Viewports; }
@@ -109,8 +103,8 @@ private:
     Model* _Model;  // The active model
 
     Pln _WorkingPlane;
-    WorkingContext* _CurrentWorkingContext;
-    WorkingContext* _GlobalWorkingContext;
+    Sun_WorkingContext* _CurrentWorkingContext;
+    Sun_WorkingContext* _GlobalWorkingContext;
 };
 
 }

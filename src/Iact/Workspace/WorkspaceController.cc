@@ -12,12 +12,13 @@
 #include "Iact/Visual/Marker.h"
 #include "Occt/ValueTypes/Ax3.h"
 
-#include <gp_Ax3.hxx>
-
+#include <gp_XY.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Pnt2d.hxx>
 
 WorkspaceController::WorkspaceController(Sun::Workspace* workspace)
     : _Workspace(workspace),
-      _MouseEventData(nullptr),
+      _MouseEventData(new MouseEventData),
       _CurrentTool(nullptr),
       _CurrentEditor(nullptr),
       _ActiveViewport(nullptr),
@@ -136,20 +137,20 @@ void WorkspaceController::_UpdateGrid()
     if (_Grid.IsNull())
         return;
 
-    WorkingContext* wc = Workspace()->workingContext();
+    Sun_WorkingContext* wc = Workspace()->workingContext();
 
     if (Workspace()->gridEnabled())
     {
-        gp_Ax3 position = wc->workingPlane().Position();
-        if (wc->gridRotation() != 0)
+        gp_Ax3 position = wc->WorkingPlane().Position();
+        if (wc->GridRotation() != 0)
         {
-            position.Rotate(wc->workingPlane().Axis(), wc->gridRotation());
+            position.Rotate(wc->WorkingPlane().Axis(), wc->GridRotation());
         }
         _Grid->SetPosition(position);
         _Grid->SetExtents(_LastGridSize.X(), _LastGridSize.Y());
-        _Grid->SetDivisions(wc->gridStep(), wc->gridDivisions() * M_PI / 180.0);
+        _Grid->SetDivisions(wc->GridStep(), wc->GridDivisions() * M_PI / 180.0);
 
-        if (wc->gridType() == Sun::Workspace::GridTypes::Rectangular)
+        if (wc->GridType() == Sun::Workspace::GridTypes::Rectangular)
         {
             Workspace()->aisContext()->SetDisplayMode(_Grid, 1, false);
         }
@@ -225,9 +226,21 @@ void WorkspaceController::initVisualSettings()
     aisContext->SetHighlightStyle(Prs3d_TypeOfHighlight::Prs3d_TypeOfHighlight_LocalDynamic, hilightLocalDrawer);
 }
 
-void WorkspaceController::mouseMove(ViewportController* viewportController, QPointF pos, Qt::KeyboardModifiers modifiers) {
-    
-    
+void WorkspaceController::mouseMove(ViewportController* vc, QPointF pos, Qt::KeyboardModifiers modifiers) 
+{   
+    gp_Pnt planePoint;
+
+    if (!vc->viewport()->ScreenToPoint(Workspace()->WorkingPlane(), (int)pos.x(), (int)pos.y(), planePoint)) {
+        SetCursorPosition(gp_Pnt());
+        SetCursorPosition2d(gp_Pnt2d());
+    }
+
+    // 重置最后检测到的对象和所有者
+    _LastDetectedAisObject = nullptr;
+    _LastDetectedOwner = nullptr;
+
+    _MouseEventData->set(vc->viewport(), pos, planePoint, modifiers);
+
     qDebug() << "Debug: _WorkspaceController::mouseMove: " << pos;
     for (const auto& handler : enumerateControls()) {
         if (handler->onMouseMove(_MouseEventData))

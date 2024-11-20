@@ -49,7 +49,7 @@ ViewportView::ViewportView(QWidget* parent)
 
             connect(Core::appContext(), &AppContext::viewportChanged, [this](Viewport* viewport) {
                 if (viewport) {
-                    m_viewportPanel->setView(viewport->v3dView());
+                    m_viewportPanel->setView(viewport->V3dView());
                     setWidget(m_viewportPanel); // Set as the scrollable area
                     setWidgetResizable(true); // Allow resizing
                 }}

@@ -58,7 +58,7 @@ void ViewportController::mouseUp(Qt::KeyboardModifiers modifiers) {
 
 void ViewportController::setPredefinedView(PredefinedViews predefinedView) {
     if (predefinedView == PredefinedViews::WorkingPlane) {
-        const auto& plane = workspaceController()->Workspace()->workingPlane();
+        const auto& plane = workspaceController()->Workspace()->WorkingPlane();
         const auto& dir = plane.Axis().Direction();
         viewport()->view()->SetProj(dir.X(), dir.Y(), dir.Z());
 

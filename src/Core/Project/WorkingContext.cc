@@ -2,24 +2,73 @@
 
 #include "Core/Project/WorkingContext.h"
 
-// Getter 和 Setter 方法
+Sun_WorkingContext::Sun_WorkingContext()
+    : QObject(),
+    _WorkingPlane(gp::XOY()),
+    _GridType(Sun::Workspace::GridTypes::Rectangular),
+    _GridStep(1.0),
+    _GridRotation(0),
+    _GridDivisions(8) 
+{}
 
-gp_Pln WorkingContext::workingPlane() const { return _WorkingPlane; }
+Sun_WorkingContext* Sun_WorkingContext::Clone() const {
+    Sun_WorkingContext* wc = new Sun_WorkingContext();
+    wc->CopyFrom(*this);
+    return wc;
+}
 
-void WorkingContext::setWorkingPlane(const gp_Pln& plane) { _WorkingPlane = plane; }
 
-Sun::Workspace::GridTypes WorkingContext::gridType() const { return _GridType; }
+// CopyFrom 方法
 
-void WorkingContext::setGridType(Sun::Workspace::GridTypes type) { _GridType = type; }
+void Sun_WorkingContext::CopyFrom(const Sun_WorkingContext& other) {
+    _WorkingPlane = other.WorkingPlane();
+    _GridType = other.GridType();
+    _GridStep = other.GridStep();
+    _GridDivisions = other.GridDivisions();
+    _GridRotation = other.GridRotation();
+}
 
-double WorkingContext::gridStep() const { return _GridStep; }
+gp_Pln Sun_WorkingContext::WorkingPlane() const { return _WorkingPlane; }
 
-void WorkingContext::setGridStep(double step) { _GridStep = step; }
+void Sun_WorkingContext::SetWorkingPlane(const gp_Pln& plane) {
+    if (_WorkingPlane.Distance(plane) > gp::Resolution()) {
+        _WorkingPlane = plane;
+        emit WorkingPlaneChanged(plane);
+    }
+}
 
-double WorkingContext::gridRotation() const { return _GridRotation; }
+Sun::Workspace::GridTypes Sun_WorkingContext::GridType() const { return _GridType; }
 
-void WorkingContext::setGridRotation(double rotation) { _GridRotation = rotation; }
+void Sun_WorkingContext::SetGridType(Sun::Workspace::GridTypes type) {
+    if (_GridType != type) {
+        _GridType = type;
+        emit GridTypeChanged(type);
+    }
+}
 
-int WorkingContext::gridDivisions() const { return _GridDivisions; }
+double Sun_WorkingContext::GridStep() const { return _GridStep; }
 
-void WorkingContext::setGridDivisions(int divisions) { _GridDivisions = divisions; }
+void Sun_WorkingContext::SetGridStep(double step) {
+    if (_GridStep != step) {
+        _GridStep = step;
+        emit GridStepChanged(step);
+    }
+}
+
+double Sun_WorkingContext::GridRotation() const { return _GridRotation; }
+
+void Sun_WorkingContext::SetGridRotation(double rotation) {
+    if (_GridRotation != rotation) {
+        _GridRotation = rotation;
+        emit GridRotationChanged(rotation);
+    }
+}
+
+int Sun_WorkingContext::GridDivisions() const { return _GridDivisions; }
+
+void Sun_WorkingContext::SetGridDivisions(int divisions) {
+    if (_GridDivisions != divisions) {
+        _GridDivisions = divisions;
+        emit GridDivisionsChanged(divisions);
+    }
+}

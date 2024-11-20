@@ -12,13 +12,13 @@ AIS_InteractiveObject* MouseEventData::detectedAisObject() const {
 
 void MouseEventData::clear() {
     viewport = nullptr;
-    screenPoint = QPoint();
+    screenPoint = QPointF();
     PointOnPlane = gp_Pnt();
     detectedElements.clear();
     returnOptions.clear();
 }
 
-void MouseEventData::set(Viewport* vp, const QPoint& sp, const gp_Pnt& pp, Qt::KeyboardModifiers mk) {
+void MouseEventData::set(Viewport* vp, const QPointF& sp, const gp_Pnt& pp, Qt::KeyboardModifiers mk) {
     clear();
     viewport = vp;
     screenPoint = sp;

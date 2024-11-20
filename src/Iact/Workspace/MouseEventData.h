@@ -4,7 +4,7 @@
 #define SRC_IACT_WORKSPACE_MOUSEEVENTDATA_H_
 
 #include <QList>
-#include <QPoint>
+#include <QPointF>
 #include <QGraphicsView>
 #include <QMouseEvent>
 #include <optional>
@@ -66,14 +66,15 @@ class MouseEventData {
 
     // 鼠标事件数据的主要属性
     Viewport* viewport = nullptr;
-    QPoint screenPoint;
+    QPointF screenPoint;
     gp_Pnt PointOnPlane;
     Qt::KeyboardModifiers modifierKeys;
     QList<Element> detectedElements;
     ReturnOptions returnOptions;
 
     // 构造函数
-    MouseEventData(Viewport* vp, const QPoint& sp, const gp_Pnt& pp, Qt::KeyboardModifiers mk)
+    MouseEventData() {}
+    MouseEventData(Viewport* vp, const QPointF& sp, const gp_Pnt& pp, Qt::KeyboardModifiers mk)
         : viewport(vp), screenPoint(sp), PointOnPlane(pp), modifierKeys(mk) {}
 
     // 检测到的主要实体
@@ -89,7 +90,7 @@ class MouseEventData {
     void clear();
 
     // 设置事件数据
-    void set(Viewport* vp, const QPoint& sp, const gp_Pnt& pp, Qt::KeyboardModifiers mk);
+    void set(Viewport* vp, const QPointF& sp, const gp_Pnt& pp, Qt::KeyboardModifiers mk);
 
     // 设置检测元素的列表
     void setDetectedElements(const QList<AIS_InteractiveObject*>& aisObjects,

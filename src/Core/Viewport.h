@@ -91,16 +91,20 @@ class Viewport : public QObject
         return mV3dView;
     }
 
-    Handle(V3d_View) v3dView() const {
+    Handle(V3d_View) V3dView() const {
         return mV3dView;
     }
 
+    bool ScreenToPoint(gp_Pln plane, int screenX, int screenY, gp_Pnt& resultPnt);
 
 public:
     static ViewPortSignalHub* SignalHub() {
         static ViewPortSignalHub hub;
         return &hub;
     }
+
+    private:
+      void  _ValidateViewGeometry() {}
 
  signals:
     void eyePointChanged();

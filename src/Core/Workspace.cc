@@ -29,7 +29,7 @@ Sun::Workspace::Workspace()
       _NeedsRedraw(false),
       _NeedsImmediateRedraw(false),
       _CurrentWorkingContext(nullptr),
-      _GlobalWorkingContext(new WorkingContext),
+      _GlobalWorkingContext(new Sun_WorkingContext),
       _Model(nullptr) {
     init();
 }
@@ -126,6 +126,12 @@ void Sun::Workspace::initAisContext() {
     _AisContext->SetHighlightStyle(style);
 }
 
+void Sun::Workspace::SetWorkingPlane(const gp_Pln& value) {
+    _CurrentWorkingContext->SetWorkingPlane(value);
+    //Model::MarkAsUnsaved();
+    _ApplyWorkingContext();
+}
+
 Handle(V3d_Viewer) Sun::Workspace::v3dViewer() const {
     return _V3dViewer;
 }
@@ -151,12 +157,16 @@ void Sun::Workspace::setGridEnabled(bool value) {
     }
 }
 
-Sun::Workspace::GridTypes Sun::Workspace::gridType() const {
-    return _CurrentWorkingContext->gridType(); 
+Sun::Workspace::GridTypes Sun::Workspace::GridType() const {
+    return _CurrentWorkingContext->GridType(); 
 }
 
-WorkingContext* Sun::Workspace::workingContext() const {
+Sun_WorkingContext* Sun::Workspace::workingContext() const {
     return _CurrentWorkingContext; 
+}
+
+const gp_Pln& Sun::Workspace::WorkingPlane() const {
+    return _CurrentWorkingContext->WorkingPlane();
 }
 
 //--------------------------------------------------------------------------------------------------

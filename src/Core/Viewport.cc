@@ -2,6 +2,9 @@
 
 #include "Core/Viewport.h"
 
+#include <IntAna_IntConicQuad.hxx>
+#include <Precision.hxx>
+
 // Constructor
 
 Viewport::Viewport(QObject* parent) : Viewport(nullptr, parent) {}
@@ -141,6 +144,45 @@ Viewport::Viewport(Sun::Workspace* workspace, QObject* parent)
         renderParams.Method = Graphic3d_RM_RASTERIZATION;
     }
 }
+
+bool Viewport::ScreenToPoint(gp_Pln plane, int screenX, int screenY, gp_Pnt& resultPnt)
+ {
+    if (!V3dView().IsNull())
+    {
+        try
+        {
+            _ValidateViewGeometry();
+
+            if (V3dView()->IfWindow())
+            {
+                double xv = 0, yv = 0, zv = 0;
+                double vx = 0, vy = 0, vz = 0;
+
+                V3dView()->Convert(screenX, screenY, xv, yv, zv);
+                V3dView()->Proj(vx, vy, vz);
+
+                gp_Lin line(gp_Pnt(xv, yv, zv), gp_Dir(vx, vy, vz));
+                IntAna_IntConicQuad intersection(line, plane, Precision::Angular(), 0, 0);
+
+                if (intersection.IsDone()
+                    && !intersection.IsParallel()
+                    && intersection.NbPoints() > 0)
+                {
+                    resultPnt = intersection.Point(1);
+                    return true;
+                }
+            }
+        }
+        catch (std::exception e)
+        {
+            std::cerr << "Exception: " << e.what() << std::endl;
+            assert(false);
+        }
+    }
+
+     resultPnt = gp_Pnt();
+     return false;
+ }
 
 // Destructor
 
