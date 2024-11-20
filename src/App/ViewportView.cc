@@ -30,7 +30,7 @@ ViewportView::ViewportView(QWidget* parent)
     gridInfo->setStyleSheet("background-Color: lightyellow;");
     mainLayout->addWidget(gridInfo);
 
-    connect(Core::appContext(), &AppContext::workspaceControllerChanged, [this](WorkspaceController* controller) {
+    connect(Core::appContext(), &AppContext::workspaceControllerChanged, [this](Sun_WorkspaceController* controller) {
         if (controller) {
             if (m_viewportPanel) {
                 m_viewportPanel->deleteLater();
@@ -47,9 +47,9 @@ ViewportView::ViewportView(QWidget* parent)
                 messageBar->setText(message); }
             );
 
-            connect(Core::appContext(), &AppContext::viewportChanged, [this](Viewport* viewport) {
-                if (viewport) {
-                    m_viewportPanel->setView(viewport->V3dView());
+            connect(Core::appContext(), &AppContext::viewportChanged, [this](Sun_Viewport* Viewport) {
+                if (Viewport) {
+                    m_viewportPanel->setView(Viewport->V3dView());
                     setWidget(m_viewportPanel); // Set as the scrollable area
                     setWidgetResizable(true); // Allow resizing
                 }}

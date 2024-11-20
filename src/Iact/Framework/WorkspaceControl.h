@@ -11,7 +11,7 @@
 
 #include "Iact/Visual/VisualObject.h"
 
-class WorkspaceController;
+class Sun_WorkspaceController;
 
 class WorkspaceControl : public QObject, public IMouseEventHandler {
 	Q_OBJECT
@@ -19,8 +19,8 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
  public:
 	explicit WorkspaceControl(QObject* parent = nullptr);
 
-	WorkspaceController* workspaceController() const;
-	void setWorkspaceController(WorkspaceController* workspaceController);
+	Sun_WorkspaceController* workspaceController() const;
+	void setWorkspaceController(Sun_WorkspaceController* workspaceController);
 
  protected:
     virtual QList<WorkspaceControl*> GetChildren() const;
@@ -68,7 +68,7 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
     }
 
  private:
-	WorkspaceController* _WorkspaceController;
+	Sun_WorkspaceController* _WorkspaceController;
 	QList<IHudElement*> _HudElements;
     QList<VisualObject*> _VisualObjects;
 

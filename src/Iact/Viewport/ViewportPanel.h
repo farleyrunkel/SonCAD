@@ -35,13 +35,13 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController
     virtual ~ViewportPanel();
 
     // WorkspaceController getter/setter
-    WorkspaceController* workspaceController() const;
+    Sun_WorkspaceController* workspaceController() const;
 
-    void setWorkspaceController(WorkspaceController* controller);
+    void setWorkspaceController(Sun_WorkspaceController* controller);
 
     // ViewportController getter/setter
-    ViewportController* viewportController() const;
-    void setViewportController(ViewportController* controller);
+    Sun_ViewportController* viewportController() const;
+    void setViewportController(Sun_ViewportController* controller);
 
     //! Return AIS context.
     const Handle(AIS_InteractiveContext)& Context() const { return m_context; }
@@ -101,16 +101,16 @@ private:
     virtual void resizeGL(int width, int height) override;
 
  signals:
-    void workspaceControllerChanged(WorkspaceController*);
-    void viewportControllerChanged(ViewportController*);
+    void workspaceControllerChanged(Sun_WorkspaceController*);
+    void viewportControllerChanged(Sun_ViewportController*);
     void hudElementCollectionChanged();
     void hintMessageChanged(const QString& property);
     void MouseMoved(int x, int y);
 
 private:
     IViewportMouseControl* m_mouseControl;
-    ViewportController* m_viewportController;
-    WorkspaceController* m_workspaceController;
+    Sun_ViewportController* m_viewportController;
+    Sun_WorkspaceController* m_workspaceController;
 
     HudContainer* _HudContainer;
     QList<IHudElement*> m_hudElements;

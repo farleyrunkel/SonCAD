@@ -4,7 +4,7 @@
 
 #include "Core/Core.h"
 
- WorkspaceController* CommandHelper::workspaceController() {
+ Sun_WorkspaceController* CommandHelper::workspaceController() {
     return Core::appContext() ? Core::appContext()->workspaceController() : nullptr;
 }
 
@@ -23,7 +23,7 @@
 
  bool CommandHelper::canExecuteOnViewport() {
     return Core::appContext() && Core::appContext()->viewportController()
-        && Core::appContext()->viewportController()->viewport();
+        && Core::appContext()->viewportController()->Viewport();
 }
 
  bool CommandHelper::canStartTool() {

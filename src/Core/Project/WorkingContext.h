@@ -26,6 +26,7 @@ public:
     void CopyFrom(const Sun_WorkingContext& other);
 
     gp_Pln WorkingPlane() const;
+
     void SetWorkingPlane(const gp_Pln& plane);
 
     Sun::Workspace::GridTypes GridType() const;

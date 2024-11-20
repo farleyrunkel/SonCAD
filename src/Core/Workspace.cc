@@ -38,7 +38,7 @@ Sun::Workspace::Workspace(Model* model)
     : Sun::Workspace() {
     init();
     _Model = model;
-    _Viewports.append(new Viewport(this));
+    _Viewports.append(new Sun_Viewport(this));
 }
 
 //Workspace::~Workspace() {

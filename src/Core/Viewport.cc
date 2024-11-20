@@ -7,18 +7,18 @@
 
 // Constructor
 
-Viewport::Viewport(QObject* parent) : Viewport(nullptr, parent) {}
+Sun_Viewport::Sun_Viewport(QObject* parent) : Sun_Viewport(nullptr, parent) {}
 
-Viewport::Viewport(Sun::Workspace* workspace, QObject* parent)
+Sun_Viewport::Sun_Viewport(Sun::Workspace* workspace, QObject* parent)
     : QObject(parent), mWorkspace(workspace), 
     mRenderMode(SolidShaded), mTwist(0.0), mScale(100.0) 
 {
-    connect(this, &Viewport::ViewportChanged, SignalHub(), &ViewPortSignalHub::ViewportChanged);
+    connect(this, &Sun_Viewport::ViewportChanged, SignalHub(), &ViewPortSignalHub::ViewportChanged);
 }
 
  // Getters and setters for properties
 
-  gp_Pnt Viewport::eyePoint() 
+  gp_Pnt Sun_Viewport::eyePoint() 
   {
      if (mV3dView) {
          double xEye = 0, yEye = 0, zEye = 0;
@@ -28,7 +28,7 @@ Viewport::Viewport(Sun::Workspace* workspace, QObject* parent)
      return mEyePoint;
  }
 
-   void Viewport::setEyePoint(const gp_Pnt& point) {
+   void Sun_Viewport::setEyePoint(const gp_Pnt& point) {
       mEyePoint = point;
       if (mV3dView) {
           mV3dView->SetEye(mEyePoint.X(), mEyePoint.Y(), mEyePoint.Z());
@@ -36,7 +36,7 @@ Viewport::Viewport(Sun::Workspace* workspace, QObject* parent)
       }
   }
 
-   gp_Pnt Viewport::targetPoint() {
+   gp_Pnt Sun_Viewport::targetPoint() {
       if (mV3dView) {
           double xAt = 0, yAt = 0, zAt = 0;
           mV3dView->At(xAt, yAt, zAt);
@@ -45,7 +45,7 @@ Viewport::Viewport(Sun::Workspace* workspace, QObject* parent)
       return mTargetPoint;
   }
 
-   void Viewport::setTargetPoint(const gp_Pnt& point) {
+   void Sun_Viewport::setTargetPoint(const gp_Pnt& point) {
       mTargetPoint = point;
       if (mV3dView) {
           mV3dView->SetAt(mTargetPoint.X(), mTargetPoint.Y(), mTargetPoint.Z());
@@ -53,14 +53,14 @@ Viewport::Viewport(Sun::Workspace* workspace, QObject* parent)
       }
   }
 
-   double Viewport::twist() {
+   double Sun_Viewport::twist() {
       if (mV3dView) {
           mTwist = mV3dView->Twist() * 180.0 / M_PI;  // Convert to degrees
       }
       return mTwist;
   }
 
-   void Viewport::setTwist(double value) {
+   void Sun_Viewport::setTwist(double value) {
       if (mV3dView) {
           mV3dView->SetTwist(value * M_PI / 180.0);  // Convert to radians
           if (mTwist != value) {
@@ -70,14 +70,14 @@ Viewport::Viewport(Sun::Workspace* workspace, QObject* parent)
       }
   }
 
-   double Viewport::scale() {
+   double Sun_Viewport::scale() {
       if (mV3dView) {
           mScale = mV3dView->Scale();
       }
       return mScale;
   }
 
-   void Viewport::setScale(double value) {
+   void Sun_Viewport::setScale(double value) {
       if (mV3dView) {
           mV3dView->SetScale(value);
           if (mScale != value) {
@@ -87,11 +87,11 @@ Viewport::Viewport(Sun::Workspace* workspace, QObject* parent)
       }
   }
 
-   Viewport::RenderModes Viewport::renderMode() const {
+   Sun_Viewport::RenderModes Sun_Viewport::renderMode() const {
       return mRenderMode;
   }
 
-   void Viewport::setRenderMode(RenderModes mode) {
+   void Sun_Viewport::setRenderMode(RenderModes mode) {
       if (mRenderMode != mode) {
           mRenderMode = mode;
           updateRenderMode();
@@ -99,7 +99,7 @@ Viewport::Viewport(Sun::Workspace* workspace, QObject* parent)
       }
   }
 
-  void Viewport::init(bool useMsaa) {
+  void Sun_Viewport::init(bool useMsaa) {
     if (mV3dView || !mWorkspace) {
         return;
     }
@@ -131,7 +131,7 @@ Viewport::Viewport(Sun::Workspace* workspace, QObject* parent)
 
 // Function to update render mode
 
- void Viewport::updateRenderMode() {
+ void Sun_Viewport::updateRenderMode() {
     if (!mV3dView) return;
 
     mV3dView->SetComputedMode(mRenderMode == HLR);
@@ -145,7 +145,7 @@ Viewport::Viewport(Sun::Workspace* workspace, QObject* parent)
     }
 }
 
-bool Viewport::ScreenToPoint(gp_Pln plane, int screenX, int screenY, gp_Pnt& resultPnt)
+bool Sun_Viewport::ScreenToPoint(gp_Pln plane, int screenX, int screenY, gp_Pnt& resultPnt)
  {
     if (!V3dView().IsNull())
     {
@@ -186,7 +186,7 @@ bool Viewport::ScreenToPoint(gp_Pln plane, int screenX, int screenY, gp_Pnt& res
 
 // Destructor
 
- Viewport::~Viewport() {
+ Sun_Viewport::~Sun_Viewport() {
     delete mAisAnimationCamera;
     if (mV3dView) {
         mV3dView->Remove();

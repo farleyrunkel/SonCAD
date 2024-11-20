@@ -11,11 +11,11 @@ WorkspaceControl::WorkspaceControl(QObject* parent)
 	_WorkspaceController(nullptr) {
 }
 
-WorkspaceController* WorkspaceControl::workspaceController() const { 
+Sun_WorkspaceController* WorkspaceControl::workspaceController() const { 
 	return _WorkspaceController; 
 }
 
-void WorkspaceControl::setWorkspaceController(WorkspaceController* workspaceController) {
+void WorkspaceControl::setWorkspaceController(Sun_WorkspaceController* workspaceController) {
 	_WorkspaceController = workspaceController;
 }
 

@@ -21,19 +21,19 @@
 
 class Marker;
 class Tool;
-class ViewportController;
-class WorkspaceController;
+class Sun_ViewportController;
+class Sun_WorkspaceController;
 
 class VisualObjectManager {
 public:
-    VisualObjectManager(WorkspaceController*) {}
+    VisualObjectManager(Sun_WorkspaceController*) {}
 };
 
-class WorkspaceController : public QObject
+class Sun_WorkspaceController : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(Sun::Workspace* Workspace READ Workspace CONSTANT)
-    Q_PROPERTY(Viewport* ActiveViewport READ ActiveViewport WRITE SetActiveViewport NOTIFY ActiveViewportChanged)
+    Q_PROPERTY(Sun_Viewport* ActiveViewport READ ActiveViewport WRITE SetActiveViewport NOTIFY ActiveViewportChanged)
     //Q_PROPERTY(ViewportController* ActiveViewController READ ActiveViewControlller CONSTANT)
     //Q_PROPERTY(IHudManager* HudManager READ HudManager WRITE SetHudManager NOTIFY HudManagerChanged)
     //Q_PROPERTY(bool LockWorkingPlane READ LockWorkingPlane WRITE SetLockWorkingPlane NOTIFY LockWorkingPlaneChanged)
@@ -44,8 +44,8 @@ class WorkspaceController : public QObject
     Q_PROPERTY(gp_Pnt2d CursorPosition2d READ CursorPosition2d WRITE SetCursorPosition2d NOTIFY CursorPosition2dChanged)
 
 public:
-    explicit WorkspaceController(Sun::Workspace* workspace);
-    ~WorkspaceController() {}
+    explicit Sun_WorkspaceController(Sun::Workspace* workspace);
+    ~Sun_WorkspaceController() {}
 
 public:
     void InitWorkspace();
@@ -61,23 +61,23 @@ public:
     IHudManager* hudManager() const { return _HudManager; }
 
     void setHudManager(IHudManager* hudManager);
-    void SetActiveViewport(Viewport* viewport);
+    void SetActiveViewport(Sun_Viewport* Viewport);
 
-    ViewportController* viewportController(Viewport* viewport);
+    Sun_ViewportController* viewportController(Sun_Viewport* Viewport);
 
     void dispose();
 
     QList<WorkspaceControl*> enumerateControls();
 
-    void mouseMove(ViewportController* viewportController, QPointF pos, Qt::KeyboardModifiers modifiers);
-    void mouseDown(ViewportController* viewportController, Qt::KeyboardModifiers modifiers);
-    void mouseUp(ViewportController* viewportController, Qt::KeyboardModifiers modifiers);
+    void mouseMove(Sun_ViewportController* viewportController, QPointF pos, Qt::KeyboardModifiers modifiers);
+    void mouseDown(Sun_ViewportController* viewportController, Qt::KeyboardModifiers modifiers);
+    void mouseUp(Sun_ViewportController* viewportController, Qt::KeyboardModifiers modifiers);
 
     void recalculateGridSize();
 
 public:
     Sun::Workspace* Workspace() const;
-    Viewport* ActiveViewport() const { return _ActiveViewport; }
+    Sun_Viewport* ActiveViewport() const { return _ActiveViewport; }
     VisualObjectManager* VisualObjects() const { return _VisualObjectManager; }
     gp_Pnt CursorPosition() const { return _CursorPosition; }
     void SetCursorPosition(const gp_Pnt& pnt) {}
@@ -86,7 +86,7 @@ public:
 
 private:
     void _Workspace_GridChanged(Sun::Workspace *);
-    void _Viewport_ViewportChanged(Viewport*);
+    void _Viewport_ViewportChanged(Sun_Viewport*);
     void _Redraw();
     void _UpdateGrid();
     void initVisualSettings();
@@ -95,7 +95,7 @@ private:
     void _RedrawTimer_Tick() {}
 
 signals:
-    void ActiveViewportChanged(Viewport*);
+    void ActiveViewportChanged(Sun_Viewport*);
     void CursorPositionChanged(const gp_Pnt&);
     void CursorPosition2dChanged(const gp_Pnt2d&);
 
@@ -103,7 +103,7 @@ private:
     Tool* _CurrentTool;
     Editor* _CurrentEditor;
     Sun::Workspace* _Workspace;
-    Viewport* _ActiveViewport;
+    Sun_Viewport* _ActiveViewport;
     IHudManager* _HudManager;
     VisualObjectManager* _VisualObjectManager;
 
@@ -114,11 +114,11 @@ private:
     gp_XY _LastGridSize = gp_XY(200.0, 200.0);
 
 private:
-    QList<ViewportController*> _ViewportControllers;
+    QList<Sun_ViewportController*> _ViewportControllers;
 
     MouseEventData* _MouseEventData;
     QPointF _LastMouseMovePosition;
-    ViewportController* _LastMouseMoveViewportController;
+    Sun_ViewportController* _LastMouseMoveViewportController;
     Qt::Modifiers _LastModifierKeys;
     Handle(AIS_InteractiveObject) _LastDetectedAisObject;
     Handle(SelectMgr_EntityOwner) _LastDetectedOwner;

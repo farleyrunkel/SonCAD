@@ -15,7 +15,7 @@
 // SunCAD includes
 #include "Core/Topology/InteractiveEntity.h"
 
-class WorkspaceController;
+class Sun_WorkspaceController;
 
 class VisualObject : public QObject 
 {
@@ -25,7 +25,7 @@ class VisualObject : public QObject
     Q_PROPERTY(QVariant Tag READ Tag WRITE SetTag)
 
 protected:
-    explicit VisualObject(WorkspaceController* workspaceController, InteractiveEntity* entity);
+    explicit VisualObject(Sun_WorkspaceController* workspaceController, InteractiveEntity* entity);
     virtual ~VisualObject() {}
 
 public:
@@ -33,7 +33,7 @@ public:
     virtual void Update() = 0;
     virtual Handle(AIS_InteractiveObject) AisObject() const = 0;
 
-    WorkspaceController* workspaceController() const;
+    Sun_WorkspaceController* workspaceController() const;
     Handle(AIS_InteractiveContext) AisContext() const;
 
     InteractiveEntity* Entity() const { return _Entity; }
@@ -51,7 +51,7 @@ signals:
     void AisObjectChanged(const QSharedPointer<VisualObject>& visualObject);
 
 private:
-    WorkspaceController* _WorkspaceController;
+    Sun_WorkspaceController* _WorkspaceController;
     InteractiveEntity* _Entity;
     QVariant _Tag;
 };

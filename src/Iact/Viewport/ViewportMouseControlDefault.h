@@ -17,7 +17,7 @@ class ViewportMouseControlDefault : public IViewportMouseControl {
  public:
     explicit ViewportMouseControlDefault();
 
-    void setViewportController(ViewportController* controller) override;
+    void setViewportController(Sun_ViewportController* controller) override;
 
     void mouseMove(const QPointF& pos, QMouseEvent* mouseEvent, Qt::KeyboardModifiers modifierKeys) override;
 
@@ -33,8 +33,8 @@ class ViewportMouseControlDefault : public IViewportMouseControl {
     void updateMouseMoveMode(QMouseEvent* mouseEvent, Qt::KeyboardModifiers modifierKeys);
  
  private:
-    ViewportController* viewportController;
-    ViewportController::MouseMoveMode currentMouseMoveMode;
+    Sun_ViewportController* viewportController;
+    Sun_ViewportController::MouseMoveMode currentMouseMoveMode;
     QPointF mouseDownPos;
 };
  

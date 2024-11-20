@@ -266,11 +266,11 @@ ViewportPanel::~ViewportPanel() {
 
 // virtual void SetCursor(QObject* owner, Cursor* cursor)  {}
 
-WorkspaceController* ViewportPanel::workspaceController() const {
+Sun_WorkspaceController* ViewportPanel::workspaceController() const {
     return m_workspaceController; 
 }
 
-void ViewportPanel::setWorkspaceController(WorkspaceController* controller) {
+void ViewportPanel::setWorkspaceController(Sun_WorkspaceController* controller) {
     if (m_workspaceController != controller) {
         m_workspaceController = controller;
         if (m_workspaceController != nullptr) {
@@ -284,11 +284,11 @@ void ViewportPanel::setWorkspaceController(WorkspaceController* controller) {
     }
 }
 
-ViewportController* ViewportPanel::viewportController() const { 
+Sun_ViewportController* ViewportPanel::viewportController() const { 
     return m_viewportController; 
 }
 
-void ViewportPanel::setViewportController(ViewportController* controller) {
+void ViewportPanel::setViewportController(Sun_ViewportController* controller) {
     if (m_viewportController != controller) {
         m_viewportController = controller;
         m_mouseControl->setViewportController(controller);
@@ -377,8 +377,8 @@ void ViewportPanel::paintGL() {
 }
 
 void ViewportPanel::resizeGL(int width, int height) {
-    if (m_viewportController && m_viewportController->view()) {
-        m_viewportController->view()->MustBeResized();
+    if (m_viewportController && m_viewportController->View()) {
+        m_viewportController->View()->MustBeResized();
     }
 }
 

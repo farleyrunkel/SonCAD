@@ -2,26 +2,26 @@
 
 #include "Iact/Workspace/ViewportController.h"
 
-ViewportController::ViewportController(Viewport* viewport, WorkspaceController* workspacecontroller) 
+Sun_ViewportController::Sun_ViewportController(Sun_Viewport* Viewport, Sun_WorkspaceController* workspacecontroller) 
     : QObject(nullptr),
-    m_viewport(viewport),
+    m_viewport(Viewport),
     m_workspaceController(workspacecontroller),
     m_viewCube(nullptr),
     m_lockedToPlane(false) {
     init();
 }
 
-void ViewportController::setWindow(const Handle(Aspect_Window)& theWindow, const Aspect_RenderingContext theContext) {
-    if (!view().IsNull()) {
-        view()->SetWindow(theWindow, theContext);
+void Sun_ViewportController::SetWindow(const Handle(Aspect_Window)& theWindow, const Aspect_RenderingContext theContext) {
+    if (!View().IsNull()) {
+        View()->SetWindow(theWindow, theContext);
     }
 }
 
-QString ViewportController::dumpInfo(bool theIsBasic, bool theToPrint) {
+QString Sun_ViewportController::DumpInfo(bool theIsBasic, bool theToPrint) {
     TCollection_AsciiString anInfo;
-    if (!view().IsNull()) {
+    if (!View().IsNull()) {
         TColStd_IndexedDataMapOfStringString aGlCapsDict;
-        view()->DiagnosticInformation(aGlCapsDict, theIsBasic
+        View()->DiagnosticInformation(aGlCapsDict, theIsBasic
             ? Graphic3d_DiagnosticInfo_Basic
             : Graphic3d_DiagnosticInfo_Complete);
         TColStd_IndexedDataMapOfStringString::Iterator aValueIter(aGlCapsDict);
@@ -41,29 +41,29 @@ QString ViewportController::dumpInfo(bool theIsBasic, bool theToPrint) {
     return QString::fromUtf8(anInfo.ToCString());
 }
 
-void ViewportController::mouseMove(const QPointF& pos, Qt::KeyboardModifiers modifiers, MouseMoveMode mode) {
+void Sun_ViewportController::mouseMove(const QPointF& pos, Qt::KeyboardModifiers modifiers, MouseMoveMode mode) {
     workspaceController()->mouseMove(this, pos, modifiers);
     workspaceController()->Invalidate();
 }
 
-void ViewportController::mouseDown(Qt::KeyboardModifiers modifiers) {
+void Sun_ViewportController::mouseDown(Qt::KeyboardModifiers modifiers) {
     workspaceController()->mouseDown(this, modifiers);
     workspaceController()->Invalidate();
 }
 
-void ViewportController::mouseUp(Qt::KeyboardModifiers modifiers) {
+void Sun_ViewportController::mouseUp(Qt::KeyboardModifiers modifiers) {
     workspaceController()->mouseUp(this, modifiers);
     workspaceController()->Invalidate();
 }
 
-void ViewportController::setPredefinedView(PredefinedViews predefinedView) {
+void Sun_ViewportController::setPredefinedView(PredefinedViews predefinedView) {
     if (predefinedView == PredefinedViews::WorkingPlane) {
         const auto& plane = workspaceController()->Workspace()->WorkingPlane();
         const auto& dir = plane.Axis().Direction();
-        viewport()->view()->SetProj(dir.X(), dir.Y(), dir.Z());
+        Viewport()->View()->SetProj(dir.X(), dir.Y(), dir.Z());
 
         const auto& up = plane.YAxis().Direction();
-        viewport()->view()->SetUp(up.X(), up.Y(), up.Z());
+        Viewport()->View()->SetUp(up.X(), up.Y(), up.Z());
         return;
     }
 
@@ -102,7 +102,7 @@ void ViewportController::setPredefinedView(PredefinedViews predefinedView) {
     workspaceController()->Invalidate();
 }
 
-void ViewportController::setViewCube(bool isVisible) {
+void Sun_ViewportController::setViewCube(bool isVisible) {
     auto aisContext = workspaceController()->Workspace()->aisContext();
 
     if (m_viewCube.IsNull())
@@ -118,7 +118,7 @@ void ViewportController::setViewCube(bool isVisible) {
     }
 }
 
-void ViewportController::setViewCube(bool isVisible, uint32_t size, double duration) {
+void Sun_ViewportController::setViewCube(bool isVisible, uint32_t size, double duration) {
     auto aisContext = workspaceController()->Workspace()->aisContext();
 
     // 如果视图立方体已存在，则使用现有方法更新其显示状态

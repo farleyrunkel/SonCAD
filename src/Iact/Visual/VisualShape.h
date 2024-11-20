@@ -10,7 +10,7 @@
 class VisualShape : public VisualObject 
 {
 public:
-    explicit VisualShape(WorkspaceController* workspaceController, InteractiveEntity* entity)
+    explicit VisualShape(Sun_WorkspaceController* workspaceController, InteractiveEntity* entity)
     : VisualObject(workspaceController, entity) {}
     virtual void Remove() override {}
     virtual void Update() override {}

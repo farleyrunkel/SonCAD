@@ -17,7 +17,7 @@
 #include "Occt/ValueTypes/Pln.h"
 
 class Model;
-class Viewport;
+class Sun_Viewport;
 class Sun_WorkingContext;
 
 namespace Sun {
@@ -25,7 +25,7 @@ namespace Sun {
 class Workspace : public BaseObject 
 {
     Q_OBJECT
-    Q_PROPERTY(QList<Viewport*> Viewports READ viewports)
+    Q_PROPERTY(QList<Sun_Viewport*> Viewports READ viewports)
     Q_PROPERTY(Handle(V3d_Viewer) V3dViewer READ v3dViewer)
     Q_PROPERTY(Handle(AIS_InteractiveContext) AisContext READ aisContext)
     Q_PROPERTY(bool NeedsRedraw READ needsRedraw WRITE setNeedsRedraw)
@@ -68,7 +68,7 @@ public:
     void SetWorkingPlane(const gp_Pln& value);
 
     // Viewports management
-    QList<Viewport*>& viewports() { return _Viewports; }
+    QList<Sun_Viewport*>& viewports() { return _Viewports; }
     Handle(V3d_Viewer) v3dViewer() const;
     Handle(AIS_InteractiveContext) aisContext() const;
 
@@ -99,7 +99,7 @@ private:
     bool _NeedsRedraw;  // Flag to check if redraw is needed
     bool _NeedsImmediateRedraw;  // Flag for immediate redraw
 
-    QList<Viewport*> _Viewports;  // List of viewports
+    QList<Sun_Viewport*> _Viewports;  // List of viewports
     Model* _Model;  // The active model
 
     Pln _WorkingPlane;

@@ -21,7 +21,7 @@
 
 #include "Core/Workspace.h"
 
-class Viewport;
+class Sun_Viewport;
 
 
 class ViewPortSignalHub : public QObject
@@ -30,10 +30,10 @@ class ViewPortSignalHub : public QObject
 public:
     ViewPortSignalHub() = default;
 signals:
-    void ViewportChanged(Viewport*);
+    void ViewportChanged(Sun_Viewport*);
 };
 
-class Viewport : public QObject 
+class Sun_Viewport : public QObject 
 {
     Q_OBJECT
     Q_PROPERTY(gp_Pnt eyePoint READ eyePoint WRITE setEyePoint NOTIFY eyePointChanged)
@@ -52,13 +52,13 @@ class Viewport : public QObject
     Q_ENUM(RenderModes)
 
     // Constructor
-    explicit Viewport(QObject* parent = nullptr);
+    explicit Sun_Viewport(QObject* parent = nullptr);
 
     // Constructor
-    explicit Viewport(Sun::Workspace* workspace, QObject* parent = nullptr);
+    explicit Sun_Viewport(Sun::Workspace* workspace, QObject* parent = nullptr);
 
     // Destructor
-    ~Viewport();
+    ~Sun_Viewport();
 
     // Initialize Viewport with MSAA support
     void init(bool useMsaa);
@@ -87,7 +87,7 @@ class Viewport : public QObject
     // Function to update render mode
     void updateRenderMode();
 
-    Handle(V3d_View) view() const {
+    Handle(V3d_View) View() const {
         return mV3dView;
     }
 
@@ -112,7 +112,7 @@ public:
     void twistChanged();
     void scaleChanged();
     void renderModeChanged();
-    void ViewportChanged(Viewport*);
+    void ViewportChanged(Sun_Viewport*);
 
  private:
     Sun::Workspace* mWorkspace;

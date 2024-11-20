@@ -24,8 +24,8 @@ class InteractiveContext : public CoreContext
 {
     Q_OBJECT
     Q_PROPERTY(ModelController* documentController READ documentController WRITE setDocumentController)
-    Q_PROPERTY(WorkspaceController* workspaceController READ workspaceController WRITE setWorkspaceController)
-    Q_PROPERTY(ViewportController* viewportController READ viewportController WRITE setViewportController)
+    Q_PROPERTY(Sun_WorkspaceController* workspaceController READ workspaceController WRITE setWorkspaceController)
+    Q_PROPERTY(Sun_ViewportController* viewportController READ viewportController WRITE setViewportController)
 
  public:
     InteractiveContext();
@@ -36,15 +36,15 @@ class InteractiveContext : public CoreContext
     void setDocumentController(ModelController* controller);
 
     // WorkspaceController getter/setter
-    WorkspaceController* workspaceController() const;
-    void setWorkspaceController(WorkspaceController* controller);
+    Sun_WorkspaceController* workspaceController() const;
+    void setWorkspaceController(Sun_WorkspaceController* controller);
 
     // ViewportController getter/setter
-    ViewportController* viewportController() const;
-    void setViewportController(ViewportController* controller);
+    Sun_ViewportController* viewportController() const;
+    void setViewportController(Sun_ViewportController* controller);
 
     void setWorkspace(Sun::Workspace* workspace) override;
-    void setViewport(Viewport* viewport) override;
+    void setViewport(Sun_Viewport* Viewport) override;
 
     // RecentUsedColors getter
     QList<QColor> recentUsedColors() const;
@@ -58,15 +58,15 @@ class InteractiveContext : public CoreContext
      void initialize();
 
  signals:
-    void workspaceControllerChanged(WorkspaceController*);
+    void workspaceControllerChanged(Sun_WorkspaceController*);
     void documentControllerChanged(ModelController*);
-    void viewportControllerChanged(ViewportController*);
+    void viewportControllerChanged(Sun_ViewportController*);
 
  private:
     EditorState* m_editorState;
     ModelController* m_documentController;
-    WorkspaceController* m_workspaceController;
-    ViewportController* m_viewportController;
+    Sun_WorkspaceController* m_workspaceController;
+    Sun_ViewportController* m_viewportController;
 
     QList<QColor> m_recentUsedColors;
     QList<QString> m_recentUsedScripts;
