@@ -24,7 +24,7 @@ class InteractiveContext : public CoreContext
 {
     Q_OBJECT
     Q_PROPERTY(ModelController* documentController READ documentController WRITE setDocumentController)
-    Q_PROPERTY(Sun_WorkspaceController* workspaceController READ workspaceController WRITE setWorkspaceController)
+    Q_PROPERTY(Sun_WorkspaceController* WorkspaceController READ WorkspaceController WRITE setWorkspaceController)
     Q_PROPERTY(Sun_ViewportController* viewportController READ viewportController WRITE setViewportController)
 
  public:
@@ -36,7 +36,7 @@ class InteractiveContext : public CoreContext
     void setDocumentController(ModelController* controller);
 
     // WorkspaceController getter/setter
-    Sun_WorkspaceController* workspaceController() const;
+    Sun_WorkspaceController* WorkspaceController() const;
     void setWorkspaceController(Sun_WorkspaceController* controller);
 
     // ViewportController getter/setter
@@ -65,7 +65,7 @@ class InteractiveContext : public CoreContext
  private:
     EditorState* m_editorState;
     ModelController* m_documentController;
-    Sun_WorkspaceController* m_workspaceController;
+    Sun_WorkspaceController* _WorkspaceController;
     Sun_ViewportController* m_viewportController;
 
     QList<QColor> m_recentUsedColors;

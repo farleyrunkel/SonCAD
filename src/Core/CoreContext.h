@@ -31,7 +31,7 @@ class CoreContext : public BaseObject {
  public:
     Model* document() const { return m_document; }
     Sun::Workspace* workspace() const { return m_workspace; }
-    Sun_Viewport* Viewport() const { return m_viewport; }
+    Sun_Viewport* Viewport() const { return _Viewport; }
 
     virtual void setDocument(Model* document);
     virtual void setWorkspace(Sun::Workspace* workspace);
@@ -44,7 +44,7 @@ signals:
 
  protected:
     Sun::Workspace* m_workspace;
-    Sun_Viewport* m_viewport;
+    Sun_Viewport* _Viewport;
     Model* m_document;
 };
 

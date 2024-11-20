@@ -99,7 +99,7 @@ Sun_Viewport::Sun_Viewport(Sun::Workspace* workspace, QObject* parent)
       }
   }
 
-  void Sun_Viewport::init(bool useMsaa) {
+  void Sun_Viewport::Init(bool useMsaa) {
     if (mV3dView || !mWorkspace) {
         return;
     }

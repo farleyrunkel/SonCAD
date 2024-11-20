@@ -25,7 +25,7 @@ class VisualObject : public QObject
     Q_PROPERTY(QVariant Tag READ Tag WRITE SetTag)
 
 protected:
-    explicit VisualObject(Sun_WorkspaceController* workspaceController, InteractiveEntity* entity);
+    explicit VisualObject(Sun_WorkspaceController* WorkspaceController, InteractiveEntity* entity);
     virtual ~VisualObject() {}
 
 public:
@@ -33,7 +33,7 @@ public:
     virtual void Update() = 0;
     virtual Handle(AIS_InteractiveObject) AisObject() const = 0;
 
-    Sun_WorkspaceController* workspaceController() const;
+    Sun_WorkspaceController* WorkspaceController() const;
     Handle(AIS_InteractiveContext) AisContext() const;
 
     InteractiveEntity* Entity() const { return _Entity; }

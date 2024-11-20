@@ -35,7 +35,7 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController
     virtual ~ViewportPanel();
 
     // WorkspaceController getter/setter
-    Sun_WorkspaceController* workspaceController() const;
+    Sun_WorkspaceController* WorkspaceController() const;
 
     void setWorkspaceController(Sun_WorkspaceController* controller);
 
@@ -110,7 +110,7 @@ private:
 private:
     IViewportMouseControl* m_mouseControl;
     Sun_ViewportController* m_viewportController;
-    Sun_WorkspaceController* m_workspaceController;
+    Sun_WorkspaceController* _WorkspaceController;
 
     HudContainer* _HudContainer;
     QList<IHudElement*> m_hudElements;
@@ -119,7 +119,7 @@ private:
     Handle(V3d_Viewer)             m_viewer;
     Handle(V3d_View)               m_view;
     Handle(AIS_InteractiveContext) m_context;
-    Handle(AIS_ViewCube)           m_viewCube;
+    Handle(AIS_ViewCube)           _ViewCube;
     Handle(V3d_View)               m_focusView;
     Handle(OpenGl_Context)         m_glContext;
 

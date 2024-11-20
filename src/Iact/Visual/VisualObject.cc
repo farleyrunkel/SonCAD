@@ -7,10 +7,10 @@
 
 #include "Iact/Workspace/WorkspaceController.h"
 
-VisualObject::VisualObject(Sun_WorkspaceController* workspaceController, InteractiveEntity* entity)
-    : QObject(nullptr), _WorkspaceController(workspaceController), _Entity(entity) {}
+VisualObject::VisualObject(Sun_WorkspaceController* WorkspaceController, InteractiveEntity* entity)
+    : QObject(nullptr), _WorkspaceController(WorkspaceController), _Entity(entity) {}
 
-Sun_WorkspaceController* VisualObject::workspaceController() const { 
+Sun_WorkspaceController* VisualObject::WorkspaceController() const { 
     return _WorkspaceController; 
 }
 

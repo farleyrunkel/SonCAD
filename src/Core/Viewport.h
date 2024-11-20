@@ -61,7 +61,7 @@ class Sun_Viewport : public QObject
     ~Sun_Viewport();
 
     // Initialize Viewport with MSAA support
-    void init(bool useMsaa);
+    void Init(bool useMsaa);
 
     // Getters and setters for properties
     gp_Pnt eyePoint();

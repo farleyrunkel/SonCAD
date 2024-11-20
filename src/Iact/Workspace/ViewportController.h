@@ -7,6 +7,7 @@
 #include <QObject>
 
 // Occt includes
+#include <AIS_RubberBand.hxx>
 #include <AIS_ViewCube.hxx>
 #include <Aspect_NeutralWindow.hxx>
 #include <Aspect_RenderingContext.hxx>
@@ -22,6 +23,10 @@
 class Sun_ViewportController : public QObject
 {
 	Q_OBJECT
+	Q_PROPERTY(Sun_WorkspaceController* WorkspaceController READ WorkspaceController CONSTANT)
+	Q_PROPERTY(Sun_Viewport* Viewport READ Viewport CONSTANT)
+	Q_PROPERTY(bool LockedToPlane READ LockedToPlane WRITE SetLockedToPlane NOTIFY LockedToPlaneChanged)
+	Q_PROPERTY(bool IsInRubberbandSelection READ IsInRubberbandSelection CONSTANT)
 
 public:
 	enum class PredefinedViews
@@ -40,14 +45,13 @@ public:
 public:
 	explicit Sun_ViewportController(Sun_Viewport* Viewport,
 									Sun_WorkspaceController* workspacecontroller);
-
-	Sun_Viewport* Viewport() const { return m_viewport; }
+	~Sun_ViewportController();
 
 	Handle(V3d_View) View() const {
 		return this->Viewport() ? this->Viewport()->View() : nullptr;
 	}
 
-	Handle(AIS_ViewCube) ViewCube() const { return m_viewCube; }
+	Handle(AIS_ViewCube) ViewCube() const { return _ViewCube; }
 
 	const Handle(Aspect_Window)& Window() const {
 		return !View().IsNull() ? View()->Window() : nullptr;
@@ -58,42 +62,56 @@ public:
 
 	QString DumpInfo(bool theIsBasic, bool theToPrint);
 
-	Sun_WorkspaceController* workspaceController() const {
-		return m_workspaceController;
+	void MouseMove(const QPointF& pos, Qt::KeyboardModifiers modifiers,
+				   MouseMoveMode mode = MouseMoveMode::None);
+	void MouseDown(Qt::KeyboardModifiers modifiers);
+	void MouseUp(Qt::KeyboardModifiers modifiers);
+	void StartEditing() {}
+	void StartRubberbandSelection() {}  // Add necessary parameters
+	void Zoom(const QPointF& pos, double delta) {}
+	void Rotate(double deltaX, double deltaY, double deltaZ) {}
+
+	bool IsInRubberbandSelection() const {
+		return !_AisRubberBand.IsNull();
+	}
+	bool IsSelecting() const {
+		return false;
+	}
+	bool IsLockedToPlane() const {
+		return false;
 	}
 
-	void mouseMove(const QPointF& pos, Qt::KeyboardModifiers modifiers,
-				   MouseMoveMode mode = MouseMoveMode::None);
-	void mouseDown(Qt::KeyboardModifiers modifiers);
-	void mouseUp(Qt::KeyboardModifiers modifiers);
-	void startEditing() {}
-	void startRubberbandSelection() {}  // Add necessary parameters
-	void zoom(const QPointF& pos, double delta) {}
-	void rotate(double deltaX, double deltaY, double deltaZ) {}
+	void SetPredefinedView(PredefinedViews predefinedView);
 
-	bool isInRubberbandSelection() const {
-		return false;
-	}  // Returns whether rubberband selection is active
-	bool isSelecting() const {
-		return false;
-	}  // Returns whether selection mode is active
-	bool isLockedToPlane() const {
-		return false;
-	}  // Returns whether the view is locked to a specific plane
+	Sun_WorkspaceController* WorkspaceController() const {
+		return _WorkspaceController;
+	}
+	Sun_Viewport* Viewport() const { return _Viewport; }
 
-	void setPredefinedView(PredefinedViews predefinedView);
+	// Getter for lockedToPlane
+	bool LockedToPlane() const { return _LockedToPlane; }
+
+	// Setter for lockedToPlane
+	void SetLockedToPlane(bool value);
 
 private:
-	void init() { Viewport()->init(true); }
+	void Init() { Viewport()->Init(true); }
 
-	void setViewCube(bool isVisible);
-	void setViewCube(bool isVisible, uint32_t size, double duration);
+	void _SetViewCube(bool isVisible);
+	void _SetViewCube(bool isVisible, uint32_t size, double duration);
+	void _SetTrihedron(bool visible) {}
+
+signals:
+	void LockedToPlaneChanged(bool);
 
 private:
-	Sun_Viewport* m_viewport;
-	Sun_WorkspaceController* m_workspaceController;
-	Handle(AIS_ViewCube) m_viewCube;
-	bool m_lockedToPlane;
+	Sun_Viewport* _Viewport = nullptr;
+	Sun_WorkspaceController* _WorkspaceController = nullptr;
+	Handle(AIS_ViewCube) _ViewCube = nullptr;
+	
+	Handle(AIS_RubberBand) _AisRubberBand = nullptr;
+	bool _LockedToPlane = false;
+	bool _ShowTrihedron = false;
 
 	const int RubberbandFreehandSelectionThresholdSquared = 100;
 };

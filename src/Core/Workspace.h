@@ -85,7 +85,7 @@ signals:
     void GridChanged(Sun::Workspace*);
 
 private:
-     void init();
+     void Init();
      void _ApplyWorkingContext();
      void _RaiseGridChanged() {
          emit GridChanged(this);

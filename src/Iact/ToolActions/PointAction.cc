@@ -27,14 +27,14 @@ bool PointAction::onMouseMove(MouseEventData* data) {
         ProcessMouseInput(data);
         EventArgs* args = new EventArgs(
             _CurrentPoint,
-            ProjLib::Project(workspaceController()->Workspace()->WorkingPlane(), _CurrentPoint),
+            ProjLib::Project(WorkspaceController()->Workspace()->WorkingPlane(), _CurrentPoint),
             _CurrentPoint,
             data
         );
 
         emit Preview(args);
         _Marker->Set(args->Point);
-        workspaceController()->Invalidate();
+        WorkspaceController()->Invalidate();
         return ToolAction::onMouseMove(data);
     }
 
@@ -52,7 +52,7 @@ bool PointAction::onMouseUp(MouseEventData* data) {
         _IsFinished = true;
         auto args = new EventArgs(
             _CurrentPoint,
-            ProjLib::Project(workspaceController()->Workspace()->WorkingPlane(), _CurrentPoint),
+            ProjLib::Project(WorkspaceController()->Workspace()->WorkingPlane(), _CurrentPoint),
             _CurrentPoint,
             data
         );
@@ -64,7 +64,7 @@ bool PointAction::onMouseUp(MouseEventData* data) {
 
 void PointAction::_EnsureMarker() {
     if (_Marker == nullptr) {
-        _Marker = new Marker(workspaceController(), Marker::Styles::Bitmap, Marker::PlusImage());
+        _Marker = new Marker(WorkspaceController(), Marker::Styles::Bitmap, Marker::PlusImage());
         Add(_Marker);
     }
 }

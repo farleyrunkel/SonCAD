@@ -6,7 +6,7 @@ inline QCursor Cursors::wait() { return Qt::WaitCursor; }
 
 inline QCursor Cursors::move() { return getOrCreate("Move"); }
 
-inline QCursor Cursors::rotate() { return getOrCreate("Rotate"); }
+inline QCursor Cursors::Rotate() { return getOrCreate("Rotate"); }
 
 inline QCursor Cursors::selectShape() { return getOrCreate("SelectShape"); }
 

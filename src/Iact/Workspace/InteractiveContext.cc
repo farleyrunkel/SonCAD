@@ -7,7 +7,7 @@ InteractiveContext::InteractiveContext()
       m_editorState(nullptr),
       m_documentController(new ModelController(this)),
       m_viewportController(nullptr),
-      m_workspaceController(nullptr) {
+      _WorkspaceController(nullptr) {
     initialize();
 }
 
@@ -16,9 +16,9 @@ InteractiveContext::~InteractiveContext() {
         m_documentController->dispose();
         m_documentController = nullptr;
     }
-    if (m_workspaceController) {
-        m_workspaceController->dispose();
-        m_workspaceController = nullptr;
+    if (_WorkspaceController) {
+        _WorkspaceController->dispose();
+        _WorkspaceController = nullptr;
     }
     m_viewportController = nullptr;
 }
@@ -38,16 +38,16 @@ void InteractiveContext::setDocumentController(ModelController* controller) {
     }
 }
 
-Sun_WorkspaceController* InteractiveContext::workspaceController() const { 
-    return m_workspaceController; 
+Sun_WorkspaceController* InteractiveContext::WorkspaceController() const { 
+    return _WorkspaceController; 
 }
 
 void InteractiveContext::setWorkspaceController(Sun_WorkspaceController* controller) {
-    if (m_workspaceController != controller) {
-        if (m_workspaceController) {
-            m_workspaceController->dispose();
+    if (_WorkspaceController != controller) {
+        if (_WorkspaceController) {
+            _WorkspaceController->dispose();
         }
-        m_workspaceController = controller;
+        _WorkspaceController = controller;
 
         emit workspaceControllerChanged(controller);
     }
@@ -75,17 +75,17 @@ void InteractiveContext::setWorkspace(Sun::Workspace* workspace) {
 }
 
 void InteractiveContext::setViewport(Sun_Viewport* Viewport) {
-    if (m_viewport != Viewport) {
+    if (_Viewport != Viewport) {
         if (Viewport) {
-            if (workspaceController()) {
-                workspaceController()->SetActiveViewport(Viewport);
-                setViewportController(workspaceController()->viewportController(Viewport));
+            if (WorkspaceController()) {
+                WorkspaceController()->SetActiveViewport(Viewport);
+                setViewportController(WorkspaceController()->viewportController(Viewport));
             }
         }
         else {
             setViewportController(nullptr);
-            if (workspaceController()) {
-                workspaceController()->SetActiveViewport(nullptr);
+            if (WorkspaceController()) {
+                WorkspaceController()->SetActiveViewport(nullptr);
             }
         }
         CoreContext::setViewport(Viewport);
@@ -118,7 +118,7 @@ void InteractiveContext::addToScriptMruList(const QString& filePath) {
 
 void InteractiveContext::initialize() {
     connect(this, &InteractiveContext::workspaceControllerChanged, 
-        [this]() {emit propertyChanged("workspaceController"); }
+        [this]() {emit propertyChanged("WorkspaceController"); }
     );
     connect(this, &InteractiveContext::documentControllerChanged, 
         [this]() {emit propertyChanged("documentController"); }

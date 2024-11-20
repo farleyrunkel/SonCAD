@@ -11,33 +11,33 @@ void ViewportMouseControlDefault::setViewportController(Sun_ViewportController* 
     viewportController = controller;
 }
 
-void ViewportMouseControlDefault::mouseMove(const QPointF& pos, QMouseEvent* mouseEvent, Qt::KeyboardModifiers modifierKeys) {
+void ViewportMouseControlDefault::MouseMove(const QPointF& pos, QMouseEvent* mouseEvent, Qt::KeyboardModifiers modifierKeys) {
     if (!viewportController) return;
 
     if (currentMouseMoveMode != Sun_ViewportController::MouseMoveMode::None) {
-        viewportController->mouseMove(pos, modifierKeys, currentMouseMoveMode);
+        viewportController->MouseMove(pos, modifierKeys, currentMouseMoveMode);
     }
     else {
         if (mouseEvent->buttons() & Qt::LeftButton && (pos - mouseDownPos).manhattanLength() > 10
-            && !viewportController->isInRubberbandSelection()
-            && viewportController->workspaceController()->isSelecting()) {
+            && !viewportController->IsInRubberbandSelection()
+            && viewportController->WorkspaceController()->IsSelecting()) {
             // viewportController->startRubberbandSelection(mouseDownPos);
         }
 
-        viewportController->mouseMove(pos, modifierKeys);
+        viewportController->MouseMove(pos, modifierKeys);
     }
     updateMouseMoveMode(mouseEvent, modifierKeys);
 }
 
-void ViewportMouseControlDefault::mouseDown(const QPointF& pos, Qt::MouseButton changedButton, int clickCount, QMouseEvent*, Qt::KeyboardModifiers modifierKeys) {
+void ViewportMouseControlDefault::MouseDown(const QPointF& pos, Qt::MouseButton changedButton, int clickCount, QMouseEvent*, Qt::KeyboardModifiers modifierKeys) {
     if (!viewportController) return;
 
     if (changedButton == Qt::LeftButton) {
         if (clickCount == 2) {
-            viewportController->startEditing();
+            viewportController->StartEditing();
         }
         else {
-            viewportController->mouseDown(modifierKeys);
+            viewportController->MouseDown(modifierKeys);
         }
     }
 
@@ -50,7 +50,7 @@ void ViewportMouseControlDefault::updateMouseMoveMode(QMouseEvent* mouseEvent, Q
         if (modifierKeys & Qt::ControlModifier) {
             currentMouseMoveMode = Sun_ViewportController::MouseMoveMode::Twisting;
         }
-        else if (viewportController->isLockedToPlane()) {
+        else if (viewportController->IsLockedToPlane()) {
             currentMouseMoveMode = Sun_ViewportController::MouseMoveMode::Panning;
         }
         else {
@@ -76,27 +76,27 @@ void ViewportMouseControlDefault::mouseWheel(const QPointF& pos, MouseWheel whee
 
     switch (wheel) {
     case MouseWheel::Vertical:
-        viewportController->zoom(pos, scaledDelta / 200.0);
+        viewportController->Zoom(pos, scaledDelta / 200.0);
         break;
     case MouseWheel::Horizontal:
-        viewportController->rotate(scaledDelta / -50.0, 0, 0);
+        viewportController->Rotate(scaledDelta / -50.0, 0, 0);
         break;
     }
-    viewportController->mouseMove(pos, modifierKeys);
+    viewportController->MouseMove(pos, modifierKeys);
 }
 
-void ViewportMouseControlDefault::mouseUp(const QPointF& pos, Qt::MouseButton changedButton, QMouseEvent*, Qt::KeyboardModifiers modifierKeys) {
+void ViewportMouseControlDefault::MouseUp(const QPointF& pos, Qt::MouseButton changedButton, QMouseEvent*, Qt::KeyboardModifiers modifierKeys) {
     if (!viewportController) return;
 
     if (changedButton == Qt::LeftButton) {
-        viewportController->mouseUp(modifierKeys);
+        viewportController->MouseUp(modifierKeys);
     }
     updateMouseMoveMode(nullptr, modifierKeys);
 }
 
 void ViewportMouseControlDefault::cancel() {
     if (viewportController) {
-        viewportController->mouseMove(QPointF(-1, -1), Qt::KeyboardModifier::NoModifier);
+        viewportController->MouseMove(QPointF(-1, -1), Qt::KeyboardModifier::NoModifier);
         currentMouseMoveMode = Sun_ViewportController::MouseMoveMode::None;
     }
 }

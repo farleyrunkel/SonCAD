@@ -31,12 +31,12 @@ Sun::Workspace::Workspace()
       _CurrentWorkingContext(nullptr),
       _GlobalWorkingContext(new Sun_WorkingContext),
       _Model(nullptr) {
-    init();
+    Init();
 }
 
 Sun::Workspace::Workspace(Model* model) 
     : Sun::Workspace() {
-    init();
+    Init();
     _Model = model;
     _Viewports.append(new Sun_Viewport(this));
 }
@@ -49,7 +49,7 @@ Sun::Workspace::Workspace(Model* model)
 //    m_viewports.clear();
 //}
 
-void Sun::Workspace::init() {
+void Sun::Workspace::Init() {
     _CurrentWorkingContext = _GlobalWorkingContext;
 }
 

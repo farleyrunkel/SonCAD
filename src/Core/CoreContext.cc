@@ -4,7 +4,7 @@
 
 CoreContext::CoreContext() :
     m_workspace(nullptr),
-    m_viewport(nullptr),
+    _Viewport(nullptr),
     m_document(nullptr)
 {}
 
@@ -37,8 +37,8 @@ void CoreContext::setWorkspace(Sun::Workspace* workspace) {
 }
 
 void CoreContext::setViewport(Sun_Viewport* Viewport) {
-    if (m_viewport != Viewport) {
-        m_viewport = Viewport;
+    if (_Viewport != Viewport) {
+        _Viewport = Viewport;
         emit viewportChanged(Viewport);
     }
 }

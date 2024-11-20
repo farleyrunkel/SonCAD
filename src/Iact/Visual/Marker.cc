@@ -8,8 +8,8 @@
 #include "Occt/Managed/AIS_PointEx.h"
 
 
-Marker::Marker(Sun_WorkspaceController* workspaceController, Styles styles, const MarkerImage& image)
-    : VisualObject(workspaceController, nullptr), 
+Marker::Marker(Sun_WorkspaceController* WorkspaceController, Styles styles, const MarkerImage& image)
+    : VisualObject(WorkspaceController, nullptr), 
     _Styles(styles), 
     _Image(image),
     _Color(Qt::yellow), 
@@ -19,8 +19,8 @@ Marker::Marker(Sun_WorkspaceController* workspaceController, Styles styles, cons
 {
 }
 
-Marker::Marker(Sun_WorkspaceController* workspaceController, Styles styles, QString imageName, int size)
-    : VisualObject(workspaceController, nullptr),
+Marker::Marker(Sun_WorkspaceController* WorkspaceController, Styles styles, QString imageName, int size)
+    : VisualObject(WorkspaceController, nullptr),
     _Styles(styles),
     _Image(_GetMarkerImage(imageName, size)),
     _Color(Qt::yellow),

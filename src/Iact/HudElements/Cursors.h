@@ -12,7 +12,7 @@ class Cursors {
  public:
     static QCursor wait();
     static QCursor move();
-    static QCursor rotate();
+    static QCursor Rotate();
     static QCursor selectShape();
     static QCursor selectVertex();
     static QCursor selectEdge();

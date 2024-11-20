@@ -9,7 +9,7 @@
 
 class CommandHelper {
  public:
-    static Sun_WorkspaceController* workspaceController();
+    static Sun_WorkspaceController* WorkspaceController();
 
     static ModelController* documentController();
 

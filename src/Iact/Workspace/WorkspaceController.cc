@@ -226,7 +226,7 @@ void Sun_WorkspaceController::initVisualSettings()
     aisContext->SetHighlightStyle(Prs3d_TypeOfHighlight::Prs3d_TypeOfHighlight_LocalDynamic, hilightLocalDrawer);
 }
 
-void Sun_WorkspaceController::mouseMove(Sun_ViewportController* vc, QPointF pos, Qt::KeyboardModifiers modifiers) 
+void Sun_WorkspaceController::MouseMove(Sun_ViewportController* vc, QPointF pos, Qt::KeyboardModifiers modifiers) 
 {   
     gp_Pnt planePoint;
 
@@ -241,23 +241,23 @@ void Sun_WorkspaceController::mouseMove(Sun_ViewportController* vc, QPointF pos,
 
     _MouseEventData->set(vc->Viewport(), pos, planePoint, modifiers);
 
-    qDebug() << "Debug: _WorkspaceController::mouseMove: " << pos;
+    qDebug() << "Debug: _WorkspaceController::MouseMove: " << pos;
     for (const auto& handler : enumerateControls()) {
         if (handler->onMouseMove(_MouseEventData))
             break;
     }
 }
 
-void Sun_WorkspaceController::mouseDown(Sun_ViewportController* viewportController, Qt::KeyboardModifiers modifiers) {
-    qDebug() << "Debug: _WorkspaceController::mouseDown: " << modifiers;
+void Sun_WorkspaceController::MouseDown(Sun_ViewportController* viewportController, Qt::KeyboardModifiers modifiers) {
+    qDebug() << "Debug: _WorkspaceController::MouseDown: " << modifiers;
     for (const auto& handler : enumerateControls()) {
         if (handler->onMouseDown(_MouseEventData))
             break;
     }
 }
 
-void Sun_WorkspaceController::mouseUp(Sun_ViewportController* viewportController, Qt::KeyboardModifiers modifiers) {
-    qDebug() << "Debug: _WorkspaceController::mouseUp: " << modifiers;
+void Sun_WorkspaceController::MouseUp(Sun_ViewportController* viewportController, Qt::KeyboardModifiers modifiers) {
+    qDebug() << "Debug: _WorkspaceController::MouseUp: " << modifiers;
     for (const auto& handler : enumerateControls()) {
         if (handler->onMouseUp(_MouseEventData))
             break;

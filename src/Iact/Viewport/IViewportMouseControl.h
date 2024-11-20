@@ -25,16 +25,16 @@ class IViewportMouseControl {
     virtual void setViewportController(Sun_ViewportController* controller) { m_viewportController = controller; }
 
     // Handle mouse move event
-    virtual void mouseMove(const QPointF& pos, QMouseEvent* mouseEvent, Qt::KeyboardModifiers modifierKeys) = 0;
+    virtual void MouseMove(const QPointF& pos, QMouseEvent* mouseEvent, Qt::KeyboardModifiers modifierKeys) = 0;
 
     // Handle mouse wheel event
     virtual void mouseWheel(const QPointF& pos, MouseWheel wheel, int delta, QInputEvent* device, Qt::KeyboardModifiers modifierKeys) = 0;
 
     // Handle mouse down event
-    virtual void mouseDown(const QPointF& pos, Qt::MouseButton changedButton, int clickCount, QMouseEvent* mouseEvent, Qt::KeyboardModifiers modifierKeys) = 0;
+    virtual void MouseDown(const QPointF& pos, Qt::MouseButton changedButton, int clickCount, QMouseEvent* mouseEvent, Qt::KeyboardModifiers modifierKeys) = 0;
 
     // Handle mouse up event
-    virtual void mouseUp(const QPointF& pos, Qt::MouseButton changedButton, QMouseEvent* mouseEvent, Qt::KeyboardModifiers modifierKeys) = 0;
+    virtual void MouseUp(const QPointF& pos, Qt::MouseButton changedButton, QMouseEvent* mouseEvent, Qt::KeyboardModifiers modifierKeys) = 0;
 
     // Cancel any ongoing operation
     virtual void cancel() = 0;

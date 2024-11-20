@@ -49,8 +49,8 @@ public:
      };
 
 public:
-    Marker(Sun_WorkspaceController* workspaceController, Styles styles, const MarkerImage& image);
-    Marker(Sun_WorkspaceController* workspaceController, Styles styles, QString imageName, int size);
+    Marker(Sun_WorkspaceController* WorkspaceController, Styles styles, const MarkerImage& image);
+    Marker(Sun_WorkspaceController* WorkspaceController, Styles styles, QString imageName, int size);
 
 public:
     // 获取/设置颜色

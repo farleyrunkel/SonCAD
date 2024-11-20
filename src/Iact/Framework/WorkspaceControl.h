@@ -19,8 +19,8 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
  public:
 	explicit WorkspaceControl(QObject* parent = nullptr);
 
-	Sun_WorkspaceController* workspaceController() const;
-	void setWorkspaceController(Sun_WorkspaceController* workspaceController);
+	Sun_WorkspaceController* WorkspaceController() const;
+	void setWorkspaceController(Sun_WorkspaceController* WorkspaceController);
 
  protected:
     virtual QList<WorkspaceControl*> GetChildren() const;

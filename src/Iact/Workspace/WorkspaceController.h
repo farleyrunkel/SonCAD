@@ -53,7 +53,7 @@ public:
     Tool* currentTool() const;
     void removeTool(Tool* tool) {}
     bool startTool(Tool* tool);
-    bool isSelecting() { return false; }
+    bool IsSelecting() { return false; }
     void Invalidate(bool immediateOnly = false, bool forceRedraw = false);
     ;
     bool cancelTool(Tool* tool, bool force);
@@ -69,9 +69,9 @@ public:
 
     QList<WorkspaceControl*> enumerateControls();
 
-    void mouseMove(Sun_ViewportController* viewportController, QPointF pos, Qt::KeyboardModifiers modifiers);
-    void mouseDown(Sun_ViewportController* viewportController, Qt::KeyboardModifiers modifiers);
-    void mouseUp(Sun_ViewportController* viewportController, Qt::KeyboardModifiers modifiers);
+    void MouseMove(Sun_ViewportController* viewportController, QPointF pos, Qt::KeyboardModifiers modifiers);
+    void MouseDown(Sun_ViewportController* viewportController, Qt::KeyboardModifiers modifiers);
+    void MouseUp(Sun_ViewportController* viewportController, Qt::KeyboardModifiers modifiers);
 
     void recalculateGridSize();
 
