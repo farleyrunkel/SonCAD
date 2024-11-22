@@ -21,7 +21,6 @@ bool CreateBoxTool::OnStart() {
 	connect(pointAction, &PointAction::Finished, this, &CreateBoxTool::_PivotAction_Finished);
 
 	SetHintMessage("Select corner point.");
-
 	_Coord2DHudElement = new Coord2DHudElement;
 	Add(_Coord2DHudElement);
 	return true;
