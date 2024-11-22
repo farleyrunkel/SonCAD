@@ -4,52 +4,52 @@
 
 namespace Sun {
 	// 构造函数
-	SerializationContext::SerializationContext(SerializationScope Scope)
-		: Scope(Scope), Result(SerializationResult::None) {}
+	SerializationContext::SerializationContext(SerializationScope scope)
+		: _Scope(scope), _Result(SerializationResult::None) {}
 
 	// 错误记录
-	void SerializationContext::AddError(const QString& Message) {
-		Errors.append(Message);
+	void SerializationContext::AddError(const QString& message) {
+		_Errors.append(message);
 	}
 
 	bool SerializationContext::HasErrors() const {
-		return !Errors.isEmpty();
+		return !_Errors.isEmpty();
 	}
 
 	QList<QString> SerializationContext::GetErrors() const {
-		return Errors;
+		return _Errors;
 	}
 
 	// 参数管理
 	template <typename T>
-	void SerializationContext::SetParameter(const QString& Key, const T& Value) {
-		Parameters[Key] = QVariant::fromValue(Value);
+	void SerializationContext::SetParameter(const QString& key, const T& value) {
+		_Parameters[key] = QVariant::fromValue(value);
 	}
 
 	template <typename T>
-	T SerializationContext::GetParameter(const QString& Key, const T& DefaultValue) const {
-		if (Parameters.contains(Key)) {
-			return Parameters[Key].value<T>();
+	T SerializationContext::GetParameter(const QString& key, const T& defaultValue) const {
+		if (_Parameters.contains(key)) {
+			return _Parameters[key].value<T>();
 		}
-		return DefaultValue;
+		return defaultValue;
 	}
 
-	void SerializationContext::RemoveParameter(const QString& Key) {
-		Parameters.remove(Key);
+	void SerializationContext::RemoveParameter(const QString& key) {
+		_Parameters.remove(key);
 	}
 
 	// 实例管理
 	template <typename T>
-	void SerializationContext::SetInstance(T* Instance) {
+	void SerializationContext::SetInstance(T* instance) {
 		const QString TypeName = QString::fromUtf8(typeid(T).name());
-		Instances[TypeName] = Instance;
+		_Instances[TypeName] = instance;
 	}
 
 	template <typename T>
 	T* SerializationContext::GetInstance() const {
 		const QString TypeName = QString::fromUtf8(typeid(T).name());
-		if (Instances.contains(TypeName)) {
-			return static_cast<T*>(Instances[TypeName]);
+		if (_Instances.contains(TypeName)) {
+			return static_cast<T*>(_Instances[TypeName]);
 		}
 		return nullptr;
 	}
@@ -57,6 +57,6 @@ namespace Sun {
 	template <typename T>
 	void SerializationContext::RemoveInstance() {
 		const QString TypeName = QString::fromUtf8(typeid(T).name());
-		Instances.remove(TypeName);
+		_Instances.remove(TypeName);
 	}
 }

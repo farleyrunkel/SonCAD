@@ -30,25 +30,25 @@ namespace Sun {
 	class SerializationContext
 	{
 	public:
-		SerializationContext(SerializationScope Scope = SerializationScope::Storage);
+		SerializationContext(SerializationScope scope = SerializationScope::Storage);
 
 		// 错误记录
-		void AddError(const QString& Message);
+		void AddError(const QString& message);
 		bool HasErrors() const;
 		QList<QString> GetErrors() const;
 
 		// 参数管理
 		template <typename T>
-		void SetParameter(const QString& Key, const T& Value);
+		void SetParameter(const QString& key, const T& value);
 
 		template <typename T>
-		T GetParameter(const QString& Key, const T& DefaultValue = T()) const;
+		T GetParameter(const QString& key, const T& defaultValue = T()) const;
 
-		void RemoveParameter(const QString& Key);
+		void RemoveParameter(const QString& key);
 
 		// 实例管理
 		template <typename T>
-		void SetInstance(T* Instance);
+		void SetInstance(T* instance);
 
 		template <typename T>
 		T* GetInstance() const;
@@ -57,11 +57,11 @@ namespace Sun {
 		void RemoveInstance();
 
 	private:
-		QMap<QString, QVariant> Parameters;  // 参数表
-		QMap<QString, void*> Instances;     // 实例表
-		QList<QString> Errors;              // 错误记录
-		SerializationScope Scope;           // 序列化范围
-		SerializationResult Result;         // 序列化结果
+		QMap<QString, QVariant> _Parameters;  // 参数表
+		QMap<QString, void*> _Instances;     // 实例表
+		QList<QString> _Errors;              // 错误记录
+		SerializationScope _Scope;           // 序列化范围
+		SerializationResult _Result;         // 序列化结果
 	};
 
 }  // namespace Sun
