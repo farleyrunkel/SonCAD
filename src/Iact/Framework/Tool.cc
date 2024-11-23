@@ -64,7 +64,7 @@ void Tool::Cleanup() {
 	//BaseCleanup();
 }
 
-bool Tool::startAction(ToolAction* toolAction, bool exclusive) {
+bool Tool::StartAction(ToolAction* toolAction, bool exclusive) {
 	if (!m_toolActions.isEmpty() && std::find(m_toolActions.begin(), m_toolActions.end(), toolAction) != m_toolActions.end())
 		return true;
 
@@ -89,7 +89,7 @@ bool Tool::startAction(ToolAction* toolAction, bool exclusive) {
 	}
 }
 
-void Tool::stopAction(ToolAction* toolAction) {
+void Tool::StopAction(ToolAction* toolAction) {
 	if (toolAction == nullptr)
 		return;
 
@@ -102,7 +102,7 @@ void Tool::stopAction(ToolAction* toolAction) {
 
 void Tool::stopAllActions() {
 	for (const auto& action : m_toolActions) {
-		stopAction(action);
+		StopAction(action);
 	}
 	m_toolActions.clear();
 }

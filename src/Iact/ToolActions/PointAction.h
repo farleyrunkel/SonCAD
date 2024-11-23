@@ -23,7 +23,7 @@ class PointAction : public ToolAction {
              : Point(p), PointOnPlane(pp), MarkerPosition(mp), MouseEventData(m) {}
         gp_Pnt Point;
         gp_Pnt2d PointOnPlane;
-        std::shared_ptr<MouseEventData> MouseEventData;
+        MouseEventData* MouseEventData;
         gp_Pnt MarkerPosition;
     };
 

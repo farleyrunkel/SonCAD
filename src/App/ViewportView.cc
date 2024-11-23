@@ -5,6 +5,7 @@
 #include <QSpacerItem>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QFont>
 
 #include "Core/Core.h"
 #include "Iact/Viewport/ViewportPanel.h"
@@ -16,10 +17,18 @@ ViewportView::ViewportView(QWidget* parent)
     // Set layout for the main panel
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     setLayout(mainLayout);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+
+    QFont font;
+    font.setFamily("Arial");
+    font.setPointSize(10);
+    font.setBold(true);
 
     // Tool and error message area
     messageBar = new QLabel("Tool and error message area");
-    messageBar->setStyleSheet("background-Color: lightyellow;");
+    messageBar->setContentsMargins(20, 2, 20, 2);
+    messageBar->setFont(font);
+    messageBar->setStyleSheet("background-color: lightyellow;");
     mainLayout->addWidget(messageBar);
 
     // Add spacer between the labels
@@ -27,7 +36,9 @@ ViewportView::ViewportView(QWidget* parent)
 
     // Grid information display
     QLabel* gridInfo = new QLabel("Grid information display area");
-    gridInfo->setStyleSheet("background-Color: lightyellow;");
+    gridInfo->setContentsMargins(messageBar->contentsMargins());
+    gridInfo->setFont(messageBar->font());
+    gridInfo->setStyleSheet(messageBar->styleSheet());
     mainLayout->addWidget(gridInfo);
 
     connect(Core::appContext(), &AppContext::workspaceControllerChanged, [this](Sun_WorkspaceController* controller) {

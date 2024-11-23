@@ -2,6 +2,7 @@
 
 #include "Iact/Primitives/CreateBoxTool.h"
 #include "Iact/HudElements/Coord2DHudElement.h"
+#include "Iact/Workspace/WorkspaceController.h"
 
 CreateBoxTool::CreateBoxTool() 
 	: Tool(),
@@ -11,9 +12,9 @@ CreateBoxTool::CreateBoxTool()
 
 bool CreateBoxTool::OnStart() {
 	qDebug() << "Debug: CreateBoxTool::OnStart";
-	m_currentPhase = Phase::PivotPoint;
+	_CurrentPhase = Phase::PivotPoint;
 	auto pointAction = new PointAction();
-	if (!startAction(pointAction)) {
+	if (!StartAction(pointAction)) {
 		return false;
 	}
 
@@ -35,4 +36,45 @@ void CreateBoxTool::_PivotAction_Preview(PointAction::EventArgs* args) {
 
 void CreateBoxTool::_PivotAction_Finished(PointAction::EventArgs* args) {
 	qDebug() << "Debug: CreateBoxTool::_PivotAction_Finished";
+
+	PointAction* action = qobject_cast<PointAction*>(sender());
+	if (action == nullptr) {
+		return;
+	}
+
+	_Plane = WorkspaceController()->Workspace()->WorkingPlane();
+	_PointPlane1 = args->PointOnPlane;
+
+	StopAction(action);
+	auto newAction = new PointAction();
+
+	connect(newAction, &PointAction::Preview, this, &CreateBoxTool::_BaseRectAction_Preview);
+	connect(newAction, &PointAction::Finished, this, &CreateBoxTool::_BaseRectAction_Finished);
+
+	if (!StartAction(newAction))
+		return;
+
+	_CurrentPhase = Phase::BaseRect;
+	SetHintMessage("Select opposite corner point, press `k:Ctrl` to round length and width to grid stepping.");
+
+	//if (_MultiValueHudElement == nullptr)
+	//{
+	//	_MultiValueHudElement = new MultiValueHudElement()
+	//	{
+	//		Label1 = "Length:",
+	//		Units1 = ValueUnits.Length,
+	//		Label2 = "Width:",
+	//		Units2 = ValueUnits.Length
+	//	};
+	//	_MultiValueHudElement.MultiValueEntered += _MultiValueEntered;
+	//	Add(_MultiValueHudElement);
+	//}
+}
+
+void CreateBoxTool::_BaseRectAction_Preview(PointAction::EventArgs* args) {
+	qDebug() << "Debug: CreateBoxTool::_BaseRectAction_Preview";
+}
+
+void CreateBoxTool::_BaseRectAction_Finished(PointAction::EventArgs* args) {
+
 }

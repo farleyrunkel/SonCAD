@@ -44,9 +44,9 @@ class Tool : public WorkspaceControl {
 	//	CleanedUp = true;
 	//}
 
-	bool startAction(ToolAction* toolAction, bool exclusive = true);
+	bool StartAction(ToolAction* toolAction, bool exclusive = true);
 
-	void stopAction(ToolAction* toolAction);
+	void StopAction(ToolAction* toolAction);
 
 	void stopAllActions();
 

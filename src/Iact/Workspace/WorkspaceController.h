@@ -59,8 +59,8 @@ public:
     bool cancelTool(Tool* tool, bool force);
 
     IHudManager* hudManager() const { return _HudManager; }
-
     void setHudManager(IHudManager* hudManager);
+
     void SetActiveViewport(Sun_Viewport* Viewport);
 
     Sun_ViewportController* viewportController(Sun_Viewport* Viewport);
@@ -111,7 +111,7 @@ private:
 
     bool _GridNeedsUpdate;
     Handle(AISX_Grid) _Grid;
-    gp_XY _LastGridSize = gp_XY(200.0, 200.0);
+    gp_XY _LastGridSize = gp_XY(1000.0, 1000.0);
 
 private:
     QList<Sun_ViewportController*> _ViewportControllers;

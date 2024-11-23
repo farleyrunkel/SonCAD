@@ -402,6 +402,24 @@ void ViewportPanel::keyPressEvent(QKeyEvent* theEvent) {
     QOpenGLWidget::keyPressEvent(theEvent);
 }
 
+void ViewportPanel::mouseMoveEvent(QMouseEvent* theEvent) {
+    QOpenGLWidget::mouseMoveEvent(theEvent);
+    qDebug() << "ViewportPanel::mouseMoveEvent:" << theEvent;
+
+    emit MouseMoved(theEvent->x(), theEvent->y());
+
+    m_mouseControl->MouseMove(theEvent->pos(), theEvent, theEvent->modifiers());
+
+    const Graphic3d_Vec2i aNewPos(theEvent->x(), theEvent->y());
+    if (!m_view.IsNull()
+        && UpdateMousePosition(aNewPos,
+                               qtMouseButtons2VKeys(theEvent->buttons()),
+                               qtMouseModifiers2VKeys(theEvent->modifiers()),
+                               false)) {
+        updateView();
+    }
+}
+
 void ViewportPanel::mousePressEvent(QMouseEvent* theEvent) {
     QOpenGLWidget::mousePressEvent(theEvent);
 
@@ -429,24 +447,6 @@ void ViewportPanel::mouseReleaseEvent(QMouseEvent* theEvent) {
         && UpdateMouseButtons(aPnt,
             qtMouseButtons2VKeys(theEvent->buttons()),
             aFlags,
-            false)) {
-        updateView();
-    }
-}
-
-void ViewportPanel::mouseMoveEvent(QMouseEvent* theEvent) {
-    QOpenGLWidget::mouseMoveEvent(theEvent);
-    qDebug() << "ViewportPanel::mouseMoveEvent:" << theEvent;
-
-    emit MouseMoved(theEvent->x(), theEvent->y());
-
-    m_mouseControl->MouseMove(theEvent->pos(), theEvent, theEvent->modifiers());
-
-    const Graphic3d_Vec2i aNewPos(theEvent->x(), theEvent->y());
-    if (!m_view.IsNull()
-        && UpdateMousePosition(aNewPos,
-            qtMouseButtons2VKeys(theEvent->buttons()),
-            qtMouseModifiers2VKeys(theEvent->modifiers()),
             false)) {
         updateView();
     }
@@ -483,6 +483,9 @@ void ViewportPanel::_InitHudContainer() {
     _HudContainer = new HudContainer(this);
     connect(_HudContainer, &HudContainer::MouseMoved, [this](int x, int y) {
         emit MouseMoved(x + _HudContainer->x(), y + _HudContainer->y()); }
+    );
+    connect(_HudContainer, &HudContainer::HintMessageChanged, [this](const QString& message) {
+        emit hintMessageChanged(message); }
     );
     connect(this, &ViewportPanel::MouseMoved, [this](int x, int y) {
         if (_HudContainer->HudElements().count() == 0) {

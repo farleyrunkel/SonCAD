@@ -11,10 +11,10 @@
 HudContainer::HudContainer(QWidget* parent)
     : QFrame(parent) {
     setAutoFillBackground(true); // ²»×Ô¶¯Ìî³ä±³¾°
-    setFixedSize(100, 28);
+    setFixedSize(110, 28);
     setMouseTracking(true);
     setFrameShape(NoFrame);
-    //setAttribute(Qt::WA_TranslucentBackground); // ÆôÓÃÍ¸Ã÷±³¾°
+    // setAttribute(Qt::WA_TranslucentBackground); // ÆôÓÃÍ¸Ã÷±³¾°
     setHidden(false) ;
 
     setLayout(new QVBoxLayout);
@@ -29,6 +29,7 @@ HudContainer::HudContainer(QWidget* parent)
 void HudContainer::AddElement(IHudElement* element) {
 	layout()->addWidget(element->Widget());
 	_HudElements.append(element);
+    adjustSize();
 }
 
 void HudContainer::SetHintMessage(const QString& message) {

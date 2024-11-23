@@ -23,7 +23,6 @@ public:
     void SetValues(double coordX, double coordY);
 
     virtual void Initialize() override;
-    virtual QWidget* Widget() override;
 
 private:
     double _CoordinateX;

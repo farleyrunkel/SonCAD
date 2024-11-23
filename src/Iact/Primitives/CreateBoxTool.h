@@ -36,13 +36,18 @@ protected:
 private:
 	void _PivotAction_Preview(PointAction::EventArgs* args);
 	void _PivotAction_Finished(PointAction::EventArgs* args);
+	void _BaseRectAction_Preview(PointAction::EventArgs* args);
+	void _BaseRectAction_Finished(PointAction::EventArgs* args);
 
 private:
-	Phase m_currentPhase;
+	Phase _CurrentPhase;
 	gp_Pln _Plane;
+	gp_Pnt2d _PointPlane1;
+	gp_Pnt2d _PointPlane2;
 	double _Height;
 	bool _IsTemporaryVisual;
 	Coord2DHudElement* _Coord2DHudElement;
+	Coord2DHudElement* _MultiValueHudElement;
 	QPointer<VisualObject> _VisualShape;
 };
 

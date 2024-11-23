@@ -19,16 +19,13 @@ void Coord2DHudElement::SetValues(double coordX, double coordY)
     _CoordinateY = coordY;
     QString xStr = QString::number(_CoordinateX, 'f', 3);
     QString yStr = QString::number(_CoordinateY, 'f', 3);
-    setText(xStr + " " + yStr);
+    setText(xStr + "   " + yStr);
     adjustSize();
 }
 
 void Coord2DHudElement::Initialize()
 {
+    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     setAlignment(Qt::AlignCenter);
-    setStyleSheet("color: white; font-size: 14px; background: none;");
-}
-
-QWidget* Coord2DHudElement::Widget() {
-    return qobject_cast<QWidget*>(this);
+    setStyleSheet("color: white; font-size: 12px; background: none;");
 }

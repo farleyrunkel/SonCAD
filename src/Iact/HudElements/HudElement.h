@@ -14,7 +14,10 @@ public:
 	 void setWorkspaceController(Sun_WorkspaceController* controller);
 
 	 virtual void Initialize() = 0;
-	 virtual QWidget* Widget() = 0;
+
+	 QWidget* Widget() {
+		 return dynamic_cast<QWidget*>(this);
+	 }
 
 private:
 	Sun_WorkspaceController* _WorkspaceController;

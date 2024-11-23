@@ -104,6 +104,7 @@ private:
     MarkerImage _Image;
     Handle(AIS_PointEx) _AisPoint = nullptr; // OCCT 点对象
     Handle(Geom_CartesianPoint) _P; // OCCT 坐标点
+    Handle(Prs3d_PointAspect) _PointAspect = nullptr;
     Sun::Color _Color; // 标记颜色
     Sun::Color _ColorBg; // 背景颜色
     bool _IsSelectable; // 是否可选择

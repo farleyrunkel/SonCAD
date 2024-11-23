@@ -13,10 +13,9 @@ PointAction::PointAction()
     qDebug() << "Debug: PointAction::PointAction";
 }
 
-bool PointAction::onStart() {
-    // QMessageBox::warning(nullptr, "adsd", "dasds");
+bool PointAction::onStart() 
+{
     qDebug() << "Debug: PointAction::OnStart";
-
     return true;
 }
 
@@ -33,6 +32,8 @@ bool PointAction::onMouseMove(MouseEventData* data) {
         );
 
         emit Preview(args);
+        qDebug() << "Debug: _Marker->Set(args->Point): " << args->Point.X() << " " << args->Point.Y();
+
         _Marker->Set(args->Point);
         WorkspaceController()->Invalidate();
         return ToolAction::onMouseMove(data);

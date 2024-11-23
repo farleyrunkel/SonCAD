@@ -39,7 +39,7 @@ void Marker::Update()
     else {
         _UpdatePresentation();
         // 在 AisContext 上进行重新显示
-        AisContext()->Redisplay(_AisPoint, false);
+        AisContext()->Redisplay(_AisPoint, true);
     }
 
     if (_IsSelectable) {
@@ -158,26 +158,26 @@ void Marker::_UpdatePresentation()
 
     _AisPoint->SetMarker(Aspect_TOM_USERDEFINED);
 
-    Handle(Prs3d_PointAspect) pointAspect = nullptr;
-
-    // 根据 Styles 设置不同的展示效果
-    switch (_Styles & Styles::ModeMask) {
-    case Styles::Bitmap:
-        pointAspect = CreateBitmapPointAspect(_Image, _Color);
-        break;
-    case Styles::Image:
-        pointAspect = CreateImagePointAspect(_Image);
-        break;
-    default:
-        break;
+    if (_PointAspect.IsNull()) {
+        // 根据 Styles 设置不同的展示效果
+        switch (_Styles & Styles::ModeMask) {
+        case Styles::Bitmap:
+            _PointAspect = CreateBitmapPointAspect(_Image, _Color);
+            break;
+        case Styles::Image:
+            _PointAspect = CreateImagePointAspect(_Image);
+            break;
+        default:
+            break;
+        }
     }
 
-    if (!pointAspect.IsNull()) {
-        _AisPoint->Attributes()->SetPointAspect(pointAspect);
-        _AisPoint->HilightAttributes()->SetPointAspect(pointAspect);
-        _AisPoint->HilightAttributes()->SetColor(Quantity_Color(Colors::Highlight.ToQuantityColor()));
-        _AisPoint->DynamicHilightAttributes()->SetPointAspect(pointAspect);
-        _AisPoint->DynamicHilightAttributes()->SetColor(Quantity_Color(Colors::Highlight.ToQuantityColor()));
+    if (!_PointAspect.IsNull()) {
+        _AisPoint->Attributes()->SetPointAspect(_PointAspect);
+        _AisPoint->HilightAttributes()->SetPointAspect(_PointAspect);
+        _AisPoint->HilightAttributes()->SetColor(Colors::Highlight.ToQuantityColor());
+        _AisPoint->DynamicHilightAttributes()->SetPointAspect(_PointAspect);
+        _AisPoint->DynamicHilightAttributes()->SetColor(Colors::Highlight.ToQuantityColor());
     }
 
     if (_Styles & Styles::Background) {
