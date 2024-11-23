@@ -2,12 +2,12 @@
 
 #include "Iact/Primitives/CreateBoxTool.h"
 #include "Iact/HudElements/Coord2DHudElement.h"
+#include "Iact/HudElements/MultiValueHudElement.h"
 #include "Iact/Workspace/WorkspaceController.h"
 
 CreateBoxTool::CreateBoxTool() 
-	: Tool(),
-	_Coord2DHudElement(nullptr) {
-	
+	: Tool()
+{	
 }
 
 bool CreateBoxTool::OnStart() {
@@ -26,6 +26,8 @@ bool CreateBoxTool::OnStart() {
 	Add(_Coord2DHudElement);
 	return true;
 }
+
+void CreateBoxTool::_EnsurePreviewShape() {}
 
 void CreateBoxTool::_PivotAction_Preview(PointAction::EventArgs* args) {
 	qDebug() << "Debug: CreateBoxTool::_PivotAction_Preview";
@@ -57,24 +59,33 @@ void CreateBoxTool::_PivotAction_Finished(PointAction::EventArgs* args) {
 	_CurrentPhase = Phase::BaseRect;
 	SetHintMessage("Select opposite corner point, press `k:Ctrl` to round length and width to grid stepping.");
 
-	//if (_MultiValueHudElement == nullptr)
-	//{
-	//	_MultiValueHudElement = new MultiValueHudElement()
-	//	{
-	//		Label1 = "Length:",
-	//		Units1 = ValueUnits.Length,
-	//		Label2 = "Width:",
-	//		Units2 = ValueUnits.Length
-	//	};
-	//	_MultiValueHudElement.MultiValueEntered += _MultiValueEntered;
-	//	Add(_MultiValueHudElement);
-	//}
+	if (_MultiValueHudElement == nullptr)
+	{
+		_MultiValueHudElement = new MultiValueHudElement();
+		_MultiValueHudElement->SetLabel("Length:", "Width:");
+		connect(_MultiValueHudElement, &MultiValueHudElement::MultiValueEntered, 
+				this, &CreateBoxTool::_MultiValueEntered);
+		Add(_MultiValueHudElement);
+	}
 }
 
-void CreateBoxTool::_BaseRectAction_Preview(PointAction::EventArgs* args) {
+void CreateBoxTool::_BaseRectAction_Preview(PointAction::EventArgs* args) 
+{
 	qDebug() << "Debug: CreateBoxTool::_BaseRectAction_Preview";
 }
 
-void CreateBoxTool::_BaseRectAction_Finished(PointAction::EventArgs* args) {
+void CreateBoxTool::_BaseRectAction_Finished(PointAction::EventArgs* args) 
+{
 
+}
+
+void CreateBoxTool::_MultiValueEntered(double newValue1, double newValue2)
+{
+	if (_CurrentPhase == Phase::BaseRect)
+	{
+		_PointPlane2 = gp_Pnt2d(_PointPlane1.X() + newValue1, _PointPlane1.Y() + newValue2);
+		_BaseRectAction_Preview(nullptr);
+		_EnsurePreviewShape();
+		_BaseRectAction_Finished(nullptr);
+	}
 }

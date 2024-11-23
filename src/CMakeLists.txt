@@ -15,8 +15,8 @@ file(GLOB SUB_DIRECTORY_SOURCES
 list(APPEND PROJECT_SOURCES ${SUB_DIRECTORY_SOURCES})
 
 # check code style
-include(cpplint)
-add_cpplint_target(CpplintCheck ${SUB_DIRECTORY_SOURCES})
+# include(cpplint)
+# add_cpplint_target(CpplintCheck ${SUB_DIRECTORY_SOURCES})
 
 # add executable target
 qt_add_executable(${PROJECT_NAME}

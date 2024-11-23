@@ -8,7 +8,7 @@
 
 #include "Iact/HudElements/HudElement.h"
 
-class Coord2DHudElement : public QLabel, public IHudElement 
+class Coord2DHudElement : public IHudElement 
 {
     Q_OBJECT
     Q_PROPERTY(double coordinateX READ CoordinateX)
@@ -25,6 +25,7 @@ public:
     virtual void Initialize() override;
 
 private:
+    QLabel* _Label;
     double _CoordinateX;
     double _CoordinateY;
 };

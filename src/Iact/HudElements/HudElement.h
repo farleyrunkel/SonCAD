@@ -4,20 +4,25 @@
 #define IACT_HUD_ELEMENTS_HUDELEMENT_H_
 
 #include <QWidget>
+#include <QSize>
 
 class Sun_WorkspaceController;
 
-class IHudElement 
+class IHudElement : public QWidget
 {
+	Q_OBJECT
+
+public:
+	 explicit IHudElement(QWidget* parent) : QWidget(parent) {}
+
 public:
 	 Sun_WorkspaceController* WorkspaceController() const;
 	 void setWorkspaceController(Sun_WorkspaceController* controller);
 
 	 virtual void Initialize() = 0;
 
-	 QWidget* Widget() {
-		 return dynamic_cast<QWidget*>(this);
-	 }
+signals:
+	void SizeChanged(const QSize&);
 
 private:
 	Sun_WorkspaceController* _WorkspaceController;
