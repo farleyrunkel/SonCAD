@@ -7,10 +7,11 @@
 
 #include "Core/Topology/InteractiveEntity.h"
 
-class Body : public InteractiveEntity {
+class Body : public InteractiveEntity 
+{
     Q_OBJECT
-
- public:
+public:
+    Body() {}
 };
 
 #endif  // SRC_CORE_TOPOLOGY_BODY_H_

@@ -24,6 +24,10 @@ class Shape : public Entity, public IShapeOperand, public IShapeDependent
     {
     };
 
+    Body* body() {
+        return new Body;
+    }
+
  private:
     bool _IsSkipped;
     bool _IsLoadedFromCache;

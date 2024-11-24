@@ -175,14 +175,25 @@ bool Sun_Viewport::ScreenToPoint(gp_Pln plane, int screenX, int screenY, gp_Pnt&
         }
         catch (std::exception e)
         {
-            std::cerr << "Exception: " << e.what() << std::endl;
-            assert(false);
+            qCritical() << "Exception:" << e.what();
+            Q_ASSERT(false);
         }
     }
 
-     resultPnt = gp_Pnt();
+    resultPnt.SetCoord(0, 0, 0);
      return false;
- }
+}
+
+void Sun_Viewport::_ValidateViewGeometry() 
+{
+    if (V3dView().IsNull()) {
+        return;
+    }
+
+    if (V3dView()->Camera()->Distance() == 0) {
+        V3dView()->Camera()->SetDistance(0.00001);
+    }
+}
 
 // Destructor
 

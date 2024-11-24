@@ -8,7 +8,8 @@
 #include <QDebug>
 
 // Base class for Entity, assuming Entity is derived from QObject for signal/slot support
-class Entity : public QObject {
+class Entity : public QObject 
+{
     Q_OBJECT
 
  public:

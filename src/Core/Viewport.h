@@ -103,8 +103,8 @@ public:
         return &hub;
     }
 
-    private:
-      void  _ValidateViewGeometry() {}
+private:
+      void  _ValidateViewGeometry();
 
  signals:
     void eyePointChanged();

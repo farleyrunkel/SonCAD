@@ -103,13 +103,7 @@ public:
 //
 //        return Shape::MakeInternal(flags);
 //    }
-
 private:
-    // Members
-    double _DimensionX;
-    double _DimensionY;
-    double _DimensionZ;
-
     void SaveUndo() {
         // Implement undo-saving logic
     }
@@ -121,6 +115,12 @@ private:
     void RaisePropertyChanged() {
         // Implement property change notification
     }
+
+private:
+    // Members
+    double _DimensionX = 0.0;
+    double _DimensionY = 0.0;
+    double _DimensionZ = 0.0;
 };
 
 #endif  // SRC_CORE_SHAPES_PRIMITIVES_BOX_H_

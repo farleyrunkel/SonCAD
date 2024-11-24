@@ -130,9 +130,9 @@ void CreateBoxTool::_BaseRectAction_Preview(PointAction::EventArgs* args)
     position.SetX(std::round(position.X()));
     position.SetY(std::round(position.Y()));
     position.SetZ(std::round(position.Z()));
-    //_PreviewShape->BodY()->SetPosition(position);
-    //_PreviewShape->SetDimensionX(dimX);
-    //_PreviewShape->SetDimensionY(dimY);
+    // _PreviewShape->Body()->SetPosition(position);
+    _PreviewShape->SetDimensionX(dimX);
+    _PreviewShape->SetDimensionY(dimY);
 
     //if (_IsTemporaryVisual)
     //{
@@ -147,15 +147,9 @@ void CreateBoxTool::_BaseRectAction_Preview(PointAction::EventArgs* args)
     //    args->MarkerPosition = ElSLib::Value(_PointPlane2.X(), _PointPlane2.Y(), _Plane).rounded();
     //}
 
-    //if (_Coord2DHudElement)
-    //{
-    //    _Coord2DHudElement->SetValues(_PointPlane2.X(), _PointPlane2.Y());
-    //}
-    //if (_MultiValueHudElement)
-    //{
-    //    _MultiValueHudElement->SetValues(dimX, dimY);
-    //}
-
+    _Coord2DHudElement->SetValues(_PointPlane2.X(), _PointPlane2.Y());
+    _MultiValueHudElement->SetValues(dimX, dimY);
+    
     //WorkspaceController::Instance()->Invalidate();
 }
 

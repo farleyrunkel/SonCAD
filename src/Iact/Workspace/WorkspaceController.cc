@@ -228,6 +228,11 @@ void Sun_WorkspaceController::initVisualSettings()
 
 void Sun_WorkspaceController::MouseMove(Sun_ViewportController* vc, QPointF pos, Qt::KeyboardModifiers modifiers) 
 {   
+    qDebug() << "Sun_WorkspaceController::MouseMove: ";
+    qDebug() << "   Sun_ViewportController:";
+    qDebug() << "   QPointF:" << pos;
+    qDebug() << "   KeyboardModifiers:" << modifiers;
+
     gp_Pnt planePoint;
 
     if (!vc->Viewport()->ScreenToPoint(Workspace()->WorkingPlane(), (int)pos.x(), (int)pos.y(), planePoint)) {

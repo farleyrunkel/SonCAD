@@ -48,7 +48,7 @@ private:
 	gp_Pln _Plane;
 	gp_Pnt2d _PointPlane1;
 	gp_Pnt2d _PointPlane2;
-	Box _Box;
+	Box* _PreviewShape = new Box;
 	double _Height;
 	bool _IsTemporaryVisual;
 	Coord2DHudElement* _Coord2DHudElement = nullptr;
