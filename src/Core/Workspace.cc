@@ -161,6 +161,20 @@ Sun::Workspace::GridTypes Sun::Workspace::GridType() const {
     return _CurrentWorkingContext->GridType(); 
 }
 
+double Sun::Workspace::GridStep() const {
+    return _CurrentWorkingContext->GridStep();
+}
+
+void Sun::Workspace::SetGridStep(double value ) {
+    if (_CurrentWorkingContext->GridStep() != value)
+    {
+        _CurrentWorkingContext->SetGridStep(value) ;
+        // Model.MarkAsUnsaved();
+        RaisePropertyChanged();
+        _RaiseGridChanged();
+    }
+}
+
 Sun_WorkingContext* Sun::Workspace::workingContext() const {
     return _CurrentWorkingContext; 
 }

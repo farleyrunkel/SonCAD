@@ -9,6 +9,7 @@
 #include <gp_Pln.hxx>
 #include <gp_Pnt2d.hxx>
 
+#include "Core/Shapes/Primitives/Box.h"
 #include "Iact/Framework/Tool.h"
 #include "Iact/HudElements/Coord2DHudElement.h"
 #include "Iact/HudElements/MultiValueHudElement.h"
@@ -47,6 +48,7 @@ private:
 	gp_Pln _Plane;
 	gp_Pnt2d _PointPlane1;
 	gp_Pnt2d _PointPlane2;
+	Box _Box;
 	double _Height;
 	bool _IsTemporaryVisual;
 	Coord2DHudElement* _Coord2DHudElement = nullptr;

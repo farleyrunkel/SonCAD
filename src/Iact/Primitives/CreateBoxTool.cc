@@ -5,6 +5,12 @@
 #include "Iact/HudElements/MultiValueHudElement.h"
 #include "Iact/Workspace/WorkspaceController.h"
 
+namespace {
+    double RoundToNearest(double value, double divider) {
+        return std::round(value / divider) * divider;
+    }
+}
+
 CreateBoxTool::CreateBoxTool() 
 	: Tool()
 {	
@@ -71,8 +77,88 @@ void CreateBoxTool::_PivotAction_Finished(PointAction::EventArgs* args) {
 
 void CreateBoxTool::_BaseRectAction_Preview(PointAction::EventArgs* args) 
 {
-	qDebug() << "Debug: CreateBoxTool::_BaseRectAction_Preview";
+    if (args != nullptr)
+    {
+        _PointPlane2 = args->PointOnPlane;
+    }
+
+    double dimX = std::abs(_PointPlane1.X() - _PointPlane2.X());
+    double dimY = std::abs(_PointPlane1.Y() - _PointPlane2.Y());
+
+    if (args && args->MouseEventData->modifierKeys.testFlag(Qt::ControlModifier))
+    {
+        dimX = ::RoundToNearest(dimX, WorkspaceController()->Workspace()->GridStep());
+        dimY = ::RoundToNearest(dimY, WorkspaceController()->Workspace()->GridStep());
+    }
+
+    if (std::abs(dimX) <= 0.0)
+    {
+        dimX = 0.001;
+    }
+    if (std::abs(dimY) <= 0.0)
+    {
+        dimY = 0.001;
+    }
+
+    double posX = 0.0;
+    if (_PointPlane1.X() < _PointPlane2.X())
+    {
+        posX = _PointPlane1.X();
+        _PointPlane2.SetX(_PointPlane1.X() + dimX);
+    }
+    else
+    {
+        posX = _PointPlane1.X() - dimX;
+        _PointPlane2.SetX(posX);
+    }
+
+    double posY = 0.0;
+    if (_PointPlane1.Y() < _PointPlane2.Y())
+    {
+        posY = _PointPlane1.Y();
+        _PointPlane2.SetY(_PointPlane1.Y() + dimY);
+    }
+    else
+    {
+        posY = _PointPlane1.Y() - dimY;
+        _PointPlane2.SetY(posY);
+    }
+
+    _EnsurePreviewShape();
+
+    auto position = ElSLib::Value(posX, posY, _Plane);
+    position.SetX(std::round(position.X()));
+    position.SetY(std::round(position.Y()));
+    position.SetZ(std::round(position.Z()));
+    //_PreviewShape->BodY()->SetPosition(position);
+    //_PreviewShape->SetDimensionX(dimX);
+    //_PreviewShape->SetDimensionY(dimY);
+
+    //if (_IsTemporaryVisual)
+    //{
+    //    if (_VisualShape)
+    //    {
+    //        _VisualShape->Update();
+    //    }
+    //}
+
+    //if (args)
+    //{
+    //    args->MarkerPosition = ElSLib::Value(_PointPlane2.X(), _PointPlane2.Y(), _Plane).rounded();
+    //}
+
+    //if (_Coord2DHudElement)
+    //{
+    //    _Coord2DHudElement->SetValues(_PointPlane2.X(), _PointPlane2.Y());
+    //}
+    //if (_MultiValueHudElement)
+    //{
+    //    _MultiValueHudElement->SetValues(dimX, dimY);
+    //}
+
+    //WorkspaceController::Instance()->Invalidate();
 }
+
 
 void CreateBoxTool::_BaseRectAction_Finished(PointAction::EventArgs* args) 
 {

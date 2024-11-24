@@ -33,7 +33,7 @@ class Workspace : public BaseObject
     Q_PROPERTY(Model* Model READ model)
     Q_PROPERTY(bool GridEnabled READ gridEnabled WRITE setGridEnabled)
     Q_PROPERTY(GridTypes GridType READ GridType WRITE SetGridType)
-    Q_PROPERTY(double GridStep)
+    Q_PROPERTY(double GridStep READ GridStep WRITE SetGridStep)
     Q_PROPERTY(double GridRotation)
     Q_PROPERTY(int GridDivisions)
     Q_PROPERTY(Pln _WorkingPlane)
@@ -60,6 +60,9 @@ public:
 
     GridTypes GridType() const;
     void SetGridType(GridTypes) { return; }
+
+    double GridStep() const;
+    void SetGridStep(double);
 
     Sun_WorkingContext* workingContext() const;
 

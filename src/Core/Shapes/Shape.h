@@ -10,13 +10,16 @@
 
 #include "Core/Topology/Entity.h"
 #include "Core/Topology/Body.h"
+#include "Core/Shapes/IShapeOperand.h"
 
 // Base class for shape
-class Shape : public Entity {
+class Shape : public Entity, public IShapeOperand, public IShapeDependent
+{
     Q_OBJECT
 
  public:
     Shape() {}
+
     struct NamedSubshape
     {
     };
