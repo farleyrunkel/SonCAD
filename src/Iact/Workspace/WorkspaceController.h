@@ -55,7 +55,7 @@ public:
     bool startTool(Tool* tool);
     bool IsSelecting() { return false; }
     void Invalidate(bool immediateOnly = false, bool forceRedraw = false);
-    ;
+
     bool cancelTool(Tool* tool, bool force);
 
     IHudManager* hudManager() const { return _HudManager; }
@@ -116,7 +116,7 @@ private:
 private:
     QList<Sun_ViewportController*> _ViewportControllers;
 
-    MouseEventData* _MouseEventData;
+    MouseEventData _MouseEventData;
     QPointF _LastMouseMovePosition;
     Sun_ViewportController* _LastMouseMoveViewportController;
     Qt::Modifiers _LastModifierKeys;

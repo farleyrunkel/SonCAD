@@ -3,8 +3,10 @@
 #include "Iact/Workspace/WorkspaceController.h"
 
 #include <algorithm>
+#include <sstream>
 
 #include <QDebug>
+#include <QTextStream>
 
 #include "Core/Project/WorkingContext.h"
 #include "Iact/Workspace/ViewportController.h"
@@ -15,10 +17,22 @@
 #include <gp_XY.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Pnt2d.hxx>
+#include <gp_Pln.hxx>
+#include <ElSLib.hxx>
+
+namespace {
+    gp_Pnt2d Parameters(const gp_Pln& pln,const gp_Pnt& pnt)
+    {
+        Standard_Real u, v;
+        ElSLib::Parameters(pln, pnt, u,  v);
+        return {u, v};
+    }
+    
+}
 
 Sun_WorkspaceController::Sun_WorkspaceController(Sun::Workspace* workspace)
     : _Workspace(workspace),
-      _MouseEventData(new MouseEventData),
+      _MouseEventData(),
       _CurrentTool(nullptr),
       _CurrentEditor(nullptr),
       _ActiveViewport(nullptr),
@@ -94,7 +108,8 @@ bool Sun_WorkspaceController::startTool(Tool* tool) {
     }
 }
 
-void Sun_WorkspaceController::Invalidate(bool immediateOnly, bool forceRedraw) {
+void Sun_WorkspaceController::Invalidate(bool immediateOnly, bool forceRedraw) 
+{
     _Workspace->setNeedsImmediateRedraw(true);
     if (!immediateOnly)
         _Workspace->setNeedsRedraw(true);
@@ -228,10 +243,10 @@ void Sun_WorkspaceController::initVisualSettings()
 
 void Sun_WorkspaceController::MouseMove(Sun_ViewportController* vc, QPointF pos, Qt::KeyboardModifiers modifiers) 
 {   
-    qDebug() << "Sun_WorkspaceController::MouseMove: ";
-    qDebug() << "   Sun_ViewportController:";
-    qDebug() << "   QPointF:" << pos;
-    qDebug() << "   KeyboardModifiers:" << modifiers;
+    qDebug() << "- Sun_WorkspaceController::MouseMove: ";
+    qDebug() << "   - Sun_ViewportController:" << vc->DumpInfo();
+    qDebug() << "   - QPointF:" << pos;
+    qDebug() << "   - KeyboardModifiers:" << modifiers;
 
     gp_Pnt planePoint;
 
@@ -244,19 +259,23 @@ void Sun_WorkspaceController::MouseMove(Sun_ViewportController* vc, QPointF pos,
     _LastDetectedAisObject = nullptr;
     _LastDetectedOwner = nullptr;
 
-    _MouseEventData->set(vc->Viewport(), pos, planePoint, modifiers);
+    _MouseEventData.set(vc->Viewport(), pos, planePoint, modifiers);
 
-    qDebug() << "Debug: _WorkspaceController::MouseMove: " << pos;
-    for (const auto& handler : enumerateControls()) {
-        if (handler->onMouseMove(_MouseEventData))
+    SetCursorPosition(planePoint);
+    SetCursorPosition2d(::Parameters(Workspace()->WorkingPlane(), planePoint));
+
+    for (const auto& handler : enumerateControls())
+    {
+        if (handler->onMouseMove(&_MouseEventData))
             break;
     }
+
 }
 
 void Sun_WorkspaceController::MouseDown(Sun_ViewportController* viewportController, Qt::KeyboardModifiers modifiers) {
     qDebug() << "Debug: _WorkspaceController::MouseDown: " << modifiers;
     for (const auto& handler : enumerateControls()) {
-        if (handler->onMouseDown(_MouseEventData))
+        if (handler->onMouseDown(&_MouseEventData))
             break;
     }
 }
@@ -264,7 +283,7 @@ void Sun_WorkspaceController::MouseDown(Sun_ViewportController* viewportControll
 void Sun_WorkspaceController::MouseUp(Sun_ViewportController* viewportController, Qt::KeyboardModifiers modifiers) {
     qDebug() << "Debug: _WorkspaceController::MouseUp: " << modifiers;
     for (const auto& handler : enumerateControls()) {
-        if (handler->onMouseUp(_MouseEventData))
+        if (handler->onMouseUp(&_MouseEventData))
             break;
     }
 }

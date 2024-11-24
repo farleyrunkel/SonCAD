@@ -60,7 +60,7 @@ public:
 	void SetWindow(const Handle(Aspect_Window)& theWindow,
 				   const Aspect_RenderingContext theContext = nullptr);
 
-	QString DumpInfo(bool theIsBasic, bool theToPrint);
+	QString DumpInfo(bool theIsBasic = true);
 
 	void MouseMove(const QPointF& pos, Qt::KeyboardModifiers modifiers,
 				   MouseMoveMode mode = MouseMoveMode::None);

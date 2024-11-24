@@ -19,7 +19,7 @@ void Sun_ViewportController::SetWindow(const Handle(Aspect_Window)& theWindow, c
 	}
 }
 
-QString Sun_ViewportController::DumpInfo(bool theIsBasic, bool theToPrint) {
+QString Sun_ViewportController::DumpInfo(bool theIsBasic) {
 	TCollection_AsciiString anInfo;
 	if (!View().IsNull()) {
 		TColStd_IndexedDataMapOfStringString aGlCapsDict;
@@ -34,10 +34,6 @@ QString Sun_ViewportController::DumpInfo(bool theIsBasic, bool theToPrint) {
 				}
 				anInfo += aValueIter.Key() + ": " + aValueIter.Value();
 			}
-		}
-
-		if (theToPrint) {
-			Message::SendInfo(anInfo);
 		}
 	}
 	return QString::fromUtf8(anInfo.ToCString());
