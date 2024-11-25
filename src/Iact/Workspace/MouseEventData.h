@@ -30,10 +30,12 @@ class TopoDS_Shape;
 class Sun_Viewport;
 //--------------------------------------------------------------------------------------------------
 // 鼠标事件数据结构
-class MouseEventData {
- public:
+class MouseEventData 
+{
+public:
     // 定义元素类，包含交互对象、实体和形状信息
-    struct Element {
+    struct Element 
+    {
         AIS_InteractiveObject* aisObject;
         InteractiveEntity* entity;
         TopoDS_Shape* brepShape;
@@ -50,7 +52,8 @@ class MouseEventData {
     };
 
     // 返回选项类
-    class ReturnOptions {
+    class ReturnOptions 
+    {
     public:
         QList<Element> additionalHighlights;
         bool forceReDetection = false;
@@ -64,14 +67,7 @@ class MouseEventData {
         }
     };
 
-    // 鼠标事件数据的主要属性
-    Sun_Viewport* Viewport = nullptr;
-    QPointF screenPoint;
-    gp_Pnt PointOnPlane;
-    Qt::KeyboardModifiers modifierKeys;
-    QList<Element> detectedElements;
-    ReturnOptions returnOptions;
-
+public:
     // 构造函数
     MouseEventData() {}
     MouseEventData(Sun_Viewport* vp, const QPointF& sp, const gp_Pnt& pp, Qt::KeyboardModifiers mk)
@@ -94,8 +90,8 @@ class MouseEventData {
 
     // 设置检测元素的列表
     void setDetectedElements(const QList<AIS_InteractiveObject*>& aisObjects,
-        const QList<InteractiveEntity*>& entities,
-        const QList<TopoDS_Shape*>& brepShapes);
+                             const QList<InteractiveEntity*>& entities,
+                             const QList<TopoDS_Shape*>& brepShapes);
 
     // 设置单个检测元素
     void setDetectedElement(AIS_InteractiveObject* aisObject, InteractiveEntity* entity, TopoDS_Shape* brepShape);
@@ -104,6 +100,13 @@ class MouseEventData {
     //Ax1 pickAxis() const {
     //    return viewport->ViewAxis(screenPoint.x(), screenPoint.y());
     //}
+    // 鼠标事件数据的主要属性
+    Sun_Viewport* Viewport = nullptr;
+    QPointF screenPoint;
+    gp_Pnt PointOnPlane;
+    Qt::KeyboardModifiers modifierKeys;
+    QList<Element> detectedElements;
+    ReturnOptions returnOptions;
 };
 
 #endif  // SRC_IACT_WORKSPACE_MOUSEEVENTDATA_H_

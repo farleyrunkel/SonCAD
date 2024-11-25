@@ -8,7 +8,6 @@
 
 PointAction::PointAction() 
     : ToolAction(),
-      _IsFinished(false),
       _Marker(nullptr){
     qDebug() << "Debug: PointAction::PointAction";
 }
@@ -20,19 +19,20 @@ bool PointAction::onStart()
 }
 
 bool PointAction::onMouseMove(MouseEventData* data) {
-    qDebug() << "Debug: PointAction::onMouseMove";
+    qDebug() << "- PointAction::onMouseMove";
     if (!_IsFinished) {
         _EnsureMarker();
         ProcessMouseInput(data);
+        auto workingPlane = WorkspaceController()->Workspace()->WorkingPlane();
+
         EventArgs* args = new EventArgs(
             _CurrentPoint,
-            ProjLib::Project(WorkspaceController()->Workspace()->WorkingPlane(), _CurrentPoint),
+            ProjLib::Project(workingPlane, _CurrentPoint),
             _CurrentPoint,
             data
         );
 
         emit Preview(args);
-        qDebug() << "Debug: _Marker->Set(args->Point): " << args->Point.X() << " " << args->Point.Y();
 
         _Marker->Set(args->Point);
         WorkspaceController()->Invalidate();

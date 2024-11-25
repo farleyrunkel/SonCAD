@@ -31,6 +31,11 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
     void Add(VisualObject* visual);
     void Add(IHudElement* hudElement);
 
+    // Assuming cleanup and cleanedUp are functions from the base class
+    void cleanup() {
+        // Resource cleanup implementation
+    }
+
  public:
     virtual bool onMouseMove(MouseEventData* data) override {
         auto children = GetChildren();

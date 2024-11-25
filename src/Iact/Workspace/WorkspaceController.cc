@@ -259,7 +259,12 @@ void Sun_WorkspaceController::MouseMove(Sun_ViewportController* vc, QPointF pos,
     _LastDetectedAisObject = nullptr;
     _LastDetectedOwner = nullptr;
 
+    qDebug() << "   - PointPlane: " << planePoint.X() << " " << planePoint.Y();
+
     _MouseEventData.set(vc->Viewport(), pos, planePoint, modifiers);
+    
+    auto _PointPlane1 = _MouseEventData.PointOnPlane;
+    qDebug() << "   - PointPlane1: " << _PointPlane1.X() << " " << _PointPlane1.Y();
 
     SetCursorPosition(planePoint);
     SetCursorPosition2d(::Parameters(Workspace()->WorkingPlane(), planePoint));
@@ -269,7 +274,6 @@ void Sun_WorkspaceController::MouseMove(Sun_ViewportController* vc, QPointF pos,
         if (handler->onMouseMove(&_MouseEventData))
             break;
     }
-
 }
 
 void Sun_WorkspaceController::MouseDown(Sun_ViewportController* viewportController, Qt::KeyboardModifiers modifiers) {

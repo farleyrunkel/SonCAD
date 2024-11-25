@@ -15,15 +15,29 @@ class ToolAction : public WorkspaceControl {
     explicit ToolAction(QObject* parent = nullptr) {};
 
     // Start and stop functions
-    bool start() { return onStart(); }
-    virtual void reset() { m_isFinished = false; }
-    void stop() { onStop(); cleanup(); assert(cleanedUp()); }
+    bool start() { 
+        return onStart(); 
+    }
+    virtual void reset() 
+    {
+        _IsFinished = false; 
+    }
+    void stop() 
+    { 
+        onStop();
+        cleanup();
+    }
 
-    bool isFinished() const { return m_isFinished; }
+    bool isFinished() const { return _IsFinished; }
+
  protected:
     // Virtual function for subclasses to override
     virtual bool onStart() { return false; }
     virtual void onStop() {}
+    virtual void Reset() 
+    {
+        _IsFinished = false;
+    }
 
     //// Override from base class
     // bool onEntitySelectionChanging(const std::vector<InteractiveEntity*>& entitiesToSelect,
@@ -31,18 +45,9 @@ class ToolAction : public WorkspaceControl {
     //     return true;
     // }
 
- private:
-    // Assuming cleanup and cleanedUp are functions from the base class
-    void cleanup() {
-        // Resource cleanup implementation
-    }
-    bool cleanedUp() const {
-        // Check if cleanup is complete
-        return true;
-    }
 
-private:
-    bool m_isFinished = false;
+protected:
+    bool _IsFinished = false;
 };
 
 #endif  // SRC_IACT_FRAMEWORK_TOOLACTION_H_

@@ -64,9 +64,11 @@ void Tool::Cleanup() {
 	//BaseCleanup();
 }
 
-bool Tool::StartAction(ToolAction* toolAction, bool exclusive) {
-	if (!m_toolActions.isEmpty() && std::find(m_toolActions.begin(), m_toolActions.end(), toolAction) != m_toolActions.end())
+bool Tool::StartAction(ToolAction* toolAction, bool exclusive) 
+{
+	if (m_toolActions.contains(toolAction)) {
 		return true;
+	}
 
 	try {
 		if (exclusive) {
@@ -93,8 +95,9 @@ void Tool::StopAction(ToolAction* toolAction) {
 	if (toolAction == nullptr)
 		return;
 
-	if (!m_toolActions.isEmpty())
-		m_toolActions.erase(std::remove(m_toolActions.begin(), m_toolActions.end(), toolAction), m_toolActions.end());
+	if (!m_toolActions.isEmpty()) {
+		m_toolActions.removeOne(toolAction);
+	}
 
 	toolAction->stop();
 	emit toolActionChanged(toolAction);

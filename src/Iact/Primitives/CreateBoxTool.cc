@@ -9,6 +9,10 @@ namespace {
     double RoundToNearest(double value, double divider) {
         return std::round(value / divider) * divider;
     }
+
+    gp_Pnt Rounded (const gp_Pnt& pnt) { 
+        return  {std::round(pnt.X()),std::round(pnt.Y()),std::round(pnt.Z())};
+    };
 }
 
 CreateBoxTool::CreateBoxTool() 
@@ -36,31 +40,36 @@ bool CreateBoxTool::OnStart() {
 void CreateBoxTool::_EnsurePreviewShape() {}
 
 void CreateBoxTool::_PivotAction_Preview(PointAction::EventArgs* args) {
-	qDebug() << "Debug: CreateBoxTool::_PivotAction_Preview";
+	qDebug() << "- CreateBoxTool::_PivotAction_Preview";
 	if (_Coord2DHudElement) {
 		_Coord2DHudElement->SetValues(args->Point.X(), args->Point.Y());
 	}
+    _PointPlane1 = args->PointOnPlane;
+    qDebug() << "   - PointPlane1: " << _PointPlane1.X() << " " << _PointPlane1.Y();
 }
 
-void CreateBoxTool::_PivotAction_Finished(PointAction::EventArgs* args) {
-	qDebug() << "Debug: CreateBoxTool::_PivotAction_Finished";
+void CreateBoxTool::_PivotAction_Finished(PointAction::EventArgs* args) 
+{
+	qDebug() << "- CreateBoxTool::_PivotAction_Finished";
+
+    _Plane = WorkspaceController()->Workspace()->WorkingPlane();
+    _PointPlane1 = args->PointOnPlane;
+    qDebug() << "   - PointPlane1: " << _PointPlane1.X() << " " << _PointPlane1.Y();
 
 	PointAction* action = qobject_cast<PointAction*>(sender());
 	if (action == nullptr) {
 		return;
 	}
 
-	_Plane = WorkspaceController()->Workspace()->WorkingPlane();
-	_PointPlane1 = args->PointOnPlane;
+    StopAction(action);
 
-	StopAction(action);
-	auto newAction = new PointAction();
+    auto newAction = new PointAction();
 
-	connect(newAction, &PointAction::Preview, this, &CreateBoxTool::_BaseRectAction_Preview);
-	connect(newAction, &PointAction::Finished, this, &CreateBoxTool::_BaseRectAction_Finished);
+    connect(newAction, &PointAction::Preview, this, &CreateBoxTool::_BaseRectAction_Preview);
+    connect(newAction, &PointAction::Finished, this, &CreateBoxTool::_BaseRectAction_Finished);
 
-	if (!StartAction(newAction))
-		return;
+    if (!StartAction(newAction))
+        return;
 
 	_CurrentPhase = Phase::BaseRect;
 	SetHintMessage("Select opposite corner point, press `k:Ctrl` to round length and width to grid stepping.");
@@ -81,6 +90,8 @@ void CreateBoxTool::_BaseRectAction_Preview(PointAction::EventArgs* args)
     {
         _PointPlane2 = args->PointOnPlane;
     }
+    qDebug() << "   - PointPlane1: " << _PointPlane1.X() << " " << _PointPlane1.Y();
+    qDebug() << "   - PointPlane2: " << _PointPlane2.X() << " " << _PointPlane2.Y();
 
     double dimX = std::abs(_PointPlane1.X() - _PointPlane2.X());
     double dimY = std::abs(_PointPlane1.Y() - _PointPlane2.Y());
@@ -126,10 +137,7 @@ void CreateBoxTool::_BaseRectAction_Preview(PointAction::EventArgs* args)
 
     _EnsurePreviewShape();
 
-    auto position = ElSLib::Value(posX, posY, _Plane);
-    position.SetX(std::round(position.X()));
-    position.SetY(std::round(position.Y()));
-    position.SetZ(std::round(position.Z()));
+    auto position = ::Rounded(ElSLib::Value(posX, posY, _Plane));
     // _PreviewShape->Body()->SetPosition(position);
     _PreviewShape->SetDimensionX(dimX);
     _PreviewShape->SetDimensionY(dimY);
@@ -142,10 +150,10 @@ void CreateBoxTool::_BaseRectAction_Preview(PointAction::EventArgs* args)
     //    }
     //}
 
-    //if (args)
-    //{
-    //    args->MarkerPosition = ElSLib::Value(_PointPlane2.X(), _PointPlane2.Y(), _Plane).rounded();
-    //}
+    if (args != nullptr)
+    {
+        args->MarkerPosition = ::Rounded(ElSLib::Value(_PointPlane2.X(), _PointPlane2.Y(), _Plane));
+    }
 
     _Coord2DHudElement->SetValues(_PointPlane2.X(), _PointPlane2.Y());
     _MultiValueHudElement->SetValues(dimX, dimY);

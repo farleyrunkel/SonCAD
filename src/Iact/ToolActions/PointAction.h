@@ -23,8 +23,8 @@ class PointAction : public ToolAction {
              : Point(p), PointOnPlane(pp), MarkerPosition(mp), MouseEventData(m) {}
         gp_Pnt Point;
         gp_Pnt2d PointOnPlane;
-        MouseEventData* MouseEventData;
         gp_Pnt MarkerPosition;
+        MouseEventData* MouseEventData;
     };
 
  public:
@@ -46,7 +46,6 @@ class PointAction : public ToolAction {
     void Finished(PointAction::EventArgs* args);
 
 private:
-    bool _IsFinished;
     Marker* _Marker;
     gp_Pnt _CurrentPoint;
 };

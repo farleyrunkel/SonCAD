@@ -4,7 +4,7 @@
 
 Sun_WorkingContext::Sun_WorkingContext()
     : QObject(),
-    _WorkingPlane(gp::XOY()),
+    _WorkingPlane(),
     _GridType(Sun::Workspace::GridTypes::Rectangular),
     _GridStep(1.0),
     _GridRotation(0),
