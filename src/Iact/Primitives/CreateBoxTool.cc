@@ -77,7 +77,7 @@ void CreateBoxTool::_PivotAction_Finished(PointAction::EventArgs* args)
 	if (_MultiValueHudElement == nullptr)
 	{
 		_MultiValueHudElement = new MultiValueHudElement();
-		_MultiValueHudElement->SetLabel("Length:", "Width:");
+		_MultiValueHudElement->SetLabel("Length:", "Width :");
 		connect(_MultiValueHudElement, &MultiValueHudElement::MultiValueEntered, 
 				this, &CreateBoxTool::_MultiValueEntered);
 		Add(_MultiValueHudElement);

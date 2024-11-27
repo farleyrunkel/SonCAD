@@ -28,9 +28,8 @@ void Coord2DHudElement::SetValues(double coordX, double coordY)
 
     // Set the width dynamically based on the text width
     setFixedWidth(textWidth + 20); // Add some padding for aesthetic purposes
-    adjustSize();
 
-    emit SizeChanged(size());
+    emit WidthChanged(textWidth + 20);
 }
 
 void Coord2DHudElement::Initialize()

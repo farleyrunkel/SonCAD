@@ -31,39 +31,7 @@ public:
         Initialize();
     }
 
-    virtual void Initialize() override
-    {
-        setFixedSize(100, 65);
-        // Set up the layout
-        auto* layout = new QGridLayout(this);
-        layout->setContentsMargins(0, 0, 0, 0);
-        layout->setSpacing(2);
-
-        setLayout(layout);
-
-        // Default styles
-        _label1->setFixedSize(50, 26);
-        _label1->setStyleSheet("color: white; font-size: 12px; background: none;");
-
-        _label2->setFixedSize(_label1->size());
-        _label2->setStyleSheet(_label1->styleSheet());
-
-        // Set up label and line edits
-        _edit1->setFixedSize(_label1->size());
-        _edit1->setValidator(new QDoubleValidator(this));
-
-        _edit2->setFixedSize(_edit1->size());
-        _edit2->setValidator(new QDoubleValidator(this));
-
-        layout->addWidget(_label1, 0, 0);
-        layout->addWidget(_edit1, 0, 1);
-        layout->addWidget(_label2, 1, 0);
-        layout->addWidget(_edit2, 1, 1);
-
-        // Connect signals
-        connect(_edit1, &QLineEdit::editingFinished, this, &MultiValueHudElement::_onEdit1Finished);
-        connect(_edit2, &QLineEdit::editingFinished, this, &MultiValueHudElement::_onEdit2Finished);
-    }
+    virtual void Initialize() override;
 
     void SetLabel(const QString& text1, const QString& text2 ) {
         SetLabel1(text1);
@@ -78,37 +46,22 @@ public:
         _label2->setText(text);
     }
 
-    void SetValues(double value1, double value2)
-    {
-        SetValue1(value1);
-        SetValue2(value2);
-        QSize size1 = {_label1->width() + _edit1->width(), _label1->height() + _edit1->height()};
-        QSize size2 = {_label2->width() + _edit2->width(), _label2->height() + _edit2->height()};
-        QSize size = {std::max(size1.width(), size2.width()) + 5, size1.height() + size2.height() + 5};
-        setFixedSize(size);
-        emit SizeChanged(size);
-    }
+    void SetValues(double value1, double value2);
 
     void SetValue1(double value)
     {
-        _edit1->setText(QString::number(value, 'f', 3));
-        // Calculate the required width for the text
-        QFontMetrics metrics(font());
-        int textWidth = metrics.horizontalAdvance(_edit1->text());
-
-        // Set the width dynamically based on the text width
-        _edit1->setFixedWidth(std::min(textWidth + 10, 50)); // Add some padding for aesthetic purposes
+        int newWidth = _SetValue(_edit1, value);
+        _label1->setFixedWidth(newWidth);
+        this->adjustSize();
+        emit WidthChanged(this->width());
     }
 
     void SetValue2(double value)
     {
-        _edit2->setText(QString::number(value, 'f', 3));
-        // Calculate the required width for the text
-        QFontMetrics metrics(font());
-        int textWidth = metrics.horizontalAdvance(_edit2->text());
-
-        // Set the width dynamically based on the text width
-        _edit2->setFixedWidth(std::min(textWidth + 10, 50)); // Add some padding for aesthetic purposes
+        int newWidth = _SetValue(_edit2, value);
+        _label2->setFixedWidth(newWidth);
+        this->adjustSize();
+        emit WidthChanged(this->width());
     }
 
 protected:
@@ -166,6 +119,9 @@ private:
             event->accept();
         }
     }
+
+    int _SetValue(QLineEdit* edit, double value);
+
 private:
     QLabel* _label1;
     QLabel* _label2;

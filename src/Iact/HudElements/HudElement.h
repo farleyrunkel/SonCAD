@@ -23,6 +23,8 @@ public:
 
 signals:
 	void SizeChanged(const QSize&);
+	void WidthChanged(int);
+	void HeightChanged(int);
 
 private:
 	Sun_WorkspaceController* _WorkspaceController;
