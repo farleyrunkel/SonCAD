@@ -22,7 +22,6 @@ public:
 	 virtual void Initialize() = 0;
 
 signals:
-	void SizeChanged(const QSize&);
 	void WidthChanged(int);
 	void HeightChanged(int);
 

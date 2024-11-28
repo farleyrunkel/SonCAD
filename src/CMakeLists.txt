@@ -10,6 +10,8 @@ file(GLOB SUB_DIRECTORY_SOURCES
     "${CMAKE_SOURCE_DIR}/src/*/*.cc"
     "${CMAKE_SOURCE_DIR}/src/*/*/*.h"
     "${CMAKE_SOURCE_DIR}/src/*/*/*.cc"
+    "${CMAKE_SOURCE_DIR}/src/*/*/*/*.h"
+    "${CMAKE_SOURCE_DIR}/src/*/*/*/*.cc"
 )
 
 list(APPEND PROJECT_SOURCES ${SUB_DIRECTORY_SOURCES})

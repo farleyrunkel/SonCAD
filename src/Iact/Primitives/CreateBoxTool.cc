@@ -37,7 +37,29 @@ bool CreateBoxTool::OnStart() {
 	return true;
 }
 
-void CreateBoxTool::_EnsurePreviewShape() {}
+void CreateBoxTool::_EnsurePreviewShape() {
+    if (!_PreviewShape.IsNull())
+        return;
+
+    // Create solid
+    _PreviewShape = new Sun_Box;
+    //{
+    //    DimensionZ = 0.01
+    //};
+    //var body = Body.Create(_PreviewShape);
+    //_PreviewShape.Body.Rotation = WorkspaceController.Workspace.GetWorkingPlaneRotation();
+    //if (body.Layer.IsVisible)
+    //{
+    //    _VisualShape = WorkspaceController.VisualObjects.Get(body, true);
+    //    _IsTemporaryVisual = false;
+    //}
+    //else
+    //{
+    //    _VisualShape = new VisualShape(WorkspaceController, body, VisualShape.Options.Ghosting);
+    //    _IsTemporaryVisual = true;
+    //}
+    //_VisualShape.IsSelectable = false;   
+}
 
 void CreateBoxTool::_PivotAction_Preview(PointAction::EventArgs* args) {
 	qDebug() << "- CreateBoxTool::_PivotAction_Preview";
@@ -138,7 +160,7 @@ void CreateBoxTool::_BaseRectAction_Preview(PointAction::EventArgs* args)
     _EnsurePreviewShape();
 
     auto position = ::Rounded(ElSLib::Value(posX, posY, _Plane));
-    // _PreviewShape->Body()->SetPosition(position);
+    _PreviewShape->Body()->SetPosition(position);
     _PreviewShape->SetDimensionX(dimX);
     _PreviewShape->SetDimensionY(dimY);
 

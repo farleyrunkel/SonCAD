@@ -7,7 +7,7 @@
 #include "gp_Ax3.hxx"       // OpenCASCADE 的 3D 坐标系
 #include "gp_Pln.hxx"       // OpenCASCADE 的平面类型
 
-enum class ShapeType
+enum class Sun_ShapeType
 {
     Solid,
     Shell,
@@ -32,7 +32,7 @@ class IShapeOperand
 public:
     virtual ~IShapeOperand() = default;
 
-    virtual ShapeType GetShapeType() const = 0;
+    virtual Sun_ShapeType ShapeType() const = 0;
 };
 
 //--------------------------------------------------------------------------------------------------

@@ -36,19 +36,6 @@ protected:
 		emit MouseMoved(theEvent->x(), theEvent->y());
 	}
 
-private:
-	void _UpdateSize()
-	{
-		int maxWidth = 0;
-		int accHeight = 0;
-		for (auto* element : _HudElements) {
-			maxWidth = std::max(maxWidth, element->width());
-			accHeight += element->height();		
-		}
-		qDebug() << "_UpdateSize: " << maxWidth << ", " << accHeight;
-		setFixedSize(maxWidth, accHeight);
-	}
-
 signals:
 	void MouseMoved(int x, int y);
 	void HintMessageChanged(const QString& message);

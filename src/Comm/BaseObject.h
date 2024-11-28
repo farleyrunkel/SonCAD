@@ -6,16 +6,19 @@
 #include <QObject>
 #include <QString>
 
-class BaseObject : public QObject {
+#include <Standard_Transient.hxx>
+
+class BaseObject : public QObject, public Standard_Transient
+{
 	Q_OBJECT
 
- public:
+public:
 	BaseObject(QObject* parent = nullptr) : QObject(parent) {}
 
- protected: 
+protected: 
 	virtual void RaisePropertyChanged(const QString& propertyName = "");
 
- signals:
+signals:
 	void propertyChanged(const QString& property);
 };
 

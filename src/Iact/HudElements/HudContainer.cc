@@ -49,6 +49,7 @@ void HudContainer::AddElement(IHudElement* element) {
     });
     setFixedHeight(this->height() + element->height() + this->layout()->spacing());
     setGeometry(this->x(), this->y() - element->height() - this->layout()->spacing(), this->width(), this->height());
+    emit element->WidthChanged(element->width());
 }
 
 void HudContainer::SetHintMessage(const QString& message) {

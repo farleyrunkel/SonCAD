@@ -7,8 +7,10 @@
 #include <QUuid>
 #include <QDebug>
 
+#include "Comm/BaseObject.h"
+
 // Base class for Entity, assuming Entity is derived from QObject for signal/slot support
-class Entity : public QObject 
+class Entity : public BaseObject
 {
     Q_OBJECT
 
@@ -38,6 +40,8 @@ class Entity : public QObject
 
     // For debugging or logging purposes
     virtual QString toString() const;
+
+    void SaveUndo() {};
 
  signals:
     // Signal when the entity is removed

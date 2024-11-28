@@ -1,123 +1,76 @@
-// Copyright [2024] SunCAD
+//// Copyright [2024] SunCAD
 
 #ifndef SRC_CORE_SHAPES_PRIMITIVES_BOX_H_
 #define SRC_CORE_SHAPES_PRIMITIVES_BOX_H_
 
+#include <QObject>
+
 #include <BRepPrimAPI_MakeBox.hxx>
 
 #include "Core/Shapes/Shape.h"
+#include "Core/Shapes/IShapeOperand.h"
 
-class Box : public Shape
+DEFINE_STANDARD_HANDLE(Sun_Box, Standard_Transient)
+
+class Sun_Box final : public Shape
 {
+    Q_OBJECT
+    Q_PROPERTY(double DimensionX READ DimensionX WRITE SetDimensionX NOTIFY DimensionXChanged)
+    Q_PROPERTY(double DimensionY READ DimensionY WRITE SetDimensionY NOTIFY DimensionYChanged)
+    Q_PROPERTY(double DimensionZ READ DimensionZ WRITE SetDimensionZ NOTIFY DimensionZChanged)
+
 public:
-    // Name property, virtual
-    virtual QString name() const {
-        return "Box";
-    }
-    virtual void setName(const QString&) {}
-
-    // Construction Properties
-    double GetDimensionX() const
-    {
-        return _DimensionX;
+    // 类名属性
+    virtual QString name() const override {
+        return "Sun_Box";
     }
 
-    void SetDimensionX(double value)
-    {
-        if (_DimensionX != value)
-        {
-            SaveUndo();
-            _DimensionX = (value != 0.0) ? value : 0.001;
-            Invalidate();
-            RaisePropertyChanged();
-        }
-    }
+    virtual void setName(const QString&) override {}
 
-    //--------------------------------------------------------------------------------------------------
+    // DimensionX 属性
+    double DimensionX() const;
 
-    double GetDimensionY() const
-    {
-        return _DimensionY;
-    }
+    void SetDimensionX(double value);
 
-    void SetDimensionY(double value)
-    {
-        if (_DimensionY != value)
-        {
-            SaveUndo();
-            _DimensionY = (value != 0.0) ? value : 0.001;
-            Invalidate();
-            RaisePropertyChanged();
-        }
-    }
+    // DimensionY 属性
+    double DimensionY() const;
 
-    //--------------------------------------------------------------------------------------------------
+    void SetDimensionY(double value);
 
-    double GetDimensionZ() const
-    {
-        return _DimensionZ;
-    }
+    // DimensionZ 属性
+    double DimensionZ() const;
 
-    void SetDimensionZ(double value)
-    {
-        if (_DimensionZ != value)
-        {
-            SaveUndo();
-            _DimensionZ = (value != 0.0) ? value : 0.001;
-            Invalidate();
-            RaisePropertyChanged();
-        }
-    }
-
-    //--------------------------------------------------------------------------------------------------
+    void SetDimensionZ(double value);
 
     // Initialization
-    Box()
-        : _DimensionX(1.0), _DimensionY(1.0), _DimensionZ(1.0)
-    {
-    }
+    Sun_Box();
 
-    static Box* Create(double dimX, double dimY, double dimZ)
-    {
-        Box* box = new Box();
-        box->SetDimensionX(dimX);
-        box->SetDimensionY(dimY);
-        box->SetDimensionZ(dimZ);
-        return box;
-    }
+    //static Sun_Box* Create(double dimX, double dimY, double dimZ)
+    //{
+    //    Sun_Box* box = new Sun_Box();
+    //    box->SetDimensionX(dimX);
+    //    box->SetDimensionY(dimY);
+    //    box->SetDimensionZ(dimZ);
+    //    return box;
+    //}
 
-    ShapeType GetShapeType() const override
-    {
-        return ShapeType::Solid;
-    }
+    virtual Sun_ShapeType ShapeType() const override;
 
-//protected:
-//    bool MakeInternal(Shape::MakeFlags flags) override
-//    {
-//        double dimX = (_DimensionX != 0.0) ? _DimensionX : 0.001;
-//        double dimY = (_DimensionY != 0.0) ? _DimensionY : 0.001;
-//        double dimZ = (_DimensionZ != 0.0) ? _DimensionZ : 0.001;
-//
-//        BRepPrimAPI_MakeBox makeBox(dimX, dimY, dimZ);
-//        BRep = makeBox.Solid();
-//
-//        return Shape::MakeInternal(flags);
-//    }
+signals:
+    void DimensionXChanged(double);
+    void DimensionYChanged(double);
+    void DimensionZChanged(double);
+
 private:
     void SaveUndo() {
-        // Implement undo-saving logic
+        // 实现保存撤销逻辑
     }
 
     void Invalidate() {
-        // Implement invalidation logic
-    }
-
-    void RaisePropertyChanged() {
-        // Implement property change notification
+        // 实现无效化逻辑
     }
 
 private:
-    // Members
     double _DimensionX = 0.0;
     double _DimensionY = 0.0;
     double _DimensionZ = 0.0;
