@@ -12,7 +12,7 @@
 
 DEFINE_STANDARD_HANDLE(Sun_Box, Standard_Transient)
 
-class Sun_Box final : public Shape
+class Sun_Box final : public Sun_Shape
 {
     Q_OBJECT
     Q_PROPERTY(double DimensionX READ DimensionX WRITE SetDimensionX NOTIFY DimensionXChanged)
@@ -21,11 +21,11 @@ class Sun_Box final : public Shape
 
 public:
     // 类名属性
-    virtual QString name() const override {
+    virtual QString Name() const override {
         return "Sun_Box";
     }
 
-    virtual void setName(const QString&) override {}
+    virtual void SetName(const QString&) override {}
 
     // DimensionX 属性
     double DimensionX() const;

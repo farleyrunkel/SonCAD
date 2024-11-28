@@ -76,7 +76,7 @@ namespace Sun {
 		}
 		break;
 		default:
-		qDebug() << "Unsupported QVariant type for serialization:" << value.typeName();
+		qDebug() << "Unsupported QVariant type for serialization:" << value.TypeName();
 		break;
 		}
 	}

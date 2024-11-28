@@ -152,7 +152,6 @@ void Sun::Workspace::setGridEnabled(bool value) {
     if (_GridEnabled != value) {
         _GridEnabled = value;
         //Model.MarkAsUnsaved();
-        RaisePropertyChanged();
         _RaiseGridChanged();
     }
 }
@@ -170,7 +169,6 @@ void Sun::Workspace::SetGridStep(double value ) {
     {
         _CurrentWorkingContext->SetGridStep(value) ;
         // Model.MarkAsUnsaved();
-        RaisePropertyChanged();
         _RaiseGridChanged();
     }
 }

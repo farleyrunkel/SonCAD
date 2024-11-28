@@ -16,11 +16,11 @@ class InteractiveEntity : public Entity
     Q_OBJECT
 
 public:
-    explicit InteractiveEntity(QObject* parent = nullptr);
+    explicit InteractiveEntity();
 
     // Name property
-    QString name() const override;
-    void setName(const QString& name) override;
+    QString Name() const override;
+    void SetName(const QString& Name) override;
 
     // IsVisible property
     bool isVisible() const;
@@ -35,7 +35,7 @@ public:
 
     // Methods
     void invalidate();
-    virtual void remove() override;
+    virtual void Remove() override;
     virtual TopoDS_Shape getTransformedBRep() const;
 
 signals:

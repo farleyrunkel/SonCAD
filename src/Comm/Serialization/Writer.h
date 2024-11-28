@@ -78,22 +78,22 @@ namespace Sun {
         }
 
         // 写入实例引用
-        bool WriteInstanceReference(QObject* instance, const QUuid& guid) {
+        bool WriteInstanceReference(QObject* instance, const QUuid& Guid) {
             if (!instance) {
                 WriteNullReference();
                 return true;
             }
-            if (guid.isNull()) {
+            if (Guid.isNull()) {
                 return false;
             }
 
-            if (_WrittenInstances.contains(guid)) {
+            if (_WrittenInstances.contains(Guid)) {
                 WriteChar('?');
-                WriteValueString(guid.toString(QUuid::WithoutBraces));
+                WriteValueString(Guid.toString(QUuid::WithoutBraces));
                 return true;
             }
 
-            _WrittenInstances.insert(guid, instance);
+            _WrittenInstances.insert(Guid, instance);
             return false;
         }
 

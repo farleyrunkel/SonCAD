@@ -13,14 +13,14 @@ public:
         // 遍历所有属性并序列化
         for (int i = 0; i < metaObj->propertyCount(); ++i) {
             const QMetaProperty property = metaObj->property(i);
-            const QString propName = QString::fromUtf8(property.name());
+            const QString propName = QString::fromUtf8(property.Name());
 
             // 序列化属性名称
             ar& propName;
 
             // 序列化属性值（需要保证属性是可读取的）
             if (property.isReadable()) {
-                QVariant propValue = obj->property(property.name());
+                QVariant propValue = obj->property(property.Name());
                 serializeQVariant(ar, propValue);  // 使用 QVariant 的专门序列化方法
             }
         }
@@ -34,18 +34,18 @@ public:
         // 遍历所有的属性并反序列化
         for (int i = 0; i < metaObj->propertyCount(); ++i) {
             const QMetaProperty property = metaObj->property(i);
-            const QString propName = QString::fromUtf8(property.name());
+            const QString propName = QString::fromUtf8(property.Name());
 
             // 反序列化属性名称
-            QString name;
-            ar& name;
+            QString Name;
+            ar& Name;
 
             // 如果名称匹配，进行反序列化
-            if (name == propName) {
+            if (Name == propName) {
                 QVariant propValue;
                 deserialize(ar, propValue);  // 反序列化 QVariant 值
                 if (property.isWritable()) {
-                    obj->setProperty(property.name(), propValue);  // 设置反序列化后的值
+                    obj->setProperty(property.Name(), propValue);  // 设置反序列化后的值
                 }
             }
         }

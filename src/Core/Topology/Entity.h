@@ -7,58 +7,75 @@
 #include <QUuid>
 #include <QDebug>
 
+#include <Standard_Transient.hxx>
+
 #include "Comm/BaseObject.h"
+
+class IDocument;
+
+// DEFINE_STANDARD_HANDLE(Entity, Standard_Transient)
 
 // Base class for Entity, assuming Entity is derived from QObject for signal/slot support
 class Entity : public BaseObject
 {
     Q_OBJECT
+    Q_PROPERTY(QUuid Uuid READ Guid WRITE SetGuid NOTIFY GuidChanged)
+    Q_PROPERTY(bool HasErrors READ HasErrors WRITE SetHasErrors NOTIFY HasErrorsChanged)
+    Q_PROPERTY(QString Name READ Name WRITE SetName)
+    Q_PROPERTY(QString TypeName READ TypeName)
+    Q_PROPERTY(IDocument* Document READ Document WRITE SetDocument)
 
- public:
+public:
     // Constructor
-    explicit Entity(QObject* parent = nullptr);
+    Entity();
 
+public:
     // Guid property (using QUuid)
-    QUuid guid() const;
+    QUuid Guid() const;
 
-    void setGuid(const QUuid& guid);
+    void SetGuid(const QUuid& Guid);
 
     // Type name property
-    QString typeName() const;
+    QString TypeName() const;
 
     // Name property, virtual
-    virtual QString name() const = 0;
-    virtual void setName(const QString&) = 0;
+    virtual QString Name() const;
+
+    virtual void SetName(const QString&);
 
     // Error handling
-    bool hasErrors() const;
+    bool HasErrors() const;
 
-    void setHasErrors(bool hasErrors);
+    void SetHasErrors(bool HasErrors);
+    // Error handling
+    IDocument* Document() const;
+
+    void SetDocument(IDocument* HasErrors);
 
     // Remove entity
-    virtual void remove();
+    virtual void Remove();
 
     // For debugging or logging purposes
-    virtual QString toString() const;
+    virtual QString ToString() const;
 
-    void SaveUndo() {};
+    void SaveUndo();;
 
- signals:
-    // Signal when the entity is removed
-    void entityRemoved();
+signals:
+    // Signal when hasErrors changes
+    void HasErrorsChanged(bool);
 
     // Signal when the entity's GUID changes
-    void guidChanged();
+    void GuidChanged(const QUuid&);
 
     // Signal when the error state changes
-    void errorStateChanged();
-
-    // Signal when hasErrors changes
-    void hasErrorsChanged();
+    void ErrorStateChanged();
+    // Signal when the entity is removed
+    void EntityRemoved();
 
  protected:
-    QUuid _guid;
-    bool _hasErrors;
+    QUuid _Guid;
+    bool _HasErrors;
+    IDocument* _Document;
 };
 
 #endif  // SRC_CORE_TOPOLOGY_ENTITY_H_

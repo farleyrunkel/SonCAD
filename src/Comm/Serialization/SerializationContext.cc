@@ -41,13 +41,13 @@ namespace Sun {
 	// КµАэ№ЬАн
 	template <typename T>
 	void SerializationContext::SetInstance(T* instance) {
-		const QString TypeName = QString::fromUtf8(typeid(T).name());
+		const QString TypeName = QString::fromUtf8(typeid(T).Name());
 		_Instances[TypeName] = instance;
 	}
 
 	template <typename T>
 	T* SerializationContext::GetInstance() const {
-		const QString TypeName = QString::fromUtf8(typeid(T).name());
+		const QString TypeName = QString::fromUtf8(typeid(T).Name());
 		if (_Instances.contains(TypeName)) {
 			return static_cast<T*>(_Instances[TypeName]);
 		}
@@ -56,7 +56,7 @@ namespace Sun {
 
 	template <typename T>
 	void SerializationContext::RemoveInstance() {
-		const QString TypeName = QString::fromUtf8(typeid(T).name());
+		const QString TypeName = QString::fromUtf8(typeid(T).Name());
 		_Instances.remove(TypeName);
 	}
 }

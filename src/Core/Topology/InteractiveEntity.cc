@@ -3,15 +3,15 @@
 #include "Core/Topology/InteractiveEntity.h"
 
 // Constructor
-InteractiveEntity::InteractiveEntity(QObject* parent)
-    : Entity(parent), _name("Unnamed"), _isVisible(true), _layerId(QUuid::createUuid()) {}
+InteractiveEntity::InteractiveEntity()
+    : Entity(), _name("Unnamed"), _isVisible(true), _layerId(QUuid::createUuid()) {}
 
 // Name property
-QString InteractiveEntity::name() const {
+QString InteractiveEntity::Name() const {
     return _name;
 }
 
-void InteractiveEntity::setName(const QString& name) {
+void InteractiveEntity::SetName(const QString& Name) {
     //if (_name != name) {
     //    SaveUndo();
     //    _name = name;
@@ -84,8 +84,8 @@ void InteractiveEntity::invalidate() {
 }
 
 // Remove method
-void InteractiveEntity::remove() {
-    Entity::remove();
+void InteractiveEntity::Remove() {
+    Entity::Remove();
 }
 
 // Get transformed BRep

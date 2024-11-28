@@ -1,52 +1,95 @@
 // Copyright [2024] SunCAD
 
+// Own include
 #include "Core/Topology/Entity.h"
 
+// Qt includes
+#include <QUuid>
+#include <QMetaType>
+
+// Project includes
+#include "Core/Topology/Document.h"
+
+
 // Constructor
- Entity::Entity(QObject* parent)
-    : BaseObject(parent), _guid(QUuid::createUuid()),  _hasErrors(false) {
-    qDebug() << "_Entity created with GUID:" << _guid.toString();
+Entity::Entity() : _Guid(QUuid::createUuid()), _HasErrors(false) 
+{
 }
 
 // Guid property (using QUuid)
-QUuid Entity::guid() const {
-     return _guid;
+QUuid Entity::Guid() const 
+{
+     return _Guid;
 }
 
-void Entity::setGuid(const QUuid& guid) {
+void Entity::SetGuid(const QUuid& value)
+{
+    if (_Document) {
+        _Document->UnregisterInstance(this);
+    }
+    _Guid = value;
+    if (_Document) {
+        _Document->RegisterInstance(this);
+    }
 }
 
 // Type name property
-QString Entity::typeName() const {
+QString Entity::TypeName() const 
+{
     return QString(metaObject()->className());
 }
 
 // Name property, virtual
-QString Entity::name() const {
+QString Entity::Name() const
+{
     return "Unknown";
 }
 
-void Entity::setName(const QString&) {
-    // Override in subclasses
+void Entity::SetName(const QString&) 
+{
 }
 
 // Error handling
-bool Entity::hasErrors() const {
-    return _hasErrors;
+bool Entity::HasErrors() const 
+{
+    return _HasErrors;
 }
 
-void Entity::setHasErrors(bool hasErrors) {
-    if (_hasErrors != hasErrors) {
-        _hasErrors = hasErrors;
-        emit hasErrorsChanged();
-        emit errorStateChanged();
+void Entity::SetHasErrors(bool HasErrors) 
+{
+    if (_HasErrors != HasErrors) {
+        _HasErrors = HasErrors;
+        emit HasErrorsChanged(HasErrors);
+        emit ErrorStateChanged();
+    }
+}
+
+// Error handling
+
+IDocument* Entity::Document() const 
+{
+    return _Document;
+}
+
+void Entity::SetDocument(IDocument* value)
+{
+    if (_Document) {
+        _Document->UnregisterInstance(this);
+    }
+    _Document = value;
+    if (_Document) {
+        _Document->RegisterInstance(this);
     }
 }
 
 // Remove entity
-void Entity::remove() {
+void Entity::Remove() 
+{
 }
 
-QString Entity::toString() const {
-    return name();
+QString Entity::ToString() const 
+{
+    return Name();
 }
+
+void Entity::SaveUndo() {}

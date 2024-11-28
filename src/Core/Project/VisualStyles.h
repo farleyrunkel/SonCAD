@@ -61,21 +61,21 @@ public:
 // LineStyleDescription struct
 struct LineStyleDescription {
     LineStyle style;
-    std::string name;
+    std::string Name;
     std::vector<double> pattern;
 
     LineStyleDescription(LineStyle s, const std::string& n, const std::vector<double>& p)
-        : style(s), name(n), pattern(p) {}
+        : style(s), Name(n), pattern(p) {}
 };
 
 // LineThicknessDescription struct
 struct LineThicknessDescription {
     LineThickness thickness;
-    std::string name;
+    std::string Name;
     double width;
 
     LineThicknessDescription(LineThickness t, const std::string& n, double w)
-        : thickness(t), name(n), width(w) {}
+        : thickness(t), Name(n), width(w) {}
 };
 
 // StyleHelper class

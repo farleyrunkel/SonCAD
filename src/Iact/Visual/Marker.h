@@ -96,8 +96,8 @@ private:
     void _UpdatePresentation();
 
     // Static method to load marker images
-    static Marker::MarkerImage _GetMarkerImage(const QString& name, int size);
-    static Handle(Image_PixMap) _TryGetMarkerAsImage(const QString& name, int size);
+    static Marker::MarkerImage _GetMarkerImage(const QString& Name, int size);
+    static Handle(Image_PixMap) _TryGetMarkerAsImage(const QString& Name, int size);
 
 private:
     Styles _Styles;

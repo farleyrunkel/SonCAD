@@ -186,9 +186,9 @@ void Marker::_UpdatePresentation()
     }
 }
 
-Marker::MarkerImage Marker::_GetMarkerImage(const QString& name, int size)
+Marker::MarkerImage Marker::_GetMarkerImage(const QString& Name, int size)
 {
-    auto pixmap = _TryGetMarkerAsImage(name, size);
+    auto pixmap = _TryGetMarkerAsImage(Name, size);
 
     MarkerImage image;
     image.PixMap = pixmap;
@@ -199,12 +199,12 @@ Marker::MarkerImage Marker::_GetMarkerImage(const QString& name, int size)
     return image;
 }
 
-Handle(Image_PixMap) Marker::_TryGetMarkerAsImage(const QString& name, int size) 
+Handle(Image_PixMap) Marker::_TryGetMarkerAsImage(const QString& Name, int size) 
 {
     int dpiScale = 1;
     int finalSize = static_cast<int>(size * dpiScale);
 
-    QString imagePath = ResourceUtils::iconPath("Marker/" + name);
+    QString imagePath = ResourceUtils::iconPath("Marker/" + Name);
 
     QImage image(imagePath);
     if (!image.load(imagePath, "svg")) 
@@ -216,7 +216,7 @@ Handle(Image_PixMap) Marker::_TryGetMarkerAsImage(const QString& name, int size)
     Handle(Image_PixMap) pixmap = PixMapHelper::convertFromBitmap(image.scaled(finalSize, finalSize));
     if (pixmap.IsNull()) 
     {
-        qDebug() << "Could not load marker image " << name << " into pixmap.";
+        qDebug() << "Could not load marker image " << Name << " into pixmap.";
         return nullptr;
     }
     return pixmap;

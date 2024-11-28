@@ -16,22 +16,21 @@
 #include "Core/EntityContainer.h"
 #include "Core/Topology/Entity.h"
 
-class IDocument {
- public:
-    virtual ~IDocument() = default;
-
-    virtual void registerInstance(Entity* entity) = 0;
-    virtual void unregisterInstance(Entity* entity) = 0;
-    virtual Entity* findInstance(const QUuid& instanceGuid) = 0;
-    virtual void instanceChanged(Entity* entity) = 0;
+class IDocument 
+{
+public:
+    virtual void RegisterInstance(Entity* entity) = 0;
+    virtual void UnregisterInstance(Entity* entity) = 0;
+    virtual Entity* FindInstance(const QUuid& instanceGuid) = 0;
+    virtual void InstanceChanged(Entity* entity) = 0;
 };
 
-class Document : public EntityContainer, public IDocument {
+class Document : public EntityContainer, public IDocument 
+{
     Q_OBJECT
 
- public:
-    explicit Document(QObject* parent = nullptr)
-        : EntityContainer(parent) {}
+public:
+    Document(): EntityContainer() {}
 
 
 //    // Properties
@@ -176,7 +175,7 @@ class Document : public EntityContainer, public IDocument {
 //    bool _hasUnsavedChanges;
 
     // Instances map
-    QMap<QUuid, QWeakPointer<Entity>> _instances;
+    // QMap<QUuid, QWeakPointer<Entity>> _instances;
 };
 
 #endif // SRC_CORE_TOPOLOGY_DOCUMENT_H_

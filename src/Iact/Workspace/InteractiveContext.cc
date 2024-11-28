@@ -112,18 +112,7 @@ void InteractiveContext::addToScriptMruList(const QString& filePath) {
         }
         m_recentUsedScripts.prepend(filePath);
     }
-
-    emit propertyChanged("recentUsedScripts");
 }
 
 void InteractiveContext::initialize() {
-    connect(this, &InteractiveContext::workspaceControllerChanged, 
-        [this]() {emit propertyChanged("WorkspaceController"); }
-    );
-    connect(this, &InteractiveContext::documentControllerChanged, 
-        [this]() {emit propertyChanged("documentController"); }
-    );
-    connect(this, &InteractiveContext::viewportControllerChanged, 
-        [this]() {emit propertyChanged("viewportController"); }
-    );
 }

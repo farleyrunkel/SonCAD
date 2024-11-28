@@ -11,36 +11,41 @@
 
 #include "Core/Topology/InteractiveEntity.h"
 
-namespace Sun
+class Sun_Shape;
+
+DEFINE_STANDARD_HANDLE(Sun_Body, Standard_Transient)
+
+class Sun_Body : public InteractiveEntity 
 {
-    DEFINE_STANDARD_HANDLE(Body, Standard_Transient)
+    Q_OBJECT
 
-    class Body : public InteractiveEntity 
+public:
+
+    Sun_Body() {}
+
+
+    bool AddShape(const Handle(Sun_Shape)& shape, bool saveUndo = true)
     {
-        Q_OBJECT
 
-    public:
+        return true;
+    }
+    void SaveTopologyUndo() {}
 
-        Body() {}
+    void SetPosition(const gp_Pnt& value) {
+        if (!_Position.IsEqual(value, std::numeric_limits<double>::epsilon()))
+        {
+            SaveUndo();
+            _Position = value;
+            _InvalidateTransformation();
+        }
+    }
 
+private:
+    void _InvalidateTransformation() {}
 
-       void SetPosition(const gp_Pnt& value) {
-           if (!_Position.IsEqual(value, std::numeric_limits<double>::epsilon()))
-           {
-               SaveUndo();
-               _Position = value;
-               _InvalidateTransformation();
-               RaisePropertyChanged();
-           }
-       }
+private:
+    gp_Pnt _Position = gp::Origin();
+};
 
-    private:
-       void _InvalidateTransformation() {}
-
-    private:
-        gp_Pnt _Position = gp::Origin();
-    };
-
-} // namespace Sun
 
 #endif  // SRC_CORE_TOPOLOGY_BODY_H_

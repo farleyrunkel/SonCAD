@@ -24,7 +24,7 @@ class CoreContext : public BaseObject {
 
  public:
     // Example method to save settings
-    void saveSettings(const std::string& name) {
+    void saveSettings(const std::string& Name) {
         // Implement saving logic here
     }
 
