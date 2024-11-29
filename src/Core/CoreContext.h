@@ -12,7 +12,7 @@
 #include "Core/Viewport.h"
 
 // CoreContext class that follows the Singleton design pattern with lazy initialization
-class CoreContext : public BaseObject {
+class CoreContext : public Sun_BaseObject {
     Q_OBJECT
     Q_PROPERTY(Model* document READ document WRITE setDocument)
     Q_PROPERTY(Sun::Workspace* workspace READ workspace WRITE setWorkspace)

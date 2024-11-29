@@ -12,7 +12,7 @@
 class SerializationContext {};
 
 // Layer class as a declaration only, without actual implementation
-class Layer : public Entity {
+class Layer : public Sun_Entity {
     Q_OBJECT
 
 public:

@@ -16,21 +16,21 @@
 #include "Core/EntityContainer.h"
 #include "Core/Topology/Entity.h"
 
-class IDocument 
+class Sun_IDocument 
 {
 public:
-    virtual void RegisterInstance(Entity* entity) = 0;
-    virtual void UnregisterInstance(Entity* entity) = 0;
-    virtual Entity* FindInstance(const QUuid& instanceGuid) = 0;
-    virtual void InstanceChanged(Entity* entity) = 0;
+    virtual void RegisterInstance(Sun_Entity* entity) = 0;
+    virtual void UnregisterInstance(Sun_Entity* entity) = 0;
+    virtual Sun_Entity* FindInstance(const QUuid& instanceGuid) = 0;
+    virtual void InstanceChanged(Sun_Entity* entity) = 0;
 };
 
-class Document : public EntityContainer, public IDocument 
+class Sun_Document : public EntityContainer, public Sun_IDocument 
 {
     Q_OBJECT
 
 public:
-    Document(): EntityContainer() {}
+    Sun_Document(): EntityContainer() {}
 
 
 //    // Properties

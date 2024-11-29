@@ -130,7 +130,7 @@ void MainWindow::setupDockWidgets() {
     auto* CentralDockArea = m_dockManager->setCentralWidget(CentralDockWidget);
 
     // Set up additional dock widgets for various panels
-    ads::CDockWidget* documentDock = new ads::CDockWidget("Document");
+    ads::CDockWidget* documentDock = new ads::CDockWidget("Sun_Document");
     documentDock->setWidget(new WelcomeDialog());
 
     ads::CDockWidget* layersDock = new ads::CDockWidget("Layers");

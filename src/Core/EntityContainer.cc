@@ -4,10 +4,10 @@
 
 #include "Core/Topology/Entity.h"
 
-EntityContainer::EntityContainer() : Entity() 
+EntityContainer::EntityContainer() : Sun_Entity() 
 {
     // Initialize the entity list
-    entityList = QList<Entity*>();
+    entityList = QList<Sun_Entity*>();
 }
 
 // Get entity count
@@ -19,7 +19,7 @@ int EntityContainer::entityCount() const
 
 // Add entity to the container
 
-void EntityContainer::add(Entity* entity, bool update) 
+void EntityContainer::add(Sun_Entity* entity, bool update) 
 {
     entityList.append(entity);
     if (update) {
@@ -30,7 +30,7 @@ void EntityContainer::add(Entity* entity, bool update)
 
 // Remove entity from the container
 
-void EntityContainer::Remove(Entity* entity, bool update) 
+void EntityContainer::Remove(Sun_Entity* entity, bool update) 
 {
     int index = entityList.indexOf(entity);
     if (index < 0) return;
@@ -45,14 +45,14 @@ void EntityContainer::Remove(Entity* entity, bool update)
 
 // Get entity at a specific index
 
-Entity* EntityContainer::get(int index) const 
+Sun_Entity* EntityContainer::get(int index) const 
 {
     return entityList.value(index);
 }
 
 // Get the index of a specific entity
 
-int EntityContainer::indexOf(Entity* entity) const 
+int EntityContainer::indexOf(Sun_Entity* entity) const 
 {
     return entityList.indexOf(entity);
 }
@@ -61,7 +61,7 @@ int EntityContainer::indexOf(Entity* entity) const
 
 void EntityContainer::Remove() 
 {
-    std::for_each(entityList.begin(), entityList.end(), [](Entity* e) { e->Remove(); });
+    std::for_each(entityList.begin(), entityList.end(), [](Sun_Entity* e) { e->Remove(); });
     entityList.clear();
-    Entity::Remove();  // Call the base class remove
+    Sun_Entity::Remove();  // Call the base class remove
 }

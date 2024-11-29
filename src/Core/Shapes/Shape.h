@@ -17,7 +17,7 @@
 DEFINE_STANDARD_HANDLE(Sun_Shape, Standard_Transient)
 
 // Base class for shape
-class Sun_Shape : public Entity, public IShapeOperand, public IShapeDependent
+class Sun_Shape : public Sun_Entity, public IShapeOperand, public IShapeDependent
 {
     Q_OBJECT
 

@@ -11,7 +11,7 @@
 #include "Core/Topology/Entity.h"
 #include "Core/Topology/Layer.h"
 
-class InteractiveEntity : public Entity 
+class InteractiveEntity : public Sun_Entity 
 {
     Q_OBJECT
 

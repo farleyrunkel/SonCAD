@@ -19,7 +19,7 @@ enum class NotifyCollectionChangedAction
     Reset
 };
 
-class EntityContainer : public Entity 
+class EntityContainer : public Sun_Entity 
 {
     Q_OBJECT
 
@@ -30,27 +30,27 @@ class EntityContainer : public Entity
     int entityCount() const;
 
     // Add entity to the container
-    virtual void add(Entity* entity, bool update = true);
+    virtual void add(Sun_Entity* entity, bool update = true);
 
     // Remove entity from the container
-    virtual void Remove(Entity* entity, bool update = true);
+    virtual void Remove(Sun_Entity* entity, bool update = true);
 
     // Get entity at a specific index
-    virtual Entity* get(int index) const;
+    virtual Sun_Entity* get(int index) const;
 
     // Get the index of a specific entity
-    virtual int indexOf(Entity* entity) const;
+    virtual int indexOf(Sun_Entity* entity) const;
 
     // Remove all entities from the container
     void Remove() override;
 
  signals:
     // Qt signal for notifying collection changes
-    void collectionChanged(NotifyCollectionChangedAction action, Entity* entity, int index);
+    void collectionChanged(NotifyCollectionChangedAction action, Sun_Entity* entity, int index);
 
  protected:
     // QList to hold the entities
-    QList<Entity*> entityList;
+    QList<Sun_Entity*> entityList;
 };
 
 #endif  // SRC_CORE_ENTITYCONTAINER_H_

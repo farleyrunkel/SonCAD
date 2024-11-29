@@ -4,7 +4,7 @@
 
 // Constructor
 InteractiveEntity::InteractiveEntity()
-    : Entity(), _name("Unnamed"), _isVisible(true), _layerId(QUuid::createUuid()) {}
+    : Sun_Entity(), _name("Unnamed"), _isVisible(true), _layerId(QUuid::createUuid()) {}
 
 // Name property
 QString InteractiveEntity::Name() const {
@@ -85,7 +85,7 @@ void InteractiveEntity::invalidate() {
 
 // Remove method
 void InteractiveEntity::Remove() {
-    Entity::Remove();
+    Sun_Entity::Remove();
 }
 
 // Get transformed BRep

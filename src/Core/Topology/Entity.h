@@ -8,26 +8,27 @@
 #include <QDebug>
 
 #include <Standard_Transient.hxx>
+#include <Standard_Handle.hxx>
 
 #include "Comm/BaseObject.h"
 
-class IDocument;
+class Sun_IDocument;
 
-// DEFINE_STANDARD_HANDLE(Entity, Standard_Transient)
+DEFINE_STANDARD_HANDLE(Sun_Entity, Standard_Transient);
 
 // Base class for Entity, assuming Entity is derived from QObject for signal/slot support
-class Entity : public BaseObject
+class Sun_Entity : public Sun_BaseObject
 {
     Q_OBJECT
     Q_PROPERTY(QUuid Uuid READ Guid WRITE SetGuid NOTIFY GuidChanged)
     Q_PROPERTY(bool HasErrors READ HasErrors WRITE SetHasErrors NOTIFY HasErrorsChanged)
     Q_PROPERTY(QString Name READ Name WRITE SetName)
     Q_PROPERTY(QString TypeName READ TypeName)
-    Q_PROPERTY(IDocument* Document READ Document WRITE SetDocument)
+    Q_PROPERTY(Sun_IDocument* Sun_Document READ Sun_Document WRITE SetDocument)
 
 public:
     // Constructor
-    Entity();
+    Sun_Entity();
 
 public:
     // Guid property (using QUuid)
@@ -48,9 +49,9 @@ public:
 
     void SetHasErrors(bool HasErrors);
     // Error handling
-    IDocument* Document() const;
+    Sun_IDocument* Sun_Document() const;
 
-    void SetDocument(IDocument* HasErrors);
+    void SetDocument(Sun_IDocument* HasErrors);
 
     // Remove entity
     virtual void Remove();
@@ -68,15 +69,14 @@ signals:
     void GuidChanged(const QUuid&);
 
     // Signal when the error state changes
-    void ErrorStateChanged();
+    void ErrorStateChanged(const Handle(Sun_Entity)&);
     // Signal when the entity is removed
-    void EntityRemoved();
+    void EntityRemoved(const Handle(Sun_Entity)&);
 
  protected:
     QUuid _Guid;
     bool _HasErrors;
-    IDocument* _Document;
+    Sun_IDocument* _Document;
 };
 
 #endif  // SRC_CORE_TOPOLOGY_ENTITY_H_
-

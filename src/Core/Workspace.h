@@ -22,7 +22,7 @@ class Sun_WorkingContext;
 
 namespace Sun {
 
-class Workspace : public BaseObject 
+class Workspace : public Sun_BaseObject 
 {
     Q_OBJECT
     Q_PROPERTY(QList<Sun_Viewport*> Viewports READ viewports)

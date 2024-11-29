@@ -36,7 +36,7 @@ public:
     Sun_WorkspaceController* WorkspaceController() const;
     Handle(AIS_InteractiveContext) AisContext() const;
 
-    InteractiveEntity* Entity() const { return _Entity; }
+    InteractiveEntity* Sun_Entity() const { return _Entity; }
     void SetLocalTransformation(const gp_Trsf& transformation);
 
 public:

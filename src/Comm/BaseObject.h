@@ -8,12 +8,12 @@
 
 #include <Standard_Transient.hxx>
 
-class BaseObject : public QObject, public Standard_Transient
+class Sun_BaseObject : public QObject, public Standard_Transient
 {
 	Q_OBJECT
 
 public:
-	BaseObject() = default;
+	Sun_BaseObject() = default;
 };
 
 #endif  // SRC_COMM_BASEOBJECT_H_

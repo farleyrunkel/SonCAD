@@ -71,8 +71,8 @@ ActionCommand& AppCommands::showDocumentExplorer() {
     static ActionCommand command;
     // Initialize command properties if not already set
     if (command.text().isEmpty()) {
-        command.setText(QObject::tr("Show Document Explorer"));
-        command.setToolTip(QObject::tr("Opens the Document Explorer"));
+        command.setText(QObject::tr("Show Sun_Document Explorer"));
+        command.setToolTip(QObject::tr("Opens the Sun_Document Explorer"));
         command.setIcon(ResourceUtils::icon("App/App-ShowDocu"));
     }
     return command;
