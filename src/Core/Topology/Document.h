@@ -25,7 +25,7 @@ public:
     virtual void InstanceChanged(Sun_Entity* entity) = 0;
 };
 
-class Sun_Document : public EntityContainer, public Sun_IDocument 
+class Sun_Document : public EntityContainer, public Sun_IDocument
 {
     Q_OBJECT
 

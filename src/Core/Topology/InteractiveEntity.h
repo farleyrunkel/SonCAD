@@ -30,8 +30,8 @@ public:
     QUuid layerId() const;
     void setLayerId(const QUuid& layerId);
 
-    Layer* layer() const;
-    void setLayer(Layer* layer);
+    Sun_Layer* layer() const;
+    void setLayer(Sun_Layer* layer);
 
     // Methods
     void invalidate();

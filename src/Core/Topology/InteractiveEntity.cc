@@ -64,14 +64,14 @@ void InteractiveEntity::setLayerId(const QUuid& layerId) {
     //}
 }
 
-Layer* InteractiveEntity::layer() const {
+Sun_Layer* InteractiveEntity::layer() const {
     //if (CoreContext::current() && CoreContext::current()->layers()) {
     //    return CoreContext::current()->layers()->find(_layerId);
     //}
     return nullptr;
 }
 
-void InteractiveEntity::setLayer(Layer* layer) {
+void InteractiveEntity::setLayer(Sun_Layer* layer) {
     //if (CoreContext::current() && CoreContext::current()->layers()) {
     //    Layer* defaultLayer = CoreContext::current()->layers()->defaultLayer();
     //    _layerId = (layer == defaultLayer || layer == nullptr) ? QUuid() : layer->guid();

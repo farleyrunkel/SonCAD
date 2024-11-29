@@ -10,6 +10,7 @@
 #include <V3d_Viewer.hxx>
 #include <AIS_DisplayMode.hxx>
 #include <Prs3d_LineAspect.hxx>
+#include <gp_Quaternion.hxx>
 
 #include "Comm/BaseObject.h"
 #include "Core/Project/VisualStyles.h"
@@ -70,6 +71,17 @@ public:
 
     void SetWorkingPlane(const gp_Pln& value);
 
+    gp_Quaternion GetWorkingPlaneRotation()
+    {
+        auto wp = WorkingPlane();
+        auto mat = gp_Mat(
+            wp.XAxis().Direction().XYZ(),
+            wp.YAxis().Direction().XYZ(),
+            wp.Position().Direction().XYZ()
+        );
+
+        return {mat};
+    }
     // Viewports management
     QList<Sun_Viewport*>& viewports() { return _Viewports; }
     Handle(V3d_Viewer) v3dViewer() const;
