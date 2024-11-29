@@ -24,7 +24,7 @@
 #include "Iact/Visual/VisualObject.h"
 #include "Occt/Managed/AIS_PointEx.h"
 
-class Marker : public VisualObject 
+class Marker : public Sun_VisualObject 
 {
     Q_OBJECT
     Q_PROPERTY(Sun::Color Color READ Color WRITE SetColor)
@@ -49,8 +49,8 @@ public:
      };
 
 public:
-    Marker(Sun_WorkspaceController* WorkspaceController, Styles styles, const MarkerImage& image);
-    Marker(Sun_WorkspaceController* WorkspaceController, Styles styles, QString imageName, int size);
+    Marker(const Handle(Sun_WorkspaceController)& WorkspaceController, Styles styles, const MarkerImage& image);
+    Marker(const Handle(Sun_WorkspaceController)& WorkspaceController, Styles styles, QString imageName, int size);
 
 public:
     // 获取/设置颜色
@@ -102,8 +102,8 @@ private:
 private:
     Styles _Styles;
     MarkerImage _Image;
+    Handle(Geom_CartesianPoint) _P = nullptr; // OCCT 坐标点
     Handle(AIS_PointEx) _AisPoint = nullptr; // OCCT 点对象
-    Handle(Geom_CartesianPoint) _P; // OCCT 坐标点
     Handle(Prs3d_PointAspect) _PointAspect = nullptr;
     Sun::Color _Color; // 标记颜色
     Sun::Color _ColorBg; // 背景颜色

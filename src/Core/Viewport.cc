@@ -9,7 +9,7 @@
 
 Sun_Viewport::Sun_Viewport(QObject* parent) : Sun_Viewport(nullptr, parent) {}
 
-Sun_Viewport::Sun_Viewport(Sun::Workspace* workspace, QObject* parent)
+Sun_Viewport::Sun_Viewport(Sun::Sun_Workspace* workspace, QObject* parent)
     : QObject(parent), mWorkspace(workspace), 
     mRenderMode(SolidShaded), mTwist(0.0), mScale(100.0) 
 {

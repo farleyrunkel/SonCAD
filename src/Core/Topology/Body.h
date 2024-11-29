@@ -18,7 +18,7 @@ class Sun_Shape;
 
 DEFINE_STANDARD_HANDLE(Sun_Body, Standard_Transient)
 
-class Sun_Body : public InteractiveEntity 
+class Sun_Body : public Sun_InteractiveEntity 
 {
     Q_OBJECT
 

@@ -30,7 +30,7 @@ namespace {
     
 }
 
-Sun_WorkspaceController::Sun_WorkspaceController(Sun::Workspace* workspace)
+Sun_WorkspaceController::Sun_WorkspaceController(Sun::Sun_Workspace* workspace)
     : _Workspace(workspace),
       _MouseEventData(),
       _CurrentTool(nullptr),
@@ -39,10 +39,10 @@ Sun_WorkspaceController::Sun_WorkspaceController(Sun::Workspace* workspace)
       _HudManager(nullptr) 
 {
     assert(_Workspace != nullptr);
-    connect(_Workspace, &Sun::Workspace::GridChanged, this, &Sun_WorkspaceController::_Workspace_GridChanged);
+    connect(_Workspace, &Sun::Sun_Workspace::GridChanged, this, &Sun_WorkspaceController::_Workspace_GridChanged);
     connect(Sun_Viewport::SignalHub(), &ViewPortSignalHub::ViewportChanged, this, &Sun_WorkspaceController::_Viewport_ViewportChanged);
 
-    _VisualObjectManager = new VisualObjectManager(this);
+    _VisualObjectManager = new Sun_VisualObjectManager(this);
 
     _RedrawTimer = new QTimer(this);
     _RedrawTimer->setInterval(1000 / 60); 
@@ -54,12 +54,12 @@ Sun_WorkspaceController::Sun_WorkspaceController(Sun::Workspace* workspace)
 
 void Sun_WorkspaceController::InitWorkspace() {
     // init V3dViewer and AisContext
-    Workspace()->initV3dViewer();
-    Workspace()->initAisContext();
+    Sun_Workspace()->initV3dViewer();
+    Sun_Workspace()->initAisContext();
     initVisualSettings();
 
     // 遍历所有 Viewport 并添加到 _viewControllers 列表
-    for (auto& View : Workspace()->viewports()) {
+    for (auto& View : Sun_Workspace()->viewports()) {
         _ViewportControllers.append(new Sun_ViewportController(View, this));
     }
 
@@ -68,8 +68,8 @@ void Sun_WorkspaceController::InitWorkspace() {
 
     AisHelper::disableGlobalClipPlanes(_Grid);
 
-    if (Workspace()->aisContext()) {
-       Workspace()->aisContext()->Display(_Grid, 0, -1, false);
+    if (Sun_Workspace()->aisContext()) {
+       Sun_Workspace()->aisContext()->Display(_Grid, 0, -1, false);
     }
 
     //// 初始化 VisualObjects 并更新网格
@@ -90,7 +90,7 @@ bool Sun_WorkspaceController::startTool(Tool* tool) {
         if (tool != nullptr) {
             tool->setWorkspaceController(this);
             _CurrentTool = tool;
-            if (_CurrentEditor) { 
+            if (_CurrentEditor) {
                 _CurrentEditor->stopTool(); 
             }
             if (!tool->start()) {
@@ -118,7 +118,7 @@ void Sun_WorkspaceController::Invalidate(bool immediateOnly, bool forceRedraw)
         _Redraw();
 }
 
-void Sun_WorkspaceController::_Workspace_GridChanged(Sun::Workspace* sender) 
+void Sun_WorkspaceController::_Workspace_GridChanged(Sun::Sun_Workspace* sender) 
 {
     if (_Workspace == sender) {
         recalculateGridSize();
@@ -152,9 +152,9 @@ void Sun_WorkspaceController::_UpdateGrid()
     if (_Grid.IsNull())
         return;
 
-    Sun_WorkingContext* wc = Workspace()->workingContext();
+    Sun_WorkingContext* wc = Sun_Workspace()->workingContext();
 
-    if (Workspace()->gridEnabled())
+    if (Sun_Workspace()->gridEnabled())
     {
         gp_Ax3 position = wc->WorkingPlane().Position();
         if (wc->GridRotation() != 0)
@@ -165,18 +165,18 @@ void Sun_WorkspaceController::_UpdateGrid()
         _Grid->SetExtents(_LastGridSize.X(), _LastGridSize.Y());
         _Grid->SetDivisions(wc->GridStep(), wc->GridDivisions() * M_PI / 180.0);
 
-        if (wc->GridType() == Sun::Workspace::GridTypes::Rectangular)
+        if (wc->GridType() == Sun::Sun_Workspace::GridTypes::Rectangular)
         {
-            Workspace()->aisContext()->SetDisplayMode(_Grid, 1, false);
+            Sun_Workspace()->aisContext()->SetDisplayMode(_Grid, 1, false);
         }
         else
         {
-            Workspace()->aisContext()->SetDisplayMode(_Grid, 2, false);
+            Sun_Workspace()->aisContext()->SetDisplayMode(_Grid, 2, false);
         }
     }
     else
     {
-        Workspace()->aisContext()->SetDisplayMode(_Grid, 0, false);
+        Sun_Workspace()->aisContext()->SetDisplayMode(_Grid, 0, false);
     }
 
     _GridNeedsUpdate = false;
@@ -184,7 +184,7 @@ void Sun_WorkspaceController::_UpdateGrid()
 
 void Sun_WorkspaceController::initVisualSettings() 
 {
-    auto aisContext = Workspace()->aisContext();
+    auto aisContext = Sun_Workspace()->aisContext();
 
     // _UpdateParameter();
 
@@ -250,7 +250,7 @@ void Sun_WorkspaceController::MouseMove(Sun_ViewportController* vc, QPointF pos,
 
     gp_Pnt planePoint;
 
-    if (!vc->Viewport()->ScreenToPoint(Workspace()->WorkingPlane(), (int)pos.x(), (int)pos.y(), planePoint)) {
+    if (!vc->Viewport()->ScreenToPoint(Sun_Workspace()->WorkingPlane(), (int)pos.x(), (int)pos.y(), planePoint)) {
         SetCursorPosition(gp_Pnt());
         SetCursorPosition2d(gp_Pnt2d());
     }
@@ -267,7 +267,7 @@ void Sun_WorkspaceController::MouseMove(Sun_ViewportController* vc, QPointF pos,
     qDebug() << "   - PointPlane1: " << _PointPlane1.X() << " " << _PointPlane1.Y();
 
     SetCursorPosition(planePoint);
-    SetCursorPosition2d(::Parameters(Workspace()->WorkingPlane(), planePoint));
+    SetCursorPosition2d(::Parameters(Sun_Workspace()->WorkingPlane(), planePoint));
 
     for (const auto& handler : enumerateControls())
     {
@@ -299,8 +299,8 @@ bool Sun_WorkspaceController::cancelTool(Tool* tool, bool force) {
     return true;
 }
 
-Sun::Workspace* Sun_WorkspaceController::Workspace() const { 
-    return _Workspace; 
+Sun::Sun_Workspace* Sun_WorkspaceController::Sun_Workspace() const { 
+    return _Workspace;
 }
 
 void Sun_WorkspaceController::SetActiveViewport(Sun_Viewport* Viewport) {

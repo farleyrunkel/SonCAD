@@ -46,10 +46,10 @@ void CreateBoxTool::_EnsurePreviewShape() {
     _PreviewShape->SetDimensionZ(0.01);
 
     auto body = Sun_Body::Create(_PreviewShape);
-    _PreviewShape->Body()->SetRotation(WorkspaceController()->Workspace()->GetWorkingPlaneRotation());
-    if (body->Layer()->IsVisible())
+    _PreviewShape->Body()->SetRotation(WorkspaceController()->Sun_Workspace()->GetWorkingPlaneRotation());
+    //if (body->Layer()->IsVisible())
     //{
-    //    _VisualShape = WorkspaceController.VisualObjects.Get(body, true);
+    //    _VisualShape = WorkspaceController()->VisualObjects()->Get(body, true);
     //    _IsTemporaryVisual = false;
     //}
     //else
@@ -57,7 +57,7 @@ void CreateBoxTool::_EnsurePreviewShape() {
     //    _VisualShape = new VisualShape(WorkspaceController, body, VisualShape.Options.Ghosting);
     //    _IsTemporaryVisual = true;
     //}
-    _VisualShape->SetIsSelectable(false);   
+    //_VisualShape->SetIsSelectable(false);   
 }
 
 void CreateBoxTool::_PivotAction_Preview(PointAction::EventArgs* args) {
@@ -73,7 +73,7 @@ void CreateBoxTool::_PivotAction_Finished(PointAction::EventArgs* args)
 {
 	qDebug() << "- CreateBoxTool::_PivotAction_Finished";
 
-    _Plane = WorkspaceController()->Workspace()->WorkingPlane();
+    _Plane = WorkspaceController()->Sun_Workspace()->WorkingPlane();
     _PointPlane1 = args->PointOnPlane;
     qDebug() << "   - PointPlane1: " << _PointPlane1.X() << " " << _PointPlane1.Y();
 
@@ -119,8 +119,8 @@ void CreateBoxTool::_BaseRectAction_Preview(PointAction::EventArgs* args)
 
     if (args && args->MouseEventData->modifierKeys.testFlag(Qt::ControlModifier))
     {
-        dimX = ::RoundToNearest(dimX, WorkspaceController()->Workspace()->GridStep());
-        dimY = ::RoundToNearest(dimY, WorkspaceController()->Workspace()->GridStep());
+        dimX = ::RoundToNearest(dimX, WorkspaceController()->Sun_Workspace()->GridStep());
+        dimY = ::RoundToNearest(dimY, WorkspaceController()->Sun_Workspace()->GridStep());
     }
 
     if (std::abs(dimX) <= 0.0)

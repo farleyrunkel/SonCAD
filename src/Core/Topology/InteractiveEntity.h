@@ -11,12 +11,14 @@
 #include "Core/Topology/Entity.h"
 #include "Core/Topology/Layer.h"
 
-class InteractiveEntity : public Sun_Entity 
+DEFINE_STANDARD_HANDLE(Sun_InteractiveEntity, Standard_Transient);
+
+class Sun_InteractiveEntity : public Sun_Entity 
 {
     Q_OBJECT
 
 public:
-    explicit InteractiveEntity();
+    explicit Sun_InteractiveEntity();
 
     // Name property
     QString Name() const override;

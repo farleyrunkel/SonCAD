@@ -56,7 +56,7 @@ void Sun_ViewportController::MouseUp(Qt::KeyboardModifiers modifiers) {
 
 void Sun_ViewportController::SetPredefinedView(PredefinedViews predefinedView) {
 	if (predefinedView == PredefinedViews::WorkingPlane) {
-		const auto& plane = WorkspaceController()->Workspace()->WorkingPlane();
+		const auto& plane = WorkspaceController()->Sun_Workspace()->WorkingPlane();
 		const auto& dir = plane.Axis().Direction();
 		Viewport()->View()->SetProj(dir.X(), dir.Y(), dir.Z());
 
@@ -119,7 +119,7 @@ void Sun_ViewportController::SetLockedToPlane(bool value)
 }
 
 void Sun_ViewportController::_SetViewCube(bool isVisible) {
-	auto aisContext = WorkspaceController()->Workspace()->aisContext();
+	auto aisContext = WorkspaceController()->Sun_Workspace()->aisContext();
 
 	if (_ViewCube.IsNull())
 		return;
@@ -135,7 +135,7 @@ void Sun_ViewportController::_SetViewCube(bool isVisible) {
 }
 
 void Sun_ViewportController::_SetViewCube(bool isVisible, uint32_t size, double duration) {
-	auto aisContext = WorkspaceController()->Workspace()->aisContext();
+	auto aisContext = WorkspaceController()->Sun_Workspace()->aisContext();
 
 	// 如果视图立方体已存在，则使用现有方法更新其显示状态
 	if (!_ViewCube.IsNull()) {

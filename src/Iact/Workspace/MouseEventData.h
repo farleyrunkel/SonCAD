@@ -24,7 +24,7 @@ class IMouseEventHandler {
 
 //--------------------------------------------------------------------------------------------------
 // 定义交互式实体的基本接口
-class InteractiveEntity;
+class Sun_InteractiveEntity;
 class AIS_InteractiveObject;
 class TopoDS_Shape;
 class Sun_Viewport;
@@ -37,17 +37,17 @@ public:
     struct Element 
     {
         AIS_InteractiveObject* aisObject;
-        InteractiveEntity* entity;
+        Sun_InteractiveEntity* entity;
         TopoDS_Shape* brepShape;
 
         // 不同的构造函数，支持不同的输入组合
-        Element(AIS_InteractiveObject* aisObj, InteractiveEntity* ent, TopoDS_Shape* brep)
+        Element(AIS_InteractiveObject* aisObj, Sun_InteractiveEntity* ent, TopoDS_Shape* brep)
             : aisObject(aisObj), entity(ent), brepShape(brep) {}
 
         Element(AIS_InteractiveObject* aisObj, TopoDS_Shape* brep = nullptr)
             : aisObject(aisObj), brepShape(brep) {}
 
-        Element(InteractiveEntity* ent)
+        Element(Sun_InteractiveEntity* ent)
             : entity(ent) {}
     };
 
@@ -74,7 +74,7 @@ public:
         : Viewport(vp), screenPoint(sp), PointOnPlane(pp), modifierKeys(mk) {}
 
     // 检测到的主要实体
-    InteractiveEntity* detectedEntity() const;
+    Sun_InteractiveEntity* detectedEntity() const;
 
     TopoDS_Shape* detectedBrepShape() const {
         return !detectedElements.isEmpty() ? detectedElements[0].brepShape : nullptr;
@@ -90,11 +90,11 @@ public:
 
     // 设置检测元素的列表
     void setDetectedElements(const QList<AIS_InteractiveObject*>& aisObjects,
-                             const QList<InteractiveEntity*>& entities,
+                             const QList<Sun_InteractiveEntity*>& entities,
                              const QList<TopoDS_Shape*>& brepShapes);
 
     // 设置单个检测元素
-    void setDetectedElement(AIS_InteractiveObject* aisObject, InteractiveEntity* entity, TopoDS_Shape* brepShape);
+    void setDetectedElement(AIS_InteractiveObject* aisObject, Sun_InteractiveEntity* entity, TopoDS_Shape* brepShape);
 
     //// 获取拾取轴
     //Ax1 pickAxis() const {

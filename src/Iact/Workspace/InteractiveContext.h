@@ -43,7 +43,7 @@ class InteractiveContext : public CoreContext
     Sun_ViewportController* viewportController() const;
     void setViewportController(Sun_ViewportController* controller);
 
-    void setWorkspace(Sun::Workspace* workspace) override;
+    void setWorkspace(Sun::Sun_Workspace* workspace) override;
     void setViewport(Sun_Viewport* Viewport) override;
 
     // RecentUsedColors getter

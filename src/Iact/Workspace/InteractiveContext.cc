@@ -65,7 +65,7 @@ void InteractiveContext::setViewportController(Sun_ViewportController* controlle
     }
 }
 
-void InteractiveContext::setWorkspace(Sun::Workspace* workspace) {
+void InteractiveContext::setWorkspace(Sun::Sun_Workspace* workspace) {
     if (m_workspace != workspace) {
         if (workspace) {
             setWorkspaceController(new Sun_WorkspaceController(workspace));

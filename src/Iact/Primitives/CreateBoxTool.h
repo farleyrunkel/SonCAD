@@ -53,7 +53,7 @@ private:
 	bool _IsTemporaryVisual;
 	Coord2DHudElement* _Coord2DHudElement = nullptr;
 	MultiValueHudElement* _MultiValueHudElement = nullptr;
-	VisualObject* _VisualShape;
+	Sun_VisualObject* _VisualShape;
 };
 
 #endif // SRC_IACT_PRIMITIVES_CREATEBOXTOOL_H_

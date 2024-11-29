@@ -55,7 +55,7 @@ class Sun_Viewport : public QObject
     explicit Sun_Viewport(QObject* parent = nullptr);
 
     // Constructor
-    explicit Sun_Viewport(Sun::Workspace* workspace, QObject* parent = nullptr);
+    explicit Sun_Viewport(Sun::Sun_Workspace* workspace, QObject* parent = nullptr);
 
     // Destructor
     ~Sun_Viewport();
@@ -115,7 +115,7 @@ private:
     void ViewportChanged(Sun_Viewport*);
 
  private:
-    Sun::Workspace* mWorkspace;
+    Sun::Sun_Workspace* mWorkspace;
     gp_Pnt mEyePoint = gp_Pnt(10, 10, 10);
     gp_Pnt mTargetPoint = gp_Pnt(0, 0, 0);
     double mTwist = 0.0;

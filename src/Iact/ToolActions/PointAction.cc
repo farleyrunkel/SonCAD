@@ -23,7 +23,7 @@ bool PointAction::onMouseMove(MouseEventData* data) {
     if (!_IsFinished) {
         _EnsureMarker();
         ProcessMouseInput(data);
-        auto workingPlane = WorkspaceController()->Workspace()->WorkingPlane();
+        auto workingPlane = WorkspaceController()->Sun_Workspace()->WorkingPlane();
 
         EventArgs* args = new EventArgs(
             _CurrentPoint,
@@ -53,7 +53,7 @@ bool PointAction::onMouseUp(MouseEventData* data) {
         _IsFinished = true;
         auto args = new EventArgs(
             _CurrentPoint,
-            ProjLib::Project(WorkspaceController()->Workspace()->WorkingPlane(), _CurrentPoint),
+            ProjLib::Project(WorkspaceController()->Sun_Workspace()->WorkingPlane(), _CurrentPoint),
             _CurrentPoint,
             data
         );

@@ -11,11 +11,11 @@ WorkspaceControl::WorkspaceControl(QObject* parent)
 	_WorkspaceController(nullptr) {
 }
 
-Sun_WorkspaceController* WorkspaceControl::WorkspaceController() const { 
+Handle(Sun_WorkspaceController) WorkspaceControl::WorkspaceController() const {
 	return _WorkspaceController; 
 }
 
-void WorkspaceControl::setWorkspaceController(Sun_WorkspaceController* WorkspaceController) {
+void WorkspaceControl::setWorkspaceController(const Handle(Sun_WorkspaceController)& WorkspaceController) {
 	_WorkspaceController = WorkspaceController;
 }
 
@@ -39,7 +39,7 @@ void WorkspaceControl::SetHintMessage(const QString& message) {
 		hudManager->SetHintMessage(message);
 }
 
-void WorkspaceControl::Add(VisualObject* visual) {
+void WorkspaceControl::Add(Sun_VisualObject* visual) {
 	if (_VisualObjects.contains(visual))
 		return;
 	_VisualObjects.append(visual);

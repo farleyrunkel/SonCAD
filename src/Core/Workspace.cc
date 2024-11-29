@@ -22,7 +22,7 @@
 //--------------------------------------------------------------------------------------------------
 // Constructor and Destructor
 
-Sun::Workspace::Workspace()
+Sun::Sun_Workspace::Sun_Workspace()
     : _V3dViewer(nullptr),
       _AisContext(nullptr),
       _GridEnabled(true),
@@ -34,8 +34,8 @@ Sun::Workspace::Workspace()
     Init();
 }
 
-Sun::Workspace::Workspace(Model* model) 
-    : Sun::Workspace() {
+Sun::Sun_Workspace::Sun_Workspace(Model* model) 
+    : Sun::Sun_Workspace() {
     Init();
     _Model = model;
     _Viewports.append(new Sun_Viewport(this));
@@ -49,11 +49,11 @@ Sun::Workspace::Workspace(Model* model)
 //    m_viewports.clear();
 //}
 
-void Sun::Workspace::Init() {
+void Sun::Sun_Workspace::Init() {
     _CurrentWorkingContext = _GlobalWorkingContext;
 }
 
-void Sun::Workspace::_ApplyWorkingContext() {
+void Sun::Sun_Workspace::_ApplyWorkingContext() {
     if (_AisContext.IsNull()) {
         //_V3dViewer->SetPrivilegedPlane(_CurrentWorkingContext->WorkingPlane.Position());
     }
@@ -64,7 +64,7 @@ void Sun::Workspace::_ApplyWorkingContext() {
 //--------------------------------------------------------------------------------------------------
 // Initialize V3d_Viewer and AIS_InteractiveContext
 
-void Sun::Workspace::initV3dViewer() {
+void Sun::Sun_Workspace::initV3dViewer() {
     if (_V3dViewer.IsNull()) {
         Handle(Aspect_DisplayConnection) aDisp = new Aspect_DisplayConnection();
         Handle(OpenGl_GraphicDriver) aDriver = new OpenGl_GraphicDriver(aDisp, false);
@@ -93,7 +93,7 @@ void Sun::Workspace::initV3dViewer() {
     _ApplyWorkingContext();
 }
 
-void Sun::Workspace::initAisContext() {
+void Sun::Sun_Workspace::initAisContext() {
     if (_V3dViewer.IsNull()) {
         initV3dViewer();
     }
@@ -126,29 +126,29 @@ void Sun::Workspace::initAisContext() {
     _AisContext->SetHighlightStyle(style);
 }
 
-void Sun::Workspace::SetWorkingPlane(const gp_Pln& value) {
+void Sun::Sun_Workspace::SetWorkingPlane(const gp_Pln& value) {
     _CurrentWorkingContext->SetWorkingPlane(value);
     //Model::MarkAsUnsaved();
     _ApplyWorkingContext();
 }
 
-Handle(V3d_Viewer) Sun::Workspace::v3dViewer() const {
+Handle(V3d_Viewer) Sun::Sun_Workspace::v3dViewer() const {
     return _V3dViewer;
 }
 
-Handle(AIS_InteractiveContext) Sun::Workspace::aisContext() const {
+Handle(AIS_InteractiveContext) Sun::Sun_Workspace::aisContext() const {
     return _AisContext;
 }
 
-bool Sun::Workspace::needsRedraw() const {
+bool Sun::Sun_Workspace::needsRedraw() const {
     return _NeedsRedraw;
 }
 
-bool Sun::Workspace::needsImmediateRedraw() const {
+bool Sun::Sun_Workspace::needsImmediateRedraw() const {
     return _NeedsImmediateRedraw;
 }
 
-void Sun::Workspace::setGridEnabled(bool value) {
+void Sun::Sun_Workspace::setGridEnabled(bool value) {
     if (_GridEnabled != value) {
         _GridEnabled = value;
         //Model.MarkAsUnsaved();
@@ -156,15 +156,15 @@ void Sun::Workspace::setGridEnabled(bool value) {
     }
 }
 
-Sun::Workspace::GridTypes Sun::Workspace::GridType() const {
+Sun::Sun_Workspace::GridTypes Sun::Sun_Workspace::GridType() const {
     return _CurrentWorkingContext->GridType(); 
 }
 
-double Sun::Workspace::GridStep() const {
+double Sun::Sun_Workspace::GridStep() const {
     return _CurrentWorkingContext->GridStep();
 }
 
-void Sun::Workspace::SetGridStep(double value ) {
+void Sun::Sun_Workspace::SetGridStep(double value ) {
     if (_CurrentWorkingContext->GridStep() != value)
     {
         _CurrentWorkingContext->SetGridStep(value) ;
@@ -173,22 +173,22 @@ void Sun::Workspace::SetGridStep(double value ) {
     }
 }
 
-Sun_WorkingContext* Sun::Workspace::workingContext() const {
+Sun_WorkingContext* Sun::Sun_Workspace::workingContext() const {
     return _CurrentWorkingContext; 
 }
 
-const gp_Pln& Sun::Workspace::WorkingPlane() const {
+const gp_Pln& Sun::Sun_Workspace::WorkingPlane() const {
     return _CurrentWorkingContext->WorkingPlane();
 }
 
 //--------------------------------------------------------------------------------------------------
 // Setters
 
-void Sun::Workspace::setNeedsRedraw(bool value) {
+void Sun::Sun_Workspace::setNeedsRedraw(bool value) {
     _NeedsRedraw = value;
 }
 
-void Sun::Workspace::setNeedsImmediateRedraw(bool value) {
+void Sun::Sun_Workspace::setNeedsImmediateRedraw(bool value) {
     _NeedsImmediateRedraw = value;
 }
 

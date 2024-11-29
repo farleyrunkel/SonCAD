@@ -2,52 +2,32 @@
 
 #include "Iact/Visual/Marker.h"
 
+#include <sstream>
+
 #include <QSharedPointer>
 
 #include "Iact/Workspace/WorkspaceController.h"
 #include "Occt/Managed/AIS_PointEx.h"
 
 
-Marker::Marker(Sun_WorkspaceController* WorkspaceController, Styles styles, const MarkerImage& image)
-    : VisualObject(WorkspaceController, nullptr), 
+Marker::Marker(const Handle(Sun_WorkspaceController)& WorkspaceController, Styles styles, const MarkerImage& image)
+    : Sun_VisualObject(WorkspaceController, nullptr), 
     _Styles(styles), 
     _Image(image),
     _Color(Qt::yellow), 
     _ColorBg(Qt::lightGray), 
-    _IsSelectable(false),
-    _P(nullptr) 
+    _IsSelectable(false)
 {
 }
 
-Marker::Marker(Sun_WorkspaceController* WorkspaceController, Styles styles, QString imageName, int size)
-    : VisualObject(WorkspaceController, nullptr),
+Marker::Marker(const Handle(Sun_WorkspaceController)& WorkspaceController, Styles styles, QString imageName, int size)
+    : Sun_VisualObject(WorkspaceController, nullptr),
     _Styles(styles),
     _Image(_GetMarkerImage(imageName, size)),
     _Color(Qt::yellow),
     _ColorBg(Qt::lightGray),
-    _IsSelectable(false),
-    _P(nullptr)
+    _IsSelectable(false)
 {
-}
-
-void Marker::Update() 
-{
-    // 确保 AIS_Point 对象存在
-    if (_AisPoint.IsNull()) {
-        _EnsureAisObject();
-    }
-    else {
-        _UpdatePresentation();
-        // 在 AisContext 上进行重新显示
-        AisContext()->Redisplay(_AisPoint, true);
-    }
-
-    if (_IsSelectable) {
-        AisContext()->Activate(_AisPoint);
-    }
-    else {
-        AisContext()->Deactivate(_AisPoint);
-    }
 }
 
 inline void Marker::Set(const gp_Pnt& p)
@@ -71,6 +51,32 @@ void Marker::Set(const gp_Pnt2d& p, const gp_Pln& plane)
     gp_Pnt pnt;
     ElSLib::D0(p.X(), p.Y(), plane, pnt);
     Set(pnt);
+}
+
+void Marker::Update()
+{
+    // 确保 AIS_Point 对象存在
+    if (_AisPoint.IsNull()) {
+        _EnsureAisObject();
+    }
+    else {
+        _UpdatePresentation();
+        // 在 AisContext 上进行重新显示
+        auto a = AisContext();
+        std::stringstream oss("");
+
+        a->DumpJson(oss);
+        a->UpdateCurrentViewer();
+        qDebug() << oss.str();
+        a->Redisplay(_AisPoint, true);
+    }
+
+    if (_IsSelectable) {
+        AisContext()->Activate(_AisPoint);
+    }
+    else {
+        AisContext()->Deactivate(_AisPoint);
+    }
 }
 
 void Marker::SetImage(MarkerImage image)
@@ -145,14 +151,12 @@ bool Marker::_EnsureAisObject()
     }
 
     AisContext()->Display(_AisPoint, 0, 0, false);
-
-
     AisContext()->SetSelectionSensitivity(_AisPoint, 0, std::min(_Image.Height, _Image.Width));
 
     return true;
 }
 
-void Marker::_UpdatePresentation() 
+void Marker::_UpdatePresentation()
 {
     if (_AisPoint.IsNull()) return;
 

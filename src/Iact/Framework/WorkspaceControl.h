@@ -6,21 +6,24 @@
 #include <QObject>
 #include <QList>
 
+#include <Standard_Handle.hxx>
+
 #include "Iact/HudElements/HudElement.h"
 #include "Iact/Workspace/MouseEventData.h"
-
 #include "Iact/Visual/VisualObject.h"
+
 
 class Sun_WorkspaceController;
 
-class WorkspaceControl : public QObject, public IMouseEventHandler {
+class WorkspaceControl : public QObject, public IMouseEventHandler 
+{
 	Q_OBJECT
 
  public:
 	explicit WorkspaceControl(QObject* parent = nullptr);
 
-	Sun_WorkspaceController* WorkspaceController() const;
-	void setWorkspaceController(Sun_WorkspaceController* WorkspaceController);
+	Handle(Sun_WorkspaceController) WorkspaceController() const;
+	void setWorkspaceController(const Handle(Sun_WorkspaceController)& WorkspaceController);
 
  protected:
     virtual QList<WorkspaceControl*> GetChildren() const;
@@ -28,7 +31,7 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
 
     void SetHintMessage(const QString& message);
 
-    void Add(VisualObject* visual);
+    void Add(Sun_VisualObject* visual);
     void Add(IHudElement* hudElement);
 
     // Assuming cleanup and cleanedUp are functions from the base class
@@ -73,9 +76,9 @@ class WorkspaceControl : public QObject, public IMouseEventHandler {
     }
 
  private:
-	Sun_WorkspaceController* _WorkspaceController;
+    Handle(Sun_WorkspaceController) _WorkspaceController;
 	QList<IHudElement*> _HudElements;
-    QList<VisualObject*> _VisualObjects;
+    QList<Sun_VisualObject*> _VisualObjects;
 
 };
 

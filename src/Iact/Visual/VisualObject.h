@@ -11,13 +11,17 @@
 // Occt includes
 #include <AIS_InteractiveContext.hxx>
 #include <gp_Trsf.hxx>
+#include <Standard_Handle.hxx>
 
 // SunCAD includes
 #include "Core/Topology/InteractiveEntity.h"
+#include "Comm/BaseObject.h"
 
 class Sun_WorkspaceController;
 
-class VisualObject : public QObject 
+DEFINE_STANDARD_HANDLE(Sun_VisualObject, Standard_Transient);
+
+class Sun_VisualObject : public Sun_BaseObject
 {
     Q_OBJECT
     Q_PROPERTY(bool Selectable READ IsSelectable WRITE SetIsSelectable)
@@ -25,18 +29,20 @@ class VisualObject : public QObject
     Q_PROPERTY(QVariant Tag READ Tag WRITE SetTag)
 
 protected:
-    explicit VisualObject(Sun_WorkspaceController* WorkspaceController, InteractiveEntity* entity);
-    virtual ~VisualObject() {}
+    explicit Sun_VisualObject(const Handle(Sun_WorkspaceController)& WorkspaceController, Sun_InteractiveEntity* entity);
+    virtual ~Sun_VisualObject() {}
 
 public:
     virtual void Remove() = 0;
     virtual void Update() = 0;
+
     virtual Handle(AIS_InteractiveObject) AisObject() const = 0;
 
-    Sun_WorkspaceController* WorkspaceController() const;
+    Handle(Sun_WorkspaceController) WorkspaceController() const;
+
     Handle(AIS_InteractiveContext) AisContext() const;
 
-    InteractiveEntity* Sun_Entity() const { return _Entity; }
+    Sun_InteractiveEntity* Sun_Entity() const { return _Entity; }
     void SetLocalTransformation(const gp_Trsf& transformation);
 
 public:
@@ -48,11 +54,11 @@ public:
     void SetTag(const QVariant& tag) { _Tag = tag; }
 
 signals:
-    void AisObjectChanged(const QSharedPointer<VisualObject>& visualObject);
+    void AisObjectChanged(const QSharedPointer<Sun_VisualObject>& visualObject);
 
 private:
-    Sun_WorkspaceController* _WorkspaceController;
-    InteractiveEntity* _Entity;
+    const Handle(Sun_WorkspaceController)& _WorkspaceController;
+    Sun_InteractiveEntity* _Entity;
     QVariant _Tag;
 };
 

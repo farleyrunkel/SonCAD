@@ -23,7 +23,7 @@ class Sun_WorkingContext;
 
 namespace Sun {
 
-class Workspace : public Sun_BaseObject 
+class Sun_Workspace : public Sun_BaseObject 
 {
     Q_OBJECT
     Q_PROPERTY(QList<Sun_Viewport*> Viewports READ viewports)
@@ -48,9 +48,9 @@ public:
     };
 
  public:
-    Workspace();
-    Workspace(Model* model);;
-    ~Workspace() {};
+    Sun_Workspace();
+    Sun_Workspace(Model* model);;
+    ~Sun_Workspace() {};
 
     // Initialize 3D viewer and context
     void initV3dViewer();
@@ -97,7 +97,7 @@ public:
     Model* model() const { return _Model ; }
 
 signals:
-    void GridChanged(Sun::Workspace*);
+    void GridChanged(Sun::Sun_Workspace*);
 
 private:
      void Init();

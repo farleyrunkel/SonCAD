@@ -5,7 +5,7 @@
 Sun_WorkingContext::Sun_WorkingContext()
     : QObject(),
     _WorkingPlane(),
-    _GridType(Sun::Workspace::GridTypes::Rectangular),
+    _GridType(Sun::Sun_Workspace::GridTypes::Rectangular),
     _GridStep(1.0),
     _GridRotation(0),
     _GridDivisions(8) 
@@ -37,9 +37,9 @@ void Sun_WorkingContext::SetWorkingPlane(const gp_Pln& plane) {
     }
 }
 
-Sun::Workspace::GridTypes Sun_WorkingContext::GridType() const { return _GridType; }
+Sun::Sun_Workspace::GridTypes Sun_WorkingContext::GridType() const { return _GridType; }
 
-void Sun_WorkingContext::SetGridType(Sun::Workspace::GridTypes type) {
+void Sun_WorkingContext::SetGridType(Sun::Sun_Workspace::GridTypes type) {
     if (_GridType != type) {
         _GridType = type;
         emit GridTypeChanged(type);

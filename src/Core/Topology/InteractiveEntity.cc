@@ -3,15 +3,15 @@
 #include "Core/Topology/InteractiveEntity.h"
 
 // Constructor
-InteractiveEntity::InteractiveEntity()
+Sun_InteractiveEntity::Sun_InteractiveEntity()
     : Sun_Entity(), _name("Unnamed"), _isVisible(true), _layerId(QUuid::createUuid()) {}
 
 // Name property
-QString InteractiveEntity::Name() const {
+QString Sun_InteractiveEntity::Name() const {
     return _name;
 }
 
-void InteractiveEntity::SetName(const QString& Name) {
+void Sun_InteractiveEntity::SetName(const QString& Name) {
     //if (_name != name) {
     //    SaveUndo();
     //    _name = name;
@@ -25,11 +25,11 @@ void InteractiveEntity::SetName(const QString& Name) {
 }
 
 // IsVisible property
-bool InteractiveEntity::isVisible() const {
+bool Sun_InteractiveEntity::isVisible() const {
     return _isVisible;
 }
 
-void InteractiveEntity::setIsVisible(bool isVisible) {
+void Sun_InteractiveEntity::setIsVisible(bool isVisible) {
     //if (_isVisible != isVisible) {
     //    SaveUndo();
     //    _isVisible = isVisible;
@@ -44,11 +44,11 @@ void InteractiveEntity::setIsVisible(bool isVisible) {
 }
 
 // LayerId property
-QUuid InteractiveEntity::layerId() const {
+QUuid Sun_InteractiveEntity::layerId() const {
     return _layerId;
 }
 
-void InteractiveEntity::setLayerId(const QUuid& layerId) {
+void Sun_InteractiveEntity::setLayerId(const QUuid& layerId) {
     //if (_layerId != layerId) {
     //    SaveUndo();
     //    _layerId = layerId;
@@ -64,14 +64,14 @@ void InteractiveEntity::setLayerId(const QUuid& layerId) {
     //}
 }
 
-Sun_Layer* InteractiveEntity::layer() const {
+Sun_Layer* Sun_InteractiveEntity::layer() const {
     //if (CoreContext::current() && CoreContext::current()->layers()) {
     //    return CoreContext::current()->layers()->find(_layerId);
     //}
     return nullptr;
 }
 
-void InteractiveEntity::setLayer(Sun_Layer* layer) {
+void Sun_InteractiveEntity::setLayer(Sun_Layer* layer) {
     //if (CoreContext::current() && CoreContext::current()->layers()) {
     //    Layer* defaultLayer = CoreContext::current()->layers()->defaultLayer();
     //    _layerId = (layer == defaultLayer || layer == nullptr) ? QUuid() : layer->guid();
@@ -79,22 +79,22 @@ void InteractiveEntity::setLayer(Sun_Layer* layer) {
 }
 
 // Invalidate method
-void InteractiveEntity::invalidate() {
+void Sun_InteractiveEntity::invalidate() {
     // Logic for invalidating entity
 }
 
 // Remove method
-void InteractiveEntity::Remove() {
+void Sun_InteractiveEntity::Remove() {
     Sun_Entity::Remove();
 }
 
 // Get transformed BRep
-TopoDS_Shape InteractiveEntity::getTransformedBRep() const {
+TopoDS_Shape Sun_InteractiveEntity::getTransformedBRep() const {
     return TopoDS_Shape();  // Null or placeholder
 }
 
 // Raise visual changed
-void InteractiveEntity::raiseVisualChanged() {
+void Sun_InteractiveEntity::raiseVisualChanged() {
     //if (!IsDeserializing) {
     //    emit visualChanged();
     //}

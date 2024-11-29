@@ -15,7 +15,7 @@
 class CoreContext : public Sun_BaseObject {
     Q_OBJECT
     Q_PROPERTY(Model* document READ document WRITE setDocument)
-    Q_PROPERTY(Sun::Workspace* workspace READ workspace WRITE setWorkspace)
+    Q_PROPERTY(Sun::Sun_Workspace* workspace READ workspace WRITE setWorkspace)
     Q_PROPERTY(Sun_Viewport* Viewport READ Viewport WRITE setViewport)
 
  public:
@@ -30,20 +30,20 @@ class CoreContext : public Sun_BaseObject {
 
  public:
     Model* document() const { return m_document; }
-    Sun::Workspace* workspace() const { return m_workspace; }
+    Sun::Sun_Workspace* workspace() const { return m_workspace; }
     Sun_Viewport* Viewport() const { return _Viewport; }
 
     virtual void setDocument(Model* document);
-    virtual void setWorkspace(Sun::Workspace* workspace);
+    virtual void setWorkspace(Sun::Sun_Workspace* workspace);
     virtual void setViewport(Sun_Viewport* Viewport);
 
 signals:
     void documentChanged(Model* document);
-    void workspaceChanged(Sun::Workspace* workspace);
+    void workspaceChanged(Sun::Sun_Workspace* workspace);
     void viewportChanged(Sun_Viewport* Viewport);
 
  protected:
-    Sun::Workspace* m_workspace;
+    Sun::Sun_Workspace* m_workspace;
     Sun_Viewport* _Viewport;
     Model* m_document;
 };

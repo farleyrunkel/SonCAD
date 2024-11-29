@@ -49,7 +49,7 @@ ViewportView::ViewportView(QWidget* parent)
             // Create main panel for the viewport
             m_viewportPanel = new ViewportPanel();
 
-            auto workspace = controller->Workspace();
+            auto workspace = controller->Sun_Workspace();
             m_viewportPanel->setViewer(workspace->v3dViewer());
             m_viewportPanel->setAisContext(workspace->aisContext());
             m_viewportPanel->setWorkspaceController(controller);
