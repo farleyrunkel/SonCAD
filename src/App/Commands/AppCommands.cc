@@ -10,6 +10,7 @@
 #include "Iact/Commands/CommandHelper.h"
 #include "Iact/Commands/DocumentCommands.h"
 
+namespace Sun {
 RelayCommand& AppCommands::initApplication() {
     static RelayCommand command(
         []() { DocumentCommands::createNewModel().execute(); }
@@ -76,4 +77,5 @@ ActionCommand& AppCommands::showDocumentExplorer() {
         command.setIcon(ResourceUtils::icon("App/App-ShowDocu"));
     }
     return command;
+}
 }

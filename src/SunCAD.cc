@@ -10,7 +10,7 @@
 int main(int argc, char *argv[]) {
 
     QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
-    Application app(argc, argv);
+    Sun::Application app(argc, argv);
 
     QSystemSemaphore sema(app.applicationName(), 1, QSystemSemaphore::Open);
     if (!sema.acquire()) {

@@ -14,6 +14,8 @@
 
 class Core;
 
+namespace Sun {
+
 class Application : public QApplication {
     Q_OBJECT
 
@@ -28,10 +30,10 @@ class Application : public QApplication {
     friend class Core;
 
  private:
-    MainWindow* m_mainWindow;
+    Sun::MainWindow* m_mainWindow;
     WelcomeDialog* m_welcomeDialog;
-    AppContext* m_appContext;
+    Sun::AppContext* m_appContext;
     CommandManager* m_commandManager;
 };
-
+}
 #endif  // SRC_APP_APPLICATION_H_

@@ -6,6 +6,7 @@
 #include "Pres/Commands/ActionCommand.h"
 #include "Pres/Commands/RelayCommand.h"
 
+namespace Sun {
 class AppCommands {
  public:
     static  RelayCommand& initApplication();
@@ -15,5 +16,5 @@ class AppCommands {
     static ActionCommand& resetWindowLayout();
     static ActionCommand& showDocumentExplorer();
 };
-
+}
 #endif  // SRC_APP_COMMANDS_APPCOMMANDS_H_

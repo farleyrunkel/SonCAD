@@ -15,10 +15,11 @@
 
 #include "Pres/GlobalEventHandler.h"
 
+namespace Sun {
 Application::Application(int& argc, char** argv)
     : QApplication(argc, argv),
     m_mainWindow(nullptr),
-    m_welcomeDialog(nullptr), 
+    m_welcomeDialog(nullptr),
     m_appContext(nullptr),
     m_commandManager(nullptr) {
 
@@ -37,7 +38,7 @@ Application::Application(int& argc, char** argv)
     m_commandManager = new CommandManager;
 
     // Init context
-    m_appContext = new AppContext;
+    m_appContext = new Sun::AppContext;
     m_appContext->initialize(cmdLine);
 
     m_mainWindow = new MainWindow;
@@ -62,4 +63,5 @@ void Application::initTranslation() {
             break; // Exit loop after loading the first valid translation
         }
     }
+}
 }

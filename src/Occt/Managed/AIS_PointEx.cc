@@ -35,7 +35,10 @@ void AIS_PointEx::Compute(const Handle(PrsMgr_PresentationManager)& aPresentatio
 
     if (aMode==0 && !myBackgroundDrawer.IsNull())
     {
+        
+        
         StdPrs_Point::Add(aPresentation, Component(), myBackgroundDrawer);
+
     }
 
     AIS_Point::Compute(aPresentationManager, aPresentation, aMode);

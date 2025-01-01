@@ -6,20 +6,20 @@
 #include "App/Application.h"
 
 class Core {
- public:
-     static Application* application() noexcept {
-         return static_cast<Application*>(Application::instance());
+public:
+     static Sun::Application* application() noexcept {
+         return static_cast<Sun::Application*>(Sun::Application::instance());
      }
 
      static CommandManager* commandManager() noexcept {
          return application()->m_commandManager;
      }
 
-     static AppContext* appContext() noexcept {
+     static Sun::AppContext* appContext() noexcept {
          return application()->m_appContext;
      }
 
-     static MainWindow* mainWindow() noexcept {
+     static Sun::MainWindow* mainWindow() noexcept {
          return application()->m_mainWindow;
      }
 };

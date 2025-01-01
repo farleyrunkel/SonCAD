@@ -47,7 +47,7 @@ void CreateBoxTool::_EnsurePreviewShape() {
 
     auto body = Sun_Body::Create(_PreviewShape);
     _PreviewShape->Body()->SetRotation(WorkspaceController()->Workspace()->GetWorkingPlaneRotation());
-    if (body->Layer()->IsVisible())
+    //if (body->Layer()->IsVisible())
     //{
     //    _VisualShape = WorkspaceController.VisualObjects.Get(body, true);
     //    _IsTemporaryVisual = false;
@@ -57,7 +57,7 @@ void CreateBoxTool::_EnsurePreviewShape() {
     //    _VisualShape = new VisualShape(WorkspaceController, body, VisualShape.Options.Ghosting);
     //    _IsTemporaryVisual = true;
     //}
-    _VisualShape->SetIsSelectable(false);   
+    //_VisualShape->SetIsSelectable(false);   
 }
 
 void CreateBoxTool::_PivotAction_Preview(PointAction::EventArgs* args) {

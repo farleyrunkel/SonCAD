@@ -8,15 +8,17 @@
 
 #include "Iact/Viewport/ViewportPanel.h"
 
-class ViewportView : public QScrollArea 
-{
-    Q_OBJECT
+namespace Sun {
+    class ViewportView : public QScrollArea
+    {
+        Q_OBJECT
 
-public:
-    explicit ViewportView(QWidget* parent = nullptr);
+    public:
+        explicit ViewportView(QWidget* parent = nullptr);
 
-private:
-    ViewportPanel* m_viewportPanel;
-    QLabel* messageBar;
-};
+    private:
+        ViewportPanel* m_viewportPanel;
+        QLabel* messageBar;
+    };
+}
 #endif  // SRC_APP_VIEWPORTVIEW_H_

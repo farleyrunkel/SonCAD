@@ -24,9 +24,10 @@
 #include "Iact/Commands/ModelCommands.h"
 #include "Iact/Commands/DocumentCommands.h"
 
-MainWindow::MainWindow(QWidget *parent)
+namespace Sun {
+MainWindow::MainWindow(QWidget* parent)
     : SARibbonMainWindow(parent) {
-	setupUi();
+    setupUi();
 
     setupAppButton();
     setupCategories();
@@ -53,9 +54,9 @@ void MainWindow::setupUi() {
 
     ads::CDockManager::setConfigFlag(ads::CDockManager::DockAreaHasCloseButton, false);
     ads::CDockManager::setConfigFlag(ads::CDockManager::DockAreaHasUndockButton, false);
-    ads::CDockManager::setAutoHideConfigFlags(ads::CDockManager::DefaultAutoHideConfig); 
+    ads::CDockManager::setAutoHideConfigFlags(ads::CDockManager::DefaultAutoHideConfig);
     ads::CDockManager::setAutoHideConfigFlag(ads::CDockManager::DockAreaHasAutoHideButton, false);
-    
+
     m_dockManager = new ads::CDockManager(this);
 
     // set ribbonbar
@@ -79,11 +80,11 @@ void MainWindow::setupAppButton() {
         m_appButton->addAction(&DocumentCommands::createNewModel());
         m_appButton->addAction(&DocumentCommands::openModelFrom());
         m_appButton->addSeparator();
-        m_appButton->addAction(&AppCommands::settings());
+        m_appButton->addAction(&Sun::AppCommands::settings());
         m_appButton->addSeparator();
-        m_appButton->addAction(&AppCommands::showAboutDialog());
+        m_appButton->addAction(&Sun::AppCommands::showAboutDialog());
         m_appButton->addSeparator();
-        m_appButton->addAction(&AppCommands::exitApplication());
+        m_appButton->addAction(&Sun::AppCommands::exitApplication());
     }
     SARibbonApplicationButton* appBtn = qobject_cast<SARibbonApplicationButton*>(btn);
     if (!appBtn) {
@@ -117,7 +118,7 @@ void MainWindow::setupCategories() {
             aPannel->addAction(&ModelCommands::CreateBox(), SARibbonPannelItem::Large);
         }
         if (SARibbonPannel* aPannel = aCategory->addPannel(tr("Panels"))) {
-            aPannel->addAction(&AppCommands::showDocumentExplorer(), SARibbonPannelItem::Large);
+            aPannel->addAction(&Sun::AppCommands::showDocumentExplorer(), SARibbonPannelItem::Large);
         }
     }
 }
@@ -148,11 +149,11 @@ void MainWindow::setupDockWidgets() {
     m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarLeft, layersDock)->setSize(240);
     m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarBottom, messageDock)->setSize(240);
 
-    connect(&AppCommands::showDocumentExplorer(), &QAction::triggered, documentDock->toggleViewAction(), &QAction::trigger);
+    connect(&Sun::AppCommands::showDocumentExplorer(), &QAction::triggered, documentDock->toggleViewAction(), &QAction::trigger);
 }
 
 void MainWindow::onMainWindowLoaded() {
-    AppCommands::initApplication().execute();
+    Sun::AppCommands::initApplication().execute();
 }
 
 QAction* MainWindow::createAction(const QString& text, const QString& iconurl) {
@@ -161,4 +162,5 @@ QAction* MainWindow::createAction(const QString& text, const QString& iconurl) {
     action->setIcon(QIcon(iconurl));
     action->setObjectName(text);
     return action;
+}
 }

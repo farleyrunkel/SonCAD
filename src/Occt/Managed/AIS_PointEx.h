@@ -4,11 +4,11 @@
 #define OCCT_MANAGED_AIS_POINTEX_H_
 
 #include <AIS_Point.hxx>
-#include <Prs3d_Drawer.hxx>
 #include <Geom_Point.hxx>
-#include <Quantity_Color.hxx>
-#include <PrsMgr_PresentationManager.hxx>
+#include <Prs3d_Drawer.hxx>
 #include <Prs3d_Presentation.hxx>
+#include <PrsMgr_PresentationManager.hxx>
+#include <Quantity_Color.hxx>
 
 
 class AIS_PointEx : public AIS_Point
@@ -20,8 +20,9 @@ public:
 
     void EnableBackground(double theTransparency);
 	void SetBackgroundColor(const Quantity_Color& theColor);
-    void Compute(const opencascade::handle<PrsMgr_PresentationManager>&,
-                 const opencascade::handle<Prs3d_Presentation>& aPresentation, Standard_Integer aMode) override;
+    void Compute(const Handle(PrsMgr_PresentationManager)& aPresentationManager,
+                        const Handle(Prs3d_Presentation)& aPresentation,
+                        const Standard_Integer aMode) override;
 
 private:
     Handle(Prs3d_Drawer) myBackgroundDrawer;
