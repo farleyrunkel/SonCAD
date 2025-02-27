@@ -1,6 +1,6 @@
 
-set(PROJECT_SOURCES ${CMAKE_SOURCE_DIR}/src/SunCAD.cc)
-set(PROJECT_RESOURCES ${CMAKE_SOURCE_DIR}/res/SunCAD.qrc)
+set(PROJECT_SOURCES ${CMAKE_SOURCE_DIR}/src/SonCAD.cc)
+set(PROJECT_RESOURCES ${CMAKE_SOURCE_DIR}/res/SonCAD.qrc)
 
 # Recursively find all source and header files
 file(GLOB SUB_DIRECTORY_SOURCES
@@ -13,7 +13,7 @@ file(GLOB SUB_DIRECTORY_SOURCES
 list(APPEND PROJECT_SOURCES ${SUB_DIRECTORY_SOURCES})
 
 # add executable target
-qt_add_executable(SunCAD
+qt_add_executable(${PROJECT_NAME} 
     MANUAL_FINALIZATION
     ${PROJECT_SOURCES}
     ${PROJECT_RESOURCES}
@@ -42,9 +42,9 @@ endforeach()
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
 if(${QT_VERSION} VERSION_LESS 6.1.0)
-  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.SunCAD)
+  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.${PROJECT_NAME} )
 endif()
-set_target_properties(SunCAD PROPERTIES
+set_target_properties(${PROJECT_NAME}  PROPERTIES
     ${BUNDLE_ID_OPTION}
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
@@ -52,16 +52,16 @@ set_target_properties(SunCAD PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-# Install the target executable/library (SunCAD)
+# Install the target executable/library (SonCAD)
 include(GNUInstallDirs)
 
 # Install the executable or runtime (if Windows, RUNTIME is used)
-install(TARGETS SunCAD
+install(TARGETS ${PROJECT_NAME} 
     BUNDLE DESTINATION .                                # For macOS app bundles (if applicable)
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}         # Shared libraries on Linux/macOS
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}         # Executables and Windows DLLs
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(SunCAD)
+    qt_finalize_executable(${PROJECT_NAME})
 endif()

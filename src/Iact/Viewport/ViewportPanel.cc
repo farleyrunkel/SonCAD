@@ -161,7 +161,7 @@ namespace {
     public:
         //! Return GL context.
         static Handle(OpenGl_Context) GetGlContext(const Handle(V3d_View)& theView) {
-            Handle(OpenGl_View) aGlView = Handle(OpenGl_View)::DownCast(theView->View());
+            Handle(OpenGl_View) aGlView = Handle(OpenGl_View)::DownCast(theView->view());
             return aGlView->GlWindow()->GetGlContext();
         }
     };
