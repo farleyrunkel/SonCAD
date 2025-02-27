@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_VIEWPORT_VIEWPORTMOUSECONTROLDEFAULT_H_
-#define SRC_IACT_VIEWPORT_VIEWPORTMOUSECONTROLDEFAULT_H_
+#ifndef IACT_VIEWPORT_VIEWPORTMOUSECONTROLDEFAULT_H_
+#define IACT_VIEWPORT_VIEWPORTMOUSECONTROLDEFAULT_H_
 
 #include <QPointF>
 #include <QMouseEvent>
@@ -13,9 +13,6 @@
 #include "Iact/Viewport/IViewportMouseControl.h"
 #include "Iact/Workspace/ViewportController.h"
 
-
-namespace sun 
-{
     class ViewportMouseControlDefault : public IViewportMouseControl
     {
     public:
@@ -41,5 +38,5 @@ namespace sun
         ViewportController::MouseMoveMode currentMouseMoveMode;
         QPointF mouseDownPos;
     };
-}
-#endif  // SRC_IACT_VIEWPORT_VIEWPORTMOUSECONTROLDEFAULT_H_
+
+#endif  // IACT_VIEWPORT_VIEWPORTMOUSECONTROLDEFAULT_H_

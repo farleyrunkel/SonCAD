@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_VISUAL_VISUALSHAPE_H_
-#define SRC_IACT_VISUAL_VISUALSHAPE_H_
+#ifndef IACT_VISUAL_VISUALSHAPE_H_
+#define IACT_VISUAL_VISUALSHAPE_H_
 
 #include <AIS_InteractiveObject.hxx>
 #include <Standard_Handle.hxx>
@@ -9,14 +9,14 @@
 #include "Iact/Visual/VisualObject.h"
 #include "Iact/Workspace/WorkspaceController.h"
 
-namespace sun {
+
 
 DEFINE_STANDARD_HANDLE(VisualShape, Standard_Transient);
 
 class VisualShape : public VisualObject 
 {
 public:
-    explicit VisualShape(const Handle(sun::WorkspaceController)& WorkspaceController, const Handle(sun::InteractiveEntity)& entity)
+    explicit VisualShape(const Handle(WorkspaceController)& WorkspaceController, const Handle(InteractiveEntity)& entity)
     : VisualObject(WorkspaceController, entity) {}
 
     virtual void Remove() override {}
@@ -28,5 +28,5 @@ public:
         return Handle(AIS_InteractiveObject) {};
     }
 };
-}
-#endif  // SRC_IACT_VISUAL_VISUALSHAPE_H_
+
+#endif  // IACT_VISUAL_VISUALSHAPE_H_

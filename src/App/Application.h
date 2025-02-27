@@ -13,8 +13,6 @@
 #include "App/WelcomeDialog.h"
 #include "App/AppContext.h"
 
-namespace sun
-{
 class Application : public QApplication 
 {
     Q_OBJECT
@@ -26,12 +24,12 @@ public:
         _WelcomeDialog->deleteLater();
     }
 
-    sun::MainWindow* MainWindow() const
+    MainWindow* GetMainWindow() const
     {
         return _MainWindow;
     }
 
-    Handle(sun::AppContext) AppContext() const 
+    Handle(AppContext) GetAppContext() const 
     {
         return _AppContext;
     }
@@ -40,9 +38,9 @@ private:
     void _InitializeTranslation();
 
 private:
-    sun::MainWindow* _MainWindow = nullptr;
-    sun::WelcomeDialog* _WelcomeDialog = nullptr;
-    Handle(sun::AppContext) _AppContext= nullptr;
+    MainWindow* _MainWindow = nullptr;
+    WelcomeDialog* _WelcomeDialog = nullptr;
+    Handle(AppContext) _AppContext= nullptr;
 };
-}
+
 #endif  // APP_APPLICATION_H

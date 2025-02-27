@@ -4,22 +4,22 @@
 
 #include "Core/Core.h"
 
-namespace sun {
-    Handle(sun::WorkspaceController) CommandHelper::WorkspaceController() {
-        return Core::AppContext() ? Core::AppContext()->WorkspaceController() : nullptr;
+
+    Handle(WorkspaceController) CommandHelper::GetWorkspaceController() {
+        return Core::GetAppContext() ? Core::GetAppContext()->GetGetWorkspaceController() : nullptr;
     }
 
-    Handle(sun::ModelController) CommandHelper::DocumentController() {
-        return Core::AppContext() ? Core::AppContext()->DocumentController() : nullptr;
+    Handle(ModelController) CommandHelper::DocumentController() {
+        return Core::GetAppContext() ? Core::GetAppContext()->DocumentController() : nullptr;
     }
 
     //Tool* CommandHelper::currentTool() {
-    //    return /*WorkspaceController() ? WorkspaceController()->currentTool() :*/ nullptr;
+    //    return /*GetWorkspaceController() ? GetWorkspaceController()->currentTool() :*/ nullptr;
     //}
 
     //bool CommandHelper::startTool(Tool* tool) {
     //    qDebug() << "Debug: CommandHelper::startTool";
-    //    return false; //WorkspaceController() && WorkspaceController()->startTool(tool);
+    //    return false; //GetWorkspaceController() && GetWorkspaceController()->startTool(tool);
     //}
 
     bool CommandHelper::CanExecuteOnViewport() {
@@ -28,7 +28,5 @@ namespace sun {
     }
 
     bool CommandHelper::CanStartTool() {
-        return false; /*WorkspaceController() != nullptr;*/
+        return false; /*GetWorkspaceController() != nullptr;*/
     }
-
-}

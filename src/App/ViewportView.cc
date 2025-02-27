@@ -10,7 +10,7 @@
 #include "Core/Core.h"
 #include "Iact/Viewport/ViewportPanel.h"
 
-namespace sun {
+
 
 ViewportView::ViewportView(QWidget* parent)
     : QScrollArea(parent),
@@ -72,5 +72,4 @@ ViewportView::ViewportView(QWidget* parent)
     //            m_viewportPanel, &ViewportPanel::setViewportController);
     //    }}
     //);
-}
 }

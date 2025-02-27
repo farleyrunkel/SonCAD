@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_VIEWPORT_VIEWPORTPANEL_H_
-#define SRC_IACT_VIEWPORT_VIEWPORTPANEL_H_
+#ifndef IACT_VIEWPORT_VIEWPORTPANEL_H_
+#define IACT_VIEWPORT_VIEWPORTPANEL_H_
 
 #include <QOpenGLWidget>
 #include <QString>
@@ -23,9 +23,6 @@
 #include "Iact/Viewport/IViewportMouseControl.h"
 #include "Iact/HudElements/HudContainer.h"
 
-
-namespace sun 
-{
 class ViewportPanel : public QOpenGLWidget, public AIS_ViewController
 {
     Q_OBJECT
@@ -37,13 +34,13 @@ class ViewportPanel : public QOpenGLWidget, public AIS_ViewController
     virtual ~ViewportPanel();
 
     // WorkspaceController getter/setter
-    Handle(sun::WorkspaceController) WorkspaceController() const;
+    Handle(WorkspaceController) GetWorkspaceController() const;
 
-    void SetWorkspaceController(const Handle(sun::WorkspaceController)& controller);
+    void SetWorkspaceController(const Handle(WorkspaceController)& controller);
 
     // ViewportController getter/setter
-    Handle(sun::ViewportController) ViewportController() const;
-    void SetViewportController(const Handle(sun::ViewportController)& controller);
+    Handle(ViewportController) GetViewportController() const;
+    void SetViewportController(const Handle(ViewportController)& controller);
 
     //! Return AIS context.
     const Handle(AIS_InteractiveContext)& Context() const { return _Context; }
@@ -104,16 +101,16 @@ private:
     virtual void resizeGL(int width, int height) override;
 
  signals:
-    void workspaceControllerChanged(const Handle(sun::WorkspaceController)&);
-    void viewportControllerChanged(const Handle(sun::ViewportController)&);
+    void workspaceControllerChanged(const Handle(WorkspaceController)&);
+    void viewportControllerChanged(const Handle(ViewportController)&);
     void hudElementCollectionChanged();
     void hintMessageChanged(const QString& property);
     void MouseMoved(int x, int y);
 
 private:
     IViewportMouseControl* _MouseControl;
-    Handle(sun::ViewportController) _ViewportController;
-    Handle(sun::WorkspaceController) _WorkspaceController;
+    Handle(ViewportController) _ViewportController;
+    Handle(WorkspaceController) _WorkspaceController;
 
     HudContainer* _HudContainer;
     QList<IHudElement*> _HudElements;
@@ -129,5 +126,5 @@ private:
     QString _GlInfo;
     bool _IsCoreProfile;
 };
-}
-#endif  // SRC_IACT_VIEWPORT_VIEWPORTPANEL_H_
+
+#endif  // IACT_VIEWPORT_VIEWPORTPANEL_H_

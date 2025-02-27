@@ -195,7 +195,7 @@ namespace {
     };
 }
 
-namespace sun {
+
 
 ViewportPanel::ViewportPanel(QWidget* parent)
     : QOpenGLWidget(parent),
@@ -268,11 +268,11 @@ ViewportPanel::~ViewportPanel() {
 
 // virtual void SetCursor(QObject* owner, Cursor* cursor)  {}
 
-Handle(sun::WorkspaceController) ViewportPanel::WorkspaceController() const {
+Handle(WorkspaceController) ViewportPanel::GetWorkspaceController() const {
     return _WorkspaceController; 
 }
 
-void ViewportPanel::SetWorkspaceController(const Handle(sun::WorkspaceController)& controller) {
+void ViewportPanel::SetWorkspaceController(const Handle(WorkspaceController)& controller) {
     if (_WorkspaceController != controller) {
         _WorkspaceController = controller;
         if (!_WorkspaceController.IsNull()) {
@@ -286,11 +286,11 @@ void ViewportPanel::SetWorkspaceController(const Handle(sun::WorkspaceController
     }
 }
 
-Handle(sun::ViewportController) ViewportPanel::ViewportController() const {
+Handle(ViewportController) ViewportPanel::GetViewportController() const {
     return _ViewportController; 
 }
 
-void ViewportPanel::SetViewportController(const Handle(sun::ViewportController)& controller) {
+void ViewportPanel::SetViewportController(const Handle(ViewportController)& controller) {
     //if (m_viewportController != controller) {
     //    m_viewportController = controller;
     //    m_mouseControl->setViewportController(controller);
@@ -542,4 +542,3 @@ void ViewportPanel::DumpGlInfo(bool theIsBasic, bool theToPrint) {
     }
     _GlInfo = QString::fromUtf8(anInfo.ToCString());
 }
- }

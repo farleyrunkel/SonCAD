@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_CORE_TOPOLOGY_BODY_H_
-#define SRC_CORE_TOPOLOGY_BODY_H_
+#ifndef CORE_TOPOLOGY_BODY_H_
+#define CORE_TOPOLOGY_BODY_H_
 
 #include <QObject>
 
@@ -12,7 +12,7 @@
 
 #include "Comm/BaseObject.h"
 
-namespace sun {
+
     DEFINE_STANDARD_HANDLE(Body, Standard_Transient)
 
     class Body : public BaseObject
@@ -21,7 +21,5 @@ namespace sun {
         void SetPosition(const gp_Pnt& pnt) {}
     };
 
-}
 
-
-#endif  // SRC_CORE_TOPOLOGY_BODY_H_
+#endif  // CORE_TOPOLOGY_BODY_H_

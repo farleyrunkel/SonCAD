@@ -2,7 +2,7 @@
 
 #include "Core/Topology/Layer.h"
 
-namespace sun {
+
 	inline Layer::Layer() {}
 
     // Name Property
@@ -69,4 +69,3 @@ namespace sun {
             _OnTransparencyChanged(value);
         }
     }
-}

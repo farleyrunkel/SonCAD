@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_PROJECT_VISUALSTYLES_H_
-#define SRC_CORE_PROJECT_VISUALSTYLES_H_
+#ifndef CORE_PROJECT_VISUALSTYLES_H_
+#define CORE_PROJECT_VISUALSTYLES_H_
 
 #include <string>
 #include <array>
@@ -8,7 +8,7 @@
 
 #include "Comm/Types/Color.h"
 
-namespace sun {
+
 // Enum definitions
 enum class PresentationMode {
     Wireframe,
@@ -114,5 +114,4 @@ struct LineThicknessDescription {
 //    {LineThickness::Thick, "Thick", 3.0},
 //} };
 
-}
-#endif  // SRC_CORE_PROJECT_VISUALSTYLES_H_
+#endif  // CORE_PROJECT_VISUALSTYLES_H_

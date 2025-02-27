@@ -6,8 +6,6 @@
 #include "Pres/Commands/ActionCommand.h"
 #include <QMessageBox>
 
-namespace sun 
-{
     class ModelCommands
     {
     public:
@@ -16,5 +14,4 @@ namespace sun
         static ActionCommand& CreateSphere();
     };
 
-}
 #endif  // APP_MODELCOMMANDS_H

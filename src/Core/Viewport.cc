@@ -3,6 +3,3 @@
 #include "Core/Viewport.h"
 
 // Initialize Viewport with MSAA support
-namespace sun 
-{
-    }

@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_WORKSPACE_DISPLAYSCENE_H_
-#define SRC_IACT_WORKSPACE_DISPLAYSCENE_H_
+#ifndef IACT_WORKSPACE_DISPLAYSCENE_H_
+#define IACT_WORKSPACE_DISPLAYSCENE_H_
 
 // OpenCascade includes
 #include <NCollection_DataMap.hxx>
@@ -22,7 +22,7 @@ typedef NCollection_DataMap < TDF_Label,
     // , TDF_LabelMapHasher
 >
 LabelPrsMap;
-namespace sun {
+
     //! Redisplays all objects in the viewer.
     class DisplayScene : public Standard_Transient
     {
@@ -72,5 +72,5 @@ namespace sun {
         Handle(AIS_InteractiveContext) m_ctx;
 
     };
-}
-#endif // SRC_IACT_WORKSPACE_DISPLAYSCENE_H_
+
+#endif // IACT_WORKSPACE_DISPLAYSCENE_H_

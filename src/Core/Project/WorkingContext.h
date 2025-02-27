@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_PROJECT_WORKINGCONTEXT_H_
-#define SRC_CORE_PROJECT_WORKINGCONTEXT_H_
+#ifndef CORE_PROJECT_WORKINGCONTEXT_H_
+#define CORE_PROJECT_WORKINGCONTEXT_H_
 
 #include <boost/signals2.hpp>
 #include <gp_Pln.hxx>
@@ -8,8 +8,6 @@
 #include "Core/Workspace.h"
 #include "Comm/BaseObject.h"
 
-namespace sun 
-{
     DEFINE_STANDARD_HANDLE(WorkingContext, BaseObject)
 
    class WorkingContext : public BaseObject
@@ -21,7 +19,7 @@ namespace sun
 
         void CopyFrom(const WorkingContext& other);
 
-        gp_Pln WorkingPlane() const;
+        gp_Pln GetWorkingPlane() const;
 
         void SetWorkingPlane(const gp_Pln& plane);
 
@@ -78,6 +76,4 @@ namespace sun
         }
     };
 
-} // namespace Sun
-
-#endif  // SRC_CORE_PROJECT_WORKINGCONTEXT_H_
+#endif  // CORE_PROJECT_WORKINGCONTEXT_H_

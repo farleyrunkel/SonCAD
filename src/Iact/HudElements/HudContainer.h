@@ -12,7 +12,7 @@
 #include "Iact/HudElements/IHudManager.h"
 #include "Iact/HudElements/HudElement.h"
 
-namespace sun {
+
 class HudContainer : public QFrame, public IHudManager
 {
 	Q_OBJECT
@@ -45,5 +45,5 @@ private:
 	QString _HintMessage;
 	QList<IHudElement*> _HudElements;
 };
-}
+
 #endif  // IACT_HUD_ELEMENTS_HUDCONATAINER_H_

@@ -6,7 +6,7 @@
 #include <QFont>
 #include <QFontMetrics>
 
-namespace sun {
+
     void MultiValueHudElement::Initialize()
     {
         setFixedSize(100, 65);
@@ -68,4 +68,3 @@ namespace sun {
 
         return wid;
     }
-}

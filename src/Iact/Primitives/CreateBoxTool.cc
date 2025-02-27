@@ -15,7 +15,7 @@ namespace {
     };
 }
 
-namespace sun {
+
     CreateBoxTool::CreateBoxTool()
         : Tool()
     {
@@ -43,14 +43,14 @@ namespace sun {
             return;
 
         // Create solid
-        _PreviewShape = new sun::Box;
+        _PreviewShape = new Box;
         _PreviewShape->SetDimensionZ(0.01);
 
-        //auto body = sun::Body::Create(_PreviewShape);
-        //_PreviewShape->Body()->SetRotation(WorkspaceController()->Workspace()->GetWorkingPlaneRotation());
+        //auto body = Body::Create(_PreviewShape);
+        //_PreviewShape->Body()->SetRotation(GetWorkspaceController()->Workspace()->GetWorkingPlaneRotation());
         //if (body->Layer()->IsVisible())
         //{
-        //    _VisualShape = WorkspaceController()->VisualObjects()->Get(body, true);
+        //    _VisualShape = GetWorkspaceController()->VisualObjects()->Get(body, true);
         //    _IsTemporaryVisual = false;
         //}
         //else
@@ -74,7 +74,7 @@ namespace sun {
     {
         qDebug() << "- CreateBoxTool::_PivotAction_Finished";
 
-        _Plane = WorkspaceController()->Workspace()->WorkingPlane();
+        _Plane = GetWorkspaceController()->Workspace()->WorkingPlane();
         _PointPlane1 = args->PointOnPlane;
         qDebug() << "   - PointPlane1: " << _PointPlane1.X() << " " << _PointPlane1.Y();
 
@@ -120,8 +120,8 @@ namespace sun {
 
         if (args && args->MouseEventData->ModifierKeys.testFlag(Qt::ControlModifier))
         {
-            dimX = ::RoundToNearest(dimX, WorkspaceController()->Workspace()->GridStep());
-            dimY = ::RoundToNearest(dimY, WorkspaceController()->Workspace()->GridStep());
+            dimX = ::RoundToNearest(dimX, GetWorkspaceController()->Workspace()->GridStep());
+            dimY = ::RoundToNearest(dimY, GetWorkspaceController()->Workspace()->GridStep());
         }
 
         if (std::abs(dimX) <= 0.0)
@@ -160,7 +160,7 @@ namespace sun {
         _EnsurePreviewShape();
 
         auto position = ::Rounded(ElSLib::Value(posX, posY, _Plane));
-        _PreviewShape->Body()->SetPosition(position);
+        _PreviewShape->GetBody()->SetPosition(position);
         _PreviewShape->SetDimensionX(dimX);
         _PreviewShape->SetDimensionY(dimY);
 
@@ -199,4 +199,4 @@ namespace sun {
             _BaseRectAction_Finished(nullptr);
         }
     }
-}
+

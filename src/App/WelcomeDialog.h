@@ -5,8 +5,6 @@
 
 #include <QDialog>
 
-namespace sun 
-{
     class WelcomeDialog : public QDialog
     {
         Q_OBJECT
@@ -18,5 +16,5 @@ namespace sun
     private:
         void SetupUi();
     };
-}
+
 #endif  // APP_WELCOMEDIALOG_H

@@ -5,8 +5,6 @@
 #include <iostream>
 #include <string>
 
-namespace sun 
-{
     CommandLine::CommandLine(int argc, char* argv[])
         : _Options(argv[0], " - Command line options") {
         try {
@@ -36,4 +34,3 @@ namespace sun
             return;  // Use return instead of exit
         }
     }
-}

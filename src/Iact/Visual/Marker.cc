@@ -11,9 +11,9 @@
 #include "Iact/Workspace/WorkspaceController.h"
 #include "Occt/Managed/AIS_PointEx.h"
 
-namespace sun {
 
-Marker::Marker(const Handle(sun::WorkspaceController)& workspaceController, Styles styles, const MarkerImage& image)
+
+Marker::Marker(const Handle(WorkspaceController)& workspaceController, Styles styles, const MarkerImage& image)
     : VisualObject(workspaceController, nullptr),
     _Styles(styles), 
     _Image(image),
@@ -23,7 +23,7 @@ Marker::Marker(const Handle(sun::WorkspaceController)& workspaceController, Styl
 {
 }
 
-Marker::Marker(const Handle(sun::WorkspaceController)& workspaceController, Styles styles, QString imageName, int size)
+Marker::Marker(const Handle(WorkspaceController)& workspaceController, Styles styles, QString imageName, int size)
     : VisualObject(workspaceController, nullptr),
     _Styles(styles),
     _Image(_GetMarkerImage(imageName, size)),
@@ -110,7 +110,7 @@ void Marker::Remove()
 }
 
 Handle(Prs3d_PointAspect) Marker::CreateBitmapPointAspect(
-    const MarkerImage& image, sun::Color color)
+    const MarkerImage& image, Color color)
 {
     if (image.Bytes->IsEmpty())
     {
@@ -267,9 +267,9 @@ Marker::MarkerImage& Marker::ErrorImage()
 
 // 获取/设置颜色
 
-sun::Color Marker::Color() const { return _Color; }
+Color Marker::GetColor() const { return _Color; }
 
-void Marker::SetColor(const sun::Color& color) 
+void Marker::SetColor(const Color& color) 
 {
     if (_Color == color)
         return;
@@ -277,9 +277,9 @@ void Marker::SetColor(const sun::Color& color)
     Update();
 }
 
-sun::Color Marker::BackgroundColor() const { return _ColorBg; }
+Color Marker::GetBackgroundColor() const { return _ColorBg; }
 
-void Marker::SetBackgroundColor(const sun::Color& color)
+void Marker::SetBackgroundColor(const Color& color)
 {
     if (_ColorBg == color)
         return;
@@ -295,5 +295,4 @@ void Marker::SetSelectable(bool selectable)
         return;
     _IsSelectable = selectable;
     Update();
-}
 }

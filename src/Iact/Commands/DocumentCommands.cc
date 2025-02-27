@@ -10,7 +10,7 @@
 #include "App/Application.h"
 #include "Iact/Commands/CommandHelper.h"
 
-namespace sun {
+
 
     ActionCommand& DocumentCommands::CreateNewModel() 
     {
@@ -46,4 +46,3 @@ namespace sun {
 
         return command;
     }
-}

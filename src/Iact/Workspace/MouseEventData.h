@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_WORKSPACE_MOUSEEVENTDATA_H_
-#define SRC_IACT_WORKSPACE_MOUSEEVENTDATA_H_
+#ifndef IACT_WORKSPACE_MOUSEEVENTDATA_H_
+#define IACT_WORKSPACE_MOUSEEVENTDATA_H_
 
 #include <QList>
 #include <QPointF>
@@ -16,7 +16,7 @@
 #include "Core/Topology/InteractiveEntity.h"
 #include "Core/Viewport.h"
 
-namespace sun {
+
 
 class MouseEventData;
 //--------------------------------------------------------------------------------------------------
@@ -72,7 +72,7 @@ public:
 public:
     // 构造函数
     MouseEventData() {}
-    MouseEventData(const Handle(sun::_Viewport)& vp, const QPointF& sp, const gp_Pnt& pp, Qt::KeyboardModifiers mk)
+    MouseEventData(const Handle(Viewport)& vp, const QPointF& sp, const gp_Pnt& pp, Qt::KeyboardModifiers mk)
         : _Viewport(vp), _ScreenPoint(sp), PointOnPlane(pp), ModifierKeys(mk) {}
 
     // 检测到的主要实体
@@ -88,7 +88,7 @@ public:
     void Clear();
 
     // 设置事件数据
-    void Set(const Handle(sun::_Viewport)& vp, const QPointF& sp, const gp_Pnt& pp, Qt::KeyboardModifiers mk);
+    void Set(const Handle(Viewport)& vp, const QPointF& sp, const gp_Pnt& pp, Qt::KeyboardModifiers mk);
 
     // 设置检测元素的列表
     void SetDetectedElements(const QList<Handle(AIS_InteractiveObject)>& aisObjects,
@@ -103,7 +103,7 @@ public:
     //    return viewport->ViewAxis(screenPoint.x(), screenPoint.y());
     //}
     // 鼠标事件数据的主要属性
-    Handle(_Viewport) _Viewport = nullptr;
+    Handle(Viewport) _Viewport = nullptr;
     QPointF _ScreenPoint;
     gp_Pnt PointOnPlane;
     Qt::KeyboardModifiers ModifierKeys;
@@ -111,6 +111,4 @@ public:
     ReturnOptions _ReturnOptions;
 };
 
-}
-
-#endif  // SRC_IACT_WORKSPACE_MOUSEEVENTDATA_H_
+#endif  // IACT_WORKSPACE_MOUSEEVENTDATA_H_

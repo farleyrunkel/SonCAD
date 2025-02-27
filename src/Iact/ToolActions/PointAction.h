@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_TOOLACTION_POINTACTION_H_
-#define SRC_IACT_TOOLACTION_POINTACTION_H_
+#ifndef IACT_TOOLACTION_POINTACTION_H_
+#define IACT_TOOLACTION_POINTACTION_H_
 
 #include <QMessageBox>
 
@@ -14,7 +14,7 @@
 #include "Iact/Framework/ToolAction.h"
 #include "Iact/Workspace/MouseEventData.h"
 
-namespace sun {
+
 
 class PointAction : public ToolAction 
 {
@@ -52,5 +52,5 @@ private:
     Marker* _Marker;
     gp_Pnt _CurrentPoint;
 };
-}
-#endif  // SRC_IACT_TOOLACTION_POINTACTION_H_
+
+#endif  // IACT_TOOLACTION_POINTACTION_H_

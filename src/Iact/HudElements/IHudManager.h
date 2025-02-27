@@ -8,7 +8,7 @@
 #include <QWidget>
 #include <functional>
 
-namespace sun {
+
     class IHudElement;
 
     //class Cursor;
@@ -25,5 +25,5 @@ namespace sun {
         // virtual void SetCursor(QObject* owner, Cursor* cursor) = 0;
         virtual void SetHintMessage(const QString& message) = 0;
     };
-}
+
 #endif  // IACT_HUD_ELEMENTS_IHUDMANAGER_H_

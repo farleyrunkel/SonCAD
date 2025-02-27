@@ -1,14 +1,11 @@
 // ResourceUtils.h
-#ifndef SRC_RESOURCEUTILS_H_
-#define SRC_RESOURCEUTILS_H_
+#ifndef RESOURCEUTILS_H_
+#define RESOURCEUTILS_H_
 
 #include <QString>
 #include <QIcon>
 #include <QFile>
 #include <QDebug>
-
-namespace sun 
-{
 
 class ResourceUtils 
 {
@@ -33,5 +30,4 @@ public:
     }
 };
 
-}
-#endif // SRC_RESOURCEUTILS_H_
+#endif // RESOURCEUTILS_H_

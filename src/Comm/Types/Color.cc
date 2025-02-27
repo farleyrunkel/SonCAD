@@ -2,7 +2,7 @@
 
 #include "Comm/Types/Color.h"
 
-namespace sun {
+
 
 // Define static colors
 const Color Color::Black(0, 0, 0);
@@ -79,4 +79,3 @@ size_t Color::GetHashCode() const
         (static_cast<int>(Blue() * 255)));
 }
 
-}

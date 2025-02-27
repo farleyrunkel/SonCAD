@@ -1,13 +1,13 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_WORKSPACE_EDITORSTATE_H_
-#define SRC_IACT_WORKSPACE_EDITORSTATE_H_
+#ifndef IACT_WORKSPACE_EDITORSTATE_H_
+#define IACT_WORKSPACE_EDITORSTATE_H_
 
 // Qt includes
 #include <QObject>
 #include <QString>
 
-namespace sun {
+
 
 class EditorState final : public QObject 
 {
@@ -17,5 +17,4 @@ private:
 	QString _ActiveTool;
 };
 
-}
-#endif // SRC_IACT_WORKSPACE_EDITORSTATE_H_
+#endif // IACT_WORKSPACE_EDITORSTATE_H_

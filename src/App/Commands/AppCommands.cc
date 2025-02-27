@@ -10,7 +10,7 @@
 #include "Iact/Commands/CommandHelper.h"
 #include "Iact/Commands/DocumentCommands.h"
 
-namespace sun {
+
 
     RelayCommand& AppCommands::InitApplication() {
         static RelayCommand command(
@@ -22,7 +22,7 @@ namespace sun {
 
     ActionCommand& AppCommands::ExitApplication() {
         static ActionCommand command(
-            []() { Core::MainWindow()->close(); }
+            []() { Core::GetMainWindow()->close(); }
         );
         // Initialize command properties if not already set
         if (command.text().isEmpty()) {
@@ -33,7 +33,7 @@ namespace sun {
     }
 
     ActionCommand& AppCommands::ShowAboutDialog() {
-        static AboutDialog aboutDialog(Core::MainWindow());
+        static AboutDialog aboutDialog(Core::GetMainWindow());
         static ActionCommand command(
             []() { aboutDialog.show(); }
         );
@@ -79,4 +79,3 @@ namespace sun {
         }
         return command;
     }
-}

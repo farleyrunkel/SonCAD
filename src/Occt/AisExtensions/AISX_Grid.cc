@@ -6,7 +6,7 @@
 #include <gp.hxx>
 #include <PrsMgr_PresentableObject.hxx>
 
-namespace sun {
+
 
     IMPLEMENT_STANDARD_RTTIEXT(AISX_Grid, AIS_InteractiveObject)
 
@@ -233,5 +233,3 @@ namespace sun {
         _XAxisAspect = new Graphic3d_AspectLine3d(Quantity_Color(0.5, 0.0, 0.0, Quantity_TypeOfColor::Quantity_TOC_RGB), Aspect_TOL_SOLID, 1.0);
         _YAxisAspect = new Graphic3d_AspectLine3d(Quantity_Color(0.0, 0.6, 0.0, Quantity_TypeOfColor::Quantity_TOC_RGB), Aspect_TOL_SOLID, 1.0);
     }
-}
-//--------------------------------------------------------------------------------------------------

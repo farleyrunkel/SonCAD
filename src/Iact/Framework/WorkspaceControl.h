@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_FRAMEWORK_WORKSPACECONTROLL_H_
-#define SRC_IACT_FRAMEWORK_WORKSPACECONTROLL_H_
+#ifndef IACT_FRAMEWORK_WORKSPACECONTROLL_H_
+#define IACT_FRAMEWORK_WORKSPACECONTROLL_H_
 
 #include <QList>
 
@@ -11,7 +11,7 @@
 #include "Iact/Workspace/MouseEventData.h"
 #include "Iact/Visual/VisualObject.h"
 
-namespace sun {
+
 
 DEFINE_STANDARD_HANDLE(WorkspaceControl, BaseObject);
 
@@ -20,8 +20,8 @@ class WorkspaceControl : public BaseObject, public IMouseEventHandler
  public:
 	explicit WorkspaceControl();
 
-    Handle(sun::WorkspaceController) WorkspaceController() const;
-	void SetWorkspaceController(const Handle(sun::WorkspaceController)& WorkspaceController);
+    Handle(WorkspaceController) GetWorkspaceController() const;
+	void SetWorkspaceController(const Handle(WorkspaceController)& WorkspaceController);
 
  protected:
     virtual QList<Handle(WorkspaceControl)> GetChildren() const;
@@ -69,9 +69,9 @@ class WorkspaceControl : public BaseObject, public IMouseEventHandler
     }
 
  private:
-    Handle(sun::WorkspaceController) _WorkspaceController;
+    Handle(WorkspaceController) _WorkspaceController;
 	QList<IHudElement*> _HudElements;
-    QList<Handle(sun::VisualObject)> _VisualObjects;
+    QList<Handle(VisualObject)> _VisualObjects;
 };
-}
-#endif  // SRC_IACT_FRAMEWORK_WORKSPACECONTROLL_H_
+
+#endif  // IACT_FRAMEWORK_WORKSPACECONTROLL_H_

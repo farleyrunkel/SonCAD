@@ -2,7 +2,7 @@
 
 #include "Iact/HudElements/Cursors.h"
 
-namespace sun {
+
     QCursor Cursors::Wait() {
         return Qt::WaitCursor;
     }
@@ -80,4 +80,4 @@ namespace sun {
 
         return _Cursors.value(cursorId, Qt::ArrowCursor);
     }
-}
+

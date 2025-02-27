@@ -8,8 +8,6 @@
 
 #include <cxxopts.hpp>
 
-namespace sun 
-{
     class CommandLine
     {
     public:
@@ -37,5 +35,5 @@ namespace sun
     private:
         cxxopts::Options _Options;
     };
-}
+
 #endif // APP_COMMANDLINE_H

@@ -3,7 +3,7 @@
 #include "Iact/Visual/VisualObjectManager.h"
 
 
-namespace sun {
+
 
     VisualObjectManager::VisualObjectManager(const Handle(WorkspaceController)& workspaceController)
         : _WorkspaceController(workspaceController) {}
@@ -47,4 +47,3 @@ namespace sun {
     std::list<Handle(InteractiveEntity)> VisualObjectManager::IsolatedEntities() const {
         return _IsolatedEntities;
     }
-}

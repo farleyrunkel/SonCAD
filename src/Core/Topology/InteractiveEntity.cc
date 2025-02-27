@@ -1,14 +1,14 @@
 // Copyright [2024] SunCAD
 
 #include "Core/Topology/InteractiveEntity.h"
-namespace sun {
+
 
 // Constructor
 InteractiveEntity::InteractiveEntity()
-    : sun::Entity(), _Name("Unnamed"), _IsVisible(true), _LayerId(QUuid::createUuid()) {}
+    : Entity(), _Name("Unnamed"), _IsVisible(true), _LayerId(QUuid::createUuid()) {}
 
 // Name property
-QString InteractiveEntity::Name() const {
+QString InteractiveEntity::GetName() const {
     return _Name;
 }
 
@@ -45,7 +45,7 @@ void InteractiveEntity::SetIsVisible(bool IsVisible) {
 }
 
 // LayerId property
-QUuid InteractiveEntity::LayerId() const {
+QUuid InteractiveEntity::GetLayerId() const {
     return _LayerId;
 }
 
@@ -65,14 +65,14 @@ void InteractiveEntity::SetLayerId(const QUuid& LayerId) {
     //}
 }
 
-Handle(sun::Layer) InteractiveEntity::Layer() const {
+Handle(Layer) InteractiveEntity::GetLayer() const {
     //if (CoreContext::current() && CoreContext::current()->layers()) {
     //    return CoreContext::current()->layers()->find(_layerId);
     //}
     return nullptr;
 }
 
-void InteractiveEntity::SetLayer(const Handle(sun::Layer)& Layer) {
+void InteractiveEntity::SetLayer(const Handle(Layer)& Layer) {
     //if (CoreContext::current() && CoreContext::current()->layers()) {
     //    Layer* defaultLayer = CoreContext::current()->layers()->defaultLayer();
     //    _layerId = (layer == defaultLayer || layer == nullptr) ? QUuid() : layer->guid();
@@ -86,7 +86,7 @@ void InteractiveEntity::Invalidate() {
 
 // Remove method
 void InteractiveEntity::Remove() {
-    sun::Entity::Remove();
+    Entity::Remove();
 }
 
 // Get transformed BRep
@@ -101,5 +101,3 @@ void InteractiveEntity::RaiseVisualChanged() {
     //}
 }
 
-
-}

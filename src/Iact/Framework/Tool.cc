@@ -4,7 +4,7 @@
 
 #include "Iact/Workspace/WorkspaceController.h"
 
-namespace sun {
+
 	Tool::Tool(QObject* parent) : WorkspaceControl(),
 		_Id(typeid(*this).name()) {
 	}
@@ -12,7 +12,7 @@ namespace sun {
 	bool Tool::Start() {
 		if (OnStart()) {
 			_IsActive = true;
-			WorkspaceController()->Invalidate();
+			GetWorkspaceController()->Invalidate();
 			return true;
 		}
 		return false;
@@ -40,8 +40,8 @@ namespace sun {
 		OnStop();
 		Cleanup();
 
-		//WorkspaceController()->RemoveTool(this);
-		WorkspaceController()->Invalidate();
+		//GetWorkspaceController()->RemoveTool(this);
+		GetWorkspaceController()->Invalidate();
 	}
 
 	QString Tool::Id() const {
@@ -81,7 +81,7 @@ namespace sun {
 			}
 
 			if (toolAction != nullptr) {
-				toolAction->SetWorkspaceController(WorkspaceController());
+				toolAction->SetWorkspaceController(GetWorkspaceController());
 				if (!toolAction->Start())
 					return false;
 
@@ -113,4 +113,4 @@ namespace sun {
 		}
 		_ToolActions.clear();
 	}
-}
+

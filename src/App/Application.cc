@@ -15,8 +15,6 @@
 
 #include "Pres/GlobalEventHandler.h"
 
-namespace sun 
-{
     Application::Application(int& argc, char** argv)
         : QApplication(argc, argv) {
 
@@ -33,10 +31,10 @@ namespace sun
         }
 
         // Init context
-        _AppContext = new sun::AppContext;
+        _AppContext = new AppContext;
         _AppContext->Initialize(*cmdLine);
 
-        _MainWindow = new sun::MainWindow; // Create the main window
+        _MainWindow = new MainWindow; // Create the main window
         _MainWindow->show(); // Show the main window
 
         // Install the event filter for global key handling
@@ -58,4 +56,3 @@ namespace sun
             }
         }
     }
-}

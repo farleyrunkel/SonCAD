@@ -1,14 +1,14 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_PRES_COMMANDS_RELAYCOMMAND_H_
-#define SRC_PRES_COMMANDS_RELAYCOMMAND_H_
+#ifndef PRES_COMMANDS_RELAYCOMMAND_H_
+#define PRES_COMMANDS_RELAYCOMMAND_H_
 
 #include <functional>
 #include <utility>
 
 #include "Pres/Commands/ICommand.h"
 
-namespace sun {
+
 
     class RelayCommand : public ICommand
     {
@@ -29,6 +29,6 @@ namespace sun {
         std::function<void()> _Execute;      // Function to execute the command
         std::function<bool()> _CanExecute;   // Function to check if the command can be executed
     };
-}
 
-#endif  // SRC_PRES_COMMANDS_RELAYCOMMAND_H_
+
+#endif  // PRES_COMMANDS_RELAYCOMMAND_H_

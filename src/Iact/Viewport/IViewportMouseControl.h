@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_VIEWPORT_IVIEWPORTMOUSECONTROL_H_
-#define SRC_IACT_VIEWPORT_IVIEWPORTMOUSECONTROL_H_
+#ifndef IACT_VIEWPORT_IVIEWPORTMOUSECONTROL_H_
+#define IACT_VIEWPORT_IVIEWPORTMOUSECONTROL_H_
 
 #include <QPointF>
 #include <QMouseEvent>
@@ -9,7 +9,7 @@
 
 #include "Iact/Workspace/ViewportController.h"
 
-namespace sun {
+
 
     // Interface for viewport mouse control
     class IViewportMouseControl 
@@ -47,5 +47,5 @@ namespace sun {
         Handle(ViewportController) _ViewportController;
     };
 
-}
-#endif  // SRC_IACT_VIEWPORT_IVIEWPORTMOUSECONTROL_H_
+
+#endif  // IACT_VIEWPORT_IVIEWPORTMOUSECONTROL_H_

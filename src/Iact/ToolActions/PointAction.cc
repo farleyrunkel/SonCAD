@@ -6,7 +6,7 @@
 
 #include "Iact/Workspace/WorkspaceController.h"
 
-namespace sun {
+
 
     PointAction::PointAction()
         : ToolAction(),
@@ -25,7 +25,7 @@ namespace sun {
         if (!_IsFinished) {
             _EnsureMarker();
             ProcessMouseInput(data);
-            auto workingPlane = WorkspaceController()->Workspace()->WorkingPlane();
+            auto workingPlane = GetWorkspaceController()->Workspace()->WorkingPlane();
 
             EventArgs* args = new EventArgs(
                 _CurrentPoint,
@@ -37,7 +37,7 @@ namespace sun {
             Preview(args);
 
             _Marker->Set(args->Point);
-            WorkspaceController()->Invalidate();
+            GetWorkspaceController()->Invalidate();
             return ToolAction::OnMouseMove(data);
         }
 
@@ -55,7 +55,7 @@ namespace sun {
             _IsFinished = true;
             auto args = new EventArgs(
                 _CurrentPoint,
-                ProjLib::Project(WorkspaceController()->Workspace()->WorkingPlane(), _CurrentPoint),
+                ProjLib::Project(GetWorkspaceController()->Workspace()->WorkingPlane(), _CurrentPoint),
                 _CurrentPoint,
                 data
             );
@@ -67,7 +67,7 @@ namespace sun {
 
     void PointAction::_EnsureMarker() {
         if (_Marker == nullptr) {
-            _Marker = new Marker(WorkspaceController(), Marker::Styles::Bitmap, Marker::PlusImage());
+            _Marker = new Marker(GetWorkspaceController(), Marker::Styles::Bitmap, Marker::PlusImage());
             Add(_Marker);
         }
     }
@@ -79,4 +79,3 @@ namespace sun {
             //Remove(_HintLine);
         }
     }
-}

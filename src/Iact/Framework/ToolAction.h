@@ -1,12 +1,12 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_FRAMEWORK_TOOLACTION_H_
-#define SRC_IACT_FRAMEWORK_TOOLACTION_H_
+#ifndef IACT_FRAMEWORK_TOOLACTION_H_
+#define IACT_FRAMEWORK_TOOLACTION_H_
 
 
 #include "Iact/Framework/WorkspaceControl.h"
 
-namespace sun {
+
 
 class ToolAction : public WorkspaceControl {
 
@@ -45,5 +45,5 @@ class ToolAction : public WorkspaceControl {
 protected:
     bool _IsFinished = false;
 };
-}
-#endif  // SRC_IACT_FRAMEWORK_TOOLACTION_H_
+
+#endif  // IACT_FRAMEWORK_TOOLACTION_H_

@@ -1,29 +1,26 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_CORE_APP_H_
-#define SRC_CORE_APP_H_
+#ifndef CORE_APP_H_
+#define CORE_APP_H_
 
 #include "App/Application.h"
-
-namespace sun 
-{
 
 class Core 
 {
 public:
-     static sun::Application* Application() noexcept 
+     static Application* GetApplication() noexcept 
      {
-         return static_cast<sun::Application*>(Application::instance());
+         return static_cast<Application*>(Application::instance());
      }
 
-     static sun::MainWindow* MainWindow() noexcept 
+     static MainWindow* GetMainWindow() noexcept 
      {
-         return Application()->MainWindow();
+         return GetApplication()->GetMainWindow();
      }
 
-     static Handle(sun::AppContext) AppContext() noexcept 
+     static Handle(AppContext) GetAppContext() noexcept 
      {
-         return Application()->AppContext();
+         return GetApplication()->GetAppContext();
      }
 
      //static CommandManager* commandManager() noexcept 
@@ -31,5 +28,5 @@ public:
      //    return application()->m_commandManager;
      //}
 };
-}
-#endif  // SRC_CORE_APP_H_
+
+#endif  // CORE_APP_H_

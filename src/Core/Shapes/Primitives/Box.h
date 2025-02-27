@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_CORE_SHAPES_PRIMITIVES_BOX_H_
-#define SRC_CORE_SHAPES_PRIMITIVES_BOX_H_
+#ifndef CORE_SHAPES_PRIMITIVES_BOX_H_
+#define CORE_SHAPES_PRIMITIVES_BOX_H_
 
 #include <BRepPrimAPI_MakeBox.hxx>
 
@@ -11,7 +11,7 @@
 #include "Core/Shapes/IShapeOperand.h"
 #include "Comm/BaseObject.h"
 
-namespace sun {
+
 
     DEFINE_STANDARD_HANDLE(Box, BaseObject)
 
@@ -19,7 +19,7 @@ namespace sun {
     {
     public:
         // Class name property
-        virtual QString Name() const override {
+        virtual QString GetName() const override {
             return "Box";
         }
 
@@ -70,9 +70,9 @@ namespace sun {
         // Initialization
         Box() : _DimensionX(1.0), _DimensionY(1.0), _DimensionZ(1.0) {}
 
-        virtual sun::ShapeType ShapeType() const override {
-            return ShapeType::Solid;
-        }
+        //virtual ShapeType GetShapeType() const  {
+        //    return ShapeType::Solid;
+        //}
 
     public:
         // Signals
@@ -95,6 +95,5 @@ namespace sun {
         double _DimensionZ = 0.0;
     };
 
-}  // namespace Shapes
 
-#endif  // SRC_CORE_SHAPES_PRIMITIVES_BOX_H_
+#endif  // CORE_SHAPES_PRIMITIVES_BOX_H_

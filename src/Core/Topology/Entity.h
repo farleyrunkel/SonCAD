@@ -11,9 +11,6 @@
 
 #include "Comm/BaseObject.h"
 
-namespace sun
-{
-
     // Base class for Entity, assuming Entity is derived from QObject for signal/slot support
     class Entity : public BaseObject
     {
@@ -31,7 +28,7 @@ namespace sun
         QString TypeName() const;
 
         // Name property, virtual
-        virtual QString Name() const;
+        virtual QString GetName() const;
 
         virtual void SetName(const QString& /*unused*/);
 
@@ -50,5 +47,5 @@ namespace sun
         QUuid _Guid;
         bool _HasErrors;
     };
-}
+
 #endif  // Entity_DOCUMENT_H

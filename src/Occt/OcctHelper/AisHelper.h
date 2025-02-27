@@ -7,12 +7,11 @@
 #include <Graphic3d_SequenceOfHClipPlane.hxx>
 #include <PrsMgr_PresentableObject.hxx>
 
-namespace sun {
+
 
 class AisHelper {
 public:
 	static void DisableGlobalClipPlanes(const Handle(PrsMgr_PresentableObject)& object);
 };
 
-}
 #endif  // OCCT_OCCTHELPER_AISHELPER_H_

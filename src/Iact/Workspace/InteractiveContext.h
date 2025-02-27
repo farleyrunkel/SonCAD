@@ -16,8 +16,6 @@
 #include "Iact/Workspace/WorkspaceController.h"
 #include "Iact/Workspace/ModelController.h"
 
-namespace sun
-{
     DEFINE_STANDARD_HANDLE(InteractiveContext, CoreContext)
 
     class InteractiveContext : public CoreContext
@@ -60,8 +58,8 @@ namespace sun
         }
 
         // WorkspaceController getter/setter
-       Handle(sun::WorkspaceController) WorkspaceController() const { return _WorkspaceController; }
-        void SetWorkspaceController(const Handle(sun::WorkspaceController)& controller) {
+       Handle(WorkspaceController) GetGetWorkspaceController() const { return _WorkspaceController; }
+        void SetWorkspaceController(const Handle(WorkspaceController)& controller) {
             if (_WorkspaceController != controller) {
                 if (_WorkspaceController) {
                     _WorkspaceController->Dispose();
@@ -72,8 +70,8 @@ namespace sun
         }
 
         // ViewportController getter/setter
-        Handle(sun::ViewportController) ViewportController() const { return _ViewportController; }
-        void SetViewportController(const Handle(sun::ViewportController)& controller) {
+        Handle(ViewportController) GetViewportController() const { return _ViewportController; }
+        void SetViewportController(const Handle(ViewportController)& controller) {
             if (_ViewportController != controller) {
                 _ViewportController = controller;
 
@@ -108,8 +106,8 @@ namespace sun
 
     private:
         Handle(ModelController) _DocumentController;
-        Handle(sun::WorkspaceController) _WorkspaceController;
-        Handle(sun::ViewportController) _ViewportController;
+        Handle(WorkspaceController) _WorkspaceController;
+        Handle(ViewportController) _ViewportController;
 
         QList<QColor> _RecentUsedColors;
         QList<QString> _RecentUsedScripts;
@@ -117,7 +115,5 @@ namespace sun
 
         void Initialize() {}
     };
-
-}
 
 #endif  // APP_INTERACTIVECONTEXT_H

@@ -11,8 +11,6 @@
 
 #include "Comm/BaseObject.h"
 
-namespace sun
-{
     DEFINE_STANDARD_HANDLE(Workspace, BaseObject)
 
     class Workspace final : public BaseObject
@@ -63,5 +61,5 @@ namespace sun
         Handle(AIS_InteractiveContext) _AisContext;
         bool _GridEnabled;
     };
-}
+
 #endif  // CORE_WORKSPACE_H

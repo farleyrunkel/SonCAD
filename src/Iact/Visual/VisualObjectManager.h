@@ -1,5 +1,5 @@
-#ifndef SRC_IACT_VISUAL_VISUALOBJECTMANAGER_H_
-#define SRC_IACT_VISUAL_VISUALOBJECTMANAGER_H_
+#ifndef IACT_VISUAL_VISUALOBJECTMANAGER_H_
+#define IACT_VISUAL_VISUALOBJECTMANAGER_H_
 
 #include <map>
 #include <list>
@@ -16,7 +16,7 @@
 #include "Core/Topology/Layer.h"
 #include "Iact/Visual/VisualObject.h"
 
-namespace sun {
+
 
     class WorkspaceController;
 
@@ -86,6 +86,4 @@ namespace sun {
         std::list<Handle(InteractiveEntity)> _IsolatedEntities;
     };
 
-}  // namespace Sun
-
-#endif  // SRC_IACT_VISUAL_VISUALOBJECTMANAGER_H_
+#endif  // IACT_VISUAL_VISUALOBJECTMANAGER_H_

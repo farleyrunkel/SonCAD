@@ -7,9 +7,9 @@
 
 #include "Iact/Workspace/WorkspaceController.h"
 
-namespace sun {
 
-    VisualObject::VisualObject(const Handle(sun::WorkspaceController)& workspaceController, const Handle(sun::InteractiveEntity)& entity)
+
+    VisualObject::VisualObject(const Handle(WorkspaceController)& workspaceController, const Handle(InteractiveEntity)& entity)
         : _WorkspaceController(workspaceController), _Entity(entity) {}
 
     Handle(AIS_InteractiveContext) VisualObject::AisContext() const {
@@ -30,4 +30,3 @@ namespace sun {
         if (!AisObject()) return;
         AisObject()->SetLocalTransformation(transformation);
     }
-}

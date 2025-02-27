@@ -9,7 +9,7 @@
 
 #include "Pres/Commands/RelayCommand.h"
 
-namespace sun {
+
 
     class ActionCommand final : public QAction, public RelayCommand
     {
@@ -33,5 +33,4 @@ namespace sun {
         }
     };
 
-}
 #endif  // APP_ACTIVECOMMAND_H

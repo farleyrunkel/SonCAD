@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_CORE_TOPOLOGY_OMTERACTIVEENTITY_H_
-#define SRC_CORE_TOPOLOGY_OMTERACTIVEENTITY_H_
+#ifndef CORE_TOPOLOGY_OMTERACTIVEENTITY_H_
+#define CORE_TOPOLOGY_OMTERACTIVEENTITY_H_
 
 #include <QObject>
 #include <QUuid>
@@ -11,7 +11,7 @@
 #include "Core/Topology/Entity.h"
 #include "Core/Topology/Layer.h"
 
-namespace sun {
+
 
 DEFINE_STANDARD_HANDLE(InteractiveEntity, Standard_Transient);
 
@@ -21,7 +21,7 @@ public:
     explicit InteractiveEntity();
 
     // Name property
-    QString Name() const override;
+    QString GetName() const override;
     void SetName(const QString& Name) override;
 
     // IsVisible property
@@ -29,11 +29,11 @@ public:
     void SetIsVisible(bool IsVisible);
 
     // LayerId property
-    QUuid LayerId() const;
+    QUuid GetLayerId() const;
     void SetLayerId(const QUuid& LayerId);
 
-    Handle(sun::Layer) Layer() const;
-    void SetLayer(const Handle(sun::Layer)& Layer);
+    Handle(Layer) GetLayer() const;
+    void SetLayer(const Handle(Layer)& Layer);
 
     // Methods
     void Invalidate();
@@ -49,6 +49,4 @@ private:
     QUuid _LayerId;
 };
 
-
-}
-#endif  // SRC_CORE_TOPOLOGY_OMTERACTIVEENTITY_H_
+#endif  // CORE_TOPOLOGY_OMTERACTIVEENTITY_H_

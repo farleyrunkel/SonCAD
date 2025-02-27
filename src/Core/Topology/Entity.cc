@@ -2,8 +2,6 @@
 
 #include "Core/Topology/Entity.h"
 
-namespace sun 
-{
     // For debugging or logging purposes
 
 
@@ -34,7 +32,7 @@ namespace sun
 
     // Name property, virtual
 
-    QString Entity::Name() const {
+    QString Entity::GetName() const {
         return "Unknown";
     }
 
@@ -62,6 +60,5 @@ namespace sun
     }
 
     QString Entity::ToString() const {
-        return Name();
+        return GetName();
     }
-}

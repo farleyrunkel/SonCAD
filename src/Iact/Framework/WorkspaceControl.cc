@@ -6,18 +6,18 @@
 #include "Iact/Visual/VisualObject.h"
 #include "Core/Core.h"
 
-namespace sun {
+
 
 	WorkspaceControl::WorkspaceControl()
 		: 
 		_WorkspaceController(nullptr) {
 	}
 
-	Handle(sun::WorkspaceController) WorkspaceControl::WorkspaceController() const {
+	Handle(WorkspaceController) WorkspaceControl::GetWorkspaceController() const {
 		return _WorkspaceController;
 	}
 
-	void WorkspaceControl::SetWorkspaceController(const Handle(sun::WorkspaceController)& WorkspaceController) {
+	void WorkspaceControl::SetWorkspaceController(const Handle(WorkspaceController)& WorkspaceController) {
 		_WorkspaceController = WorkspaceController;
 	}
 
@@ -30,13 +30,13 @@ namespace sun {
 			return;
 		}
 		_HudElements.append(hudElement);
-		//if (auto wc = Core::AppContext()->WorkspaceController(); wc->hudManager()) {
+		//if (auto wc = Core::AppContext()->GetWorkspaceController(); wc->hudManager()) {
 		//	wc->hudManager()->AddElement(hudElement);
 		//}
 	}
 
 	void WorkspaceControl::SetHintMessage(const QString& message) {
-		//auto hudManager = WorkspaceController()->hudManager();
+		//auto hudManager = GetWorkspaceController()->hudManager();
 		//if (hudManager)
 		//	hudManager->SetHintMessage(message);
 	}
@@ -45,6 +45,6 @@ namespace sun {
 		if (_VisualObjects.contains(visual))
 			return;
 		_VisualObjects.append(visual);
-		WorkspaceController()->Invalidate();
+		GetWorkspaceController()->Invalidate();
 	}
-}
+

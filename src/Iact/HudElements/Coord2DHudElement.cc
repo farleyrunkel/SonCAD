@@ -4,7 +4,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QString>
-namespace sun {
+
     Coord2DHudElement::Coord2DHudElement(QWidget* parent)
         : IHudElement(parent), _Label(new QLabel(this)), _CoordinateX(0.0), _CoordinateY(0.0)
     {
@@ -43,4 +43,3 @@ namespace sun {
 
         _Label->setAlignment(Qt::AlignCenter);
     }
-}

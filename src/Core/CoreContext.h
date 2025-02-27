@@ -8,8 +8,6 @@
 
 #include "Comm/BaseObject.h"
 
-namespace sun
-{
     // CoreContext class that follows the Singleton design pattern with lazy initialization
     class CoreContext : public BaseObject
     {
@@ -24,6 +22,5 @@ namespace sun
         }
 
     };
-}
 
 #endif  // CORE_CORECONTEXT_H

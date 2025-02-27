@@ -24,7 +24,7 @@
 #include "Iact/Commands/ModelCommands.h"
 #include "Iact/Commands/DocumentCommands.h"
 
-namespace sun {
+
     MainWindow::MainWindow(QWidget* parent)
         : SARibbonMainWindow(parent) {
         SetupUi();
@@ -163,4 +163,3 @@ namespace sun {
         action->setObjectName(text);
         return action;
     }
-}

@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_FRAMEWORK_TOOL_H_
-#define SRC_IACT_FRAMEWORK_TOOL_H_
+#ifndef IACT_FRAMEWORK_TOOL_H_
+#define IACT_FRAMEWORK_TOOL_H_
 
 #include <QObject>
 #include <QString>
@@ -11,9 +11,6 @@
 
 #include "Iact/Framework/WorkspaceControl.h"
 #include "Iact/Framework/ToolAction.h"
-
-namespace sun 
-{
 
 class Tool : public WorkspaceControl 
 {
@@ -62,5 +59,5 @@ class Tool : public WorkspaceControl
 	QString _Id;
 	bool _IsActive;
 };
-}
-#endif  // SRC_IACT_FRAMEWORK_TOOL_H_
+
+#endif  // IACT_FRAMEWORK_TOOL_H_

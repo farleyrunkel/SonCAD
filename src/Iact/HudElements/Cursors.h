@@ -8,7 +8,7 @@
 #include <QString>
 #include <QDebug>
 
-namespace sun {
+
 
     class Cursors
     {
@@ -33,5 +33,5 @@ namespace sun {
 
         static QCursor GetOrCreate(const QString& cursor_id);
     };
-}
+
 #endif  // IACT_HUD_ELEMENTS_CURSORS_H_

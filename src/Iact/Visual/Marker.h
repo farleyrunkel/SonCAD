@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_VISUAL_MARKER_H_
-#define SRC_IACT_VISUAL_MARKER_H_
+#ifndef IACT_VISUAL_MARKER_H_
+#define IACT_VISUAL_MARKER_H_
 
 #include <QObject>
 #include <QImage>
@@ -24,7 +24,7 @@
 #include "Iact/Visual/VisualObject.h"
 #include "Occt/Managed/AIS_PointEx.h"
 
-namespace sun {
+
 
 DEFINE_STANDARD_HANDLE(Marker, VisualObject);
 
@@ -48,16 +48,16 @@ public:
      };
 
 public:
-    Marker(const Handle(sun::WorkspaceController)& WorkspaceController, Styles styles, const MarkerImage& image);
-    Marker(const Handle(sun::WorkspaceController)& WorkspaceController, Styles styles, QString imageName, int size);
+    Marker(const Handle(WorkspaceController)& WorkspaceController, Styles styles, const MarkerImage& image);
+    Marker(const Handle(WorkspaceController)& WorkspaceController, Styles styles, QString imageName, int size);
 
 public:
     // 获取/设置颜色
-    sun::Color Color() const;
-    void SetColor(const sun::Color& color);
+    Color GetColor() const;
+    void SetColor(const Color& color);
 
-    sun::Color BackgroundColor() const;
-    void SetBackgroundColor(const sun::Color& color);
+    Color GetBackgroundColor() const;
+    void SetBackgroundColor(const Color& color);
 
     bool IsSelectable() const;
     void SetSelectable(bool selectable);
@@ -82,7 +82,7 @@ public:
     void SetImage(MarkerImage image);
 
     static Handle(Prs3d_PointAspect) CreateBitmapPointAspect(
-        const MarkerImage& image, sun::Color color);
+        const MarkerImage& image, Color color);
 
     static Handle(Prs3d_PointAspect) CreateImagePointAspect(
         const MarkerImage& image);
@@ -104,9 +104,9 @@ private:
     Handle(Geom_CartesianPoint) _P = nullptr; // OCCT 坐标点
     Handle(AIS_PointEx) _AisPoint = nullptr; // OCCT 点对象
     Handle(Prs3d_PointAspect) _PointAspect = nullptr;
-    sun::Color _Color; // 标记颜色
-    sun::Color _ColorBg; // 背景颜色
+    Color _Color; // 标记颜色
+    Color _ColorBg; // 背景颜色
     bool _IsSelectable; // 是否可选择
 };
-}
-#endif  // SRC_IACT_VISUAL_MARKER_H_
+
+#endif  // IACT_VISUAL_MARKER_H_

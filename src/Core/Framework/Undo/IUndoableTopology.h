@@ -6,8 +6,6 @@
 #include <QUuid> 
 #include "Core/Topology/Entity.h" 
 
-namespace sun 
-{
     class IUndoableTopology
     {
     public:
@@ -32,5 +30,4 @@ namespace sun
         virtual void MoveChildFromUndo(const Handle(Entity)& instance, Handle(Entity) newParent) = 0;
     };
 
-}
 #endif // IUNDOABLETOPOLOGY_H

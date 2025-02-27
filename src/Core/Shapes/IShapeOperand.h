@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_SHAPES_ISHAPEOPERAND_H_
-#define SRC_CORE_SHAPES_ISHAPEOPERAND_H_
+#ifndef CORE_SHAPES_ISHAPEOPERAND_H_
+#define CORE_SHAPES_ISHAPEOPERAND_H_
 
 #include <optional>
 
@@ -7,7 +7,7 @@
 #include "gp_Ax3.hxx"       // OpenCASCADE 的 3D 坐标系
 #include "gp_Pln.hxx"       // OpenCASCADE 的平面类型
 
-namespace sun {
+
 
 enum class ShapeType
 {
@@ -34,10 +34,9 @@ class IShapeOperand
 public:
     virtual ~IShapeOperand() = default;
 
-    virtual ShapeType ShapeType() const = 0;
+    //virtual ShapeType ShapeType() const
+    //{};
 };
 
-//--------------------------------------------------------------------------------------------------
-}
 
-#endif // SRC_CORE_SHAPES_ISHAPEOPERAND_H_
+#endif // CORE_SHAPES_ISHAPEOPERAND_H_

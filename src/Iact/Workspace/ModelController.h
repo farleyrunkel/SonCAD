@@ -1,14 +1,12 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_WORKSPACE_MODELCONTROLLER_H_
-#define SRC_IACT_WORKSPACE_MODELCONTROLLER_H_
+#ifndef IACT_WORKSPACE_MODELCONTROLLER_H_
+#define IACT_WORKSPACE_MODELCONTROLLER_H_
 
 #include "Comm/BaseObject.h"
 
 #include <string>
 
-namespace sun
-{
     DEFINE_STANDARD_HANDLE(ModelController, BaseObject)
 
      class ModelController : public BaseObject
@@ -16,9 +14,7 @@ namespace sun
     public:
         ModelController() {}
         ~ModelController() {}
-        void Dispose() {
 
-        }
 
         bool AskForSavingModelChanges() {
             return true;
@@ -30,6 +26,5 @@ namespace sun
 
         void OpenModelFrom(const std::string& ) {}
     };
-}
 
-#endif // SRC_IACT_WORKSPACE_MODELCONTROLLER_H_
+#endif // IACT_WORKSPACE_MODELCONTROLLER_H_

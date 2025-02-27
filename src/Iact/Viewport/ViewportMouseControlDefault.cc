@@ -3,7 +3,7 @@
 #include "Iact/Viewport/ViewportMouseControlDefault.h"
 #include <QMessageBox>
 
-namespace sun {
+
 
     ViewportMouseControlDefault::ViewportMouseControlDefault() :
         _ViewportController(nullptr),
@@ -25,7 +25,7 @@ namespace sun {
         //else {
         //    if (mouseEvent->buttons() & Qt::LeftButton && (pos - mouseDownPos).manhattanLength() > 10
         //        //&& !_ViewportController->IsInRubberbandSelection()
-        //        //&& _ViewportController->WorkspaceController()->IsSelecting()) {
+        //        //&& _ViewportController->GetWorkspaceController()->IsSelecting()) {
         //        // _ViewportController->startRubberbandSelection(mouseDownPos);
         //    }
 
@@ -105,5 +105,3 @@ namespace sun {
         //    currentMouseMoveMode = Sun__ViewportController::MouseMoveMode::None;
         //}
     }
-
-} // namespace Sun

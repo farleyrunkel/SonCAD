@@ -22,11 +22,9 @@
 #include "Core/Workspace.h"
 #include "Comm/BaseObject.h"
 
-namespace sun
-{
-    DEFINE_STANDARD_HANDLE(_Viewport, BaseObject)
+    DEFINE_STANDARD_HANDLE(Viewport, BaseObject)
 
-    class _Viewport : public BaseObject
+    class Viewport : public BaseObject
     {
     public:
         // 渲染模式枚举
@@ -39,7 +37,7 @@ namespace sun
 
     public:
         // 构造函数
-        explicit _Viewport(const Handle(Workspace)& workspace)
+        explicit Viewport(const Handle(Workspace)& workspace)
             : _Workspace(workspace), _RenderMode(SolidShaded), _Twist(0.0), _Scale(100.0) {}
 
         // 获取器和设置器
@@ -170,7 +168,7 @@ namespace sun
         }
 
         // 析构函数
-        ~_Viewport() {
+        ~Viewport() {
             if (_V3dView) {
                 _V3dView->Remove();
             }
@@ -194,6 +192,5 @@ namespace sun
         Handle(V3d_View) _V3dView;
         Handle(AIS_AnimationCamera) _AisAnimationCamera;
     };
-}
 
 #endif  // CORE_VIEWPORT_H

@@ -2,7 +2,7 @@
 
 #include "Pres/Commands/RelayCommand.h"
 
-namespace sun {
+
 
     RelayCommand::RelayCommand(std::function<void()> Execute)
         : _Execute(std::move(Execute)), _CanExecute(nullptr) {
@@ -21,4 +21,3 @@ namespace sun {
     bool RelayCommand::CanExecute() const {
         return _CanExecute ? _CanExecute() : true;
     }
-}

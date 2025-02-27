@@ -2,8 +2,7 @@
 
 #include "Core/Shapes/Shape.h"
 
-namespace sun {
-    Handle(sun::Body) Shape::Body() {
-        return new sun::Body;
+
+    Handle(Body) Shape::GetBody() {
+        return new Body;
     }
-}

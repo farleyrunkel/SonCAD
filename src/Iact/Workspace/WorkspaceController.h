@@ -1,16 +1,13 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_WORKSPACE_WORKSPACECONTROLLER_H_
-#define SRC_IACT_WORKSPACE_WORKSPACECONTROLLER_H_
+#ifndef IACT_WORKSPACE_WORKSPACECONTROLLER_H_
+#define IACT_WORKSPACE_WORKSPACECONTROLLER_H_
 
 #include <QList>
 #include <QObject>
 
 #include "Comm/BaseObject.h"
 #include "Core/Workspace.h"
-
-namespace sun 
-{
 
 DEFINE_STANDARD_HANDLE(WorkspaceController, BaseObject)
 
@@ -24,10 +21,9 @@ public:
 
     void Invalidate() {}
 
-    Handle(sun::Workspace) Workspace() {
+    Handle(Workspace) Workspace() {
         return nullptr;
     }
 };
 
-}
-#endif // SRC_IACT_WORKSPACE_WORKSPACECONTROLLER_H_
+#endif // IACT_WORKSPACE_WORKSPACECONTROLLER_H_

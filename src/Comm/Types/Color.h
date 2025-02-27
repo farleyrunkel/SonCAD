@@ -1,5 +1,5 @@
-#ifndef SRC_COMMON_TYPES_COLOR_H_
-#define SRC_COMMON_TYPES_COLOR_H_
+#ifndef COMMON_TYPES_COLOR_H_
+#define COMMON_TYPES_COLOR_H_
 
 #include <cassert>
 #include <sstream>
@@ -12,7 +12,7 @@
 
 #include <Quantity_Color.hxx>
 
-namespace sun {
+
 
 class Color : public QColor 
 {
@@ -43,6 +43,5 @@ public:
     size_t GetHashCode() const;
 };
 
-}  // end namespace sun
 
-#endif // SRC_COMMON_TYPES_COLOR_H_
+#endif // COMMON_TYPES_COLOR_H_

@@ -9,7 +9,7 @@
 #include <Graphic3d_AspectLine3d.hxx>
 #include <Graphic3d_Group.hxx>
 
-namespace sun {
+
 
 class AISX_Grid : public AIS_InteractiveObject {
 public:
@@ -50,5 +50,4 @@ private:
     Handle(Graphic3d_AspectLine3d) _YAxisAspect;
 };
 
-}
 #endif // !OCCT_AISEXTENSIONS_AISX_GRID_H_

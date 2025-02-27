@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
 #include "Core/Project/WorkingContext.h"
-namespace sun {
+
 
     // CopyFrom ·½·¨
 
@@ -21,14 +21,14 @@ namespace sun {
     }
 
     inline void WorkingContext::CopyFrom(const WorkingContext& other) {
-        _WorkingPlane = other.WorkingPlane();
+        _WorkingPlane = other.GetWorkingPlane();
         _GridType = other.GridType();
         _GridStep = other.GridStep();
         _GridDivisions = other.GridDivisions();
         _GridRotation = other.GridRotation();
     }
 
-    inline gp_Pln WorkingContext::WorkingPlane() const {
+    inline gp_Pln WorkingContext::GetWorkingPlane() const {
         return _WorkingPlane;
     }
 
@@ -82,5 +82,3 @@ namespace sun {
             _OnGridDivisionsChanged(divisions);
         }
     }
-
-}

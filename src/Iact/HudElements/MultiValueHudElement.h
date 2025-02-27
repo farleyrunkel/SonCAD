@@ -13,7 +13,7 @@
 
 #include "Iact/HudElements/HudElement.h"
 
-namespace sun {
+
     class MultiValueHudElement : public IHudElement
     {
         Q_OBJECT
@@ -132,6 +132,5 @@ namespace sun {
         bool _isInKeyboardMode2;
         bool _firstFromKeyboard;
     };
-}
 
 #endif  // IACT_HUD_ELEMENTS_MULTIVALUEHUDELEMENT_H_

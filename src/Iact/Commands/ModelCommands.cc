@@ -11,9 +11,6 @@
 //#include "Iact/Primitives/CreateBoxTool.h"
 #include "Iact/Commands/CommandHelper.h"
 
-namespace sun 
-{
-
     // Initialize the static command outside the class
     ActionCommand& ModelCommands::CreateBox() {
         static ActionCommand command(
@@ -83,4 +80,3 @@ namespace sun
         return command;
     }
 
-}

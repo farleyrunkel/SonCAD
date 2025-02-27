@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_PRIMITIVES_CREATEBOXTOOL_H_
-#define SRC_IACT_PRIMITIVES_CREATEBOXTOOL_H_
+#ifndef IACT_PRIMITIVES_CREATEBOXTOOL_H_
+#define IACT_PRIMITIVES_CREATEBOXTOOL_H_
 
 #include <QObject>
 #include <QPointer>
@@ -16,7 +16,7 @@
 #include "Iact/ToolActions/PointAction.h"
 #include "Iact/Visual/VisualObject.h"
 
-namespace sun {
+
 
 class CreateBoxTool : public Tool 
 {
@@ -48,12 +48,11 @@ private:
 	gp_Pln _Plane;
 	gp_Pnt2d _PointPlane1;
 	gp_Pnt2d _PointPlane2;
-	Handle(sun::Box) _PreviewShape;
+	Handle(Box) _PreviewShape;
 	double _Height;
 	bool _IsTemporaryVisual;
 	Coord2DHudElement* _Coord2DHudElement = nullptr;
 	MultiValueHudElement* _MultiValueHudElement = nullptr;
-	sun::VisualObject* _VisualShape;
+	VisualObject* _VisualShape;
 };
-}
-#endif // SRC_IACT_PRIMITIVES_CREATEBOXTOOL_H_
+#endif // IACT_PRIMITIVES_CREATEBOXTOOL_H_

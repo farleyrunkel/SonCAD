@@ -1,11 +1,11 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_PRES_COMMANDS_COMMANDMANAGER_H_
-#define SRC_PRES_COMMANDS_COMMANDMANAGER_H_
+#ifndef PRES_COMMANDS_COMMANDMANAGER_H_
+#define PRES_COMMANDS_COMMANDMANAGER_H_
 
 #include <functional>
 
-namespace sun {
+
 class CommandManager{
 
  public:
@@ -15,5 +15,5 @@ class CommandManager{
  //signals:
  //   void updateEnabled();
 };
-}
-#endif  // SRC_PRES_COMMANDS_COMMANDMANAGER_H_
+
+#endif  // PRES_COMMANDS_COMMANDMANAGER_H_

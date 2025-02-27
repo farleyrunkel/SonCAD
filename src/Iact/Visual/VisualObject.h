@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_VISUAL_VISUALOBJECT_H_
-#define SRC_IACT_VISUAL_VISUALOBJECT_H_
+#ifndef IACT_VISUAL_VISUALOBJECT_H_
+#define IACT_VISUAL_VISUALOBJECT_H_
 
 // Boost includes
 #include <boost/signals2.hpp>
@@ -16,14 +16,14 @@
 #include "Comm/BaseObject.h"
 #include "Iact/Workspace/WorkspaceController.h"
 
-namespace sun {
+
 
     DEFINE_STANDARD_HANDLE(VisualObject, Standard_Transient);
 
     class VisualObject : public BaseObject
     {
     protected:
-        explicit VisualObject(const Handle(sun::WorkspaceController)& workspaceController, const Handle(sun::InteractiveEntity)& entity);
+        explicit VisualObject(const Handle(WorkspaceController)& workspaceController, const Handle(InteractiveEntity)& entity);
         virtual ~VisualObject() {}
 
     public:
@@ -32,13 +32,13 @@ namespace sun {
 
         virtual Handle(AIS_InteractiveObject) AisObject() const = 0;
 
-        Handle(sun::WorkspaceController) WorkspaceController() const {
+        Handle(WorkspaceController) GetGetWorkspaceController() const {
             return _WorkspaceController;
         }
 
         Handle(AIS_InteractiveContext) AisContext() const;
 
-        Handle(sun::InteractiveEntity) Entity() const {
+        Handle(InteractiveEntity) Entity() const {
             return _Entity;
         }
 
@@ -67,11 +67,10 @@ namespace sun {
         boost::signals2::signal<void(const std::shared_ptr<VisualObject>&)> OnAisObjectChanged;
 
     private:
-        Handle(sun::WorkspaceController) _WorkspaceController;
-        Handle(sun::InteractiveEntity) _Entity;
+        Handle(WorkspaceController) _WorkspaceController;
+        Handle(InteractiveEntity) _Entity;
         QVariant _Tag;
     };
 
-}  // namespace Sun
 
-#endif  // SRC_IACT_VISUAL_VISUALOBJECT_H_
+#endif  // IACT_VISUAL_VISUALOBJECT_H_

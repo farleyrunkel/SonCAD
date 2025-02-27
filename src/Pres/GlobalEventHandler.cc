@@ -5,8 +5,6 @@
 #include <QLineEdit>
 #include <QFocusEvent>
 
-namespace sun 
-{
     GlobalEventHandler::GlobalEventHandler(QObject* parent) : QObject(parent) {}
 
     bool GlobalEventHandler::eventFilter(QObject* obj, QEvent* event) {
@@ -25,4 +23,3 @@ namespace sun
         }
         return QObject::eventFilter(obj, event);
     }
-}

@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_APP_MAINWINDOW_H_
-#define SRC_APP_MAINWINDOW_H_
+#ifndef APP_MAINWINDOW_H_
+#define APP_MAINWINDOW_H_
 
 #include <QWidget>
 
@@ -12,7 +12,7 @@
 
 #include "App/Commands/AppCommands.h"
 
-namespace sun {
+
 
 class MainWindow : public SARibbonMainWindow 
 {
@@ -38,5 +38,5 @@ private:
     // The main container for docking
     ads::CDockManager* _DockManager = nullptr;
 };
-}
-#endif  // SRC_APP_MAINWINDOW_H_
+
+#endif  // APP_MAINWINDOW_H_

@@ -7,7 +7,7 @@
 #include <Prs3d_Drawer.hxx>
 #include <StdPrs_Point.hxx>
 
-namespace sun {
+
 
 IMPLEMENT_STANDARD_RTTIEXT(AIS_PointEx,AIS_Point)
 
@@ -59,4 +59,4 @@ void AIS_PointEx::EnableBackground(double theTransparency)
     SetToUpdate();
     UpdatePresentations();
 }
-}
+

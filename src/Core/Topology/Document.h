@@ -15,8 +15,6 @@
 #include "Core/EntityContainer.h" 
 #include "Core/Topology/Entity.h" 
 
-namespace sun 
-{
     class IDocument
     {
     public:
@@ -180,5 +178,5 @@ namespace sun
             // Instances map
         QMap<QUuid, Handle(Entity)> _Instances;
     };
-}
+
 #endif // DOCUMENT_H

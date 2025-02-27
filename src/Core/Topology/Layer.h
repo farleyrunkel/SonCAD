@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_CORE_TOPOLOGY_LAYER_H_
-#define SRC_CORE_TOPOLOGY_LAYER_H_
+#ifndef CORE_TOPOLOGY_LAYER_H_
+#define CORE_TOPOLOGY_LAYER_H_
 
 #include <QString>
 #include <QColor>
@@ -14,7 +14,7 @@
 
 #include "Core/Topology/Entity.h"
 
-namespace sun {
+
 
 class SerializationContext
 {
@@ -22,7 +22,7 @@ class SerializationContext
 
 DEFINE_STANDARD_HANDLE(Layer, Standard_Transient);
 
-class Layer : public sun::Entity
+class Layer : public Entity
 {
 public:
     Layer();
@@ -84,5 +84,4 @@ private:
     }
 };
 
- }
-#endif  // SRC_CORE_TOPOLOGY_LAYER_H_
+#endif  // CORE_TOPOLOGY_LAYER_H_

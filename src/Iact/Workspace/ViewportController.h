@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_WORKSPACE_VIEWPORTCONTROLLER_H_
-#define SRC_IACT_WORKSPACE_VIEWPORTCONTROLLER_H_
+#ifndef IACT_WORKSPACE_VIEWPORTCONTROLLER_H_
+#define IACT_WORKSPACE_VIEWPORTCONTROLLER_H_
 
 // Qt includes
 #include <QObject>
@@ -11,7 +11,6 @@
 
 #include "Comm/BaseObject.h"
 
-namespace sun{
 
     DEFINE_STANDARD_HANDLE(ViewportController, BaseObject)
 
@@ -48,6 +47,6 @@ namespace sun{
 		void Rotate(double deltaX, double deltaY, double deltaZ) {}
 
     };
-}
 
-#endif  // SRC_IACT_WORKSPACE_VIEWPORTCONTROLLER_H_
+
+#endif  // IACT_WORKSPACE_VIEWPORTCONTROLLER_H_
