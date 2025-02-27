@@ -6,26 +6,30 @@
 #include <QWidget>
 #include <QSize>
 
-class Sun_WorkspaceController;
+#include "Iact/Workspace/WorkspaceController.h"
 
-class IHudElement : public QWidget
-{
-	Q_OBJECT
+namespace sun {
 
-public:
-	 explicit IHudElement(QWidget* parent) : QWidget(parent) {}
+	class IHudElement : public QWidget
+	{
+		Q_OBJECT
 
-public:
-	 Sun_WorkspaceController* WorkspaceController() const;
-	 void setWorkspaceController(Sun_WorkspaceController* controller);
+	public:
+		explicit IHudElement(QWidget* parent) : QWidget(parent) {}
 
-	 virtual void Initialize() = 0;
+	public:
+		Handle(sun::WorkspaceController) WorkspaceController() const;
+		void setWorkspaceController(const Handle(sun::WorkspaceController)& controller);
 
-signals:
-	void SizeChanged(const QSize&);
+		virtual void Initialize() = 0;
 
-private:
-	Sun_WorkspaceController* _WorkspaceController;
-};
+	signals:
+		void WidthChanged(int);
+		void HeightChanged(int);
+
+	private:
+		Handle(sun::WorkspaceController) _WorkspaceController;
+	};
+}
 
 #endif  // IACT_HUD_ELEMENTS_HUDELEMENT_H_

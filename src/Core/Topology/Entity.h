@@ -1,60 +1,54 @@
-// Copyright [2024] SunCAD
 
-#ifndef SRC_CORE_TOPOLOGY_ENTITY_H_
-#define SRC_CORE_TOPOLOGY_ENTITY_H_
+#ifndef Entity_DOCUMENT_H
+#define Entity_DOCUMENT_H
+// Copyright [2024] SunCAD
 
 #include <QObject>
 #include <QUuid>
 #include <QDebug>
+#include <QJsonObject>
+#include <QJsonDocument>
 
-// Base class for Entity, assuming Entity is derived from QObject for signal/slot support
-class Entity : public QObject {
-    Q_OBJECT
+#include "Comm/BaseObject.h"
 
- public:
-    // Constructor
-    explicit Entity(QObject* parent = nullptr);
+namespace sun
+{
 
-    // Guid property (using QUuid)
-    QUuid guid() const;
+    // Base class for Entity, assuming Entity is derived from QObject for signal/slot support
+    class Entity : public BaseObject
+    {
 
-    void setGuid(const QUuid& guid);
+    public:
+        // Constructor
+        explicit Entity();
 
-    // Type name property
-    QString typeName() const;
+        // Guid property (using QUuid)
+        QUuid Guid() const;
 
-    // Name property, virtual
-    virtual QString name() const = 0;
-    virtual void setName(const QString&) = 0;
+        void SetGuid(const QUuid& Guid);
 
-    // Error handling
-    bool hasErrors() const;
+        // Type name property
+        QString TypeName() const;
 
-    void setHasErrors(bool hasErrors);
+        // Name property, virtual
+        virtual QString Name() const;
 
-    // Remove entity
-    virtual void remove();
+        virtual void SetName(const QString& /*unused*/);
 
-    // For debugging or logging purposes
-    virtual QString toString() const;
+        // Error handling
+        bool HasErrors() const;
 
- signals:
-    // Signal when the entity is removed
-    void entityRemoved();
+        void SetHasErrors(bool HasErrors);
 
-    // Signal when the entity's GUID changes
-    void guidChanged();
+        // Remove entity
+        virtual void Remove();
 
-    // Signal when the error state changes
-    void errorStateChanged();
+        // For debugging or logging purposes
+        virtual QString ToString() const;
 
-    // Signal when hasErrors changes
-    void hasErrorsChanged();
-
- protected:
-    QUuid _guid;
-    bool _hasErrors;
-};
-
-#endif  // SRC_CORE_TOPOLOGY_ENTITY_H_
-
+    protected:
+        QUuid _Guid;
+        bool _HasErrors;
+    };
+}
+#endif  // Entity_DOCUMENT_H

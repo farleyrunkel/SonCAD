@@ -6,74 +6,77 @@
 
 #include "Iact/Workspace/WorkspaceController.h"
 
-PointAction::PointAction() 
-    : ToolAction(),
-      _IsFinished(false),
-      _Marker(nullptr){
-    qDebug() << "Debug: PointAction::PointAction";
-}
+namespace sun {
 
-bool PointAction::onStart() 
-{
-    qDebug() << "Debug: PointAction::OnStart";
-    return true;
-}
-
-bool PointAction::onMouseMove(MouseEventData* data) {
-    qDebug() << "Debug: PointAction::onMouseMove";
-    if (!_IsFinished) {
-        _EnsureMarker();
-        ProcessMouseInput(data);
-        EventArgs* args = new EventArgs(
-            _CurrentPoint,
-            ProjLib::Project(WorkspaceController()->Workspace()->WorkingPlane(), _CurrentPoint),
-            _CurrentPoint,
-            data
-        );
-
-        emit Preview(args);
-        qDebug() << "Debug: _Marker->Set(args->Point): " << args->Point.X() << " " << args->Point.Y();
-
-        _Marker->Set(args->Point);
-        WorkspaceController()->Invalidate();
-        return ToolAction::onMouseMove(data);
+    PointAction::PointAction()
+        : ToolAction(),
+        _Marker(nullptr) {
+        qDebug() << "Debug: PointAction::PointAction";
     }
 
-    return false;
-}
-
-bool PointAction::onMouseDown(MouseEventData* data) { 
-    return false; 
-}
-
-bool PointAction::onMouseUp(MouseEventData* data) {
-    if (!_IsFinished) {
-        
-        ProcessMouseInput(data);
-        _IsFinished = true;
-        auto args = new EventArgs(
-            _CurrentPoint,
-            ProjLib::Project(WorkspaceController()->Workspace()->WorkingPlane(), _CurrentPoint),
-            _CurrentPoint,
-            data
-        );
-
-        emit Finished(args);
-    }
-    return false; 
-}
-
-void PointAction::_EnsureMarker() {
-    if (_Marker == nullptr) {
-        _Marker = new Marker(WorkspaceController(), Marker::Styles::Bitmap, Marker::PlusImage());
-        Add(_Marker);
-    }
-}
-
-void PointAction::ProcessMouseInput(MouseEventData* data) {
-    qDebug() << "Debug: PointAction::ProcessMouseInput";
+    bool PointAction::OnStart()
     {
-        _CurrentPoint = data->PointOnPlane;
-        //Remove(_HintLine);
+        qDebug() << "Debug: PointAction::OnStart";
+        return true;
+    }
+
+    bool PointAction::OnMouseMove(MouseEventData* data) {
+        qDebug() << "- PointAction::OnMouseMove";
+        if (!_IsFinished) {
+            _EnsureMarker();
+            ProcessMouseInput(data);
+            auto workingPlane = WorkspaceController()->Workspace()->WorkingPlane();
+
+            EventArgs* args = new EventArgs(
+                _CurrentPoint,
+                ProjLib::Project(workingPlane, _CurrentPoint),
+                _CurrentPoint,
+                data
+            );
+
+            Preview(args);
+
+            _Marker->Set(args->Point);
+            WorkspaceController()->Invalidate();
+            return ToolAction::OnMouseMove(data);
+        }
+
+        return false;
+    }
+
+    bool PointAction::OnMouseDown(MouseEventData* data) {
+        return false;
+    }
+
+    bool PointAction::OnMouseUp(MouseEventData* data) {
+        if (!_IsFinished) {
+
+            ProcessMouseInput(data);
+            _IsFinished = true;
+            auto args = new EventArgs(
+                _CurrentPoint,
+                ProjLib::Project(WorkspaceController()->Workspace()->WorkingPlane(), _CurrentPoint),
+                _CurrentPoint,
+                data
+            );
+
+            Finished(args);
+        }
+        return false;
+    }
+
+    void PointAction::_EnsureMarker() {
+        if (_Marker == nullptr) {
+            _Marker = new Marker(WorkspaceController(), Marker::Styles::Bitmap, Marker::PlusImage());
+            Add(_Marker);
+        }
+    }
+
+    void PointAction::ProcessMouseInput(MouseEventData* data) {
+        qDebug() << "Debug: PointAction::ProcessMouseInput";
+        {
+            _CurrentPoint = data->PointOnPlane;
+            //Remove(_HintLine);
+        }
     }
 }

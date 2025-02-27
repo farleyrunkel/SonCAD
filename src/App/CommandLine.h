@@ -1,30 +1,41 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_APP_COMMANDLINE_H_
-#define SRC_APP_COMMANDLINE_H_
+#ifndef APP_COMMANDLINE_H
+#define APP_COMMANDLINE_H
 
 #include <iostream>
 #include <string>
 
 #include <cxxopts.hpp>
 
-class CommandLine {
- public:
-    CommandLine(int argc, char* argv[]);
+namespace sun 
+{
+    class CommandLine
+    {
+    public:
+        CommandLine(int argc, char* argv[]);
 
-    bool isSandboxEnabled() const { return mEnableSandbox; }
-    bool isWelcomeDialogDisabled() const { return mNoWelcomeDialog; }
-    bool hasPathToOpen() const { return !mPathToOpen.empty(); }
-    bool hasScriptToRun() const { return !mScriptToRun.empty(); }
+        bool IsSandboxEnabled() const {
+            return _EnableSandbox;
+        }
+        bool IsWelcomeDialogDisabled() const {
+            return _NoWelcomeDialog;
+        }
+        bool HasPathToOpen() const {
+            return !_PathToOpen.empty();
+        }
+        bool HasScriptToRun() const {
+            return !_ScriptToRun.empty();
+        }
 
- private:
-    bool mEnableSandbox = false;      // Sandbox mode
-    bool mNoWelcomeDialog = false;    // Welcome status
-    std::string mPathToOpen;          // Path to open
-    std::string mScriptToRun;         // Script to run
+    private:
+        bool _EnableSandbox = false;      // Sandbox mode
+        bool _NoWelcomeDialog = false;    // Welcome status
+        std::string _PathToOpen;          // Path to open
+        std::string _ScriptToRun;         // Script to run
 
- private:
-    cxxopts::Options mOptions;
-};
-
-#endif  // SRC_APP_COMMANDLINE_H_
+    private:
+        cxxopts::Options _Options;
+    };
+}
+#endif // APP_COMMANDLINE_H

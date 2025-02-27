@@ -5,23 +5,31 @@
 
 #include "App/Application.h"
 
-class Core {
- public:
-     static Application* application() noexcept {
-         return static_cast<Application*>(Application::instance());
+namespace sun 
+{
+
+class Core 
+{
+public:
+     static sun::Application* Application() noexcept 
+     {
+         return static_cast<sun::Application*>(Application::instance());
      }
 
-     static CommandManager* commandManager() noexcept {
-         return application()->m_commandManager;
+     static sun::MainWindow* MainWindow() noexcept 
+     {
+         return Application()->MainWindow();
      }
 
-     static AppContext* appContext() noexcept {
-         return application()->m_appContext;
+     static Handle(sun::AppContext) AppContext() noexcept 
+     {
+         return Application()->AppContext();
      }
 
-     static MainWindow* mainWindow() noexcept {
-         return application()->m_mainWindow;
-     }
+     //static CommandManager* commandManager() noexcept 
+     //{
+     //    return application()->m_commandManager;
+     //}
 };
-
+}
 #endif  // SRC_CORE_APP_H_

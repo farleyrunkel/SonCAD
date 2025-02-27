@@ -13,29 +13,33 @@
 #include "Iact/Viewport/IViewportMouseControl.h"
 #include "Iact/Workspace/ViewportController.h"
 
-class ViewportMouseControlDefault : public IViewportMouseControl {
- public:
-    explicit ViewportMouseControlDefault();
 
-    void setViewportController(Sun_ViewportController* controller) override;
+namespace sun 
+{
+    class ViewportMouseControlDefault : public IViewportMouseControl
+    {
+    public:
+        explicit ViewportMouseControlDefault();
 
-    void MouseMove(const QPointF& pos, QMouseEvent* mouseEvent, Qt::KeyboardModifiers modifierKeys) override;
+        virtual void SetViewportController(const Handle(ViewportController)& controller) override;
 
-    void mouseWheel(const QPointF& pos, MouseWheel wheel, int delta, QInputEvent* /*device*/, Qt::KeyboardModifiers modifierKeys) override;
+        virtual void MouseMove(const QPointF& pos, QMouseEvent* mouseEvent, Qt::KeyboardModifiers ModifierKeys) override;
 
-    void MouseDown(const QPointF& pos, Qt::MouseButton changedButton, int clickCount, QMouseEvent* /*mouseEvent*/, Qt::KeyboardModifiers modifierKeys) override;
+        virtual void MouseWheel(const QPointF& pos, MouseWheelEnum wheel, int delta, QInputEvent* device, Qt::KeyboardModifiers ModifierKeys) override;
 
-    void MouseUp(const QPointF& pos, Qt::MouseButton changedButton, QMouseEvent* /*mouseEvent*/, Qt::KeyboardModifiers modifierKeys) override;
+        virtual void MouseDown(const QPointF& pos, Qt::MouseButton changedButton, int clickCount, QMouseEvent* /*mouseEvent*/, Qt::KeyboardModifiers ModifierKeys) override;
 
-    void cancel() override;
+        virtual void MouseUp(const QPointF& pos, Qt::MouseButton changedButton, QMouseEvent* /*mouseEvent*/, Qt::KeyboardModifiers ModifierKeys) override;
 
- private:
-    void updateMouseMoveMode(QMouseEvent* mouseEvent, Qt::KeyboardModifiers modifierKeys);
- 
- private:
-    Sun_ViewportController* viewportController;
-    Sun_ViewportController::MouseMoveMode currentMouseMoveMode;
-    QPointF mouseDownPos;
-};
- 
+        virtual void Cancel() override;
+
+    private:
+        void updateMouseMoveMode(QMouseEvent* mouseEvent, Qt::KeyboardModifiers ModifierKeys);
+
+    private:
+        Handle(ViewportController) _ViewportController;
+        ViewportController::MouseMoveMode currentMouseMoveMode;
+        QPointF mouseDownPos;
+    };
+}
 #endif  // SRC_IACT_VIEWPORT_VIEWPORTMOUSECONTROLDEFAULT_H_

@@ -1,18 +1,29 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_APP_APPCONTEXT_H_
-#define SRC_APP_APPCONTEXT_H_
+#ifndef APP_APPCONTEXT_H
+#define APP_APPCONTEXT_H
 
 #include "Iact/Workspace/InteractiveContext.h"
 #include "App/CommandLine.h"
 
-class AppContext : public InteractiveContext {
- public:
-    AppContext() = default;
+namespace sun 
+{
+    // AppContext
+    DEFINE_STANDARD_HANDLE(AppContext, CoreContext)
 
-    ~AppContext() = default;
+    class AppContext : public InteractiveContext 
+    {
+    public:
+        // Private constructor to prevent external instantiation
+        AppContext() = default;
 
-    void initialize(CommandLine* cmdLine) {}
-};
+        // Private destructor to control instance destruction
+        ~AppContext() = default;
 
-#endif  // SRC_APP_APPCONTEXT_H_
+        void Initialize(const CommandLine& cmdLine) {
+    
+        }
+    };
+}
+
+#endif  // APP_APPCONTEXT_H

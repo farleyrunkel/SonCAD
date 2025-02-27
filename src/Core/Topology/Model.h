@@ -3,31 +3,49 @@
 #ifndef SRC_CORE_TOPOLOGY_MODEL_H_
 #define SRC_CORE_TOPOLOGY_MODEL_H_
 
-#include <QObject>
 #include <QVector>
+#include <boost/signals2.hpp>
 
+#include <Standard_Handle.hxx>
 #include "Core/Workspace.h"
+#include "Comm/BaseObject.h"
 
-class Model : public QObject {
-	Q_OBJECT
 
- public:
-	Model();
+namespace sun {
 
-	QVector<Sun::Workspace*>& workspaces();
+DEFINE_STANDARD_HANDLE(Model, BaseObject)
 
- public:
-	static QString fileExtension() { return "step"; };
-	QString filePath() { return ""; }
-	bool save() { return false; }
+class Model : public BaseObject
+{
+public:
+    Model() {}
 
-	bool hasUnsavedChanges() { return false; }
+    QVector<Handle(sun::Workspace)>& Workspaces() {
+        return _Workspaces;
+    }
 
- signals:
-	void resetUnsavedChanges();
+    static QString FileExtension() {
+        return "step";
+    }
 
- private:
-	QVector<Sun::Workspace*> m_workspaces;
+    QString FilePath() const {
+        return "";
+    }
+
+    bool Save() const {
+        return false;
+    }
+
+    bool HasUnsavedChanges() const {
+        return false;
+    }
+
+public:
+    // Signals
+    boost::signals2::signal<void()> OnResetUnsavedChanges;
+
+private:
+    QVector<Handle(sun::Workspace)> _Workspaces;
 };
-
+}
 #endif  // SRC_CORE_TOPOLOGY_MODEL_H_

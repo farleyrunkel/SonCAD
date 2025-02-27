@@ -6,14 +6,16 @@
 #include "Pres/Commands/ActionCommand.h"
 #include "Pres/Commands/RelayCommand.h"
 
+namespace sun {
 class AppCommands {
  public:
-    static  RelayCommand& initApplication();
-    static ActionCommand& exitApplication();
-    static ActionCommand& showAboutDialog();
-    static ActionCommand& settings();
-    static ActionCommand& resetWindowLayout();
-    static ActionCommand& showDocumentExplorer();
+    static  RelayCommand& InitApplication();
+    static ActionCommand& ExitApplication();
+    static ActionCommand& ShowAboutDialog();
+    static ActionCommand& Settings();
+    static ActionCommand& ResetWindowLayout();
+    static ActionCommand& ShowDocumentExplorer();
 };
+}
 
 #endif  // SRC_APP_COMMANDS_APPCOMMANDS_H_

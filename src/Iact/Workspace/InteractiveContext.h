@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_WORKSPACE_INTERACTIVECONTEXT_H_
-#define SRC_IACT_WORKSPACE_INTERACTIVECONTEXT_H_
+#ifndef APP_INTERACTIVECONTEXT_H
+#define APP_INTERACTIVECONTEXT_H
 
 #include <QObject>
 #include <QList>
@@ -10,67 +10,114 @@
 #include <QScopedPointer>
 #include <QSharedPointer>
 
-#include "Comm/BaseObject.h"
 #include "Core/CoreContext.h"
-#include "Core/Viewport.h"
+#include "Comm/BaseObject.h"
+#include "Iact/Workspace/ViewportController.h"
 #include "Iact/Workspace/WorkspaceController.h"
 #include "Iact/Workspace/ModelController.h"
-#include "Iact/Workspace/ViewportController.h"
-#include "Iact/Workspace/EditorState.h"
 
-//-----------------------------------------------------------------------------
-
-class InteractiveContext : public CoreContext 
+namespace sun
 {
-    Q_OBJECT
-    Q_PROPERTY(ModelController* documentController READ documentController WRITE setDocumentController)
-    Q_PROPERTY(Sun_WorkspaceController* WorkspaceController READ WorkspaceController WRITE setWorkspaceController)
-    Q_PROPERTY(Sun_ViewportController* viewportController READ viewportController WRITE setViewportController)
+    DEFINE_STANDARD_HANDLE(InteractiveContext, CoreContext)
 
- public:
-    InteractiveContext();
-    ~InteractiveContext() override;
+    class InteractiveContext : public CoreContext
+    {
+    public:
+        InteractiveContext()
+            : CoreContext(),
+            _DocumentController(new ModelController()),
+            _WorkspaceController(nullptr),
+            _ViewportController(nullptr)
+        {
+            // 初始化其他成员变量
+            Initialize() ;
+        }
 
-    // ModelController getter/setter
-    ModelController* documentController() const;
-    void setDocumentController(ModelController* controller);
+        ~InteractiveContext() override
+        {
+            // 释放资源
+            if (_DocumentController) {
+                _DocumentController->Dispose();
+                _DocumentController = nullptr;
+            }
+            if (_WorkspaceController) {
+                _WorkspaceController->Dispose();
+                _WorkspaceController = nullptr;
+            }
+            _ViewportController = nullptr;
+        }
 
-    // WorkspaceController getter/setter
-    Sun_WorkspaceController* WorkspaceController() const;
-    void setWorkspaceController(Sun_WorkspaceController* controller);
+        // ModelController getter/setter
+        Handle(ModelController) DocumentController() const { return _DocumentController; }
+        void SetDocumentController(const Handle(ModelController)& controller) {
+            if (_DocumentController != controller) {
+                if (_DocumentController) {
+                    _DocumentController->Dispose();
+                }
+                _DocumentController = controller;
 
-    // ViewportController getter/setter
-    Sun_ViewportController* viewportController() const;
-    void setViewportController(Sun_ViewportController* controller);
+            }
+        }
 
-    void setWorkspace(Sun::Workspace* workspace) override;
-    void setViewport(Sun_Viewport* Viewport) override;
+        // WorkspaceController getter/setter
+       Handle(sun::WorkspaceController) WorkspaceController() const { return _WorkspaceController; }
+        void SetWorkspaceController(const Handle(sun::WorkspaceController)& controller) {
+            if (_WorkspaceController != controller) {
+                if (_WorkspaceController) {
+                    _WorkspaceController->Dispose();
+                }
+                _WorkspaceController = controller;
 
-    // RecentUsedColors getter
-    QList<QColor> recentUsedColors() const;
+            }
+        }
 
-    // RecentUsedScripts getter
-    QList<QString> recentUsedScripts() const;
+        // ViewportController getter/setter
+        Handle(sun::ViewportController) ViewportController() const { return _ViewportController; }
+        void SetViewportController(const Handle(sun::ViewportController)& controller) {
+            if (_ViewportController != controller) {
+                _ViewportController = controller;
 
-    void addToScriptMruList(const QString& filePath);
+            }
+        }
 
- private:
-     void initialize();
+        // RecentUsedColors getter
+        QList<QColor> RecentUsedColors() const {
+            return _RecentUsedColors;
+        }
 
- signals:
-    void workspaceControllerChanged(Sun_WorkspaceController*);
-    void documentControllerChanged(ModelController*);
-    void viewportControllerChanged(Sun_ViewportController*);
+        // RecentUsedScripts getter
+        QList<QString> RecentUsedScripts() const {
+            return _RecentUsedScripts;
+        }
 
- private:
-    EditorState* m_editorState;
-    ModelController* m_documentController;
-    Sun_WorkspaceController* _WorkspaceController;
-    Sun_ViewportController* m_viewportController;
+        // 添加脚本到最近使用列表
+        void AddToScriptMruList(const QString& filePath) {
+            int index = _RecentUsedScripts.indexOf(filePath);
+            if (index >= 0) {
+                _RecentUsedScripts.move(index, 0);  // 移动到列表顶部
+                _RecentUsedScripts[0] = filePath;
+            }
+            else {
+                if (_RecentUsedScripts.size() >= _MaxScriptMruCount) {
+                    _RecentUsedScripts.removeLast();  // 删除最老的脚本
+                }
+                _RecentUsedScripts.prepend(filePath);
+            }
 
-    QList<QColor> m_recentUsedColors;
-    QList<QString> m_recentUsedScripts;
-    const int m_maxScriptMruCount = 10;
-};
+        }
 
-#endif  // SRC_IACT_WORKSPACE_INTERACTIVECONTEXT_H_
+    private:
+        Handle(ModelController) _DocumentController;
+        Handle(sun::WorkspaceController) _WorkspaceController;
+        Handle(sun::ViewportController) _ViewportController;
+
+        QList<QColor> _RecentUsedColors;
+        QList<QString> _RecentUsedScripts;
+        const int _MaxScriptMruCount = 10;
+
+        void Initialize() {}
+    };
+
+}
+
+#endif  // APP_INTERACTIVECONTEXT_H

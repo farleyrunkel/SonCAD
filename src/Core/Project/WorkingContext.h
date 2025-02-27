@@ -1,59 +1,83 @@
 #ifndef SRC_CORE_PROJECT_WORKINGCONTEXT_H_
 #define SRC_CORE_PROJECT_WORKINGCONTEXT_H_
 
-#include <QObject>
-
+#include <boost/signals2.hpp>
 #include <gp_Pln.hxx>
 #include <gp.hxx>
 
 #include "Core/Workspace.h"
+#include "Comm/BaseObject.h"
 
-class Sun_WorkingContext : public QObject 
+namespace sun 
 {
-    Q_OBJECT
-    Q_PROPERTY(gp_Pln WorkingPlane READ WorkingPlane WRITE SetWorkingPlane NOTIFY WorkingPlaneChanged)
-    Q_PROPERTY(Sun::Workspace::GridTypes GridType READ GridType WRITE SetGridType NOTIFY GridTypeChanged)
-    Q_PROPERTY(double GridStep READ GridStep WRITE SetGridStep NOTIFY GridStepChanged)
-    Q_PROPERTY(double GridRotation READ GridRotation WRITE SetGridRotation NOTIFY GridRotationChanged)
-    Q_PROPERTY(int GridDivisions READ GridDivisions WRITE SetGridDivisions NOTIFY GridDivisionsChanged)
+    DEFINE_STANDARD_HANDLE(WorkingContext, BaseObject)
 
-public:
-    explicit Sun_WorkingContext();
+   class WorkingContext : public BaseObject
+    {
+    public:
+        explicit WorkingContext();
 
-    Sun_WorkingContext* Clone() const;
+        Handle(WorkingContext) Clone() const;
 
-    // CopyFrom ·½·¨
-    void CopyFrom(const Sun_WorkingContext& other);
+        void CopyFrom(const WorkingContext& other);
 
-    gp_Pln WorkingPlane() const;
+        gp_Pln WorkingPlane() const;
 
-    void SetWorkingPlane(const gp_Pln& plane);
+        void SetWorkingPlane(const gp_Pln& plane);
 
-    Sun::Workspace::GridTypes GridType() const;
-    void SetGridType(Sun::Workspace::GridTypes type);
+        Workspace::GridTypes GridType() const;
 
-    double GridStep() const;
-    void SetGridStep(double step);
+        void SetGridType(Workspace::GridTypes type);
 
-    double GridRotation() const;
-    void SetGridRotation(double rotation);
+        double GridStep() const;
 
-    int GridDivisions() const;
-    void SetGridDivisions(int divisions);
+        void SetGridStep(double step);
 
-signals:
-    void WorkingPlaneChanged(const gp_Pln&);
-    void GridTypeChanged(Sun::Workspace::GridTypes);
-    void GridStepChanged(double);
-    void GridRotationChanged(double);
-    void GridDivisionsChanged(int);
+        double GridRotation() const;
 
-private:
-    gp_Pln _WorkingPlane;
-    Sun::Workspace::GridTypes _GridType;
-    double _GridStep;
-    double _GridRotation;
-    int _GridDivisions;
-};
+        void SetGridRotation(double rotation);
+
+        int GridDivisions() const;
+
+        void SetGridDivisions(int divisions);
+
+    public:
+        // Signals
+        boost::signals2::signal<void(const gp_Pln&)> OnWorkingPlaneChanged;
+        boost::signals2::signal<void(Workspace::GridTypes)> OnGridTypeChanged;
+        boost::signals2::signal<void(double)> OnGridStepChanged;
+        boost::signals2::signal<void(double)> OnGridRotationChanged;
+        boost::signals2::signal<void(int)> OnGridDivisionsChanged;
+
+    private:
+        gp_Pln _WorkingPlane;
+        Workspace::GridTypes _GridType;
+        double _GridStep;
+        double _GridRotation;
+        int _GridDivisions;
+
+        // Helper methods to emit signals
+        void _OnWorkingPlaneChanged(const gp_Pln& plane) {
+            OnWorkingPlaneChanged(plane);
+        }
+
+        void _OnGridTypeChanged(Workspace::GridTypes type) {
+            OnGridTypeChanged(type);
+        }
+
+        void _OnGridStepChanged(double step) {
+            OnGridStepChanged(step);
+        }
+
+        void _OnGridRotationChanged(double rotation) {
+            OnGridRotationChanged(rotation);
+        }
+
+        void _OnGridDivisionsChanged(int divisions) {
+            OnGridDivisionsChanged(divisions);
+        }
+    };
+
+} // namespace Sun
 
 #endif  // SRC_CORE_PROJECT_WORKINGCONTEXT_H_

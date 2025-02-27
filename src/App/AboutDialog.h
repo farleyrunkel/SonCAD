@@ -5,9 +5,10 @@
 
 #include <QDialog>
 
+namespace sun {
 class AboutDialog : public QDialog {
  public:
      explicit AboutDialog(QWidget* parent = nullptr) : QDialog(parent) {}
 };
-
+}
 #endif  // SRC_APP_ABOUTDIALOG_H_

@@ -1,19 +1,22 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_APP_WELCOMEDIALOG_H_
-#define SRC_APP_WELCOMEDIALOG_H_
+#ifndef APP_WELCOMEDIALOG_H
+#define APP_WELCOMEDIALOG_H
 
 #include <QDialog>
 
-class WelcomeDialog: public QDialog {
-    Q_OBJECT
+namespace sun 
+{
+    class WelcomeDialog : public QDialog
+    {
+        Q_OBJECT
 
- public:
-    explicit WelcomeDialog(QWidget* parent = nullptr);
-    ~WelcomeDialog() override = default;
+    public:
+        explicit WelcomeDialog(QWidget* parent = nullptr);
+        ~WelcomeDialog() override = default;
 
- private:
-    void setupUi();
-};
-
-#endif  // SRC_APP_WELCOMEDIALOG_H_
+    private:
+        void SetupUi();
+    };
+}
+#endif  // APP_WELCOMEDIALOG_H

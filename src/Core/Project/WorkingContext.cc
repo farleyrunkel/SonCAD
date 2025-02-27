@@ -1,74 +1,86 @@
 // Copyright [2024] SunCAD
 
 #include "Core/Project/WorkingContext.h"
+namespace sun {
 
-Sun_WorkingContext::Sun_WorkingContext()
-    : QObject(),
-    _WorkingPlane(gp::XOY()),
-    _GridType(Sun::Workspace::GridTypes::Rectangular),
-    _GridStep(1.0),
-    _GridRotation(0),
-    _GridDivisions(8) 
-{}
+    // CopyFrom 方法
 
-Sun_WorkingContext* Sun_WorkingContext::Clone() const {
-    Sun_WorkingContext* wc = new Sun_WorkingContext();
-    wc->CopyFrom(*this);
-    return wc;
-}
+    inline WorkingContext::WorkingContext()
+        :
+        _WorkingPlane(),
+        _GridType(Workspace::GridTypes::Rectangular),
+        _GridStep(1.0),
+        _GridRotation(0),
+        _GridDivisions(8)
+    {}
 
-
-// CopyFrom 方法
-
-void Sun_WorkingContext::CopyFrom(const Sun_WorkingContext& other) {
-    _WorkingPlane = other.WorkingPlane();
-    _GridType = other.GridType();
-    _GridStep = other.GridStep();
-    _GridDivisions = other.GridDivisions();
-    _GridRotation = other.GridRotation();
-}
-
-gp_Pln Sun_WorkingContext::WorkingPlane() const { return _WorkingPlane; }
-
-void Sun_WorkingContext::SetWorkingPlane(const gp_Pln& plane) {
-    if (_WorkingPlane.Distance(plane) > gp::Resolution()) {
-        _WorkingPlane = plane;
-        emit WorkingPlaneChanged(plane);
+    inline Handle(WorkingContext) WorkingContext::Clone() const {
+        Handle(WorkingContext) wc = new WorkingContext();
+        wc->CopyFrom(*this);
+        return wc;
     }
-}
 
-Sun::Workspace::GridTypes Sun_WorkingContext::GridType() const { return _GridType; }
-
-void Sun_WorkingContext::SetGridType(Sun::Workspace::GridTypes type) {
-    if (_GridType != type) {
-        _GridType = type;
-        emit GridTypeChanged(type);
+    inline void WorkingContext::CopyFrom(const WorkingContext& other) {
+        _WorkingPlane = other.WorkingPlane();
+        _GridType = other.GridType();
+        _GridStep = other.GridStep();
+        _GridDivisions = other.GridDivisions();
+        _GridRotation = other.GridRotation();
     }
-}
 
-double Sun_WorkingContext::GridStep() const { return _GridStep; }
-
-void Sun_WorkingContext::SetGridStep(double step) {
-    if (_GridStep != step) {
-        _GridStep = step;
-        emit GridStepChanged(step);
+    inline gp_Pln WorkingContext::WorkingPlane() const {
+        return _WorkingPlane;
     }
-}
 
-double Sun_WorkingContext::GridRotation() const { return _GridRotation; }
-
-void Sun_WorkingContext::SetGridRotation(double rotation) {
-    if (_GridRotation != rotation) {
-        _GridRotation = rotation;
-        emit GridRotationChanged(rotation);
+    inline void WorkingContext::SetWorkingPlane(const gp_Pln& plane) {
+        if (_WorkingPlane.Distance(plane) > gp::Resolution()) {
+            _WorkingPlane = plane;
+            _OnWorkingPlaneChanged(plane);
+        }
     }
-}
 
-int Sun_WorkingContext::GridDivisions() const { return _GridDivisions; }
-
-void Sun_WorkingContext::SetGridDivisions(int divisions) {
-    if (_GridDivisions != divisions) {
-        _GridDivisions = divisions;
-        emit GridDivisionsChanged(divisions);
+    inline Workspace::GridTypes WorkingContext::GridType() const {
+        return _GridType;
     }
+
+    inline void WorkingContext::SetGridType(Workspace::GridTypes type) {
+        if (_GridType != type) {
+            _GridType = type;
+            _OnGridTypeChanged(type);
+        }
+    }
+
+    inline double WorkingContext::GridStep() const {
+        return _GridStep;
+    }
+
+    inline void WorkingContext::SetGridStep(double step) {
+        if (_GridStep != step) {
+            _GridStep = step;
+            _OnGridStepChanged(step);
+        }
+    }
+
+    inline double WorkingContext::GridRotation() const {
+        return _GridRotation;
+    }
+
+    inline void WorkingContext::SetGridRotation(double rotation) {
+        if (_GridRotation != rotation) {
+            _GridRotation = rotation;
+            _OnGridRotationChanged(rotation);
+        }
+    }
+
+    inline int WorkingContext::GridDivisions() const {
+        return _GridDivisions;
+    }
+
+    inline void WorkingContext::SetGridDivisions(int divisions) {
+        if (_GridDivisions != divisions) {
+            _GridDivisions = divisions;
+            _OnGridDivisionsChanged(divisions);
+        }
+    }
+
 }

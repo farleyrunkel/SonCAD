@@ -2,47 +2,52 @@
 
 #include "Iact/Workspace/MouseEventData.h"
 
-InteractiveEntity* MouseEventData::detectedEntity() const {
-    return !detectedElements.isEmpty() ? detectedElements[0].entity : nullptr;
+#include "Core/Viewport.h"
+
+namespace sun {
+
+Handle(InteractiveEntity) MouseEventData::DetectedEntity() const {
+    return !_DetectedElements.isEmpty() ? _DetectedElements[0].entity : nullptr;
 }
 
-AIS_InteractiveObject* MouseEventData::detectedAisObject() const {
-    return !detectedElements.isEmpty() ? detectedElements[0].aisObject : nullptr;
+Handle(AIS_InteractiveObject) MouseEventData::DetectedAisObject() const {
+    return !_DetectedElements.isEmpty() ? _DetectedElements[0].aisObject : nullptr;
 }
 
-void MouseEventData::clear() {
-    Viewport = nullptr;
-    screenPoint = QPointF();
+void MouseEventData::Clear() {
+    _Viewport = nullptr;
+    _ScreenPoint = QPointF();
     PointOnPlane = gp_Pnt();
-    detectedElements.clear();
-    returnOptions.clear();
+    _DetectedElements.clear();
+    _ReturnOptions.Clear();
 }
 
-void MouseEventData::set(Sun_Viewport* vp, const QPointF& sp, const gp_Pnt& pp, Qt::KeyboardModifiers mk) {
-    clear();
-    Viewport = vp;
-    screenPoint = sp;
+void MouseEventData::Set(const Handle(sun::_Viewport)& vp, const QPointF& sp, const gp_Pnt& pp, Qt::KeyboardModifiers mk) {
+    Clear();
+    _Viewport = vp;
+    _ScreenPoint = sp;
     PointOnPlane = pp;
-    modifierKeys = mk;
+    ModifierKeys = mk;
 }
 
-void MouseEventData::setDetectedElements(const QList<AIS_InteractiveObject*>& aisObjects, const QList<InteractiveEntity*>& entities, const QList<TopoDS_Shape*>& brepShapes) {
-    detectedElements.clear();
+void MouseEventData::SetDetectedElements(const QList<Handle(AIS_InteractiveObject)>& aisObjects, const QList<Handle(InteractiveEntity)>& entities, const QList<TopoDS_Shape>& brepShapes) {
+    _DetectedElements.clear();
     auto e1 = aisObjects.begin();
     auto e2 = entities.begin();
     auto e3 = brepShapes.begin();
 
     while (e1 != aisObjects.end() || e2 != entities.end() || e3 != brepShapes.end()) {
-        AIS_InteractiveObject* c1 = (e1 != aisObjects.end()) ? *e1++ : nullptr;
-        InteractiveEntity* c2 = (e2 != entities.end()) ? *e2++ : nullptr;
-        TopoDS_Shape* c3 = (e3 != brepShapes.end()) ? *e3++ : nullptr;
-        detectedElements.append(Element(c1, c2, c3));
+        Handle(AIS_InteractiveObject) c1 = (e1 != aisObjects.end()) ? *e1++ : nullptr;
+        Handle(InteractiveEntity) c2 = (e2 != entities.end()) ? *e2++ : nullptr;
+        TopoDS_Shape c3 = (e3 != brepShapes.end()) ? *e3++ : TopoDS_Shape();
+        _DetectedElements.append(Element(c1, c2, c3));
     }
 }
 
 // 设置单个检测元素
 
-void MouseEventData::setDetectedElement(AIS_InteractiveObject* aisObject, InteractiveEntity* entity, TopoDS_Shape* brepShape) {
-    detectedElements.clear();
-    detectedElements.append(Element(aisObject, entity, brepShape));
+void MouseEventData::SetDetectedElement(const Handle(AIS_InteractiveObject)& aisObject, const Handle(InteractiveEntity)& entity, const TopoDS_Shape& brepShape) {
+    _DetectedElements.clear();
+    _DetectedElements.append(Element(aisObject, entity, brepShape));
+}
 }

@@ -195,16 +195,18 @@ namespace {
     };
 }
 
+namespace sun {
+
 ViewportPanel::ViewportPanel(QWidget* parent)
     : QOpenGLWidget(parent),
-    m_mouseControl(new ViewportMouseControlDefault),
-    m_isCoreProfile(true),
+    _MouseControl(new ViewportMouseControlDefault),
+    _IsCoreProfile(true),
     _WorkspaceController(nullptr),
-    m_viewportController(nullptr) {
+    _ViewportController(nullptr) {
 
-    m_view = nullptr;
-    m_viewer = nullptr;
-    m_context = nullptr;
+    _View = nullptr;
+    _Viewer = nullptr;
+    _Context = nullptr;
 
     _InitHudContainer();
 
@@ -223,11 +225,11 @@ ViewportPanel::ViewportPanel(QWidget* parent)
     //aGlFormat.setOption (QSurfaceFormat::DeprecatedFunctions, true);
     //    aDriver->ChangeOptions().contextDebug = aGlFormat.testOption(QSurfaceFormat::DebugContext);
 
-    if (m_isCoreProfile)
+    if (_IsCoreProfile)
     {
         aGlFormat.setVersion(4, 5);
     }
-    aGlFormat.setProfile(m_isCoreProfile ? QSurfaceFormat::CoreProfile : QSurfaceFormat::CompatibilityProfile);
+    aGlFormat.setProfile(_IsCoreProfile ? QSurfaceFormat::CoreProfile : QSurfaceFormat::CompatibilityProfile);
 
     // request sRGBColorSpace colorspace to meet OCCT expectations or use OcctQtFrameBuffer fallback.
     aGlFormat.setColorSpace (QSurfaceFormat::sRGBColorSpace);
@@ -241,22 +243,22 @@ ViewportPanel::ViewportPanel(QWidget* parent)
     //QCoreApplication::setAttribute (Qt::AA_UseOpenGLES);
 #endif
 
-    connect(this, &ViewportPanel::viewportControllerChanged, 
-        [this]() {m_mouseControl->setViewportController(m_viewportController); }
-    );
+    //connect(this, &ViewportPanel::viewportControllerChanged, 
+    //    [this]() {/*m_mouseControl->setViewportController(m_viewportController);*/ }
+    //);
 }
 
 ViewportPanel::~ViewportPanel() {
     // hold on X11 display connection till making another connection active by glXMakeCurrent()
     // to workaround sudden crash in QOpenGLWidget destructor
-    Handle(Aspect_DisplayConnection) aDisp = m_viewer->Driver()->GetDisplayConnection();
+    Handle(Aspect_DisplayConnection) aDisp = _Viewer->Driver()->GetDisplayConnection();
 
     // release OCCT viewer
-    m_context->RemoveAll(false);
-    m_context.Nullify();
-    m_view->Remove();
-    m_view.Nullify();
-    m_viewer.Nullify();
+    _Context->RemoveAll(false);
+    _Context.Nullify();
+    _View->Remove();
+    _View.Nullify();
+    _Viewer.Nullify();
 
     // make active OpenGL context created by Qt
     makeCurrent();
@@ -266,46 +268,46 @@ ViewportPanel::~ViewportPanel() {
 
 // virtual void SetCursor(QObject* owner, Cursor* cursor)  {}
 
-Sun_WorkspaceController* ViewportPanel::WorkspaceController() const {
+Handle(sun::WorkspaceController) ViewportPanel::WorkspaceController() const {
     return _WorkspaceController; 
 }
 
-void ViewportPanel::setWorkspaceController(Sun_WorkspaceController* controller) {
+void ViewportPanel::SetWorkspaceController(const Handle(sun::WorkspaceController)& controller) {
     if (_WorkspaceController != controller) {
         _WorkspaceController = controller;
-        if (_WorkspaceController != nullptr) {
-            _WorkspaceController->setHudManager(_HudContainer);
+        if (!_WorkspaceController.IsNull()) {
+            //_WorkspaceController->setHudManager(_HudContainer);
         }
         else {
-            m_hudElements.clear();
+            _HudElements.clear();
         }
         _WorkspaceController = controller;
         emit workspaceControllerChanged(_WorkspaceController);
     }
 }
 
-Sun_ViewportController* ViewportPanel::viewportController() const { 
-    return m_viewportController; 
+Handle(sun::ViewportController) ViewportPanel::ViewportController() const {
+    return _ViewportController; 
 }
 
-void ViewportPanel::setViewportController(Sun_ViewportController* controller) {
-    if (m_viewportController != controller) {
-        m_viewportController = controller;
-        m_mouseControl->setViewportController(controller);
-        emit viewportControllerChanged(m_viewportController);
-    }
+void ViewportPanel::SetViewportController(const Handle(sun::ViewportController)& controller) {
+    //if (m_viewportController != controller) {
+    //    m_viewportController = controller;
+    //    m_mouseControl->setViewportController(controller);
+    //    emit viewportControllerChanged(m_viewportController);
+    //}
 }
 
 void ViewportPanel::initializeGL() {
-    m_glContext = new OpenGl_Context();
-    if (!m_glContext->Init(m_isCoreProfile)) {
+    _GlContext = new OpenGl_Context();
+    if (!_GlContext->Init(_IsCoreProfile)) {
         Message::SendFail() << "Error: OpenGl_Context is unable to wrap OpenGL context";
         QMessageBox::critical(0, "Failure", "OpenGl_Context is unable to wrap OpenGL context");
         QApplication::exit(1);
         return;
     }
-    setupWindow(m_view);
-    dumpGlInfo(true, true);
+    setupWindow(_View);
+    DumpGlInfo(true, true);
 }
 
 void ViewportPanel::setupWindow(const Handle(V3d_View)& theView) {
@@ -326,11 +328,11 @@ void ViewportPanel::setupWindow(const Handle(V3d_View)& theView) {
         aWindow->SetNativeHandle(aNativeWin);
     }
     aWindow->SetSize(aViewSize.x(), aViewSize.y());
-    theView->SetWindow(aWindow, m_glContext->RenderingContext());
+    theView->SetWindow(aWindow, _GlContext->RenderingContext());
 }
 
 void ViewportPanel::paintGL() {
-    if (m_view.IsNull() || m_view->Window().IsNull()) {
+    if (_View.IsNull() || _View->Window().IsNull()) {
         return;
     }
 
@@ -338,7 +340,7 @@ void ViewportPanel::paintGL() {
     // get context from this (composer) view rather than from arbitrary one
     //Handle(OpenGl_GraphicDriver) aDriver = Handle(OpenGl_GraphicDriver)::DownCast (myContext->CurrentViewer()->Driver());
     //Handle(OpenGl_Context) aGlCtx = aDriver->GetSharedContext();
-    Handle(OpenGl_Context) aGlCtx = ::OcctGlTools::GetGlContext(m_view);
+    Handle(OpenGl_Context) aGlCtx = ::OcctGlTools::GetGlContext(_View);
     Handle(OpenGl_FrameBuffer) aDefaultFbo = aGlCtx->DefaultFrameBuffer();
     if (aDefaultFbo.IsNull()) {
         aDefaultFbo = new ::OcctFrameBuffer();
@@ -355,15 +357,15 @@ void ViewportPanel::paintGL() {
     Graphic3d_Vec2i aViewSizeOld;
     const QRect aRect = rect();
     Graphic3d_Vec2i aViewSizeNew(aRect.right() - aRect.left(), aRect.bottom() - aRect.top());
-    Handle(Aspect_NeutralWindow) aWindow = Handle(Aspect_NeutralWindow)::DownCast(m_view->Window());
+    Handle(Aspect_NeutralWindow) aWindow = Handle(Aspect_NeutralWindow)::DownCast(_View->Window());
     aWindow->Size(aViewSizeOld.x(), aViewSizeOld.y());
     if (aViewSizeNew != aViewSizeOld) {
         aWindow->SetSize(aViewSizeNew.x(), aViewSizeNew.y());
-        m_view->MustBeResized();
-        m_view->Invalidate();
-        dumpGlInfo(true, false);
+        _View->MustBeResized();
+        _View->Invalidate();
+        DumpGlInfo(true, false);
 
-        for (const Handle(V3d_View)& aSubviewIter : m_view->Subviews()) {
+        for (const Handle(V3d_View)& aSubviewIter : _View->Subviews()) {
             aSubviewIter->MustBeResized();
             aSubviewIter->Invalidate();
             aDefaultFbo->SetupViewport(aGlCtx);
@@ -371,15 +373,15 @@ void ViewportPanel::paintGL() {
     }
 
     // flush pending input events and redraw the viewer
-    Handle(V3d_View) aView = !m_focusView.IsNull() ? m_focusView : m_view;
+    Handle(V3d_View) aView = !_FocusView.IsNull() ? _FocusView : _View;
     aView->InvalidateImmediate();
-    FlushViewEvents(m_context, aView, true);
+    FlushViewEvents(_Context, aView, true);
 }
 
 void ViewportPanel::resizeGL(int width, int height) {
-    if (m_viewportController && m_viewportController->View()) {
-        m_viewportController->View()->MustBeResized();
-    }
+    //if (m_viewportController && m_viewportController->View()) {
+    //    m_viewportController->View()->MustBeResized();
+    //}
 }
 
 void ViewportPanel::closeEvent(QCloseEvent* theEvent) {
@@ -394,7 +396,7 @@ void ViewportPanel::keyPressEvent(QKeyEvent* theEvent) {
             return;
         }
         case Aspect_VKey_F: {
-            m_view->FitAll(0.01, false);
+            _View->FitAll(0.01, false);
             update();
             return;
         }
@@ -408,47 +410,47 @@ void ViewportPanel::mouseMoveEvent(QMouseEvent* theEvent) {
 
     emit MouseMoved(theEvent->x(), theEvent->y());
 
-    m_mouseControl->MouseMove(theEvent->pos(), theEvent, theEvent->modifiers());
+    _MouseControl->MouseMove(theEvent->pos(), theEvent, theEvent->modifiers());
 
     const Graphic3d_Vec2i aNewPos(theEvent->x(), theEvent->y());
-    if (!m_view.IsNull()
+    if (!_View.IsNull()
         && UpdateMousePosition(aNewPos,
                                qtMouseButtons2VKeys(theEvent->buttons()),
                                qtMouseModifiers2VKeys(theEvent->modifiers()),
                                false)) {
-        updateView();
+        UpdateView();
     }
 }
 
 void ViewportPanel::mousePressEvent(QMouseEvent* theEvent) {
     QOpenGLWidget::mousePressEvent(theEvent);
 
-    m_mouseControl->MouseDown(theEvent->pos(), theEvent->button(), 0, theEvent, theEvent->modifiers());
+    _MouseControl->MouseDown(theEvent->pos(), theEvent->button(), 0, theEvent, theEvent->modifiers());
 
     const Graphic3d_Vec2i aPnt(theEvent->pos().x(), theEvent->pos().y());
     const Aspect_VKeyFlags aFlags = qtMouseModifiers2VKeys(theEvent->modifiers());
-    if (!m_view.IsNull()
+    if (!_View.IsNull()
         && UpdateMouseButtons(aPnt,
             qtMouseButtons2VKeys(theEvent->buttons()),
             aFlags,
             false)) {
-        updateView();
+        UpdateView();
     }
 }
 
 void ViewportPanel::mouseReleaseEvent(QMouseEvent* theEvent) {
     QOpenGLWidget::mouseReleaseEvent(theEvent);
 
-    m_mouseControl->MouseUp(theEvent->pos(), theEvent->button(), theEvent, theEvent->modifiers());
+    _MouseControl->MouseUp(theEvent->pos(), theEvent->button(), theEvent, theEvent->modifiers());
 
     const Graphic3d_Vec2i aPnt(theEvent->pos().x(), theEvent->pos().y());
     const Aspect_VKeyFlags aFlags = qtMouseModifiers2VKeys(theEvent->modifiers());
-    if (!m_view.IsNull()
+    if (!_View.IsNull()
         && UpdateMouseButtons(aPnt,
             qtMouseButtons2VKeys(theEvent->buttons()),
             aFlags,
             false)) {
-        updateView();
+        UpdateView();
     }
 }
 
@@ -459,46 +461,46 @@ void ViewportPanel::wheelEvent(QWheelEvent* theEvent) {
 #else
     const Graphic3d_Vec2i aPos(theEvent->pos().x(), theEvent->pos().y());
 #endif
-    if (m_view.IsNull()) {
+    if (_View.IsNull()) {
         return;
     }
 
-    if (!m_view->Subviews().IsEmpty()) {
-        Handle(V3d_View) aPickedView = m_view->PickSubview(aPos);
+    if (!_View->Subviews().IsEmpty()) {
+        Handle(V3d_View) aPickedView = _View->PickSubview(aPos);
         if (!aPickedView.IsNull()
-            && aPickedView != m_focusView) {
+            && aPickedView != _FocusView) {
             // switch input focus to another subview
-            OnSubviewChanged(m_context, m_focusView, aPickedView);
-            updateView();
+            OnSubviewChanged(_Context, _FocusView, aPickedView);
+            UpdateView();
             return;
         }
     }
 
     if (UpdateZoom(Aspect_ScrollDelta(aPos, double(theEvent->angleDelta().y()) / 8.0))) {
-        updateView();
+        UpdateView();
     }
 }
 
 void ViewportPanel::_InitHudContainer() {
-    _HudContainer = new HudContainer(this);
-    connect(_HudContainer, &HudContainer::MouseMoved, [this](int x, int y) {
-        emit MouseMoved(x + _HudContainer->x(), y + _HudContainer->y()); }
-    );
-    connect(_HudContainer, &HudContainer::HintMessageChanged, [this](const QString& message) {
-        emit hintMessageChanged(message); }
-    );
-    connect(this, &ViewportPanel::MouseMoved, [this](int x, int y) {
-        if (_HudContainer->HudElements().count() == 0) {
-            _HudContainer->hide();
-        }
-        else {
-            _HudContainer->show();
-            _HudContainer->move(x + 10, y - _HudContainer->height() - 10);
-        }
-        });
+    //_HudContainer = new HudContainer(this);
+    //connect(_HudContainer, &HudContainer::MouseMoved, [this](int x, int y) {
+    //    emit MouseMoved(x + _HudContainer->x(), y + _HudContainer->y()); }
+    //);
+    //connect(_HudContainer, &HudContainer::HintMessageChanged, [this](const QString& message) {
+    //    emit hintMessageChanged(message); }
+    //);
+    //connect(this, &ViewportPanel::MouseMoved, [this](int x, int y) {
+    //    if (_HudContainer->HudElements().count() == 0) {
+    //        _HudContainer->hide();
+    //    }
+    //    else {
+    //        _HudContainer->show();
+    //        _HudContainer->move(x + 10, y - _HudContainer->height() - 10);
+    //    }
+    //    });
 }
 
-void ViewportPanel::updateView() {
+void ViewportPanel::UpdateView() {
     update();
     if (window() != nullptr) { 
         window()->update();
@@ -510,22 +512,22 @@ void ViewportPanel::handleViewRedraw(const Handle(AIS_InteractiveContext)& theCt
     AIS_ViewController::handleViewRedraw(theCtx, theView);
     if (myToAskNextFrame) {
         // ask more frames for animation
-        updateView();
+        UpdateView();
     }
 }
 
 void ViewportPanel::OnSubviewChanged(const Handle(AIS_InteractiveContext)&,
     const Handle(V3d_View)&,
     const Handle(V3d_View)& theNewView) {
-    m_focusView = theNewView;
+    _FocusView = theNewView;
 }
 
-void ViewportPanel::dumpGlInfo(bool theIsBasic, bool theToPrint) {
-    if (m_view.IsNull()) {
+void ViewportPanel::DumpGlInfo(bool theIsBasic, bool theToPrint) {
+    if (_View.IsNull()) {
         return;
     }
     TColStd_IndexedDataMapOfStringString aGlCapsDict;
-    m_view->DiagnosticInformation(aGlCapsDict, theIsBasic ? Graphic3d_DiagnosticInfo_Basic : Graphic3d_DiagnosticInfo_Complete);
+    _View->DiagnosticInformation(aGlCapsDict, theIsBasic ? Graphic3d_DiagnosticInfo_Basic : Graphic3d_DiagnosticInfo_Complete);
     TCollection_AsciiString anInfo;
     for (TColStd_IndexedDataMapOfStringString::Iterator aValueIter(aGlCapsDict); aValueIter.More(); aValueIter.Next()) {
         if (!aValueIter.Value().IsEmpty()) {
@@ -538,5 +540,6 @@ void ViewportPanel::dumpGlInfo(bool theIsBasic, bool theToPrint) {
     if (theToPrint) {
         Message::SendInfo(anInfo);
     }
-    m_glInfo = QString::fromUtf8(anInfo.ToCString());
+    _GlInfo = QString::fromUtf8(anInfo.ToCString());
 }
+ }

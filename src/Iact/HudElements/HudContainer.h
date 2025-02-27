@@ -12,6 +12,7 @@
 #include "Iact/HudElements/IHudManager.h"
 #include "Iact/HudElements/HudElement.h"
 
+namespace sun {
 class HudContainer : public QFrame, public IHudManager
 {
 	Q_OBJECT
@@ -36,19 +37,6 @@ protected:
 		emit MouseMoved(theEvent->x(), theEvent->y());
 	}
 
-private:
-	void _UpdateSize()
-	{
-		int maxWidth = 0;
-		int accHeight = 0;
-		for (auto* element : _HudElements) {
-			maxWidth = std::max(maxWidth, element->width());
-			accHeight += element->height();		
-		}
-		qDebug() << "_UpdateSize: " << maxWidth << ", " << accHeight;
-		setFixedSize(maxWidth, accHeight);
-	}
-
 signals:
 	void MouseMoved(int x, int y);
 	void HintMessageChanged(const QString& message);
@@ -57,5 +45,5 @@ private:
 	QString _HintMessage;
 	QList<IHudElement*> _HudElements;
 };
-
+}
 #endif  // IACT_HUD_ELEMENTS_HUDCONATAINER_H_

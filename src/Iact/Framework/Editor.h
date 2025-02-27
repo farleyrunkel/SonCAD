@@ -7,13 +7,14 @@
 
 #include "Iact/Framework/WorkspaceControl.h"
 
+namespace sun {
+
 class Editor : public WorkspaceControl {
-	Q_OBJECT
 
  public:
-	explicit Editor(QObject* parent = nullptr);
+	explicit Editor();
 
-	void stopTool();;
+	void StopTool();
 };
-
+}
 #endif  // SRC_IACT_FRAMEWORK_EDITOR_H_

@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_PRES_COMMANDS_ACTIONCOMMAND_H_
-#define SRC_PRES_COMMANDS_ACTIONCOMMAND_H_
+#ifndef APP_ACTIVECOMMAND_H
+#define APP_ACTIVECOMMAND_H
 
 #include <functional>
 
@@ -9,12 +9,29 @@
 
 #include "Pres/Commands/RelayCommand.h"
 
-class ActionCommand final : public QAction, public RelayCommand {
-    Q_OBJECT
+namespace sun {
 
- public:
-    // Constructor
-    ActionCommand(std::function<void()> execute = nullptr, std::function<bool()> canExecute = nullptr);
-};
+    class ActionCommand final : public QAction, public RelayCommand
+    {
+        Q_OBJECT
 
-#endif  // SRC_PRES_COMMANDS_ACTIONCOMMAND_H_
+    public:
+        // Constructor
+        ActionCommand(std::function<void()> Execute = nullptr, std::function<bool()> CanExecute = nullptr)
+            : QAction(), RelayCommand(Execute, CanExecute) {
+
+            setCheckable(true);
+            // connect the triggered signal to execute
+            connect(this, &QAction::triggered, [this]() {
+                if (isChecked()) {
+                    this->Execute();
+                }
+                else {
+                    setChecked(true);
+                }
+            });
+        }
+    };
+
+}
+#endif  // APP_ACTIVECOMMAND_H

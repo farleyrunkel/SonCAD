@@ -3,57 +3,75 @@
 #ifndef SRC_IACT_VISUAL_VISUALOBJECT_H_
 #define SRC_IACT_VISUAL_VISUALOBJECT_H_
 
-// Qt includes
-#include <QObject>
-#include <QSharedPointer>
-#include <QVariant>
+// Boost includes
+#include <boost/signals2.hpp>
 
 // Occt includes
 #include <AIS_InteractiveContext.hxx>
 #include <gp_Trsf.hxx>
+#include <Standard_Handle.hxx>
 
 // SunCAD includes
 #include "Core/Topology/InteractiveEntity.h"
+#include "Comm/BaseObject.h"
+#include "Iact/Workspace/WorkspaceController.h"
 
-class Sun_WorkspaceController;
+namespace sun {
 
-class VisualObject : public QObject 
-{
-    Q_OBJECT
-    Q_PROPERTY(bool Selectable READ IsSelectable WRITE SetIsSelectable)
-    Q_PROPERTY(bool Selected READ IsSelected WRITE SetIsSelected)
-    Q_PROPERTY(QVariant Tag READ Tag WRITE SetTag)
+    DEFINE_STANDARD_HANDLE(VisualObject, Standard_Transient);
 
-protected:
-    explicit VisualObject(Sun_WorkspaceController* WorkspaceController, InteractiveEntity* entity);
-    virtual ~VisualObject() {}
+    class VisualObject : public BaseObject
+    {
+    protected:
+        explicit VisualObject(const Handle(sun::WorkspaceController)& workspaceController, const Handle(sun::InteractiveEntity)& entity);
+        virtual ~VisualObject() {}
 
-public:
-    virtual void Remove() = 0;
-    virtual void Update() = 0;
-    virtual Handle(AIS_InteractiveObject) AisObject() const = 0;
+    public:
+        virtual void Remove() = 0;
+        virtual void Update() = 0;
 
-    Sun_WorkspaceController* WorkspaceController() const;
-    Handle(AIS_InteractiveContext) AisContext() const;
+        virtual Handle(AIS_InteractiveObject) AisObject() const = 0;
 
-    InteractiveEntity* Entity() const { return _Entity; }
-    void SetLocalTransformation(const gp_Trsf& transformation);
+        Handle(sun::WorkspaceController) WorkspaceController() const {
+            return _WorkspaceController;
+        }
 
-public:
-    virtual bool IsSelectable() const { return false; }
-    virtual void SetIsSelectable(bool value) { Q_UNUSED(value); }
-    bool IsSelected() const;
-    void SetIsSelected(bool value);
-    QVariant Tag() const { return _Tag; }
-    void SetTag(const QVariant& tag) { _Tag = tag; }
+        Handle(AIS_InteractiveContext) AisContext() const;
 
-signals:
-    void AisObjectChanged(const QSharedPointer<VisualObject>& visualObject);
+        Handle(sun::InteractiveEntity) Entity() const {
+            return _Entity;
+        }
 
-private:
-    Sun_WorkspaceController* _WorkspaceController;
-    InteractiveEntity* _Entity;
-    QVariant _Tag;
-};
+        void SetLocalTransformation(const gp_Trsf& transformation);
+
+        virtual bool IsSelectable() const {
+            return false;
+        }
+
+        virtual void SetIsSelectable(bool value) {
+            (void)value;
+        }
+
+        bool IsSelected() const;
+        void SetIsSelected(bool value);
+
+        QVariant Tag() const {
+            return _Tag;
+        }
+
+        void SetTag(const QVariant& tag) {
+            _Tag = tag;
+        }
+
+        // Signal: AIS Object Changed
+        boost::signals2::signal<void(const std::shared_ptr<VisualObject>&)> OnAisObjectChanged;
+
+    private:
+        Handle(sun::WorkspaceController) _WorkspaceController;
+        Handle(sun::InteractiveEntity) _Entity;
+        QVariant _Tag;
+    };
+
+}  // namespace Sun
 
 #endif  // SRC_IACT_VISUAL_VISUALOBJECT_H_

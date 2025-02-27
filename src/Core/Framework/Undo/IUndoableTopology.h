@@ -1,25 +1,36 @@
+// Copyright [2024] SunCAD
+
 #ifndef IUNDOABLETOPOLOGY_H
 #define IUNDOABLETOPOLOGY_H
 
 #include <QUuid> 
 #include "Core/Topology/Entity.h" 
 
-class IUndoableTopology
+namespace sun 
 {
-public:
-    virtual ~IUndoableTopology() = default;
+    class IUndoableTopology
+    {
+    public:
+        virtual ~IUndoableTopology() = default;
 
-    virtual QUuid Guid() const = 0;
+        // 获取唯一标识符
+        virtual QUuid Guid() const = 0;
 
-    virtual Entity* FindInstance(const QUuid& instanceGuid) = 0;
+        // 查找实体实例
+        virtual Handle(Entity) FindInstance(const QUuid& instanceGuid) = 0;
 
-    virtual Entity* GetParent(Entity* instance) = 0;
+        // 获取父实体
+        virtual Handle(Entity) GetParent(const Handle(Entity)& instance) = 0;
 
-    virtual void AddChildFromUndo(Entity* instance, Entity* parent) = 0;
+        // 从 Undo 中添加子实体
+        virtual void AddChildFromUndo(const Handle(Entity)& instance, Handle(Entity) parent) = 0;
 
-    virtual void RemoveChildFromUndo(Entity* instance) = 0;
+        // 从 Undo 中移除子实体
+        virtual void RemoveChildFromUndo(const Handle(Entity)& instance) = 0;
 
-    virtual void MoveChildFromUndo(Entity* instance, Entity* newParent) = 0;
-};
+        // 从 Undo 中移动子实体
+        virtual void MoveChildFromUndo(const Handle(Entity)& instance, Handle(Entity) newParent) = 0;
+    };
 
-#endif 
+}
+#endif // IUNDOABLETOPOLOGY_H

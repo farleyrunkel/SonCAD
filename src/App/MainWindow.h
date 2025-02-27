@@ -12,28 +12,31 @@
 
 #include "App/Commands/AppCommands.h"
 
-class MainWindow : public SARibbonMainWindow {
+namespace sun {
+
+class MainWindow : public SARibbonMainWindow 
+{
     Q_OBJECT
 
- public:
-     explicit MainWindow(QWidget* parent = nullptr);
+public:
+    explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow() override;
 
- private:
-    void setupUi();
-    void setupDockWidgets();
-    void setupAppButton();
-    void setupCategories();
+private:
+    void SetupUi();
+    void SetupDockWidgets();
+    void SetupAppButton();
+    void SetupCategories();
 
-    QAction* createAction(const QString& text, const QString& iconurl);
+    QAction* CreateAction(const QString& text, const QString& iconurl);
 
-    void onMainWindowLoaded();
+    void OnMainWindowLoaded();
 
- private:
-    QMenu* m_appButton = nullptr;
-    SARibbonBar* m_ribbonBar = nullptr;
+private:
+    QMenu* _AppButton = nullptr;
+    SARibbonBar* _RibbonBar = nullptr;
     // The main container for docking
-    ads::CDockManager* m_dockManager = nullptr;
+    ads::CDockManager* _DockManager = nullptr;
 };
-
+}
 #endif  // SRC_APP_MAINWINDOW_H_

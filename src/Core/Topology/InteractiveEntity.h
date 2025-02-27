@@ -11,42 +11,44 @@
 #include "Core/Topology/Entity.h"
 #include "Core/Topology/Layer.h"
 
-class InteractiveEntity : public Entity {
-    Q_OBJECT
+namespace sun {
 
+DEFINE_STANDARD_HANDLE(InteractiveEntity, Standard_Transient);
+
+class InteractiveEntity : public Entity 
+{
 public:
-    explicit InteractiveEntity(QObject* parent = nullptr);
+    explicit InteractiveEntity();
 
     // Name property
-    QString name() const override;
-    void setName(const QString& name) override;
+    QString Name() const override;
+    void SetName(const QString& Name) override;
 
     // IsVisible property
-    bool isVisible() const;
-    void setIsVisible(bool isVisible);
+    bool IsVisible() const;
+    void SetIsVisible(bool IsVisible);
 
     // LayerId property
-    QUuid layerId() const;
-    void setLayerId(const QUuid& layerId);
+    QUuid LayerId() const;
+    void SetLayerId(const QUuid& LayerId);
 
-    Layer* layer() const;
-    void setLayer(Layer* layer);
+    Handle(sun::Layer) Layer() const;
+    void SetLayer(const Handle(sun::Layer)& Layer);
 
     // Methods
-    void invalidate();
-    virtual void remove() override;
-    virtual TopoDS_Shape getTransformedBRep() const;
-
-signals:
-    void visualChanged();
+    void Invalidate();
+    virtual void Remove() override;
+    virtual TopoDS_Shape GetTransformedBRep() const;
 
 protected:
-    void raiseVisualChanged();
+    void RaiseVisualChanged();
 
 private:
-    QString _name;
-    bool _isVisible;
-    QUuid _layerId;
+    QString _Name;
+    bool _IsVisible;
+    QUuid _LayerId;
 };
 
+
+}
 #endif  // SRC_CORE_TOPOLOGY_OMTERACTIVEENTITY_H_

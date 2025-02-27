@@ -1,17 +1,20 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_COMMANDS_MODELCOMMANDS_H_
-#define SRC_IACT_COMMANDS_MODELCOMMANDS_H_
+#ifndef APP_MODELCOMMANDS_H
+#define APP_MODELCOMMANDS_H
 
 #include "Pres/Commands/ActionCommand.h"
 #include <QMessageBox>
 
-class ModelCommands {
- public:
-    static ActionCommand& CreateBox();
-    static ActionCommand& CreateCylinder();
-    static ActionCommand& CreateSphere();
+namespace sun 
+{
+    class ModelCommands
+    {
+    public:
+        static ActionCommand& CreateBox();
+        static ActionCommand& CreateCylinder();
+        static ActionCommand& CreateSphere();
+    };
 
-};
-
-#endif  // SRC_IACT_COMMANDS_MODELCOMMANDS_H_
+}
+#endif  // APP_MODELCOMMANDS_H

@@ -7,28 +7,27 @@
 
 #include "Iact/Workspace/WorkspaceController.h"
 
-VisualObject::VisualObject(Sun_WorkspaceController* WorkspaceController, InteractiveEntity* entity)
-    : QObject(nullptr), _WorkspaceController(WorkspaceController), _Entity(entity) {}
+namespace sun {
 
-Sun_WorkspaceController* VisualObject::WorkspaceController() const { 
-    return _WorkspaceController; 
-}
+    VisualObject::VisualObject(const Handle(sun::WorkspaceController)& workspaceController, const Handle(sun::InteractiveEntity)& entity)
+        : _WorkspaceController(workspaceController), _Entity(entity) {}
 
-Handle(AIS_InteractiveContext) VisualObject::AisContext() const { 
-    return _WorkspaceController->Workspace()->aisContext();
-}
-
-bool VisualObject::IsSelected() const {
-    return AisContext()->IsSelected(AisObject());
-}
-
-void VisualObject::SetIsSelected(bool value) {
-    if (AisContext()->IsSelected(AisObject()) != value) {
-        AisContext()->AddOrRemoveSelected(AisObject(), false);
+    Handle(AIS_InteractiveContext) VisualObject::AisContext() const {
+        return  nullptr; // _WorkspaceController->Workspace()->aisContext();
     }
-}
 
-void VisualObject::SetLocalTransformation(const gp_Trsf& transformation) {
-    if (!AisObject()) return;
-    AisObject()->SetLocalTransformation(transformation);
+    bool VisualObject::IsSelected() const {
+        return AisContext()->IsSelected(AisObject());
+    }
+
+    void VisualObject::SetIsSelected(bool value) {
+        if (AisContext()->IsSelected(AisObject()) != value) {
+            AisContext()->AddOrRemoveSelected(AisObject(), false);
+        }
+    }
+
+    void VisualObject::SetLocalTransformation(const gp_Trsf& transformation) {
+        if (!AisObject()) return;
+        AisObject()->SetLocalTransformation(transformation);
+    }
 }

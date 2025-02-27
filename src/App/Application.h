@@ -1,37 +1,48 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_APP_APPLICATION_H_
-#define SRC_APP_APPLICATION_H_
+#ifndef APP_APPLICATION_H
+#define APP_APPLICATION_H
+
+#include <memory>
 
 #include <QString>
 #include <QApplication>
+#include <QCoreApplication>
 
 #include "App/MainWindow.h"
 #include "App/WelcomeDialog.h"
 #include "App/AppContext.h"
 
-#include "Pres/Commands/CommandManager.h"
-
-class Core;
-
-class Application : public QApplication {
+namespace sun
+{
+class Application : public QApplication 
+{
     Q_OBJECT
 
- public:
+public:
     Application(int& argc, char** argv);
-    ~Application();
+    ~Application() {
+        _MainWindow->deleteLater();
+        _WelcomeDialog->deleteLater();
+    }
 
- private:
-    void initTranslation();
+    sun::MainWindow* MainWindow() const
+    {
+        return _MainWindow;
+    }
 
- private:
-    friend class Core;
+    Handle(sun::AppContext) AppContext() const 
+    {
+        return _AppContext;
+    }
 
- private:
-    MainWindow* m_mainWindow;
-    WelcomeDialog* m_welcomeDialog;
-    AppContext* m_appContext;
-    CommandManager* m_commandManager;
+private:
+    void _InitializeTranslation();
+
+private:
+    sun::MainWindow* _MainWindow = nullptr;
+    sun::WelcomeDialog* _WelcomeDialog = nullptr;
+    Handle(sun::AppContext) _AppContext= nullptr;
 };
-
-#endif  // SRC_APP_APPLICATION_H_
+}
+#endif  // APP_APPLICATION_H

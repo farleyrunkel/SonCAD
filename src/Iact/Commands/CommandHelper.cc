@@ -4,28 +4,31 @@
 
 #include "Core/Core.h"
 
- Sun_WorkspaceController* CommandHelper::WorkspaceController() {
-    return Core::appContext() ? Core::appContext()->WorkspaceController() : nullptr;
-}
+namespace sun {
+    Handle(sun::WorkspaceController) CommandHelper::WorkspaceController() {
+        return Core::AppContext() ? Core::AppContext()->WorkspaceController() : nullptr;
+    }
 
- ModelController* CommandHelper::documentController() {
-    return Core::appContext() ? Core::appContext()->documentController() : nullptr;
-}
+    Handle(sun::ModelController) CommandHelper::DocumentController() {
+        return Core::AppContext() ? Core::AppContext()->DocumentController() : nullptr;
+    }
 
- Tool* CommandHelper::currentTool() {
-    return WorkspaceController() ? WorkspaceController()->currentTool() : nullptr;
-}
+    //Tool* CommandHelper::currentTool() {
+    //    return /*WorkspaceController() ? WorkspaceController()->currentTool() :*/ nullptr;
+    //}
 
- bool CommandHelper::startTool(Tool* tool) {
-     qDebug() << "Debug: CommandHelper::startTool";
-    return WorkspaceController() && WorkspaceController()->startTool(tool);
-}
+    //bool CommandHelper::startTool(Tool* tool) {
+    //    qDebug() << "Debug: CommandHelper::startTool";
+    //    return false; //WorkspaceController() && WorkspaceController()->startTool(tool);
+    //}
 
- bool CommandHelper::canExecuteOnViewport() {
-    return Core::appContext() && Core::appContext()->viewportController()
-        && Core::appContext()->viewportController()->Viewport();
-}
+    bool CommandHelper::CanExecuteOnViewport() {
+        return false; /*Core::AppContext() && Core::AppContext()->viewportController()
+            && Core::AppContext()->viewportController()->Viewport()*/;
+    }
 
- bool CommandHelper::canStartTool() {
-    return WorkspaceController() != nullptr;
+    bool CommandHelper::CanStartTool() {
+        return false; /*WorkspaceController() != nullptr;*/
+    }
+
 }

@@ -8,20 +8,22 @@
 #include <QWidget>
 #include <functional>
 
-class IHudElement;
+namespace sun {
+    class IHudElement;
 
-//class Cursor;
+    //class Cursor;
 
-class IHudManager {
- public:
-    virtual ~IHudManager() = default;
+    class IHudManager
+    {
+    public:
+        virtual ~IHudManager() = default;
 
-    virtual void AddElement(IHudElement* element) = 0;
-    virtual void RemoveElement(IHudElement* element) = 0;
-    virtual void RemoveElements(std::function<bool(IHudElement*)> predicate) = 0;
+        virtual void AddElement(IHudElement* element) = 0;
+        virtual void RemoveElement(IHudElement* element) = 0;
+        virtual void RemoveElements(std::function<bool(IHudElement*)> predicate) = 0;
 
-    // virtual void SetCursor(QObject* owner, Cursor* cursor) = 0;
-    virtual void SetHintMessage(const QString& message) = 0;
-};
-
+        // virtual void SetCursor(QObject* owner, Cursor* cursor) = 0;
+        virtual void SetHintMessage(const QString& message) = 0;
+    };
+}
 #endif  // IACT_HUD_ELEMENTS_IHUDMANAGER_H_

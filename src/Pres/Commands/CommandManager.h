@@ -5,16 +5,15 @@
 
 #include <functional>
 
-#include <QObject>
+namespace sun {
+class CommandManager{
 
-class CommandManager final : public QObject {
-    Q_OBJECT
  public:
     // Constructor
     CommandManager();
 
- signals:
-    void updateEnabled();
+ //signals:
+ //   void updateEnabled();
 };
-
+}
 #endif  // SRC_PRES_COMMANDS_COMMANDMANAGER_H_

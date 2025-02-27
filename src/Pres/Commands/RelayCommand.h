@@ -8,23 +8,27 @@
 
 #include "Pres/Commands/ICommand.h"
 
-class RelayCommand : public ICommand {
- public:
-     // Constructor
-    RelayCommand(std::function<void()> execute);
+namespace sun {
 
-    // Constructor
-    RelayCommand(std::function<void()> execute, std::function<bool()> canExecute);
+    class RelayCommand : public ICommand
+    {
+    public:
+        // Constructor
+        RelayCommand(std::function<void()> Execute);
 
-    // Method to execute the command
-    void execute() override;
+        // Constructor
+        RelayCommand(std::function<void()> Execute, std::function<bool()> CanExecute);
 
-    // Method to check if the command can be executed
-    bool canExecute() const override;
+        // Method to execute the command
+        void Execute() override;
 
- private:
-    std::function<void()> m_execute;      // Function to execute the command
-    std::function<bool()> m_canExecute;   // Function to check if the command can be executed
-};
+        // Method to check if the command can be executed
+        bool CanExecute() const override;
+
+    private:
+        std::function<void()> _Execute;      // Function to execute the command
+        std::function<bool()> _CanExecute;   // Function to check if the command can be executed
+    };
+}
 
 #endif  // SRC_PRES_COMMANDS_RELAYCOMMAND_H_

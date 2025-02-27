@@ -3,28 +3,30 @@
 #ifndef SRC_IACT_COMMANDS_COMMANDHELPER_H_
 #define SRC_IACT_COMMANDS_COMMANDHELPER_H_
 
-#include "Iact/Framework/Tool.h"
+//#include "Iact/Framework/Tool.h"
 #include "Iact/Workspace/WorkspaceController.h"
 #include "Iact/Workspace/ModelController.h"
 
+namespace sun {
+
 class CommandHelper {
  public:
-    static Sun_WorkspaceController* WorkspaceController();
+    static Handle(sun::WorkspaceController) WorkspaceController();
 
-    static ModelController* documentController();
+    static Handle(sun::ModelController) DocumentController();
 
-    static Tool* currentTool();
+    //static Tool* currentTool();
 
-    static bool startTool(Tool* tool);
+    //static bool startTool(Tool* tool);
 
     //static inline bool canExecuteOnWorkspace() {
     //    return workspaceController() && workspaceController()->workspace();
     //}
 
-    static bool canExecuteOnViewport();
+    static bool CanExecuteOnViewport();
 
-    static bool canStartTool();
+    static bool CanStartTool();
 
 };
-
+}
 #endif  // SRC_IACT_COMMANDS_COMMANDHELPER_H_

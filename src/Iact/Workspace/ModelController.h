@@ -3,27 +3,33 @@
 #ifndef SRC_IACT_WORKSPACE_MODELCONTROLLER_H_
 #define SRC_IACT_WORKSPACE_MODELCONTROLLER_H_
 
-#include <QObject>
-#include <QString>
+#include "Comm/BaseObject.h"
 
-#include "Core/Topology/Model.h"
+#include <string>
 
-class ModelController : public QObject {
-    Q_OBJECT
+namespace sun
+{
+    DEFINE_STANDARD_HANDLE(ModelController, BaseObject)
 
-public:
-    explicit ModelController(QObject* parent = nullptr);;
+     class ModelController : public BaseObject
+    {
+    public:
+        ModelController() {}
+        ~ModelController() {}
+        void Dispose() {
 
-    void dispose();
+        }
 
-    Model* newModel();
-    bool openModelFrom(const QString& initialDirectory);
-    bool openModel(const QString& file);
-    bool saveModel();
+        bool AskForSavingModelChanges() {
+            return true;
+        }
 
-    bool saveModelAs();
+        void NewModel() {
+        
+        }
 
-    bool askForSavingModelChanges();
-};
+        void OpenModelFrom(const std::string& ) {}
+    };
+}
 
 #endif // SRC_IACT_WORKSPACE_MODELCONTROLLER_H_

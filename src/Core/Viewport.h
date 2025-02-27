@@ -1,11 +1,11 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_CORE_VIEWPORT_H_
-#define SRC_CORE_VIEWPORT_H_
+#ifndef CORE_VIEWPORT_H
+#define CORE_VIEWPORT_H
 
 #include <cmath>
+#include <boost/signals2.hpp>
 
-#include <QDebug>
 #include <QObject>
 #include <QSharedPointer>
 
@@ -20,110 +20,180 @@
 #include <Graphic3d_RenderingMode.hxx>
 
 #include "Core/Workspace.h"
+#include "Comm/BaseObject.h"
 
-class Sun_Viewport;
-
-
-class ViewPortSignalHub : public QObject
+namespace sun
 {
-    Q_OBJECT
-public:
-    ViewPortSignalHub() = default;
-signals:
-    void ViewportChanged(Sun_Viewport*);
-};
+    DEFINE_STANDARD_HANDLE(_Viewport, BaseObject)
 
-class Sun_Viewport : public QObject 
-{
-    Q_OBJECT
-    Q_PROPERTY(gp_Pnt eyePoint READ eyePoint WRITE setEyePoint NOTIFY eyePointChanged)
-    Q_PROPERTY(gp_Pnt targetPoint READ targetPoint WRITE setTargetPoint NOTIFY targetPointChanged)
-    Q_PROPERTY(double twist READ twist WRITE setTwist NOTIFY twistChanged)
-    Q_PROPERTY(double scale READ scale WRITE setScale NOTIFY scaleChanged)
-    Q_PROPERTY(RenderModes renderMode READ renderMode WRITE setRenderMode NOTIFY renderModeChanged)
+    class _Viewport : public BaseObject
+    {
+    public:
+        // 渲染模式枚举
+        enum RenderModes
+        {
+            SolidShaded,
+            HLR,
+            Raytraced
+        };
 
- public:
-    // Enum for RenderModes
-    enum RenderModes {
-        SolidShaded,
-        HLR,
-        Raytraced
-    };
-    Q_ENUM(RenderModes)
+    public:
+        // 构造函数
+        explicit _Viewport(const Handle(Workspace)& workspace)
+            : _Workspace(workspace), _RenderMode(SolidShaded), _Twist(0.0), _Scale(100.0) {}
 
-    // Constructor
-    explicit Sun_Viewport(QObject* parent = nullptr);
+        // 获取器和设置器
+        gp_Pnt EyePoint() {
+            if (_V3dView) {
+                double xEye = 0, yEye = 0, zEye = 0;
+                _V3dView->Eye(xEye, yEye, zEye);
+                _EyePoint = gp_Pnt(xEye, yEye, zEye);
+            }
+            return _EyePoint;
+        }
 
-    // Constructor
-    explicit Sun_Viewport(Sun::Workspace* workspace, QObject* parent = nullptr);
+        void SetEyePoint(const gp_Pnt& point) {
+            _EyePoint = point;
+            if (_V3dView) {
+                _V3dView->SetEye(_EyePoint.X(), _EyePoint.Y(), _EyePoint.Z());
+                EyePointChanged(_EyePoint);  // 传递参数
+            }
+        }
 
-    // Destructor
-    ~Sun_Viewport();
+        gp_Pnt TargetPoint() {
+            if (_V3dView) {
+                double xAt = 0, yAt = 0, zAt = 0;
+                _V3dView->At(xAt, yAt, zAt);
+                _TargetPoint = gp_Pnt(xAt, yAt, zAt);
+            }
+            return _TargetPoint;
+        }
 
-    // Initialize Viewport with MSAA support
-    void Init(bool useMsaa);
+        void SetTargetPoint(const gp_Pnt& point) {
+            _TargetPoint = point;
+            if (_V3dView) {
+                _V3dView->SetAt(_TargetPoint.X(), _TargetPoint.Y(), _TargetPoint.Z());
+                TargetPointChanged(_TargetPoint);  // 传递参数
+            }
+        }
 
-    // Getters and setters for properties
-    gp_Pnt eyePoint();
+        double Twist() {
+            if (_V3dView) {
+                _Twist = _V3dView->Twist() * 180.0 / M_PI;  // 转换为度
+            }
+            return _Twist;
+        }
 
-    void setEyePoint(const gp_Pnt& point);
+        void SetTwist(double value) {
+            if (_V3dView) {
+                _V3dView->SetTwist(value * M_PI / 180.0);  // 转换为弧度
+                if (_Twist != value) {
+                    _Twist = value;
+                    TwistChanged(_Twist);  // 传递参数
+                }
+            }
+        }
 
-    gp_Pnt targetPoint();
+        double Scale() {
+            if (_V3dView) {
+                _Scale = _V3dView->Scale();
+            }
+            return _Scale;
+        }
 
-    void setTargetPoint(const gp_Pnt& point);
+        void SetScale(double value) {
+            if (_V3dView) {
+                _V3dView->SetScale(value);
+                if (_Scale != value) {
+                    _Scale = value;
+                    ScaleChanged(_Scale);  // 传递参数
+                }
+            }
+        }
 
-    double twist();
+        RenderModes RenderMode() const {
+            return _RenderMode;
+        }
 
-    void setTwist(double value);
+        void setRenderMode(RenderModes mode) {
+            if (_RenderMode != mode) {
+                _RenderMode = mode;
+                UpdateRenderMode();
+                RenderModeChanged(_RenderMode);  // 传递参数
+            }
+        }
 
-    double scale();
+        // 初始化 Viewport，支持 MSAA
+        void Init(bool useMsaa) {
+            if (_V3dView) {
+                return;
+            }
 
-    void setScale(double value);
+            _V3dView = _Workspace->V3dViewer()->CreateView();
+            _AisAnimationCamera = new AIS_AnimationCamera("ViewCamera", _V3dView);
 
-    RenderModes renderMode() const;
+            _V3dView->SetBgGradientColors(Quantity_Color(0.624, 0.714, 0.804, Quantity_TOC_sRGB),
+                                          Quantity_Color(0.424, 0.482, 0.545, Quantity_TOC_sRGB),
+                                          Aspect_GFM_VER, false);
 
-    void setRenderMode(RenderModes mode);
+            Graphic3d_RenderingParams& renderParams = _V3dView->ChangeRenderingParams();
+            renderParams.NbMsaaSamples = useMsaa ? 4 : 0;
+            renderParams.IsAntialiasingEnabled = useMsaa;
+            renderParams.TransparencyMethod = Graphic3d_RTM_DEPTH_PEELING_OIT;
+            renderParams.Method = Graphic3d_RM_RASTERIZATION;
+            renderParams.RaytracingDepth = 3;
+            renderParams.IsShadowEnabled = true;
+            renderParams.IsReflectionEnabled = true;
+            renderParams.IsTransparentShadowEnabled = true;
 
-    // Function to update render mode
-    void updateRenderMode();
+            // 重新初始化视图参数
+            SetTargetPoint(_TargetPoint);
+            SetEyePoint(_EyePoint);
+            SetScale(_Scale);
+            SetTwist(_Twist);
+            UpdateRenderMode();
+        }
 
-    Handle(V3d_View) View() const {
-        return mV3dView;
-    }
+        // 更新渲染模式
+        void UpdateRenderMode() {
+            if (!_V3dView) return;
 
-    Handle(V3d_View) V3dView() const {
-        return mV3dView;
-    }
+            _V3dView->SetComputedMode(_RenderMode == HLR);
 
-    bool ScreenToPoint(gp_Pln plane, int screenX, int screenY, gp_Pnt& resultPnt);
+            auto& renderParams = _V3dView->ChangeRenderingParams();
+            if (_RenderMode == Raytraced) {
+                renderParams.Method = Graphic3d_RM_RAYTRACING;
+            }
+            else {
+                renderParams.Method = Graphic3d_RM_RASTERIZATION;
+            }
+        }
 
-public:
-    static ViewPortSignalHub* SignalHub() {
-        static ViewPortSignalHub hub;
-        return &hub;
-    }
+        // 析构函数
+        ~_Viewport() {
+            if (_V3dView) {
+                _V3dView->Remove();
+            }
+        }
+
+    public:
+        boost::signals2::signal<void(const gp_Pnt&)> EyePointChanged;
+        boost::signals2::signal<void(const gp_Pnt&)> TargetPointChanged;
+        boost::signals2::signal<void(double)> TwistChanged;
+        boost::signals2::signal<void(double)> ScaleChanged;
+        boost::signals2::signal<void(RenderModes)> RenderModeChanged;
 
     private:
-      void  _ValidateViewGeometry() {}
+        Handle(Workspace) _Workspace;
+        gp_Pnt _EyePoint = gp_Pnt(10, 10, 10);
+        gp_Pnt _TargetPoint = gp_Pnt(0, 0, 0);
+        double _Twist = 0.0;
+        double _Scale = 100.0;
+        RenderModes _RenderMode;
 
- signals:
-    void eyePointChanged();
-    void targetPointChanged();
-    void twistChanged();
-    void scaleChanged();
-    void renderModeChanged();
-    void ViewportChanged(Sun_Viewport*);
+        Handle(V3d_View) _V3dView;
+        Handle(AIS_AnimationCamera) _AisAnimationCamera;
+    };
+}
 
- private:
-    Sun::Workspace* mWorkspace;
-    gp_Pnt mEyePoint = gp_Pnt(10, 10, 10);
-    gp_Pnt mTargetPoint = gp_Pnt(0, 0, 0);
-    double mTwist = 0.0;
-    double mScale = 100.0;
-    RenderModes mRenderMode;
-
-    Handle(V3d_View) mV3dView;
-    AIS_AnimationCamera* mAisAnimationCamera;
-};
-
-#endif  // SRC_CORE_VIEWPORT_H_
+#endif  // CORE_VIEWPORT_H

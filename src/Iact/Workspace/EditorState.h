@@ -7,11 +7,15 @@
 #include <QObject>
 #include <QString>
 
-class EditorState final : public QObject {
- public:
+namespace sun {
+
+class EditorState final : public QObject 
+{
+public:
 	 EditorState();
- private:
-	QString m_activeTool;
+private:
+	QString _ActiveTool;
 };
 
+}
 #endif // SRC_IACT_WORKSPACE_EDITORSTATE_H_

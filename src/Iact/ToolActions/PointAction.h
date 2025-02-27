@@ -5,6 +5,8 @@
 
 #include <QMessageBox>
 
+#include <boost/signals2.hpp>
+
 #include <gp_Pnt.hxx>
 #include <gp_Pnt2d.hxx>
 
@@ -12,9 +14,10 @@
 #include "Iact/Framework/ToolAction.h"
 #include "Iact/Workspace/MouseEventData.h"
 
-class PointAction : public ToolAction {
-    Q_OBJECT
+namespace sun {
 
+class PointAction : public ToolAction 
+{
  public:
     class EventArgs {
     public:
@@ -23,32 +26,31 @@ class PointAction : public ToolAction {
              : Point(p), PointOnPlane(pp), MarkerPosition(mp), MouseEventData(m) {}
         gp_Pnt Point;
         gp_Pnt2d PointOnPlane;
-        MouseEventData* MouseEventData;
         gp_Pnt MarkerPosition;
+        MouseEventData* MouseEventData;
     };
 
  public:
     explicit PointAction();;
- 
- protected:
-    bool onStart() override;
+    // ∂®“Â Boost –≈∫≈
+    boost::signals2::signal<void(PointAction::EventArgs*)> Preview;
+    boost::signals2::signal<void(PointAction::EventArgs*)> Finished;
 
-    bool onMouseMove(MouseEventData* data) override;
-    bool onMouseDown(MouseEventData* data) override;
-    bool onMouseUp(MouseEventData* data) override;
+protected:
+    bool OnStart() override;
+
+    bool OnMouseMove(MouseEventData* data) override;
+    bool OnMouseDown(MouseEventData* data) override;
+    bool OnMouseUp(MouseEventData* data) override;
 
  private:
      void _EnsureMarker();
      void ProcessMouseInput(MouseEventData* data);
 
- signals:
-    void Preview(PointAction::EventArgs* args);
-    void Finished(PointAction::EventArgs* args);
 
 private:
-    bool _IsFinished;
     Marker* _Marker;
     gp_Pnt _CurrentPoint;
 };
-
+}
 #endif  // SRC_IACT_TOOLACTION_POINTACTION_H_

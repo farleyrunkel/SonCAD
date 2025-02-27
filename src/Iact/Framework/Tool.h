@@ -7,36 +7,40 @@
 #include <QString>
 #include <QList>
 
+#include <boost/signals2.hpp>
+
 #include "Iact/Framework/WorkspaceControl.h"
 #include "Iact/Framework/ToolAction.h"
 
-class Tool : public WorkspaceControl {
-	Q_OBJECT
+namespace sun 
+{
 
+class Tool : public WorkspaceControl 
+{
  public:
 	explicit Tool(QObject* parent = nullptr);
 
  public:
-	bool start();
+	bool Start();
 
 	virtual bool OnStart();
 
-	ToolAction* currentAction() const;
+	ToolAction* CurrentAction() const;
 
-	bool cancel(bool force);
+	bool Cancel(bool force);
 
-	void stop();
+	void Stop();
 
-	QString id() const;
+	QString Id() const;
 
-	virtual bool prepareUndo();
+	virtual bool PrepareUndo();
 
  protected:
-	virtual QList<WorkspaceControl*> GetChildren() const;
+	virtual QList<Handle(WorkspaceControl)> GetChildren() const override;
 
-	virtual bool onCancel();
+	virtual bool OnCancel();
 
-	virtual void onStop();
+	virtual void OnStop();
 
 	virtual void Cleanup() override;
 
@@ -48,15 +52,15 @@ class Tool : public WorkspaceControl {
 
 	void StopAction(ToolAction* toolAction);
 
-	void stopAllActions();
+	void StopAllActions();
 
- signals:
-	void toolActionChanged(ToolAction*);
+	//signals
+	boost::signals2::signal<void(ToolAction*)> ToolActionChanged;
 
  private:
-	QList<ToolAction*> m_toolActions;
-	QString m_id;
-	bool m_isActive;
+	QList<ToolAction*> _ToolActions;
+	QString _Id;
+	bool _IsActive;
 };
-
+}
 #endif  // SRC_IACT_FRAMEWORK_TOOL_H_
