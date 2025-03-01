@@ -6,15 +6,15 @@
 #include <Standard_Transient.hxx>
 #include <Standard_Handle.hxx>
 
-	class BaseObject : public Standard_Transient
+class BaseObject : public Standard_Transient
+{
+public:
+	BaseObject() = default;
+
+	void Dispose()
 	{
-	public:
-		BaseObject() = default;
 
-		void Dispose()
-		{
-
-		}
-	};
+	}
+};
 
 #endif  // COMM_BASEOBJECT_H_

@@ -15,10 +15,10 @@
     ActionCommand& DocumentCommands::CreateNewModel() 
     {
         static ActionCommand command(
-            []() { if (CommandHelper::DocumentController()->AskForSavingModelChanges()) {
-            CommandHelper::DocumentController()->NewModel();
+            []() { if (CommandHelper::GetDocumentController()->AskForSavingModelChanges()) {
+            CommandHelper::GetDocumentController()->NewModel();
         }},
-            []() { return !CommandHelper::DocumentController().IsNull(); }
+            []() { return !CommandHelper::GetDocumentController().IsNull(); }
         );
 
         if (command.text().isEmpty()) {
@@ -32,10 +32,10 @@
 
     ActionCommand& DocumentCommands::OpenModelFrom() {
         static ActionCommand command(
-            []() { if (CommandHelper::DocumentController()->AskForSavingModelChanges()) {
-            CommandHelper::DocumentController()->OpenModelFrom("");
+            []() { if (CommandHelper::GetDocumentController()->AskForSavingModelChanges()) {
+            CommandHelper::GetDocumentController()->OpenModelFrom("");
         }},
-            []() { return !CommandHelper::DocumentController().IsNull(); }
+            []() { return !CommandHelper::GetDocumentController().IsNull(); }
         );
 
         if (command.text().isEmpty()) {

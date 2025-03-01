@@ -4,29 +4,28 @@
 
 #include "Core/Core.h"
 
+Handle(WorkspaceController) CommandHelper::GetWorkspaceController() {
+    return Core::GetAppContext() ? Core::GetAppContext()->GetGetWorkspaceController() : nullptr;
+}
 
-    Handle(WorkspaceController) CommandHelper::GetWorkspaceController() {
-        return Core::GetAppContext() ? Core::GetAppContext()->GetGetWorkspaceController() : nullptr;
-    }
+Handle(ModelController) CommandHelper::GetDocumentController() {
+    return Core::GetAppContext() ? Core::GetAppContext()->DocumentController() : nullptr;
+}
 
-    Handle(ModelController) CommandHelper::DocumentController() {
-        return Core::GetAppContext() ? Core::GetAppContext()->DocumentController() : nullptr;
-    }
+//Tool* CommandHelper::currentTool() {
+//    return /*GetWorkspaceController() ? GetWorkspaceController()->currentTool() :*/ nullptr;
+//}
 
-    //Tool* CommandHelper::currentTool() {
-    //    return /*GetWorkspaceController() ? GetWorkspaceController()->currentTool() :*/ nullptr;
-    //}
+bool CommandHelper::startTool(Handle(Tool) tool) {
+    qDebug() << "Debug: CommandHelper::startTool";
+    return false; //GetWorkspaceController() && GetWorkspaceController()->startTool(tool);
+}
 
-    //bool CommandHelper::startTool(Tool* tool) {
-    //    qDebug() << "Debug: CommandHelper::startTool";
-    //    return false; //GetWorkspaceController() && GetWorkspaceController()->startTool(tool);
-    //}
+bool CommandHelper::CanExecuteOnViewport() {
+    return false; /*Core::AppContext() && Core::AppContext()->viewportController()
+        && Core::AppContext()->viewportController()->Viewport()*/;
+}
 
-    bool CommandHelper::CanExecuteOnViewport() {
-        return false; /*Core::AppContext() && Core::AppContext()->viewportController()
-            && Core::AppContext()->viewportController()->Viewport()*/;
-    }
-
-    bool CommandHelper::CanStartTool() {
-        return false; /*GetWorkspaceController() != nullptr;*/
-    }
+bool CommandHelper::CanStartTool() {
+    return false; /*GetWorkspaceController() != nullptr;*/
+}

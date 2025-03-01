@@ -6,18 +6,19 @@
 //#include "Iact/Framework/Tool.h"
 #include "Iact/Workspace/WorkspaceController.h"
 #include "Iact/Workspace/ModelController.h"
+#include "Iact/Framework/Tool.h"
 
 
-
-class CommandHelper {
- public:
+class CommandHelper
+{
+public:
     static Handle(WorkspaceController) GetWorkspaceController();
 
-    static Handle(ModelController) DocumentController();
+    static Handle(ModelController) GetDocumentController();
 
     //static Tool* currentTool();
 
-    //static bool startTool(Tool* tool);
+    static bool startTool(Handle(Tool) tool);
 
     //static inline bool canExecuteOnWorkspace() {
     //    return workspaceController() && workspaceController()->workspace();

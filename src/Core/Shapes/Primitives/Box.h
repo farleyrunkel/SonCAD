@@ -11,89 +11,87 @@
 #include "Core/Shapes/IShapeOperand.h"
 #include "Comm/BaseObject.h"
 
+DEFINE_STANDARD_HANDLE(Box, Shape)
 
+class Box final : public Shape
+{
+public:
+    // Class name property
+    virtual QString GetName() const override {
+        return "Box";
+    }
 
-    DEFINE_STANDARD_HANDLE(Box, BaseObject)
+    virtual void SetName(const QString&) override {}
 
-    class Box final : public Shape
-    {
-    public:
-        // Class name property
-        virtual QString GetName() const override {
-            return "Box";
+    // DimensionX property
+    double DimensionX() const {
+        return _DimensionX;
+    }
+
+    void SetDimensionX(double value) {
+        if (!qFuzzyCompare(_DimensionX, value)) {
+            SaveUndo();
+            _DimensionX = (value != 0.0) ? value : 0.001;
+            Invalidate();
+            OnDimensionXChanged(value);
         }
+    }
 
-        virtual void SetName(const QString&) override {}
+    // DimensionY property
+    double DimensionY() const {
+        return _DimensionY;
+    }
 
-        // DimensionX property
-        double DimensionX() const {
-            return _DimensionX;
+    void SetDimensionY(double value) {
+        if (!qFuzzyCompare(_DimensionY, value)) {
+            SaveUndo();
+            _DimensionY = (value != 0.0) ? value : 0.001;
+            Invalidate();
+            OnDimensionYChanged(value);
         }
+    }
 
-        void SetDimensionX(double value) {
-            if (!qFuzzyCompare(_DimensionX, value)) {
-                SaveUndo();
-                _DimensionX = (value != 0.0) ? value : 0.001;
-                Invalidate();
-                OnDimensionXChanged(value);
-            }
+    // DimensionZ property
+    double DimensionZ() const {
+        return _DimensionZ;
+    }
+
+    void SetDimensionZ(double value) {
+        if (!qFuzzyCompare(_DimensionZ, value)) {
+            SaveUndo();
+            _DimensionZ = (value != 0.0) ? value : 0.001;
+            Invalidate();
+            OnDimensionZChanged(value);
         }
+    }
 
-        // DimensionY property
-        double DimensionY() const {
-            return _DimensionY;
-        }
+    // Initialization
+    Box() : _DimensionX(1.0), _DimensionY(1.0), _DimensionZ(1.0) {}
 
-        void SetDimensionY(double value) {
-            if (!qFuzzyCompare(_DimensionY, value)) {
-                SaveUndo();
-                _DimensionY = (value != 0.0) ? value : 0.001;
-                Invalidate();
-                OnDimensionYChanged(value);
-            }
-        }
+    //virtual ShapeType GetShapeType() const  {
+    //    return ShapeType::Solid;
+    //}
 
-        // DimensionZ property
-        double DimensionZ() const {
-            return _DimensionZ;
-        }
+public:
+    // Signals
+    boost::signals2::signal<void(double)> OnDimensionXChanged;
+    boost::signals2::signal<void(double)> OnDimensionYChanged;
+    boost::signals2::signal<void(double)> OnDimensionZChanged;
 
-        void SetDimensionZ(double value) {
-            if (!qFuzzyCompare(_DimensionZ, value)) {
-                SaveUndo();
-                _DimensionZ = (value != 0.0) ? value : 0.001;
-                Invalidate();
-                OnDimensionZChanged(value);
-            }
-        }
+private:
+    void SaveUndo() {
+        // Implement undo logic
+    }
 
-        // Initialization
-        Box() : _DimensionX(1.0), _DimensionY(1.0), _DimensionZ(1.0) {}
+    void Invalidate() {
+        // Implement invalidation logic
+    }
 
-        //virtual ShapeType GetShapeType() const  {
-        //    return ShapeType::Solid;
-        //}
-
-    public:
-        // Signals
-        boost::signals2::signal<void(double)> OnDimensionXChanged;
-        boost::signals2::signal<void(double)> OnDimensionYChanged;
-        boost::signals2::signal<void(double)> OnDimensionZChanged;
-
-    private:
-        void SaveUndo() {
-            // Implement undo logic
-        }
-
-        void Invalidate() {
-            // Implement invalidation logic
-        }
-
-    private:
-        double _DimensionX = 0.0;
-        double _DimensionY = 0.0;
-        double _DimensionZ = 0.0;
-    };
+private:
+    double _DimensionX = 0.0;
+    double _DimensionY = 0.0;
+    double _DimensionZ = 0.0;
+};
 
 
 #endif  // CORE_SHAPES_PRIMITIVES_BOX_H_

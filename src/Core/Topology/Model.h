@@ -10,9 +10,6 @@
 #include "Core/Workspace.h"
 #include "Comm/BaseObject.h"
 
-
-
-
 DEFINE_STANDARD_HANDLE(Model, BaseObject)
 
 class Model : public BaseObject

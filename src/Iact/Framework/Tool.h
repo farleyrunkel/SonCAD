@@ -12,6 +12,8 @@
 #include "Iact/Framework/WorkspaceControl.h"
 #include "Iact/Framework/ToolAction.h"
 
+DEFINE_STANDARD_HANDLE(Tool, WorkspaceControl);
+
 class Tool : public WorkspaceControl 
 {
  public:

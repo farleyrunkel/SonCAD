@@ -11,41 +11,43 @@
 
 #include "Comm/BaseObject.h"
 
-    // Base class for Entity, assuming Entity is derived from QObject for signal/slot support
-    class Entity : public BaseObject
-    {
+DEFINE_STANDARD_HANDLE(Entity, BaseObject)
 
-    public:
-        // Constructor
-        explicit Entity();
+// Base class for Entity, assuming Entity is derived from QObject for signal/slot support
+class Entity : public BaseObject
+{
 
-        // Guid property (using QUuid)
-        QUuid Guid() const;
+public:
+    // Constructor
+    explicit Entity();
 
-        void SetGuid(const QUuid& Guid);
+    // Guid property (using QUuid)
+    QUuid Guid() const;
 
-        // Type name property
-        QString TypeName() const;
+    void SetGuid(const QUuid& Guid);
 
-        // Name property, virtual
-        virtual QString GetName() const;
+    // Type name property
+    QString TypeName() const;
 
-        virtual void SetName(const QString& /*unused*/);
+    // Name property, virtual
+    virtual QString GetName() const;
 
-        // Error handling
-        bool HasErrors() const;
+    virtual void SetName(const QString& /*unused*/);
 
-        void SetHasErrors(bool HasErrors);
+    // Error handling
+    bool HasErrors() const;
 
-        // Remove entity
-        virtual void Remove();
+    void SetHasErrors(bool HasErrors);
 
-        // For debugging or logging purposes
-        virtual QString ToString() const;
+    // Remove entity
+    virtual void Remove();
 
-    protected:
-        QUuid _Guid;
-        bool _HasErrors;
-    };
+    // For debugging or logging purposes
+    virtual QString ToString() const;
+
+protected:
+    QUuid _Guid;
+    bool _HasErrors;
+};
 
 #endif  // Entity_DOCUMENT_H

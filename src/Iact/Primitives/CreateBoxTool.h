@@ -16,8 +16,6 @@
 #include "Iact/ToolActions/PointAction.h"
 #include "Iact/Visual/VisualObject.h"
 
-
-
 class CreateBoxTool : public Tool 
 {
 
