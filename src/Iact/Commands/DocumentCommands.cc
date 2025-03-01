@@ -12,37 +12,42 @@
 
 
 
-    ActionCommand& DocumentCommands::CreateNewModel() 
+ActionCommand& DocumentCommands::CreateNewModel()
+{
+    static ActionCommand command(
+        []() { if(CommandHelper::GetDocumentController()->AskForSavingModelChanges())
     {
-        static ActionCommand command(
-            []() { if (CommandHelper::GetDocumentController()->AskForSavingModelChanges()) {
-            CommandHelper::GetDocumentController()->NewModel();
-        }},
-            []() { return !CommandHelper::GetDocumentController().IsNull(); }
-        );
+        CommandHelper::GetDocumentController()->NewModel();
+    }},
+        []() { return !CommandHelper::GetDocumentController().IsNull(); }
+    );
 
-        if (command.text().isEmpty()) {
-            command.setText(QObject::tr("New Model"));
-            command.setToolTip(QObject::tr("Create a new model."));
-            command.setIcon(ResourceUtils::Icon("App/App-NewModel"));
-        }
-
-        return command;
+    if(command.text().isEmpty())
+    {
+        command.setText(QObject::tr("New Model"));
+        command.setToolTip(QObject::tr("Create a new model."));
+        command.setIcon(ResourceUtils::Icon("App/App-NewModel"));
     }
 
-    ActionCommand& DocumentCommands::OpenModelFrom() {
-        static ActionCommand command(
-            []() { if (CommandHelper::GetDocumentController()->AskForSavingModelChanges()) {
-            CommandHelper::GetDocumentController()->OpenModelFrom("");
-        }},
-            []() { return !CommandHelper::GetDocumentController().IsNull(); }
-        );
+    return command;
+}
 
-        if (command.text().isEmpty()) {
-            command.setText(QObject::tr("Open Model..."));
-            command.setToolTip(QObject::tr("Opens an existing Model."));
-            command.setIcon(ResourceUtils::Icon("App/App-OpenModel"));
-        }
+ActionCommand& DocumentCommands::OpenModelFrom()
+{
+    static ActionCommand command(
+        []() { if(CommandHelper::GetDocumentController()->AskForSavingModelChanges())
+    {
+        CommandHelper::GetDocumentController()->OpenModelFrom("");
+    }},
+        []() { return !CommandHelper::GetDocumentController().IsNull(); }
+    );
 
-        return command;
+    if(command.text().isEmpty())
+    {
+        command.setText(QObject::tr("Open Model..."));
+        command.setToolTip(QObject::tr("Opens an existing Model."));
+        command.setIcon(ResourceUtils::Icon("App/App-OpenModel"));
     }
+
+    return command;
+}

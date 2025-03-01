@@ -3,11 +3,9 @@
 
 #include <optional>
 
-#include "TopoDS_Shape.hxx" // OpenCASCADE 的拓扑结构类型
-#include "gp_Ax3.hxx"       // OpenCASCADE 的 3D 坐标系
-#include "gp_Pln.hxx"       // OpenCASCADE 的平面类型
-
-
+#include "TopoDS_Shape.hxx" 
+#include "gp_Ax3.hxx"       
+#include "gp_Pln.hxx"       
 
 enum class ShapeType
 {

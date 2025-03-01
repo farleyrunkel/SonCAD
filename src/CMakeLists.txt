@@ -8,6 +8,8 @@ file(GLOB SUB_DIRECTORY_SOURCES
     "${CMAKE_SOURCE_DIR}/src/*/*.cc"
     "${CMAKE_SOURCE_DIR}/src/*/*/*.h"
     "${CMAKE_SOURCE_DIR}/src/*/*/*.cc"
+    "${CMAKE_SOURCE_DIR}/src/*/*/*/*.h"
+    "${CMAKE_SOURCE_DIR}/src/*/*/*/*.cc"
 )
 
 list(APPEND PROJECT_SOURCES ${SUB_DIRECTORY_SOURCES})
@@ -52,7 +54,7 @@ set_target_properties(${PROJECT_NAME}  PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-# Install the target executable/library (SonCAD)
+# Install the target executable/library
 include(GNUInstallDirs)
 
 # Install the executable or runtime (if Windows, RUNTIME is used)

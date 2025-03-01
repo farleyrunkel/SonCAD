@@ -3,9 +3,9 @@
 #ifndef CORE_SHAPES_PRIMITIVES_BOX_H_
 #define CORE_SHAPES_PRIMITIVES_BOX_H_
 
-#include <BRepPrimAPI_MakeBox.hxx>
-
 #include <boost/signals2.hpp>
+
+#include <BRepPrimAPI_MakeBox.hxx>
 
 #include "Core/Shapes/Shape.h"
 #include "Core/Shapes/IShapeOperand.h"
@@ -16,57 +16,28 @@ DEFINE_STANDARD_HANDLE(Box, Shape)
 class Box final : public Shape
 {
 public:
-    // Class name property
-    virtual QString GetName() const override {
-        return "Box";
-    }
+    // Initialization
+    Box();
 
-    virtual void SetName(const QString&) override {}
+    // Class name property
+    virtual QString GetName() const override;
+
+    virtual void SetName(const QString&) override;
 
     // DimensionX property
-    double DimensionX() const {
-        return _DimensionX;
-    }
+    double DimensionX() const;
 
-    void SetDimensionX(double value) {
-        if (!qFuzzyCompare(_DimensionX, value)) {
-            SaveUndo();
-            _DimensionX = (value != 0.0) ? value : 0.001;
-            Invalidate();
-            OnDimensionXChanged(value);
-        }
-    }
+    void SetDimensionX(double value);
 
     // DimensionY property
-    double DimensionY() const {
-        return _DimensionY;
-    }
+    double DimensionY() const;
 
-    void SetDimensionY(double value) {
-        if (!qFuzzyCompare(_DimensionY, value)) {
-            SaveUndo();
-            _DimensionY = (value != 0.0) ? value : 0.001;
-            Invalidate();
-            OnDimensionYChanged(value);
-        }
-    }
+    void SetDimensionY(double value);
 
     // DimensionZ property
-    double DimensionZ() const {
-        return _DimensionZ;
-    }
+    double DimensionZ() const;
 
-    void SetDimensionZ(double value) {
-        if (!qFuzzyCompare(_DimensionZ, value)) {
-            SaveUndo();
-            _DimensionZ = (value != 0.0) ? value : 0.001;
-            Invalidate();
-            OnDimensionZChanged(value);
-        }
-    }
-
-    // Initialization
-    Box() : _DimensionX(1.0), _DimensionY(1.0), _DimensionZ(1.0) {}
+    void SetDimensionZ(double value);
 
     //virtual ShapeType GetShapeType() const  {
     //    return ShapeType::Solid;
@@ -79,19 +50,14 @@ public:
     boost::signals2::signal<void(double)> OnDimensionZChanged;
 
 private:
-    void SaveUndo() {
-        // Implement undo logic
-    }
+    void SaveUndo();
 
-    void Invalidate() {
-        // Implement invalidation logic
-    }
+    void Invalidate();
 
 private:
     double _DimensionX = 0.0;
     double _DimensionY = 0.0;
     double _DimensionZ = 0.0;
 };
-
 
 #endif  // CORE_SHAPES_PRIMITIVES_BOX_H_

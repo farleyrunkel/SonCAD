@@ -3,11 +3,11 @@
 #define Entity_DOCUMENT_H
 // Copyright [2024] SunCAD
 
+#include <QDebug>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QObject>
 #include <QUuid>
-#include <QDebug>
-#include <QJsonObject>
-#include <QJsonDocument>
 
 #include "Comm/BaseObject.h"
 

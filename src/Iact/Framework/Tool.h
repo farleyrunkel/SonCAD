@@ -9,17 +9,18 @@
 
 #include <boost/signals2.hpp>
 
-#include "Iact/Framework/WorkspaceControl.h"
 #include "Iact/Framework/ToolAction.h"
+
+class WorkspaceControl;
 
 DEFINE_STANDARD_HANDLE(Tool, WorkspaceControl);
 
-class Tool : public WorkspaceControl 
+class Tool : public WorkspaceControl
 {
- public:
+public:
 	explicit Tool(QObject* parent = nullptr);
 
- public:
+public:
 	bool Start();
 
 	virtual bool OnStart();
@@ -34,7 +35,7 @@ class Tool : public WorkspaceControl
 
 	virtual bool PrepareUndo();
 
- protected:
+protected:
 	virtual QList<Handle(WorkspaceControl)> GetChildren() const override;
 
 	virtual bool OnCancel();
@@ -56,7 +57,7 @@ class Tool : public WorkspaceControl
 	//signals
 	boost::signals2::signal<void(ToolAction*)> ToolActionChanged;
 
- private:
+private:
 	QList<ToolAction*> _ToolActions;
 	QString _Id;
 	bool _IsActive;

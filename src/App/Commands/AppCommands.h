@@ -6,9 +6,9 @@
 #include "Pres/Commands/ActionCommand.h"
 #include "Pres/Commands/RelayCommand.h"
 
-
-class AppCommands {
- public:
+class AppCommands
+{
+public:
     static  RelayCommand& InitApplication();
     static ActionCommand& ExitApplication();
     static ActionCommand& ShowAboutDialog();

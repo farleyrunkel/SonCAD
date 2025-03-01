@@ -2,4 +2,6 @@
 
 #include "Core/Viewport.h"
 
-// Initialize Viewport with MSAA support
+Viewport::Viewport(const Handle(Workspace)& workspace)
+    : _Workspace(workspace), _RenderMode(SolidShaded), _Twist(0.0), _Scale(100.0)
+{}

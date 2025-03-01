@@ -7,6 +7,7 @@
 #include <QFile>
 #include <QDebug>
 
+
 class ResourceUtils 
 {
 public:
@@ -22,7 +23,7 @@ public:
         return QIcon(IconPath(iconName));
     }
 
- public:
+public:
     static bool IsResourcePathValid(const QString& resourcePath)
     {
         QFile file(resourcePath);

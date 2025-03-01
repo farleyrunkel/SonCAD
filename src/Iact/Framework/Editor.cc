@@ -3,6 +3,8 @@
 #include "Iact/Framework/Editor.h"
 
 
-	Editor::Editor() {}
+Editor::Editor()
+{}
 
-	void Editor::StopTool() {}
+void Editor::StopTool()
+{}

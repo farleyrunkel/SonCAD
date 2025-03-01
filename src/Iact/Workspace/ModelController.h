@@ -7,24 +7,29 @@
 
 #include <string>
 
-    DEFINE_STANDARD_HANDLE(ModelController, BaseObject)
+DEFINE_STANDARD_HANDLE(ModelController, BaseObject)
 
-     class ModelController : public BaseObject
+class ModelController : public BaseObject
+{
+public:
+    ModelController()
+    {}
+    ~ModelController()
+    {}
+
+
+    bool AskForSavingModelChanges()
     {
-    public:
-        ModelController() {}
-        ~ModelController() {}
+        return true;
+    }
 
+    void NewModel()
+    {
 
-        bool AskForSavingModelChanges() {
-            return true;
-        }
+    }
 
-        void NewModel() {
-        
-        }
-
-        void OpenModelFrom(const std::string& ) {}
-    };
+    void OpenModelFrom(const std::string&)
+    {}
+};
 
 #endif // IACT_WORKSPACE_MODELCONTROLLER_H_

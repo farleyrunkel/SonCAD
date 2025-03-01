@@ -19,18 +19,17 @@ DEFINE_STANDARD_HANDLE(Shape, Standard_Transient)
 class Shape : public Entity, public IShapeOperand, public IShapeDependent
 {
 
- public:
-    Shape() {}
+public:
+    Shape();
 
     struct NamedSubshape
-    {
-    };
+    {};
 
     Handle(Body) GetBody();
 
     //virtual Sun_ShapeType ShapeType() const = 0;
 
- private:
+private:
     bool _IsSkipped;
     bool _IsLoadedFromCache;
     bool _IsInvalidating;

@@ -9,12 +9,11 @@
 class BaseObject : public Standard_Transient
 {
 public:
-	BaseObject() = default;
+	BaseObject();
 
-	void Dispose()
-	{
+	void Dispose();
 
-	}
+	virtual ~BaseObject() override;
 };
 
 #endif  // COMM_BASEOBJECT_H_

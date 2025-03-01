@@ -11,55 +11,63 @@
 
 #include "Comm/BaseObject.h"
 
-    DEFINE_STANDARD_HANDLE(Workspace, BaseObject)
+DEFINE_STANDARD_HANDLE(Workspace, BaseObject)
 
-    class Workspace final : public BaseObject
+class Workspace final : public BaseObject
+{
+public:
+    enum GridTypes
     {
-    public:
-        enum GridTypes
-        {
-            Rectangular,
-            Circular
-        };
-
-    public:
-        Workspace() {
-        }
-        ~Workspace() {
-        }
-        void initViewer() {
-        }
-
-        Handle(V3d_Viewer) V3dViewer() const {
-            return _V3dViewer;
-        }
-
-        const gp_Pln& WorkingPlane() const {
-            return  gp_Pln();
-        }
-
-        bool GridEnabled() const {
-            return _GridEnabled;
-        }
-        void SetGridEnabled(bool value) {}
-
-        GridTypes GridType() const {
-            return Circular ;
-        }
-
-        void SetGridType(GridTypes) {
-            return;
-        }
-
-        double GridStep() const {
-            return 0;
-        }
-        void SetGridStep(double) {}
-
-    private:
-        Handle(V3d_Viewer) _V3dViewer;
-        Handle(AIS_InteractiveContext) _AisContext;
-        bool _GridEnabled;
+        Rectangular,
+        Circular
     };
+
+public:
+    Workspace()
+    {}
+    ~Workspace()
+    {}
+    void initViewer()
+    {}
+
+    Handle(V3d_Viewer) V3dViewer() const
+    {
+        return _V3dViewer;
+    }
+
+    const gp_Pln& WorkingPlane() const
+    {
+        return  gp_Pln();
+    }
+
+    bool GridEnabled() const
+    {
+        return _GridEnabled;
+    }
+    void SetGridEnabled(bool value)
+    {}
+
+    GridTypes GridType() const
+    {
+        return Circular;
+    }
+
+    void SetGridType(GridTypes)
+    {
+        return;
+    }
+
+    double GridStep() const
+    {
+        return 0;
+    }
+    void SetGridStep(double)
+    {}
+
+private:
+    Handle(V3d_Viewer) _V3dViewer;
+    Handle(AIS_InteractiveContext) _AisContext;
+    bool _GridEnabled;
+};
 
 #endif  // CORE_WORKSPACE_H

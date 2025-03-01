@@ -5,10 +5,10 @@
 
 #include <QDialog>
 
-
-class AboutDialog : public QDialog {
- public:
-     explicit AboutDialog(QWidget* parent = nullptr) : QDialog(parent) {}
+class AboutDialog : public QDialog
+{
+public:
+    explicit AboutDialog(QWidget* parent = nullptr);
 };
 
 #endif  // APP_ABOUTDIALOG_H_

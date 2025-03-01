@@ -12,10 +12,9 @@
 #include "Core/Topology/Layer.h"
 
 
-
 DEFINE_STANDARD_HANDLE(InteractiveEntity, Standard_Transient);
 
-class InteractiveEntity : public Entity 
+class InteractiveEntity : public Entity
 {
 public:
     explicit InteractiveEntity();

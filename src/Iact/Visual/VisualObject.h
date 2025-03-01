@@ -3,74 +3,75 @@
 #ifndef IACT_VISUAL_VISUALOBJECT_H_
 #define IACT_VISUAL_VISUALOBJECT_H_
 
-// Boost includes
 #include <boost/signals2.hpp>
 
-// Occt includes
 #include <AIS_InteractiveContext.hxx>
 #include <gp_Trsf.hxx>
 #include <Standard_Handle.hxx>
 
-// SunCAD includes
 #include "Core/Topology/InteractiveEntity.h"
 #include "Comm/BaseObject.h"
 #include "Iact/Workspace/WorkspaceController.h"
 
+DEFINE_STANDARD_HANDLE(VisualObject, BaseObject);
 
+class VisualObject : public BaseObject
+{
+protected:
+    explicit VisualObject(const Handle(WorkspaceController)& workspaceController, const Handle(InteractiveEntity)& entity);
+    virtual ~VisualObject()
+    {}
 
-    DEFINE_STANDARD_HANDLE(VisualObject, Standard_Transient);
+public:
+    virtual void Remove() = 0;
+    virtual void Update() = 0;
 
-    class VisualObject : public BaseObject
+    virtual Handle(AIS_InteractiveObject) AisObject() const = 0;
+
+    Handle(WorkspaceController) GetGetWorkspaceController() const
     {
-    protected:
-        explicit VisualObject(const Handle(WorkspaceController)& workspaceController, const Handle(InteractiveEntity)& entity);
-        virtual ~VisualObject() {}
+        return _WorkspaceController;
+    }
 
-    public:
-        virtual void Remove() = 0;
-        virtual void Update() = 0;
+    Handle(AIS_InteractiveContext) AisContext() const;
 
-        virtual Handle(AIS_InteractiveObject) AisObject() const = 0;
+    Handle(InteractiveEntity) Entity() const
+    {
+        return _Entity;
+    }
 
-        Handle(WorkspaceController) GetGetWorkspaceController() const {
-            return _WorkspaceController;
-        }
+    void SetLocalTransformation(const gp_Trsf& transformation);
 
-        Handle(AIS_InteractiveContext) AisContext() const;
+    virtual bool IsSelectable() const
+    {
+        return false;
+    }
 
-        Handle(InteractiveEntity) Entity() const {
-            return _Entity;
-        }
+    virtual void SetIsSelectable(bool value)
+    {
+        (void)value;
+    }
 
-        void SetLocalTransformation(const gp_Trsf& transformation);
+    bool IsSelected() const;
+    void SetIsSelected(bool value);
 
-        virtual bool IsSelectable() const {
-            return false;
-        }
+    QVariant Tag() const
+    {
+        return _Tag;
+    }
 
-        virtual void SetIsSelectable(bool value) {
-            (void)value;
-        }
+    void SetTag(const QVariant& tag)
+    {
+        _Tag = tag;
+    }
 
-        bool IsSelected() const;
-        void SetIsSelected(bool value);
+    // Signal: AIS Object Changed
+    boost::signals2::signal<void(const std::shared_ptr<VisualObject>&)> OnAisObjectChanged;
 
-        QVariant Tag() const {
-            return _Tag;
-        }
-
-        void SetTag(const QVariant& tag) {
-            _Tag = tag;
-        }
-
-        // Signal: AIS Object Changed
-        boost::signals2::signal<void(const std::shared_ptr<VisualObject>&)> OnAisObjectChanged;
-
-    private:
-        Handle(WorkspaceController) _WorkspaceController;
-        Handle(InteractiveEntity) _Entity;
-        QVariant _Tag;
-    };
-
+private:
+    Handle(WorkspaceController) _WorkspaceController;
+    Handle(InteractiveEntity) _Entity;
+    QVariant _Tag;
+};
 
 #endif  // IACT_VISUAL_VISUALOBJECT_H_

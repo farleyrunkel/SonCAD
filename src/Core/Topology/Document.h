@@ -3,10 +3,9 @@
 #ifndef DOCUMENT_H
 #define DOCUMENT_H
 
-#include <map>
-
-#include <TDocStd_Document.hxx>
+#include <NCollection_DataMap.hxx>
 #include <TDF_Label.hxx>
+#include <TDocStd_Document.hxx>
 
 #include "Core/Topology/Entity.h"
 
@@ -24,8 +23,7 @@ public:
     Standard_EXPORT Document(const TCollection_ExtendedString& astorageformat) : TDocStd_Document(astorageformat){}
 
 private:
-
-    std::map<TDF_Label, Handle(Entity)> _Instances;
+    NCollection_DataMap<Standard_CString, Standard_Integer> _Instances;
 };
 
 #endif // DOCUMENT_H

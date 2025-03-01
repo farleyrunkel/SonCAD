@@ -3,34 +3,39 @@
 #ifndef IACT_FRAMEWORK_TOOLACTION_H_
 #define IACT_FRAMEWORK_TOOLACTION_H_
 
+#include <Standard_Handle.hxx>
 
-#include "Iact/Framework/WorkspaceControl.h"
+class WorkspaceControl;
 
+DEFINE_STANDARD_HANDLE(ToolAction, WorkspaceControl);
 
-
-class ToolAction : public WorkspaceControl {
-
- public:
-    explicit ToolAction() {};
+class ToolAction : public WorkspaceControl
+{
+public:
+    explicit ToolAction();;
 
     // Start and stop functions
-    bool Start() { 
-        return OnStart(); 
+    bool Start()
+    {
+        return OnStart();
     }
 
-    void Stop() 
-    { 
-        OnStop();
-        WorkspaceControl::Cleanup();
+    void Stop();
+
+    bool IsFinished() const
+    {
+        return _IsFinished;
     }
 
-    bool IsFinished() const { return _IsFinished; }
-
- protected:
+protected:
     // Virtual function for subclasses to override
-    virtual bool OnStart() { return false; }
-    virtual void OnStop() {}
-    virtual void Reset() 
+    virtual bool OnStart()
+    {
+        return false;
+    }
+    virtual void OnStop()
+    {}
+    virtual void Reset()
     {
         _IsFinished = false;
     }

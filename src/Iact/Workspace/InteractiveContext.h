@@ -3,117 +3,60 @@
 #ifndef APP_INTERACTIVECONTEXT_H
 #define APP_INTERACTIVECONTEXT_H
 
-#include <QObject>
-#include <QList>
-#include <QString>
 #include <QColor>
+#include <QList>
+#include <QObject>
 #include <QScopedPointer>
 #include <QSharedPointer>
+#include <QString>
 
-#include "Core/CoreContext.h"
 #include "Comm/BaseObject.h"
+#include "Core/CoreContext.h"
+#include "Iact/Workspace/ModelController.h"
 #include "Iact/Workspace/ViewportController.h"
 #include "Iact/Workspace/WorkspaceController.h"
-#include "Iact/Workspace/ModelController.h"
 
-    DEFINE_STANDARD_HANDLE(InteractiveContext, CoreContext)
+DEFINE_STANDARD_HANDLE(InteractiveContext, CoreContext)
 
-    class InteractiveContext : public CoreContext
-    {
-    public:
-        InteractiveContext()
-            : CoreContext(),
-            _DocumentController(new ModelController()),
-            _WorkspaceController(nullptr),
-            _ViewportController(nullptr)
-        {
-            // 初始化其他成员变量
-            Initialize() ;
-        }
+class InteractiveContext : public CoreContext
+{
+public:
+    InteractiveContext();
 
-        ~InteractiveContext() override
-        {
-            // 释放资源
-            if (_DocumentController) {
-                _DocumentController->Dispose();
-                _DocumentController = nullptr;
-            }
-            if (_WorkspaceController) {
-                _WorkspaceController->Dispose();
-                _WorkspaceController = nullptr;
-            }
-            _ViewportController = nullptr;
-        }
+    ~InteractiveContext() override;
 
-        // ModelController getter/setter
-        Handle(ModelController) DocumentController() const { return _DocumentController; }
-        void SetDocumentController(const Handle(ModelController)& controller) {
-            if (_DocumentController != controller) {
-                if (_DocumentController) {
-                    _DocumentController->Dispose();
-                }
-                _DocumentController = controller;
+    // ModelController getter/setter
+    Handle(ModelController) GetDocumentController() const;
+    void SetDocumentController(const Handle(ModelController)& controller);
 
-            }
-        }
+    // WorkspaceController getter/setter
+    Handle(WorkspaceController) GetWorkspaceController() const;
+    void SetWorkspaceController(const Handle(WorkspaceController)& controller);
 
-        // WorkspaceController getter/setter
-       Handle(WorkspaceController) GetGetWorkspaceController() const { return _WorkspaceController; }
-        void SetWorkspaceController(const Handle(WorkspaceController)& controller) {
-            if (_WorkspaceController != controller) {
-                if (_WorkspaceController) {
-                    _WorkspaceController->Dispose();
-                }
-                _WorkspaceController = controller;
+    // ViewportController getter/setter
+    Handle(ViewportController) GetViewportController() const;
+    void SetViewportController(const Handle(ViewportController)& controller);
 
-            }
-        }
+    // RecentUsedColors getter
+    QList<QColor> RecentUsedColors() const;
 
-        // ViewportController getter/setter
-        Handle(ViewportController) GetViewportController() const { return _ViewportController; }
-        void SetViewportController(const Handle(ViewportController)& controller) {
-            if (_ViewportController != controller) {
-                _ViewportController = controller;
+    // RecentUsedScripts getter
+    QList<QString> RecentUsedScripts() const;
 
-            }
-        }
+    // 添加脚本到最近使用列表
+    void AddToScriptMruList(const QString& filePath);
 
-        // RecentUsedColors getter
-        QList<QColor> RecentUsedColors() const {
-            return _RecentUsedColors;
-        }
+private:
+    Handle(ModelController) _DocumentController;
+    Handle(WorkspaceController) _WorkspaceController;
+    Handle(ViewportController) _ViewportController;
 
-        // RecentUsedScripts getter
-        QList<QString> RecentUsedScripts() const {
-            return _RecentUsedScripts;
-        }
+    QList<QColor> _RecentUsedColors;
+    QList<QString> _RecentUsedScripts;
+    const int _MaxScriptMruCount = 10;
 
-        // 添加脚本到最近使用列表
-        void AddToScriptMruList(const QString& filePath) {
-            int index = _RecentUsedScripts.indexOf(filePath);
-            if (index >= 0) {
-                _RecentUsedScripts.move(index, 0);  // 移动到列表顶部
-                _RecentUsedScripts[0] = filePath;
-            }
-            else {
-                if (_RecentUsedScripts.size() >= _MaxScriptMruCount) {
-                    _RecentUsedScripts.removeLast();  // 删除最老的脚本
-                }
-                _RecentUsedScripts.prepend(filePath);
-            }
-
-        }
-
-    private:
-        Handle(ModelController) _DocumentController;
-        Handle(WorkspaceController) _WorkspaceController;
-        Handle(ViewportController) _ViewportController;
-
-        QList<QColor> _RecentUsedColors;
-        QList<QString> _RecentUsedScripts;
-        const int _MaxScriptMruCount = 10;
-
-        void Initialize() {}
-    };
+    void Initialize()
+    {}
+};
 
 #endif  // APP_INTERACTIVECONTEXT_H

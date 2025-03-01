@@ -2,7 +2,12 @@
 
 #include "Core/Shapes/Shape.h"
 
+#include "Core/Topology/Body.h"
 
-    Handle(Body) Shape::GetBody() {
-        return new Body;
-    }
+Shape::Shape()
+{}
+
+Handle(Body) Shape::GetBody()
+{
+    return new Body;
+}

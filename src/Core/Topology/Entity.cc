@@ -2,9 +2,6 @@
 
 #include "Core/Topology/Entity.h"
 
-// For debugging or logging purposes
-
-
 // Constructor
 
 Entity::Entity()
@@ -16,38 +13,46 @@ Entity::Entity()
 
 // Guid property (using QUuid)
 
-QUuid Entity::Guid() const {
+QUuid Entity::Guid() const
+{
     return _Guid;
 }
 
-void Entity::SetGuid(const QUuid& Guid) {
+void Entity::SetGuid(const QUuid& Guid)
+{
 
 }
 
 // Type name property
 
-QString Entity::TypeName() const {
+QString Entity::TypeName() const
+{
     return QString();
 }
 
 // Name property, virtual
 
-QString Entity::GetName() const {
+QString Entity::GetName() const
+{
     return "Unknown";
 }
 
-void Entity::SetName(const QString&) {
+void Entity::SetName(const QString&)
+{
     // Override in subclasses
 }
 
 // Error handling
 
-bool Entity::HasErrors() const {
+bool Entity::HasErrors() const
+{
     return _HasErrors;
 }
 
-void Entity::SetHasErrors(bool HasErrors) {
-    if (_HasErrors != HasErrors) {
+void Entity::SetHasErrors(bool HasErrors)
+{
+    if(_HasErrors != HasErrors)
+    {
         _HasErrors = HasErrors;
     }
 }
@@ -55,10 +60,12 @@ void Entity::SetHasErrors(bool HasErrors) {
 
 // Remove entity
 
-void Entity::Remove() {
+void Entity::Remove()
+{
 
 }
 
-QString Entity::ToString() const {
+QString Entity::ToString() const
+{
     return GetName();
 }

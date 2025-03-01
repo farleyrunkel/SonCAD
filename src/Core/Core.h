@@ -5,28 +5,28 @@
 
 #include "App/Application.h"
 
-class Core 
+class Core
 {
 public:
-     static Application* GetApplication() noexcept 
-     {
-         return static_cast<Application*>(Application::instance());
-     }
+    static Application* GetApplication() noexcept
+    {
+        return static_cast<Application*>(Application::instance());
+    }
 
-     static MainWindow* GetMainWindow() noexcept 
-     {
-         return GetApplication()->GetMainWindow();
-     }
+    static MainWindow* GetMainWindow() noexcept
+    {
+        return GetApplication()->GetMainWindow();
+    }
 
-     static Handle(AppContext) GetAppContext() noexcept 
-     {
-         return GetApplication()->GetAppContext();
-     }
+    static Handle(AppContext) GetAppContext() noexcept
+    {
+        return GetApplication()->GetAppContext();
+    }
 
-     //static CommandManager* commandManager() noexcept 
-     //{
-     //    return application()->m_commandManager;
-     //}
+    //static CommandManager* commandManager() noexcept 
+    //{
+    //    return application()->m_commandManager;
+    //}
 };
 
 #endif  // CORE_APP_H_

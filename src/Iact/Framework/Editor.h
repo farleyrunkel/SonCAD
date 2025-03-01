@@ -7,11 +7,10 @@
 
 #include "Iact/Framework/WorkspaceControl.h"
 
+class Editor : public WorkspaceControl
+{
 
-
-class Editor : public WorkspaceControl {
-
- public:
+public:
 	explicit Editor();
 
 	void StopTool();

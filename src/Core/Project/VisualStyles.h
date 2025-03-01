@@ -8,15 +8,16 @@
 
 #include "Comm/Types/Color.h"
 
-
 // Enum definitions
-enum class PresentationMode {
+enum class PresentationMode
+{
     Wireframe,
     Solid,
     SolidWithBoundary
 };
 
-enum class LineStyle {
+enum class LineStyle
+{
     Solid,
     Dash,
     ShortDash,
@@ -24,19 +25,22 @@ enum class LineStyle {
     DotDash
 };
 
-enum class FillMode {
+enum class FillMode
+{
     None,
     Solid
 };
 
-enum class LineThickness {
+enum class LineThickness
+{
     Thin,
     Normal,
     Thick
 };
 
 // Static Colors class
-class Colors {
+class Colors
+{
 public:
     static const Color Default;
     static const Color Selection;
@@ -60,23 +64,27 @@ public:
 };
 
 // LineStyleDescription struct
-struct LineStyleDescription {
+struct LineStyleDescription
+{
     LineStyle style;
     std::string Name;
     std::vector<double> pattern;
 
     LineStyleDescription(LineStyle s, const std::string& n, const std::vector<double>& p)
-        : style(s), Name(n), pattern(p) {}
+        : style(s), Name(n), pattern(p)
+    {}
 };
 
 // LineThicknessDescription struct
-struct LineThicknessDescription {
+struct LineThicknessDescription
+{
     LineThickness thickness;
     std::string Name;
     double width;
 
     LineThicknessDescription(LineThickness t, const std::string& n, double w)
-        : thickness(t), Name(n), width(w) {}
+        : thickness(t), Name(n), width(w)
+    {}
 };
 
 // StyleHelper class

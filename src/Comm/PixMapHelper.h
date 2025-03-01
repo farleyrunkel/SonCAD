@@ -4,13 +4,12 @@
 #define COMM_PIXMAPHELPER_H_
 
 #include <QImage>
+
 #include <Image_PixMap.hxx>
 
-
-
-class PixMapHelper {
-
-public: 
+class PixMapHelper
+{
+public:
 	static Handle(Image_PixMap) ConvertFromBitmap(const QImage& bitmap);
 };
 

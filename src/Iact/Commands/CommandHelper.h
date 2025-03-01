@@ -16,13 +16,11 @@ public:
 
     static Handle(ModelController) GetDocumentController();
 
-    //static Tool* currentTool();
+    static Handle(Tool) CurrentTool();
 
-    static bool startTool(Handle(Tool) tool);
+    static bool StartTool(Handle(Tool) tool);
 
-    //static inline bool canExecuteOnWorkspace() {
-    //    return workspaceController() && workspaceController()->workspace();
-    //}
+    static inline bool CanExecuteOnWorkspace();
 
     static bool CanExecuteOnViewport();
 

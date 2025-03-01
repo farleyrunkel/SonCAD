@@ -8,19 +8,20 @@
 
 #include "Comm/BaseObject.h"
 
-    // CoreContext class that follows the Singleton design pattern with lazy initialization
-    class CoreContext : public BaseObject
+// CoreContext class that follows the Singleton design pattern with lazy initialization
+class CoreContext : public BaseObject
+{
+public:
+    CoreContext();
+
+public:
+
+    // Example method to save settings
+    void SaveSettings(const std::string& Name)
     {
-    public:
-        CoreContext() = default;
+        // Implement saving logic here
+    }
 
-    public:
-
-        // Example method to save settings
-        void SaveSettings(const std::string& Name) {
-            // Implement saving logic here
-        }
-
-    };
+};
 
 #endif  // CORE_CORECONTEXT_H

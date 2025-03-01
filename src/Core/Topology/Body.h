@@ -12,14 +12,13 @@
 
 #include "Comm/BaseObject.h"
 
+DEFINE_STANDARD_HANDLE(Body, BaseObject)
 
-    DEFINE_STANDARD_HANDLE(Body, Standard_Transient)
-
-    class Body : public BaseObject
-    {
-    public:
-        void SetPosition(const gp_Pnt& pnt) {}
-    };
+class Body : public BaseObject
+{
+public:
+    void SetPosition(const gp_Pnt& pnt);
+};
 
 
 #endif  // CORE_TOPOLOGY_BODY_H_

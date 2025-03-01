@@ -15,27 +15,17 @@ DEFINE_STANDARD_HANDLE(Model, BaseObject)
 class Model : public BaseObject
 {
 public:
-    Model() {}
+    Model();
 
-    QVector<Handle(Workspace)>& Workspaces() {
-        return _Workspaces;
-    }
+    QVector<Handle(Workspace)>& GetWorkspaces();
 
-    static QString FileExtension() {
-        return "step";
-    }
+    static QString FileExtension();
 
-    QString FilePath() const {
-        return "";
-    }
+    QString FilePath() const;
 
-    bool Save() const {
-        return false;
-    }
+    bool Save() const;
 
-    bool HasUnsavedChanges() const {
-        return false;
-    }
+    bool HasUnsavedChanges() const;
 
 public:
     // Signals

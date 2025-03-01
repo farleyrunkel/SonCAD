@@ -2,7 +2,6 @@
 
 #include "Core/Topology/InteractiveEntity.h"
 
-
 // Constructor
 InteractiveEntity::InteractiveEntity()
     : Entity(), _Name("Unnamed"), _IsVisible(true), _LayerId(QUuid::createUuid()) {}
@@ -100,4 +99,3 @@ void InteractiveEntity::RaiseVisualChanged() {
     //    emit visualChanged();
     //}
 }
-

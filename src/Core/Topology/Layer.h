@@ -14,13 +14,10 @@
 
 #include "Core/Topology/Entity.h"
 
-
-
 class SerializationContext
-{
-};
+{};
 
-DEFINE_STANDARD_HANDLE(Layer, Standard_Transient);
+DEFINE_STANDARD_HANDLE(Layer, Entity);
 
 class Layer : public Entity
 {
@@ -47,7 +44,8 @@ public:
     float Transparency() const;
     void SetTransparency(float value);
 
-    void SaveUndo() {}
+    void SaveUndo()
+    {}
     // Signals
     boost::signals2::signal<void(const QString&)> OnNameChanged;
     boost::signals2::signal<void(bool)> OnVisibilityChanged;
@@ -63,23 +61,28 @@ private:
     float _Transparency = 0.0f;
 
     // Helper methods to emit signals
-    void _OnNameChanged(const QString& value) {
+    void _OnNameChanged(const QString& value)
+    {
         OnNameChanged(value);
     }
 
-    void _OnVisibilityChanged(bool value) {
+    void _OnVisibilityChanged(bool value)
+    {
         OnVisibilityChanged(value);
     }
 
-    void _OnLockStatusChanged(bool value) {
+    void _OnLockStatusChanged(bool value)
+    {
         OnLockStatusChanged(value);
     }
 
-    void _OnColorChanged(const QColor& value) {
+    void _OnColorChanged(const QColor& value)
+    {
         OnColorChanged(value);
     }
 
-    void _OnTransparencyChanged(float value) {
+    void _OnTransparencyChanged(float value)
+    {
         OnTransparencyChanged(value);
     }
 };

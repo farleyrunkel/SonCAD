@@ -4,28 +4,38 @@
 
 #include "Core/Core.h"
 
-Handle(WorkspaceController) CommandHelper::GetWorkspaceController() {
-    return Core::GetAppContext() ? Core::GetAppContext()->GetGetWorkspaceController() : nullptr;
+Handle(WorkspaceController) CommandHelper::GetWorkspaceController()
+{
+    return Core::GetAppContext() ? Core::GetAppContext()->GetWorkspaceController() : nullptr;
 }
 
-Handle(ModelController) CommandHelper::GetDocumentController() {
-    return Core::GetAppContext() ? Core::GetAppContext()->DocumentController() : nullptr;
+Handle(ModelController) CommandHelper::GetDocumentController()
+{
+    return Core::GetAppContext() ? Core::GetAppContext()->GetDocumentController() : nullptr;
 }
 
-//Tool* CommandHelper::currentTool() {
-//    return /*GetWorkspaceController() ? GetWorkspaceController()->currentTool() :*/ nullptr;
-//}
-
-bool CommandHelper::startTool(Handle(Tool) tool) {
-    qDebug() << "Debug: CommandHelper::startTool";
-    return false; //GetWorkspaceController() && GetWorkspaceController()->startTool(tool);
+Handle(Tool) CommandHelper::CurrentTool()
+{
+    return GetWorkspaceController() ? GetWorkspaceController()->CurrentTool() : nullptr;
 }
 
-bool CommandHelper::CanExecuteOnViewport() {
-    return false; /*Core::AppContext() && Core::AppContext()->viewportController()
-        && Core::AppContext()->viewportController()->Viewport()*/;
+bool CommandHelper::StartTool(Handle(Tool) tool)
+{
+    return GetWorkspaceController() && GetWorkspaceController()->StartTool(tool);
 }
 
-bool CommandHelper::CanStartTool() {
-    return false; /*GetWorkspaceController() != nullptr;*/
+inline bool CommandHelper::CanExecuteOnWorkspace()
+{
+    return GetWorkspaceController() && GetWorkspaceController()->GetWorkspace();
+}
+
+bool CommandHelper::CanExecuteOnViewport()
+{
+    return Core::GetAppContext() && Core::GetAppContext()->GetViewportController()
+        && Core::GetAppContext()->GetViewportController()->GetViewport();
+}
+
+bool CommandHelper::CanStartTool()
+{
+    return !GetWorkspaceController().IsNull();
 }
