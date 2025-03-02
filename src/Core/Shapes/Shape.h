@@ -22,6 +22,8 @@ enum ShapeType
     Mesh,
 };
 
+DEFINE_STANDARD_HANDLE(Shape, Entity)
+
 class Shape : public Entity
 {
 

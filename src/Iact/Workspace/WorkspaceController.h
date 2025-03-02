@@ -16,6 +16,8 @@
 #include "Iact/Workspace/ViewportController.h"
 #include "Occt/AisExtensions/AISX_Grid.h"
 
+DEFINE_STANDARD_HANDLE(WorkspaceController, Standard_Transient)
+
 class WorkspaceController : public Standard_Transient
 {
 public:

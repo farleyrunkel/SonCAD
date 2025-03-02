@@ -18,6 +18,8 @@
 
 class WorkspaceController;
 
+DEFINE_STANDARD_HANDLE(ViewportController, Standard_Transient)
+
 class ViewportController : public Standard_Transient
 {
 public:

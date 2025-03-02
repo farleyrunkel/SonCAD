@@ -10,6 +10,8 @@
 // Forward declarations
 class WorkspaceController;
 
+DEFINE_STANDARD_HANDLE(VisualObject, Standard_Transient)
+
 class VisualObject : public Standard_Transient
 {
 
