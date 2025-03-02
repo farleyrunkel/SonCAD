@@ -11,7 +11,7 @@ DEFINE_STANDARD_HANDLE(Document, TDocStd_Document)
 class Document : public TDocStd_Document
 {
 public:
-    Document(const TCollection_ExtendedString& astorageformat) 
+    Document(const TCollection_ExtendedString& astorageformat = "XmlOcaf")
         : TDocStd_Document(astorageformat) {}
 };
 

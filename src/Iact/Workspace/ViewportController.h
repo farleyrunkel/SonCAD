@@ -14,9 +14,9 @@
 
 #include "Core/Project/Viewport.h"
 #include "Core/Project/Workspace.h"
-#include "Iact/Workspace/WorkspaceController.h"
 #include "Occt/OcctExtensions/AIS_ViewCubeEx.h"
 
+class WorkspaceController;
 
 class ViewportController : public Standard_Transient
 {
