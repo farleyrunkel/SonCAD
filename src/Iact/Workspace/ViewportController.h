@@ -1,0 +1,84 @@
+#ifndef _ViewportController_h
+#define _ViewportController_h
+
+#include <cmath>
+
+#include <AIS_RubberBand.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Pnt2d.hxx>
+#include <NCollection_Vec2.hxx>
+#include <NCollection_Vector.hxx>
+#include <Standard_Transient.hxx>
+#include <WNT_WClass.hxx>
+#include <WNT_Window.hxx>
+
+#include "Core/Project/Viewport.h"
+#include "Core/Project/Workspace.h"
+#include "Iact/Workspace/WorkspaceController.h"
+#include "Occt/OcctExtensions/AIS_ViewCubeEx.h"
+
+
+class ViewportController : public Standard_Transient
+{
+public:
+	enum RubberbandSelectionMode
+	{
+		Rectangle,
+		Freehand
+	};
+
+	enum MouseMoveMode
+	{
+		None,
+		Panning,
+		Rotating,
+		Twisting,
+		Zooming
+	};
+
+	enum PredefinedViews
+	{
+		Top,
+		Bottom,
+		Left,
+		Right,
+		Front,
+		Back,
+		WorkingPlane
+	};
+
+
+
+public:
+	explicit ViewportController() {}
+
+private:
+	const int RubberbandFreehandSelectionThresholdSquared = 100;
+
+	static Handle(WNT_WClass) _OcWindowClass;
+	const double _OrbitProjectionConstraint =  M_PI_2 - 0.000000000001;
+	Handle(WNT_Window) _OcWindow;
+	bool _ZoomFitAllOnInit;
+
+	NCollection_Vector<NCollection_Vec2<int>> _RubberbandPoints;
+
+	Handle(Viewport) myViewport;
+	Handle(Workspace) myWorkspace;
+	Handle(WorkspaceController) myWorkspaceController;
+
+	bool IsInRubberbandSelection;
+
+	gp_Pnt2d _StartedMousePosition;
+	gp_Pnt2d _LastMousePosition;
+	gp_Pnt _GravityPoint;
+	bool _LockedToPlane;
+	bool _ShowTrihedron;
+
+	Handle(AIS_RubberBand) myRubberBand;
+	RubberbandSelectionMode myRubberbandSelectionMode;
+	bool _RubberbandIncludeTouched;
+
+	Handle(AIS_ViewCubeEx) myViewCube;
+};
+
+#endif // !_ViewportController_h

@@ -6,7 +6,7 @@
 #include <QString>
 
 #include <QApplication>
-#include <QMainWindow>
+#include "App/MainWindow.h"
 
 class Application : public QApplication
 {
@@ -15,7 +15,7 @@ class Application : public QApplication
 public:
     Application(int& argc, char** argv) : QApplication(argc, argv)
     {
-        myMainWindow = new QMainWindow;
+        myMainWindow = new MainWindow;
         myMainWindow->show();
 
     }
@@ -23,7 +23,7 @@ public:
     {}
 
 private:
-    QMainWindow* myMainWindow;
+    MainWindow* myMainWindow;
 };
 
 #endif  // APP_APPLICATION_H_

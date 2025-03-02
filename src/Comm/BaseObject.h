@@ -12,26 +12,23 @@ DEFINE_STANDARD_HANDLE(BaseObject, Standard_Transient)
 
 class BaseObject : public Standard_Transient
 {
-	using PropertyChangedEventHandler = boost::signals2::signal<void(BaseObject* sender, const TCollection_AsciiString&)>;
+	DEFINE_STANDARD_RTTIEXT(BaseObject, Standard_Transient)
+
+	using PropertyChangedSignal = boost::signals2::signal<void(BaseObject*, const TCollection_AsciiString&)>;
 
 public:
-	BaseObject() : Standard_Transient(), SuppressPropertyChangedEvent(false) {}
+	BaseObject();
 
-	virtual ~BaseObject()
-	{
-		PropertyChanged.disconnect_all_slots();
-	}
+	virtual ~BaseObject() override;
 
 protected: 
-	virtual void RaisePropertyChanged(const TCollection_AsciiString& theProperty)
-	{
-		if (!SuppressPropertyChangedEvent && PropertyChanged.num_slots() > 0)
-		PropertyChanged(this, theProperty);
-	}
+	virtual void RaisePropertyChanged(const TCollection_AsciiString& theProperty);
 
 public:
+	PropertyChangedSignal PropertyChanged;
+
+private:
 	bool SuppressPropertyChangedEvent;
-	PropertyChangedEventHandler PropertyChanged;
 };
 
 #endif  // _BaseObject_H_
