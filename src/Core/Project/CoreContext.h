@@ -7,10 +7,12 @@
 class CoreContext
 {
 public:
+	CoreContext() {};
+	virtual ~CoreContext() {};
+
 	static CoreContext* Current()
 	{
-		static CoreContext aContext;
-		return &aContext;
+		return myCurrent;
 	}
 
 private:
@@ -19,7 +21,8 @@ private:
 	Handle(Document) myDocument;
 
 private:
-	CoreContext() {};
+	static CoreContext* myCurrent;
+
 	CoreContext(const CoreContext&) = delete;
 };
 

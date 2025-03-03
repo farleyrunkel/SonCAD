@@ -45,7 +45,6 @@ private:
 	gp_XY myLastGridSize;
 	bool myGridNeedsUpdate;
 	std::vector<Handle(AIS_InteractiveObject)> myObjects;
-
  };
 
 #endif // !_WorkspaceController_h
