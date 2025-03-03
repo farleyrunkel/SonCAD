@@ -15,7 +15,7 @@ public:
 	explicit ModelController() {}
 
 private:
-	const int _MaxMruCount = 12;
+	const int myMaxMruCount = 12;
 	std::vector<std::string> myMruList;
  };
 

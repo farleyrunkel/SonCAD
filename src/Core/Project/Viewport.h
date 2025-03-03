@@ -12,6 +12,14 @@ DEFINE_STANDARD_HANDLE(Viewport, Standard_Transient)
 class Viewport final : public Standard_Transient
 {
 public:
+	enum RenderModes
+	{
+		SolidShaded,
+		HLR,
+		Raytraced
+	};
+
+public:
 	explicit Viewport() {}
 
 private:

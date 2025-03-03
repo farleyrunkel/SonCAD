@@ -10,6 +10,8 @@
 
 class WorkspaceController;
 
+DEFINE_STANDARD_HANDLE(SelectionManager, Standard_Transient)
+
 class SelectionManager : public Standard_Transient
 {
 public:
