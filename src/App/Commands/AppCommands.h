@@ -1,0 +1,21 @@
+// Copyright [2024] SunCAD
+
+#ifndef APP_COMMANDS_APPCOMMANDS_H_
+#define APP_COMMANDS_APPCOMMANDS_H_
+
+// Project includes 
+#include "Pres/Commands/ActionCommand.h"
+#include "Pres/Commands/RelayCommand.h"
+
+class AppCommands
+{
+public:
+    static  RelayCommand& InitApplication();
+    static ActionCommand& ExitApplication();
+    static ActionCommand& ShowAboutDialog();
+    static ActionCommand& Settings();
+    static ActionCommand& ResetWindowLayout();
+    static ActionCommand& ShowDocumentExplorer();
+};
+
+#endif  // APP_COMMANDS_APPCOMMANDS_H_
