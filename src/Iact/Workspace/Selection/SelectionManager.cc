@@ -1,0 +1,2 @@
+
+#include "Iact/Workspace/Selection/SelectionManager.h"

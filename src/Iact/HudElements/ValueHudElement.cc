@@ -12,10 +12,10 @@
 #include <QWidget>
 
 ValueHudElement::ValueHudElement(const QString& label, QWidget* parent)
-    : IHudElement(parent)
-    , m_label(new QLabel(label, this))
-    , m_edit(new QLineEdit("0.0", this))
-    , m_isInKeyboardMode(false)
+    : HudElement(parent)
+    , myLabel(new QLabel(label, this))
+    , myEdit(new QLineEdit("0.0", this))
+    , myIsInKeyboardMode(false)
 {
     // 设置布局
     auto* layout = new QGridLayout(this);
@@ -24,50 +24,50 @@ ValueHudElement::ValueHudElement(const QString& label, QWidget* parent)
     setLayout(layout);
 
     // 默认样式
-    m_label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_label->setStyleSheet("color: white; font-size: 12px; background: none;");
+    myLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    myLabel->setStyleSheet("color: white; font-size: 12px; background: none;");
 
-    m_edit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_edit->setValidator(new QDoubleValidator(this));
+    myEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    myEdit->setValidator(new QDoubleValidator(this));
 
-    layout->addWidget(m_label, 0, 0);
-    layout->addWidget(m_edit, 0, 1);
+    layout->addWidget(myLabel, 0, 0);
+    layout->addWidget(myEdit, 0, 1);
 
     // 连接信号
-    connect(m_edit, &QLineEdit::editingFinished, this, &ValueHudElement::onEditFinished);
+    connect(myEdit, &QLineEdit::editingFinished, this, &ValueHudElement::OnEditFinished);
 }
 
-void ValueHudElement::setLabel(const QString& text)
+void ValueHudElement::SetLabel(const QString& text)
 {
-    m_label->setText(text);
+    myLabel->setText(text);
 }
 
-void ValueHudElement::setValue(double value)
+void ValueHudElement::SetValue(double value)
 {
-    m_edit->setText(QString::number(value, 'f', 3));
+    myEdit->setText(QString::number(value, 'f', 3));
 }
 
-double ValueHudElement::value() const
+double ValueHudElement::Value() const
 {
-    return m_edit->text().toDouble();
+    return myEdit->text().toDouble();
 }
 
 void ValueHudElement::keyPressEvent(QKeyEvent* event)
 {
-    simulateKeyPress(m_edit, event);
+    SimulateKeyPress(myEdit, event);
     if(event->isAccepted())
     {
-        m_isInKeyboardMode = true;
+        myIsInKeyboardMode = true;
     }
 }
 
-void ValueHudElement::onEditFinished()
+void ValueHudElement::OnEditFinished()
 {
-    m_isInKeyboardMode = false;
-    emit valueEntered(m_edit->text().toDouble());
+    myIsInKeyboardMode = false;
+    emit ValueEntered(myEdit->text().toDouble());
 }
 
-void ValueHudElement::simulateKeyPress(QLineEdit* edit, QKeyEvent* event)
+void ValueHudElement::SimulateKeyPress(QLineEdit* edit, QKeyEvent* event)
 {
     if(event->key() == Qt::Key_Backspace)
     {

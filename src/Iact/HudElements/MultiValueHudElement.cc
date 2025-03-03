@@ -15,14 +15,14 @@
 #include "Iact/HudElements/HudElement.h"
 
 MultiValueHudElement::MultiValueHudElement(const QString& text1, const QString& text2, QWidget* parent)
-    : IHudElement(parent)
-    , m_label1(new QLabel(text1, this))
-    , m_label2(new QLabel(text2, this))
-    , m_edit1(new QLineEdit("0.0", this))
-    , m_edit2(new QLineEdit("0.0", this))
-    , m_isInKeyboardMode1(false)
-    , m_isInKeyboardMode2(false)
-    , m_firstFromKeyboard(true)
+    : HudElement(parent)
+    , myLabel1(new QLabel(text1, this))
+    , myLabel2(new QLabel(text2, this))
+    , myEdit1(new QLineEdit("0.0", this))
+    , myEdit2(new QLineEdit("0.0", this))
+    , myIsInKeyboardMode1(false)
+    , myIsInKeyboardMode2(false)
+    , myFirstFromKeyboard(true)
 {
     // Set up the layout
     auto* layout = new QGridLayout(this);
@@ -32,93 +32,93 @@ MultiValueHudElement::MultiValueHudElement(const QString& text1, const QString& 
     setLayout(layout);
 
     // Default styles
-    m_label1->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_label1->setStyleSheet("color: white; font-size: 12px; background: none;");
+    myLabel1->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    myLabel1->setStyleSheet("color: white; font-size: 12px; background: none;");
 
-    m_label2->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_label2->setStyleSheet(m_label1->styleSheet());
+    myLabel2->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    myLabel2->setStyleSheet(myLabel1->styleSheet());
 
     // Set up label and line edits
-    m_edit1->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_edit1->setValidator(new QDoubleValidator(this));
+    myEdit1->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    myEdit1->setValidator(new QDoubleValidator(this));
 
-    m_edit2->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_edit2->setValidator(new QDoubleValidator(this));
+    myEdit2->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    myEdit2->setValidator(new QDoubleValidator(this));
 
-    layout->addWidget(m_label1, 0, 0);
-    layout->addWidget(m_edit1, 0, 1);
-    layout->addWidget(m_label2, 1, 0);
-    layout->addWidget(m_edit2, 1, 1);
+    layout->addWidget(myLabel1, 0, 0);
+    layout->addWidget(myEdit1, 0, 1);
+    layout->addWidget(myLabel2, 1, 0);
+    layout->addWidget(myEdit2, 1, 1);
 
     // Connect signals
-    connect(m_edit1, &QLineEdit::editingFinished, this, &MultiValueHudElement::_onEdit1Finished);
-    connect(m_edit2, &QLineEdit::editingFinished, this, &MultiValueHudElement::_onEdit2Finished);
+    connect(myEdit1, &QLineEdit::editingFinished, this, &MultiValueHudElement::OnEdit1Finished);
+    connect(myEdit2, &QLineEdit::editingFinished, this, &MultiValueHudElement::OnEdit2Finished);
 }
 
-void MultiValueHudElement::setLabel(const QString& text1, const QString& text2)
+void MultiValueHudElement::SetLabel(const QString& text1, const QString& text2)
 {
-    setLabel1(text1);
-    setLabel2(text2);
+    SetLabel1(text1);
+    SetLabel2(text2);
 }
 
-void MultiValueHudElement::setLabel1(const QString& text)
+void MultiValueHudElement::SetLabel1(const QString& text)
 {
-    m_label1->setText(text);
+    myLabel1->setText(text);
 }
 
-void MultiValueHudElement::setLabel2(const QString& text)
+void MultiValueHudElement::SetLabel2(const QString& text)
 {
-    m_label2->setText(text);
+    myLabel2->setText(text);
 }
 
-void MultiValueHudElement::setValues(double value1, double value2)
+void MultiValueHudElement::SetValues(double value1, double value2)
 {
-    setValue1(value1);
-    setValue2(value2);
+    SetValue1(value1);
+    SetValue2(value2);
 }
 
-void MultiValueHudElement::setValue1(double value)
+void MultiValueHudElement::SetValue1(double value)
 {
-    m_edit1->setText(QString::number(value, 'f', 3));
+    myEdit1->setText(QString::number(value, 'f', 3));
 }
 
-void MultiValueHudElement::setValue2(double value)
+void MultiValueHudElement::SetValue2(double value)
 {
-    m_edit2->setText(QString::number(value, 'f', 3));
+    myEdit2->setText(QString::number(value, 'f', 3));
 }
 
 void MultiValueHudElement::keyPressEvent(QKeyEvent* event)
 {
-    if(m_isInKeyboardMode2)
+    if(myIsInKeyboardMode2)
     {
-        simulateKeyPress(m_edit2, event);
+        SimulateKeyPress(myEdit2, event);
         return;
     }
 
-    simulateKeyPress(m_edit1, event);
+    SimulateKeyPress(myEdit1, event);
     if(event->isAccepted())
     {
-        m_isInKeyboardMode1 = true;
-        m_isInKeyboardMode2 = false;
+        myIsInKeyboardMode1 = true;
+        myIsInKeyboardMode2 = false;
     }
 }
 
-void MultiValueHudElement::_onEdit1Finished()
+void MultiValueHudElement::OnEdit1Finished()
 {
-    m_isInKeyboardMode1 = false;
-    m_isInKeyboardMode2 = true;
-    m_firstFromKeyboard = true;
+    myIsInKeyboardMode1 = false;
+    myIsInKeyboardMode2 = true;
+    myFirstFromKeyboard = true;
 }
 
-void MultiValueHudElement::_onEdit2Finished()
+void MultiValueHudElement::OnEdit2Finished()
 {
-    m_isInKeyboardMode1 = false;
-    m_isInKeyboardMode2 = false;
-    m_firstFromKeyboard = true;
-    emit MultiValueEntered(m_edit1->text().toDouble(), m_edit2->text().toDouble());
+    myIsInKeyboardMode1 = false;
+    myIsInKeyboardMode2 = false;
+    myFirstFromKeyboard = true;
+    emit MultiValueEntered(myEdit1->text().toDouble(), myEdit2->text().toDouble());
 }
 
-void MultiValueHudElement::simulateKeyPress(QLineEdit* edit, QKeyEvent* event)
+void MultiValueHudElement::SimulateKeyPress(QLineEdit* edit, QKeyEvent* event)
 {
     if(event->key() == Qt::Key_Backspace)
     {

@@ -14,31 +14,31 @@
 // Project includes
 #include "Iact/HudElements/HudElement.h"
 
-class ValueHudElement : public IHudElement
+class ValueHudElement : public HudElement
 {
     Q_OBJECT
 
 public:
     explicit ValueHudElement(const QString& label = "", QWidget* parent = nullptr);
 
-    void setLabel(const QString& text);
-    void setValue(double value);
-    double value() const;
+    void SetLabel(const QString& text);
+    void SetValue(double value);
+    double Value() const;
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
 
 signals:
-    void valueEntered(double value);
+    void ValueEntered(double value);
 
 private:
-    void onEditFinished();
-    void simulateKeyPress(QLineEdit* edit, QKeyEvent* event);
+    void OnEditFinished();
+    void SimulateKeyPress(QLineEdit* edit, QKeyEvent* event);
 
 private:
-    QLabel* m_label;
-    QLineEdit* m_edit;
-    bool m_isInKeyboardMode;
+    QLabel* myLabel;
+    QLineEdit* myEdit;
+    bool myIsInKeyboardMode;
 };
 
 #endif  // IACT_HUD_ELEMENTS_VALUEHUDELEMENT_H_

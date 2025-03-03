@@ -6,26 +6,26 @@
 #include <QWidget>
 #include <QSize>
 
-class WorkspaceController;
+#include "Iact/Workspace/WorkspaceController.h"
 
-class IHudElement : public QWidget
+class HudElement : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit IHudElement(QWidget* parent = nullptr)
+	explicit HudElement(QWidget* parent = nullptr)
 		: QWidget(parent)
-		, m_workspaceController(nullptr)
+		, myWorkspaceController(nullptr)
 	{}
 
 public:
-	WorkspaceController* workspaceController() const;
-	void setWorkspaceController(WorkspaceController* controller);
+	Handle(WorkspaceController) GetWorkspaceController() const;
+	void SetWorkspaceController(const Handle(WorkspaceController)& controller);
 
-	virtual void initialize() {};
+	virtual void Initialize() {};
 
 private:
-	WorkspaceController* m_workspaceController;
+	Handle(WorkspaceController) myWorkspaceController;
 };
 
 #endif  // IACT_HUD_ELEMENTS_HUDELEMENT_H_
