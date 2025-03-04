@@ -13,7 +13,6 @@
 #include <gp_Pln.hxx>
 #include <gp_Quaternion.hxx>
 #include <NCollection_Vector.hxx>
- 
 #include <V3d_Viewer.hxx>
 
 // Forward declaire
@@ -21,11 +20,8 @@ class WorkingContext;
 class Document;
 class Viewport;
 
-class Workspace final : public Standard_Transient, public std::enable_shared_from_this<Workspace>
+class Workspace : public std::enable_shared_from_this<Workspace>
 {
-	using GridChangedSignal = boost::signals2::signal<void(Workspace*)>;
-	using PropertyChangedSignal = boost::signals2::signal<void(const std::string&)>;
-
 public:
 	enum GridTypes
 	{
@@ -83,20 +79,16 @@ public:
 	//! project to grid fro screen
 	bool ProjectToGrid(const std::shared_ptr<Viewport>& viewport, int screenX, int screenY, gp_Pnt& pnt);
 
-
-public:
-	GridChangedSignal& GridChanged()
-	{
-		return emit_GridChanged;
-	}
-
 private:
 	void ApplyWorkingContext();
 
+public:
+	boost::signals2::signal<void(Workspace*)> sig_GridChanged;
+	boost::signals2::signal<void(const std::string&)> sig_PropertyChanged;
+
 private:
 	std::vector<std::shared_ptr<Viewport>> myViewports;
-
-	std::weak_ptr<Document> myDocument;
+	std::shared_ptr<Document> myDocument;
 
 	Handle(V3d_Viewer) myViewer;
 	Handle(AIS_InteractiveContext) myContext;
@@ -114,10 +106,6 @@ private:
 
 	std::shared_ptr<WorkingContext> myGlobalWorkingContext;
 	std::shared_ptr<WorkingContext> myCurrentWorkingContext;
-
-private:
-	GridChangedSignal emit_GridChanged;
-	PropertyChangedSignal emit_PropertyChanged;
 };
 
 #endif // !_Workspace_h_

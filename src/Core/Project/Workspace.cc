@@ -16,8 +16,6 @@
 #include <Prs3d_ArrowAspect.hxx>
 #include <Prs3d_Drawer.hxx>
 #include <Prs3d_LineAspect.hxx>
-#include <Standard_Real.hxx>
- 
 #include <V3d_AmbientLight.hxx>
 #include <V3d_DirectionalLight.hxx>
 #include <V3d_Viewer.hxx>
@@ -206,6 +204,6 @@ void Workspace::ApplyWorkingContext()
 	{
 		myViewer->SetPrivilegedPlane(myCurrentWorkingContext->GetWorkingPlane().Position());
 	}
-	emit_PropertyChanged("WorkingPlane");
-	emit_GridChanged(this);
+	sig_PropertyChanged("WorkingPlane");
+	sig_GridChanged(this);
 }

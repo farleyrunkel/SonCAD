@@ -3,7 +3,7 @@
 #ifndef _BaseObject_H_
 #define _BaseObject_H_
 
-#include <string>32
+#include <string>
 
 #include <boost/signals2.hpp>
 
@@ -29,7 +29,7 @@ public:
 	}
 
 protected:
-	virtual void raisePropertyChanged(const std::string& property)
+	void raisePropertyChanged(const std::string& property)
 	{
 		if(!m_suppressed && !m_propertyChanged.empty())
 		{
