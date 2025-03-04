@@ -133,8 +133,9 @@ void Workspace::SetDefaultWorkingPlane(AIS_TypeOfPlane type)
 	}
 }
 
-gp_Pnt2d Workspace::ComputeGridPoint(gp_Pnt2d coord)
+gp_Pnt2d Workspace::ComputeGridPoint(const gp_Pnt2d& coord)
 {
+	gp_Pnt2d aCoord = coord;
 	gp_Pnt2d gridPoint;
 
 	// 如果有旋转，先反向旋转坐标
@@ -142,7 +143,7 @@ gp_Pnt2d Workspace::ComputeGridPoint(gp_Pnt2d coord)
 	{
 		gp_Trsf2d trsf;
 		trsf.SetRotation(gp_Pnt2d(0.0, 0.0), -myGridRotation * M_PI / 180.0); // 度转弧度
-		coord.Transform(trsf);
+		aCoord.Transform(trsf);
 	}
 
 	// 根据网格类型计算网格点
@@ -150,10 +151,10 @@ gp_Pnt2d Workspace::ComputeGridPoint(gp_Pnt2d coord)
 	{
 		// 计算角度和圆周步长
 		gp_Dir2d dx2d(1.0, 0.0); // X 轴方向
-		double angle = dx2d.Angle(gp_Dir2d(coord.X(), coord.Y())); // 与 X 轴夹角
+		double angle = dx2d.Angle(gp_Dir2d(aCoord.X(), aCoord.Y())); // 与 X 轴夹角
 		double circStep = M_PI / myGridDivisions; // 圆周步长
 		int iseg = static_cast<int>(std::round(angle / circStep)); // 角度段索引
-		int icirc = static_cast<int>(std::round(coord.Distance(gp_Pnt2d(0.0, 0.0)) / myGridStep)); // 径向索引
+		int icirc = static_cast<int>(std::round(aCoord.Distance(gp_Pnt2d(0.0, 0.0)) / myGridStep)); // 径向索引
 
 		// 计算网格点：先在 X 轴上生成点，再旋转
 		gridPoint = gp_Pnt2d(myGridStep * icirc, 0.0);
@@ -163,8 +164,8 @@ gp_Pnt2d Workspace::ComputeGridPoint(gp_Pnt2d coord)
 	}
 	else
 	{ // GridTypes::Rectangular
-		int ix = static_cast<int>(std::round(coord.X() / myGridStep)); // X 方向索引
-		int iy = static_cast<int>(std::round(coord.Y() / myGridStep)); // Y 方向索引
+		int ix = static_cast<int>(std::round(aCoord.X() / myGridStep)); // X 方向索引
+		int iy = static_cast<int>(std::round(aCoord.Y() / myGridStep)); // Y 方向索引
 		gridPoint = gp_Pnt2d(myGridStep * ix, myGridStep * iy);
 	}
 

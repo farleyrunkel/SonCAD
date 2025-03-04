@@ -74,7 +74,7 @@ public:
 	void SetDefaultWorkingPlane(AIS_TypeOfPlane type);
 
 	//! compute grid point
-	gp_Pnt2d ComputeGridPoint(gp_Pnt2d coord);
+	gp_Pnt2d ComputeGridPoint(const gp_Pnt2d& coord);
 
 	//! project to grid fro screen
 	bool ProjectToGrid(const std::shared_ptr<Viewport>& viewport, int screenX, int screenY, gp_Pnt& pnt);
