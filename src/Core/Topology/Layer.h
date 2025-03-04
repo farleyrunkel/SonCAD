@@ -5,9 +5,7 @@
 
 #include <boost/signals2.hpp>
 
-#include <Quantity_Color.hxx>
- 
-#include <TCollection_AsciiString.hxx>
+#include "Comm/Color.h"
 
 #include "Core/Project/Document.h"
 #include "Core/Project/VisualStyles.h"
@@ -33,7 +31,7 @@ private:
 
     PresentationMode PresentationMode;
 
-    Quantity_Color myColor;
+    Color myColor;
     float Transparency;
     LineStyle LineStyle;
 	LineThickness LineThickness;

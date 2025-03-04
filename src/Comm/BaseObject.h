@@ -3,7 +3,7 @@
 #ifndef _BaseObject_H_
 #define _BaseObject_H_
 
-#include <string>
+#include <string>32
 
 #include <boost/signals2.hpp>
 
@@ -15,17 +15,31 @@ public:
 public:
 	enable_property_changed_signal();
 
-	virtual ~enable_property_changed_signal();
+	PropertyChangedSignal& propertyChanged() { return m_propertyChanged; }
 
-	PropertyChangedSignal& PropertyChanged() { return myPropertyChanged; }
+	boost::signals2::connection connectSignal(const PropertyChangedSignal::slot_type& slot)
+	{
+		return m_propertyChanged.connect(slot);
+	}
 
-protected: 
-	virtual void RaisePropertyChanged(const std::string& theProperty);
+	bool suppressed() const { return m_suppressed; }
+	void setSuppressed(bool suppressed)
+	{
+		m_suppressed = suppressed;
+	}
+
+protected:
+	virtual void raisePropertyChanged(const std::string& property)
+	{
+		if(!m_suppressed && !m_propertyChanged.empty())
+		{
+			m_propertyChanged(property);
+		}
+	}
 
 private:
-	bool mySuppressPropertyChangedEvent;
-	PropertyChangedSignal myPropertyChanged;
+	PropertyChangedSignal m_propertyChanged;
+	bool m_suppressed;
 };
-
 
 #endif  // _BaseObject_H_

@@ -2,10 +2,10 @@
 #include "Core/Project/Viewport.h"
 
 #include <AIS_AnimationCamera.hxx>
+#include <Graphic3d_RenderingMode.hxx>
 #include <Graphic3d_RenderingParams.hxx>
 #include <Graphic3d_RenderTransparentMethod.hxx>
 #include <Quantity_Color.hxx>
-#include <Graphic3d_RenderingMode.hxx>
 
 #include "Core/Project/Workspace.h"
 

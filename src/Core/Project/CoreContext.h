@@ -8,6 +8,8 @@ class CoreContext
 {
 public:
 	CoreContext() {};
+	CoreContext(const CoreContext&) = delete;
+
 	virtual ~CoreContext() {};
 
 	static CoreContext* Current()
@@ -16,14 +18,12 @@ public:
 	}
 
 private:
-	Handle(Workspace) myWorkspace;
+	std::shared_ptr<Workspace> myWorkspace;
 	std::shared_ptr<Viewport> myViewport;
 	std::shared_ptr<Document> myDocument;
 
 private:
 	static CoreContext* myCurrent;
-
-	CoreContext(const CoreContext&) = delete;
 };
 
 #endif // !_CoreContext_h_
