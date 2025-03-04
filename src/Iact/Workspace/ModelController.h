@@ -5,11 +5,10 @@
 #include <string>
 
 #include <Standard_Handle.hxx>
-#include <Standard_Transient.hxx>
+ 
+#include "Comm/BaseObject.h"
 
-DEFINE_STANDARD_HANDLE(ModelController, Standard_Transient)
-
-class ModelController : public Standard_Transient
+class ModelController : public enable_property_changed_signal
 {
 public:
 	explicit ModelController() {}

@@ -19,13 +19,13 @@ public:
 	{}
 
 public:
-	Handle(WorkspaceController) GetWorkspaceController() const;
-	void SetWorkspaceController(const Handle(WorkspaceController)& controller);
+	std::shared_ptr<WorkspaceController> GetWorkspaceController() const;
+	void SetWorkspaceController(const std::shared_ptr<WorkspaceController>& controller);
 
 	virtual void Initialize() {};
 
 private:
-	Handle(WorkspaceController) myWorkspaceController;
+	std::shared_ptr<WorkspaceController> myWorkspaceController;
 };
 
 #endif  // IACT_HUD_ELEMENTS_HUDELEMENT_H_

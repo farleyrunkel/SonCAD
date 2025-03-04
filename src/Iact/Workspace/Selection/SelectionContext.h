@@ -4,18 +4,17 @@
 #include <set>
 #include <vector>
 
-#include <Standard_Transient.hxx>
+ 
 #include <SelectMgr_Filter.hxx>
 
 #include "Core/Framework/OcctUtils/SubshapeType.h"
 #include "Core/Topology/InteractiveEntity.h"
 #include "Iact/Visual/VisualObject.h"
+#include "Comm/BaseObject.h"
 
 class WorkspaceController;
 
-DEFINE_STANDARD_HANDLE(SelectionContext, Standard_Transient)
-
-class SelectionContext : public Standard_Transient
+class SelectionContext : public enable_property_changed_signal
 {
 public:
     enum Options
@@ -29,10 +28,10 @@ public:
 	SelectionContext() {}
 
 private:
-	std::vector<Handle(InteractiveEntity)> mySelectedEntities;
-	Handle(WorkspaceController) myWorkspaceController;
+	std::vector<std::shared_ptr<InteractiveEntity>> mySelectedEntities;
+	std::shared_ptr<WorkspaceController> myWorkspaceController;
     
-	std::set<Handle(VisualObject)> myVisualObjects;
+	std::set<std::shared_ptr<VisualObject>> myVisualObjects;
 	Options myOptions;
 
     bool myIsActive;

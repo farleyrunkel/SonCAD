@@ -3,15 +3,14 @@
 #ifndef _LayerCollection_H_
 #define _LayerCollection_H_
 
-#include <boost/signals2.hpp>
+#include <vector>
+#include <memory>
+#include <string>
 
-#include <NCollection_Vector.hxx>
-#include <TCollection_AsciiString.hxx>
+#include <boost/signals2.hpp>
 
 #include "Core/Project/Document.h"
 #include "Core/Topology/Layer.h"
-
-DEFINE_STANDARD_HANDLE(LayerCollection, Entity)
 
 class LayerCollection : public Entity
 {
@@ -19,12 +18,12 @@ public:
     explicit LayerCollection() {}
 
 private:
-	NCollection_Vector<Handle(Layer)> myLayers;
+	std::vector<std::shared_ptr<Layer>> myLayers;
 	bool myIsolateActiveLayer;
-	Handle(Layer) myActiveLayer;
-	Handle(Document) myModel;
+	std::shared_ptr<Layer> myActiveLayer;
+	std::shared_ptr<Document> myModel;
 
-	TCollection_AsciiString myName;
+	std::string myName;
 };
 
 #endif  // _LayerCollection_H_

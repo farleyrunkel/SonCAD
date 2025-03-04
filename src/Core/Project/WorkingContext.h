@@ -3,13 +3,11 @@
 
 #include <gp.hxx>
 #include <gp_Pln.hxx>
-#include <Standard_Transient.hxx>
+ 
 
 #include "Core/Project/Workspace.h"
 
-DEFINE_STANDARD_HANDLE(WorkingContext, Standard_Transient)
-
-class WorkingContext final : public Standard_Transient
+class WorkingContext
 {
 public:
 	explicit WorkingContext() 

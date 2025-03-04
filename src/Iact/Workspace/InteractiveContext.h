@@ -24,12 +24,12 @@ public:
 	}
 
 private:
-	Handle(ModelController) myModelController;
-	Handle(ViewportController) myViewportController;
-	Handle(WorkspaceController) myWorkspaceController;
+	std::shared_ptr<ModelController> myModelController;
+	std::shared_ptr<ViewportController> myViewportController;
+	std::shared_ptr<WorkspaceController> myWorkspaceController;
 
 	std::vector<Quantity_Color> _RecentUsedColors;
-	Handle(EditorState) myEditorState;
+	std::shared_ptr<EditorState> myEditorState;
 
 	const int _MaxScriptMruCount = 1;
 

@@ -7,10 +7,8 @@
 
 #include "Iact/Workspace/Snapping/SnapBase.h"
 
-#include <Standard_Transient.hxx>
+ 
 #include <Standard_Type.hxx>
-
-DEFINE_STANDARD_HANDLE(Snap3d, SnapBase)
 
 class Snap3d : public SnapBase
 {

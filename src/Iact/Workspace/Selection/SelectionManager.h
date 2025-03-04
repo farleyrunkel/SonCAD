@@ -3,16 +3,15 @@
 
 #include <vector>
 
-#include <Standard_Transient.hxx>
+ 
 
 #include "Core/Topology/InteractiveEntity.h"
 #include "Iact/Workspace/Selection/SelectionContext.h"
+#include "Comm/BaseObject.h"
 
 class WorkspaceController;
 
-DEFINE_STANDARD_HANDLE(SelectionManager, Standard_Transient)
-
-class SelectionManager : public Standard_Transient
+class SelectionManager : public enable_property_changed_signal
 {
 public:
     enum SelectionMode
@@ -26,15 +25,15 @@ public:
     SelectionManager() {}
 
 private:
-    std::vector<Handle(InteractiveEntity)> myEmptyList;
+    std::vector<std::shared_ptr<InteractiveEntity>> myEmptyList;
 
-    Handle(WorkspaceController) myWorkspaceController;
+    std::shared_ptr<WorkspaceController> myWorkspaceController;
 
     // SelectionContext
-    Handle(SelectionContext) myBaseContext;
-    Handle(SelectionContext) myCurrentContext;
+    std::shared_ptr<SelectionContext> myBaseContext;
+    std::shared_ptr<SelectionContext> myCurrentContext;
 
-    std::vector<Handle(SelectionContext)> mySelectionContexts;
+    std::vector<std::shared_ptr<SelectionContext>> mySelectionContexts;
 
     bool myContextUpdatePending;
 };

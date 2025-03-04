@@ -4,12 +4,12 @@
 
 #include "Iact/Workspace/WorkspaceController.h"
 
-Handle(WorkspaceController) HudElement::GetWorkspaceController() const
+std::shared_ptr<WorkspaceController> HudElement::GetWorkspaceController() const
 {
 	return myWorkspaceController;
 }
 
-void HudElement::SetWorkspaceController(const Handle(WorkspaceController)& controller)
+void HudElement::SetWorkspaceController(const std::shared_ptr<WorkspaceController>& controller)
 {
 	if(myWorkspaceController && myWorkspaceController != controller)
 	{

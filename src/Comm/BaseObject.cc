@@ -3,23 +3,21 @@
 // Own include
 #include "Comm/BaseObject.h"
 
+#include <string>
+
 #include <boost/signals2.hpp>
 
-#include <Standard_Transient.hxx>
-#include <TCollection_AsciiString.hxx>
-
-IMPLEMENT_STANDARD_RTTIEXT(BaseObject, Standard_Transient)
-
-BaseObject::BaseObject() : Standard_Transient(), SuppressPropertyChangedEvent(false)
+enable_property_changed_signal::enable_property_changed_signal()
+	: mySuppressPropertyChangedEvent(false)
 {}
 
-BaseObject::~BaseObject()
+enable_property_changed_signal::~enable_property_changed_signal()
 {
-	PropertyChanged.disconnect_all_slots();
+	myPropertyChanged.disconnect_all_slots();
 }
 
-void BaseObject::RaisePropertyChanged(const TCollection_AsciiString& theProperty)
+void enable_property_changed_signal::RaisePropertyChanged(const std::string& theProperty)
 {
-	if(!SuppressPropertyChangedEvent && PropertyChanged.num_slots() > 0)
-		PropertyChanged(this, theProperty);
+	if(!mySuppressPropertyChangedEvent && myPropertyChanged.num_slots() > 0)
+		myPropertyChanged(theProperty);
 }

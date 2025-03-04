@@ -5,17 +5,14 @@
 
 #include <string>
 
-#include <Standard_Transient.hxx>
-
 #include "Iact/Workspace/ViewportController.h"
+#include "Comm/BaseObject.h"
 
 // Forward declarations
 class Tool;
 class WorkspaceController;
 
-DEFINE_STANDARD_HANDLE(EditorState, Standard_Transient)
-
-class EditorState : Standard_Transient
+class EditorState : public enable_property_changed_signal
 {
 public:
 	EditorState() {}
@@ -27,7 +24,7 @@ private:
 	ViewportController::RubberbandSelectionMode _RubberbandSelectionMode;
 	bool _RubberbandIncludeTouched;
 
-	Handle(WorkspaceController) myWorkspaceController;
+	std::shared_ptr<WorkspaceController> myWorkspaceController;
 
 	bool _SnapToGridSelected;
 	bool _SnapToVertexSelected;

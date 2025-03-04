@@ -7,7 +7,7 @@
 #include <QUuid>
 
 // Occt includes
-#include <Standard_Transient.hxx>
+ 
 #include <Standard_Type.hxx>
 
 DEFINE_STANDARD_HANDLE(AISX_Guid, Standard_Transient)

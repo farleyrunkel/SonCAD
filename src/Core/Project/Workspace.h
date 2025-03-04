@@ -1,27 +1,27 @@
 #ifndef _Workspace_h_
 #define _Workspace_h_
 
+#include <memory>
 #include <vector>
 
 #include <boost/signals2.hpp>
 
 #include <AIS_InteractiveContext.hxx>
-#include <gp_Pln.hxx>
-#include <Standard_Transient.hxx>
-#include <V3d_Viewer.hxx>
-#include <gp_Quaternion.hxx>
-#include <gp_Mat.hxx>
 #include <AIS_TypeOfPlane.hxx>
 #include <gp.hxx>
+#include <gp_Mat.hxx>
+#include <gp_Pln.hxx>
+#include <gp_Quaternion.hxx>
+#include <NCollection_Vector.hxx>
+ 
+#include <V3d_Viewer.hxx>
 
 // Forward declaire
 class WorkingContext;
 class Document;
 class Viewport;
 
-DEFINE_STANDARD_HANDLE(Workspace, Standard_Transient)
-
-class Workspace final : public Standard_Transient
+class Workspace final : public Standard_Transient, public std::enable_shared_from_this<Workspace>
 {
 	using GridChangedSignal = boost::signals2::signal<void(Workspace*)>;
 	using PropertyChangedSignal = boost::signals2::signal<void(const std::string&)>;
@@ -34,10 +34,12 @@ public:
 	};
 
 public:
-	explicit Workspace(const Handle(Document)& theDoc);
+	explicit Workspace(const std::shared_ptr<Document>& theDoc);
 
 public:
 	//! Getter and Setter
+
+	Handle(V3d_Viewer) GetViewer() const { return myViewer; }
 
 	bool GetGridEnabled() const { return myGridEnabled; }
 	void SetGridEnabled(bool theValue) { myGridEnabled = theValue; }
@@ -57,14 +59,14 @@ public:
 	const gp_Pln& GetWorkingPlane() const { return myWorkingPlane; }
 	void SetWorkingPlane(const gp_Pln& theValue) { myWorkingPlane = theValue; }
 
-	Handle(WorkingContext) GetGlobalWorkingContext() const { return myGlobalWorkingContext; }
-	void SetGlobalWorkingContext(const Handle(WorkingContext)& theValue) { myGlobalWorkingContext = theValue; }
+	std::shared_ptr<WorkingContext> GetGlobalWorkingContext() const { return myGlobalWorkingContext; }
+	void SetGlobalWorkingContext(const std::shared_ptr<WorkingContext>& theValue) { myGlobalWorkingContext = theValue; }
 
-	Handle(WorkingContext) GetCurrentWorkingContext() const { return myCurrentWorkingContext; }
-	void SetCurrentWorkingContext(const Handle(WorkingContext)& theValue) { myCurrentWorkingContext = theValue; }
+	std::shared_ptr<WorkingContext> GetCurrentWorkingContext() const { return myCurrentWorkingContext; }
+	void SetCurrentWorkingContext(const std::shared_ptr<WorkingContext>& theValue) { myCurrentWorkingContext = theValue; }
 
-	Handle(Document) GetDocument() const { return myDocument; }
-	void SetDocument(const Handle(Document)& theValue) { myDocument = theValue; }
+	std::weak_ptr<Document> document() const { return myDocument; }
+	void SetDocument(const std::shared_ptr<Document>& theValue) { myDocument = theValue; }
 
 public:
 	void InitV3dViewer();
@@ -79,8 +81,8 @@ public:
 	gp_Pnt2d ComputeGridPoint(gp_Pnt2d coord);
 
 	//! project to grid fro screen
-	bool ProjectToGrid(const Handle(Viewport)& viewport, int screenX, int screenY, gp_Pnt& pnt);
-	
+	bool ProjectToGrid(const std::shared_ptr<Viewport>& viewport, int screenX, int screenY, gp_Pnt& pnt);
+
 
 public:
 	GridChangedSignal& GridChanged()
@@ -92,9 +94,10 @@ private:
 	void ApplyWorkingContext();
 
 private:
-	std::vector<Handle(Viewport)> myViewports;
+	std::vector<std::shared_ptr<Viewport>> myViewports;
 
-	Handle(Document) myDocument;
+	std::weak_ptr<Document> myDocument;
+
 	Handle(V3d_Viewer) myViewer;
 	Handle(AIS_InteractiveContext) myContext;
 
@@ -109,8 +112,8 @@ private:
 
 	gp_Pln myWorkingPlane;
 
-	Handle(WorkingContext) myGlobalWorkingContext;
-	Handle(WorkingContext) myCurrentWorkingContext;
+	std::shared_ptr<WorkingContext> myGlobalWorkingContext;
+	std::shared_ptr<WorkingContext> myCurrentWorkingContext;
 
 private:
 	GridChangedSignal emit_GridChanged;

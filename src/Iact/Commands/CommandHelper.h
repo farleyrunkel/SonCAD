@@ -12,19 +12,19 @@
 class CommandHelper
 {
 public:
-    static Handle(Tool) GetCurrentTool()
+    static std::shared_ptr<Tool> GetCurrentTool()
     {
         return nullptr;
     };
 
-    static Handle(SelectionManager) GetSelectionManager()
+    static std::shared_ptr<SelectionManager> GetSelectionManager()
     {
         return nullptr;
     };
 
     static void Invalidate() {}
 
-    static bool StartTool(const Handle(Tool)& theTool)
+    static bool StartTool(const std::shared_ptr<Tool>& theTool)
     {
         return false;
     };
@@ -34,12 +34,12 @@ public:
         return false;
     }
 
-    static bool CanExecuteOnSingle(const std::function<void(Handle(InteractiveEntity), bool)>& predicate)
+    static bool CanExecuteOnSingle(const std::function<void(std::shared_ptr<InteractiveEntity>, bool)>& predicate)
     {
         return false;
     }
 
-    static bool CanExecuteOnMulti(const std::function<void(Handle(InteractiveEntity), bool)>& predicate)
+    static bool CanExecuteOnMulti(const std::function<void(std::shared_ptr<InteractiveEntity>, bool)>& predicate)
     {
         return false;
     }
@@ -75,7 +75,7 @@ public:
     }
 
 private:
-    static Handle(WorkspaceController) GetWorkspaceController()
+    static std::shared_ptr<WorkspaceController> GetWorkspaceController()
     {
         return nullptr;
     };

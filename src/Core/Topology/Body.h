@@ -3,13 +3,11 @@
 #ifndef _Body_H_
 #define _Body_H_
 
-#include <Standard_Transient.hxx>
-#include <TCollection_AsciiString.hxx>
+#include <string>
 
 #include "Core/Project/Document.h"
 #include "Core/Topology/InteractiveEntity.h"
 
-DEFINE_STANDARD_HANDLE(Body, InteractiveEntity)
 
 class Body : public InteractiveEntity
 {
@@ -17,13 +15,13 @@ public:
     explicit Body() {}
 
 public:
-    virtual TCollection_AsciiString GetName() const
+    virtual std::string GetName() const
     {
         return myName;
     }
 
 private:
-    TCollection_AsciiString myName;
+    std::string myName;
 
 };
 

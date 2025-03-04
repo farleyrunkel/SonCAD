@@ -5,12 +5,11 @@
 #ifndef IACT_WORKSPACE_SNAPPING_SNAPBASE_H_
 #define IACT_WORKSPACE_SNAPPING_SNAPBASE_H_
 
-#include <Standard_Transient.hxx>
+ 
 #include <Standard_Type.hxx>
+#include "Comm/BaseObject.h"
 
-DEFINE_STANDARD_HANDLE(SnapBase, Standard_Transient)
-
-class SnapBase : public Standard_Transient
+class SnapBase : public enable_property_changed_signal
 {
 public:
 	SnapBase() {}

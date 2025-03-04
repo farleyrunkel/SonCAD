@@ -3,32 +3,29 @@
 #ifndef _BaseObject_H_
 #define _BaseObject_H_
 
+#include <string>
+
 #include <boost/signals2.hpp>
 
-#include <Standard_Transient.hxx>
-#include <TCollection_AsciiString.hxx>
-
-DEFINE_STANDARD_HANDLE(BaseObject, Standard_Transient)
-
-class BaseObject : public Standard_Transient
+class enable_property_changed_signal
 {
-	DEFINE_STANDARD_RTTIEXT(BaseObject, Standard_Transient)
-
-	using PropertyChangedSignal = boost::signals2::signal<void(BaseObject*, const TCollection_AsciiString&)>;
+public:
+	using PropertyChangedSignal = boost::signals2::signal<void(const std::string&)>;
 
 public:
-	BaseObject();
+	enable_property_changed_signal();
 
-	virtual ~BaseObject() override;
+	virtual ~enable_property_changed_signal();
+
+	PropertyChangedSignal& PropertyChanged() { return myPropertyChanged; }
 
 protected: 
-	virtual void RaisePropertyChanged(const TCollection_AsciiString& theProperty);
-
-public:
-	PropertyChangedSignal PropertyChanged;
+	virtual void RaisePropertyChanged(const std::string& theProperty);
 
 private:
-	bool SuppressPropertyChangedEvent;
+	bool mySuppressPropertyChangedEvent;
+	PropertyChangedSignal myPropertyChanged;
 };
+
 
 #endif  // _BaseObject_H_

@@ -17,8 +17,8 @@ public:
 
 private:
 	Handle(Workspace) myWorkspace;
-	Handle(Viewport) myViewport;
-	Handle(Document) myDocument;
+	std::shared_ptr<Viewport> myViewport;
+	std::shared_ptr<Document> myDocument;
 
 private:
 	static CoreContext* myCurrent;

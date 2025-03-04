@@ -17,7 +17,7 @@
 #include <Prs3d_Drawer.hxx>
 #include <Prs3d_LineAspect.hxx>
 #include <Standard_Real.hxx>
-#include <Standard_Transient.hxx>
+ 
 #include <V3d_AmbientLight.hxx>
 #include <V3d_DirectionalLight.hxx>
 #include <V3d_Viewer.hxx>
@@ -26,9 +26,8 @@
 #include "Core/Project/VisualStyles.h"
 #include "Core/Project/WorkingContext.h"
 
-Workspace::Workspace(const Handle(Document)& theDoc)
+Workspace::Workspace(const std::shared_ptr<Document>& theDoc)
 	: myDocument(theDoc)
-	, myGlobalWorkingContext(new WorkingContext)
 	, myNeedsRedraw(false)
 	, myNeedsImmediateRedraw(false)
 	, myGridEnabled(true)
@@ -36,7 +35,12 @@ Workspace::Workspace(const Handle(Document)& theDoc)
 	, myGridStep(10.0)
 	, myGridRotation(0.0)
 	, myGridDivisions(10)
-{}
+{
+	myGlobalWorkingContext = std::make_shared<WorkingContext>();
+	myCurrentWorkingContext = myGlobalWorkingContext;
+
+	myViewports.push_back(std::make_shared<Viewport>(shared_from_this()));
+}
 
 void Workspace::InitV3dViewer()
 {
@@ -179,7 +183,7 @@ gp_Pnt2d Workspace::ComputeGridPoint(gp_Pnt2d coord)
 
 //! project to grid fro screen
 
-bool Workspace::ProjectToGrid(const Handle(Viewport)& viewport, int screenX, int screenY, gp_Pnt& pnt)
+bool Workspace::ProjectToGrid(const std::shared_ptr<Viewport>& viewport, int screenX, int screenY, gp_Pnt& pnt)
 {
 	gp_Pln plane = myWorkingPlane;
 	if(!viewport->ScreenToPoint(plane, screenX, screenY, pnt))

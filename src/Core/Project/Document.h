@@ -3,16 +3,17 @@
 #ifndef _Document_H_
 #define _Document_H_
 
+#include "Comm/BaseObject.h"
+
 #include <TDocStd_Document.hxx>
-#include <TCollection_ExtendedString.hxx>
 
-DEFINE_STANDARD_HANDLE(Document, TDocStd_Document)
-
-class Document : public TDocStd_Document
+class Document : public enable_property_changed_signal
 {
 public:
-    Document(const TCollection_ExtendedString& astorageformat = "XmlOcaf")
-        : TDocStd_Document(astorageformat) {}
+    Document();
+
+private:
+	Handle(TDocStd_Document) m_document;
 };
 
 #endif  // _Document_H_

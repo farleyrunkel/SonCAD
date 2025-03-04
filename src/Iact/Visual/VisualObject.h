@@ -5,18 +5,19 @@
 
 #include <AIS_InteractiveContext.hxx>
 #include <AIS_InteractiveObject.hxx>
-#include <Standard_Transient.hxx>
+ 
+
+#include "Comm/BaseObject.h"
 
 // Forward declarations
 class WorkspaceController;
 
-DEFINE_STANDARD_HANDLE(VisualObject, Standard_Transient)
 
-class VisualObject : public Standard_Transient
+class VisualObject : public enable_property_changed_signal
 {
 
 protected:
-    explicit VisualObject(const Handle(WorkspaceController)& theWC) {}
+    explicit VisualObject(const std::shared_ptr<WorkspaceController>& theWC) {}
 
 private:
 

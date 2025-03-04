@@ -6,7 +6,7 @@
 #include <boost/signals2.hpp>
 
 #include <Quantity_Color.hxx>
-#include <Standard_Transient.hxx>
+ 
 #include <TCollection_AsciiString.hxx>
 
 #include "Core/Project/Document.h"
@@ -15,21 +15,19 @@
 
 class LayerCollection;
 
-DEFINE_STANDARD_HANDLE(Layer, Entity)
-
 class Layer : public Entity
 {
 public:
     explicit Layer() {}
 
 public:
-    virtual TCollection_AsciiString GetName() const
+    virtual std::string GetName() const
     {
         return myName;
     }
 
 private:
-    TCollection_AsciiString myName;
+    std::string myName;
     bool myIsVisible;
     bool myIsLocked;
 
@@ -40,7 +38,7 @@ private:
     LineStyle LineStyle;
 	LineThickness LineThickness;
 
-	Handle(LayerCollection) myLayerCollection;
+	std::shared_ptr<LayerCollection> myLayerCollection;
 };
 
 #endif  // _Layer_H_

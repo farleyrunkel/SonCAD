@@ -8,19 +8,18 @@
 #include <gp_Pnt2d.hxx>
 #include <NCollection_Vec2.hxx>
 #include <NCollection_Vector.hxx>
-#include <Standard_Transient.hxx>
+ 
 #include <WNT_WClass.hxx>
 #include <WNT_Window.hxx>
 
 #include "Core/Project/Viewport.h"
 #include "Core/Project/Workspace.h"
 #include "Occt/OcctExtensions/AIS_ViewCubeEx.h"
+#include "Comm/BaseObject.h"
 
 class WorkspaceController;
 
-DEFINE_STANDARD_HANDLE(ViewportController, Standard_Transient)
-
-class ViewportController : public Standard_Transient
+class ViewportController : public enable_property_changed_signal
 {
 public:
 	enum RubberbandSelectionMode
@@ -64,9 +63,9 @@ private:
 
 	NCollection_Vector<NCollection_Vec2<int>> _RubberbandPoints;
 
-	Handle(Viewport) myViewport;
-	Handle(Workspace) myWorkspace;
-	Handle(WorkspaceController) myWorkspaceController;
+	std::shared_ptr<Viewport> myViewport;
+	std::shared_ptr<Workspace> myWorkspace;
+	std::shared_ptr<WorkspaceController> myWorkspaceController;
 
 	bool IsInRubberbandSelection;
 
