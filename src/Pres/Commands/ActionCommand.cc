@@ -3,12 +3,15 @@
 // Own include
 #include "Pres/Commands/ActionCommand.h"
 
+#include <QAction>
+
+#include "Pres/Commands/RelayCommand.h"
+
 // Constructor
 ActionCommand::ActionCommand(std::function<void()> execute, std::function<bool()> canExecute)
-    : QAction()
+    : QAction(nullptr)
     , RelayCommand(execute, canExecute)
 {
-    setCheckable(true);
     // connect the triggered signal to execute
     connect(this, &QAction::triggered, [this]() {
         if (this->canExecute()) {

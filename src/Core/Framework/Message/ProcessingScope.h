@@ -55,7 +55,7 @@ public:
 
 private:
     std::shared_ptr<Entity> entity_;
-    std::shared_ptr<MessageHandler> handler_;
+    std::shared_ptr<MessageManager> handler_;
 };
 
 #endif  // CORE_FRAMEWORK_MESSAGE_PROCESSINGSCOPE_H_

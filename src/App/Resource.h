@@ -1,6 +1,6 @@
-// ResourceUtils.h
-#ifndef RESOURCEUTILS_H_
-#define RESOURCEUTILS_H_
+// Resource.h
+#ifndef Resource_H_
+#define Resource_H_
 
 // Qt includes
 #include <QString>
@@ -8,7 +8,7 @@
 #include <QFile>
 #include <QImage>
 
-class ResourceUtils
+class Resource
 {
 public:
     static constexpr const char* ICON_PATH_PREFIX = "://Icons/";
@@ -54,4 +54,4 @@ private:
     };
 };
 
-#endif // RESOURCEUTILS_H_
+#endif // Resource_H_

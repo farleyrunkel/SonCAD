@@ -13,9 +13,9 @@ class ActionCommand final : public QAction, public RelayCommand
 {
     Q_OBJECT
 
- public:
+public:
     // Constructor
-    ActionCommand(std::function<void()> execute = nullptr, std::function<bool()> canExecute = nullptr);
+    ActionCommand(std::function<void()> execute = nullptr, std::function<bool()> canExecute = []() { return true; });
 };
 
 #endif  // PRES_COMMANDS_ACTIONCOMMAND_H_

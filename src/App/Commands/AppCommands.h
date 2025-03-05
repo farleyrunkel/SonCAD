@@ -15,7 +15,7 @@ public:
     static ActionCommand& showAboutDialog();
     static ActionCommand& settings();
     static ActionCommand& resetWindowLayout();
-    static ActionCommand& showDocumentExplorer();
+    static ActionCommand& ShowDocumentExplorer();
 };
 
 #endif  // APP_COMMANDS_APPCOMMANDS_H_

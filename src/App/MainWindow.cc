@@ -17,7 +17,7 @@
 #include "DockAreaTitleBar.h"
 #include "DockAreaWidget.h"
 
-#include "ResourceUtils.h"
+#include "Resource.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : SARibbonMainWindow(parent)
@@ -40,7 +40,7 @@ void MainWindow::setupUi()
     resize(1260, 800);
 
     setWindowTitle(tr("SunCAD"));
-    setWindowIcon(ResourceUtils::icon("App/App-MainLogo"));
+    setWindowIcon(Resource::icon("App/App-MainLogo"));
     setStatusBar(new QStatusBar());
 
     ads::CDockManager::setConfigFlag(ads::CDockManager::OpaqueSplitterResize, true);

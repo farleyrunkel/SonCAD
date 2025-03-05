@@ -39,9 +39,9 @@ public:
         }
     }
 
-    static std::shared_ptr<MessageHandler> getHandler()
+    static std::shared_ptr<MessageManager> getHandler()
     {
-        static std::shared_ptr<MessageHandler> handler = std::make_shared<MessageHandler>();
+        static std::shared_ptr<MessageManager> handler = std::make_shared<MessageManager>();
         return handler;
     }
 };

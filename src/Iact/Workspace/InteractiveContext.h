@@ -18,9 +18,14 @@ public:
 	InteractiveContext() {};
 	virtual ~InteractiveContext() {};
 
-	static InteractiveContext* Current()
+	static InteractiveContext* current()
 	{
 		return myCurrent;
+	}
+
+	std::shared_ptr<ModelController> documentController() const
+	{
+		return myModelController;
 	}
 
 private:

@@ -13,6 +13,10 @@ class ModelController : public enable_property_changed_signal
 public:
 	explicit ModelController() {}
 
+	bool askForSavingModelChanges() { return true;}
+
+	void newModel() {}
+
 private:
 	const int myMaxMruCount = 12;
 	std::vector<std::string> myMruList;

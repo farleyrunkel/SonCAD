@@ -13,7 +13,7 @@ RelayCommand::RelayCommand(std::function<void()> execute, std::function<bool()> 
     , m_canExecute(std::move(canExecute))
 {}
 
-void RelayCommand::execute()
+void RelayCommand::execute() const
 {
     if (m_execute) {
         m_execute();

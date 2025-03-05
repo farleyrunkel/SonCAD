@@ -6,9 +6,9 @@
 // Project includes
 #include "App/Application.h"
 #include "App/Commands/AppCommands.h"
+#include "App/Resource.h"
 #include "Iact/Commands/CommandHelper.h"
 #include "Iact/Commands/DocumentCommands.h"
-#include "ResourceUtils.h"
 
 RelayCommand& AppCommands::initApplication()
 {
@@ -26,7 +26,7 @@ ActionCommand& AppCommands::exitApplication()
     // Initialize command properties if not already set
     if (command.text().isEmpty()) {
         command.setText(QObject::tr("Exit Program"));
-        command.setIcon(ResourceUtils::icon("App/App-ExitApp"));
+        command.setIcon(Resource::icon("App/App-ExitApp"));
     }
     return command;
 }
@@ -38,7 +38,7 @@ ActionCommand& AppCommands::showAboutDialog()
     if (command.text().isEmpty()) {
         command.setText(QObject::tr("About SunCAD"));
         command.setToolTip(QObject::tr("Shows version and license information."));
-        command.setIcon(ResourceUtils::icon("App/App-AboutDialog"));
+        command.setIcon(Resource::icon("App/App-AboutDialog"));
     }
     return command;
 }
@@ -49,7 +49,7 @@ ActionCommand& AppCommands::settings()
     // Initialize command properties if not already set
     if (command.text().isEmpty()) {
         command.setText(QObject::tr("Settings"));
-        command.setIcon(ResourceUtils::icon("App/App-Settings"));
+        command.setIcon(Resource::icon("App/App-Settings"));
     }
     return command;
 }
@@ -63,19 +63,19 @@ ActionCommand& AppCommands::resetWindowLayout()
     if (command.text().isEmpty()) {
         command.setText(QObject::tr("Reset window Layout"));
         command.setToolTip(QObject::tr("Resets the window layout to the default layout."));
-        command.setIcon(ResourceUtils::icon("App/App-RestoreLayout"));
+        command.setIcon(Resource::icon("App/App-RestoreLayout"));
     }
     return command;
 }
 
-ActionCommand& AppCommands::showDocumentExplorer()
+ActionCommand& AppCommands::ShowDocumentExplorer()
 {
     static ActionCommand command;
     // Initialize command properties if not already set
     if (command.text().isEmpty()) {
         command.setText(QObject::tr("Show Document Explorer"));
         command.setToolTip(QObject::tr("Opens the Document Explorer"));
-        command.setIcon(ResourceUtils::icon("App/App-ShowDocu"));
+        command.setIcon(Resource::icon("App/App-ShowDocu"));
     }
     return command;
 }

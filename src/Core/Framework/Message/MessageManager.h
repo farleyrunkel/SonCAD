@@ -14,13 +14,13 @@
 
 #include "Core/Framework/Message/MessageItem.h"
 
-class MessageHandler
+class MessageManager
 {
 public:
     using MessageSignal = boost::signals2::signal<void(const std::shared_ptr<MessageItem>&)>;
     using ProgressSignal = boost::signals2::signal<void(const std::string&, bool)>; // desc, isStarted
 
-    MessageHandler() : logFile_("logs/app_log.txt", std::ios::app)
+    MessageManager() : logFile_("logs/app_log.txt", std::ios::app)
     {
         if(!logFile_.is_open())
         {
@@ -28,25 +28,25 @@ public:
         }
     }
 
-    ~MessageHandler()
+    ~MessageManager()
     {
         std::lock_guard<std::mutex> lock(mutex_);
         logFile_.close();
     }
 
-    void addMessage(std::shared_ptr<MessageItem> item)
+    void addMessage(const std::shared_ptr<MessageItem>& item)
     {
         std::lock_guard<std::mutex> lock(mutex_);
         messages_.push_back(item);
         if(auto sender = item->getSender().lock())
         {
-            entityMessages_[sender.get()].push_back(item);
+            entityMessages_[sender].push_back(item);
         }
         messageThrown_(item);
         logToFile(*item);
     }
 
-    void clearEntityMessages(Entity* entity)
+    void clearEntityMessages(const std::shared_ptr<Entity>& entity)
     {
         std::lock_guard<std::mutex> lock(mutex_);
         auto it = entityMessages_.find(entity);
@@ -57,7 +57,7 @@ public:
                             [entity](const std::shared_ptr<MessageItem>& msg) {
                 if(auto sender = msg->getSender().lock())
                 {
-                    return sender.get() == entity;
+                    return sender == entity;
                 }
                 return false;
             }), messages_.end());
@@ -95,7 +95,7 @@ public:
 
 private:
     std::vector<std::shared_ptr<MessageItem>> messages_;
-    std::unordered_map<Entity*, std::vector<std::shared_ptr<MessageItem>>> entityMessages_;
+    std::unordered_map<std::shared_ptr<Entity>, std::vector<std::shared_ptr<MessageItem>>> entityMessages_;
     std::vector<std::shared_ptr<Entity>> processingStack_;
     MessageSignal messageThrown_;
     ProgressSignal progressChanged_;

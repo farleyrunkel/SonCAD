@@ -20,7 +20,7 @@ public:
     RelayCommand(std::function<void()> execute, std::function<bool()> canExecute);
 
     // Method to execute the command
-    void execute() override;
+    void execute() const override;
 
     // Method to check if the command can be executed
     bool canExecute() const override;
