@@ -35,77 +35,77 @@ public:
 public:
 	//! Getter and Setter
 
-	Handle(V3d_Viewer) GetViewer() const { return myViewer; }
+	Handle(V3d_Viewer) getViewer() const { return m_Viewer; }
 
-	bool GetGridEnabled() const { return myGridEnabled; }
-	void SetGridEnabled(bool theValue) { myGridEnabled = theValue; }
+	bool getGridEnabled() const { return m_GridEnabled; }
+	void setGridEnabled(bool theValue) { m_GridEnabled = theValue; }
 
-	GridTypes GetGridType() const { return myGridType; }
-	void SetGridType(GridTypes theValue) { myGridType = theValue; }
+	GridTypes getGridType() const { return m_GridType; }
+	void setGridType(GridTypes theValue) { m_GridType = theValue; }
 
-	double GetGridStep() const { return myGridStep; }
-	void SetGridStep(double theValue) { myGridStep = theValue; }
+	double getGridStep() const { return m_GridStep; }
+	void setGridStep(double theValue) { m_GridStep = theValue; }
 
-	double GetGridRotation() const { return myGridRotation; }
-	void SetGridRotation(double theValue) { myGridRotation = theValue; }
+	double getGridRotation() const { return m_GridRotation; }
+	void setGridRotation(double theValue) { m_GridRotation = theValue; }
 
-	int GetGridDivisions() const { return myGridDivisions; }
-	void SetGridDivisions(int theValue) { myGridDivisions = theValue; }
+	int getGridDivisions() const { return m_GridDivisions; }
+	void setGridDivisions(int theValue) { m_GridDivisions = theValue; }
 
-	const gp_Pln& GetWorkingPlane() const { return myWorkingPlane; }
-	void SetWorkingPlane(const gp_Pln& theValue) { myWorkingPlane = theValue; }
+	const gp_Pln& getWorkingPlane() const { return m_WorkingPlane; }
+	void setWorkingPlane(const gp_Pln& theValue) { m_WorkingPlane = theValue; }
 
-	std::shared_ptr<WorkingContext> GetGlobalWorkingContext() const { return myGlobalWorkingContext; }
-	void SetGlobalWorkingContext(const std::shared_ptr<WorkingContext>& theValue) { myGlobalWorkingContext = theValue; }
+	std::shared_ptr<WorkingContext> getGlobalWorkingContext() const { return m_GlobalWorkingContext; }
+	void setGlobalWorkingContext(const std::shared_ptr<WorkingContext>& theValue) { m_GlobalWorkingContext = theValue; }
 
-	std::shared_ptr<WorkingContext> GetCurrentWorkingContext() const { return myCurrentWorkingContext; }
-	void SetCurrentWorkingContext(const std::shared_ptr<WorkingContext>& theValue) { myCurrentWorkingContext = theValue; }
+	std::shared_ptr<WorkingContext> getCurrentWorkingContext() const { return m_CurrentWorkingContext; }
+	void setCurrentWorkingContext(const std::shared_ptr<WorkingContext>& theValue) { m_CurrentWorkingContext = theValue; }
 
-	std::weak_ptr<Document> document() const { return myDocument; }
-	void SetDocument(const std::shared_ptr<Document>& theValue) { myDocument = theValue; }
+	std::weak_ptr<Document> document() const { return m_Document; }
+	void setDocument(const std::shared_ptr<Document>& theValue) { m_Document = theValue; }
 
 public:
-	void InitV3dViewer();
-	void InitAisContext();
+	void initV3dViewer();
+	void initAisContext();
 
 	//! Working Plane
-	gp_Quaternion GetWorkingPlaneRotation() const;
+	gp_Quaternion getWorkingPlaneRotation() const;
 
-	void SetDefaultWorkingPlane(AIS_TypeOfPlane type);
+	void setDefaultWorkingPlane(AIS_TypeOfPlane type);
 
 	//! compute grid point
-	gp_Pnt2d ComputeGridPoint(const gp_Pnt2d& coord);
+	gp_Pnt2d computeGridPoint(const gp_Pnt2d& coord);
 
 	//! project to grid fro screen
-	bool ProjectToGrid(const std::shared_ptr<Viewport>& viewport, int screenX, int screenY, gp_Pnt& pnt);
+	bool projectToGrid(const std::shared_ptr<Viewport>& viewport, int screenX, int screenY, gp_Pnt& pnt);
 
 private:
-	void ApplyWorkingContext();
+	void applyWorkingContext();
 
 public:
 	boost::signals2::signal<void(Workspace*)> sig_GridChanged;
 	boost::signals2::signal<void(const std::string&)> sig_PropertyChanged;
 
 private:
-	std::vector<std::shared_ptr<Viewport>> myViewports;
-	std::shared_ptr<Document> myDocument;
+	std::vector<std::shared_ptr<Viewport>> m_Viewports;
+	std::shared_ptr<Document> m_Document;
 
-	Handle(V3d_Viewer) myViewer;
-	Handle(AIS_InteractiveContext) myContext;
+	Handle(V3d_Viewer) m_Viewer;
+	Handle(AIS_InteractiveContext) m_Context;
 
-	bool myNeedsRedraw;
-	bool myNeedsImmediateRedraw;
-	bool myGridEnabled;
+	bool m_NeedsRedraw;
+	bool m_NeedsImmediateRedraw;
+	bool m_GridEnabled;
 
-	GridTypes myGridType;
-	double myGridStep;
-	double myGridRotation;
-	int myGridDivisions;
+	GridTypes m_GridType;
+	double m_GridStep;
+	double m_GridRotation;
+	int m_GridDivisions;
 
-	gp_Pln myWorkingPlane;
+	gp_Pln m_WorkingPlane;
 
-	std::shared_ptr<WorkingContext> myGlobalWorkingContext;
-	std::shared_ptr<WorkingContext> myCurrentWorkingContext;
+	std::shared_ptr<WorkingContext> m_GlobalWorkingContext;
+	std::shared_ptr<WorkingContext> m_CurrentWorkingContext;
 };
 
 #endif // !_Workspace_h_

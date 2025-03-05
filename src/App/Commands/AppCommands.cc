@@ -10,7 +10,7 @@
 #include "Iact/Commands/DocumentCommands.h"
 #include "ResourceUtils.h"
 
-RelayCommand& AppCommands::InitApplication()
+RelayCommand& AppCommands::initApplication()
 {
     static RelayCommand command(
         []() { DocumentCommands::createNewModel().execute(); }
@@ -19,7 +19,7 @@ RelayCommand& AppCommands::InitApplication()
     return command;
 }
 
-ActionCommand& AppCommands::ExitApplication()
+ActionCommand& AppCommands::exitApplication()
 {
     static ActionCommand command;
 
@@ -31,7 +31,7 @@ ActionCommand& AppCommands::ExitApplication()
     return command;
 }
 
-ActionCommand& AppCommands::ShowAboutDialog()
+ActionCommand& AppCommands::showAboutDialog()
 {
     static ActionCommand command;
     // Initialize command properties if not already set
@@ -43,7 +43,7 @@ ActionCommand& AppCommands::ShowAboutDialog()
     return command;
 }
 
-ActionCommand& AppCommands::Settings()
+ActionCommand& AppCommands::settings()
 {
     static ActionCommand command;
     // Initialize command properties if not already set
@@ -54,7 +54,7 @@ ActionCommand& AppCommands::Settings()
     return command;
 }
 
-ActionCommand& AppCommands::ResetWindowLayout()
+ActionCommand& AppCommands::resetWindowLayout()
 {
     static ActionCommand command(
         []() { /*Core::mainWindow()->Docking.LoadWindowLayout("Default");*/ }
@@ -68,7 +68,7 @@ ActionCommand& AppCommands::ResetWindowLayout()
     return command;
 }
 
-ActionCommand& AppCommands::ShowDocumentExplorer()
+ActionCommand& AppCommands::showDocumentExplorer()
 {
     static ActionCommand command;
     // Initialize command properties if not already set

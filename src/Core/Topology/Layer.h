@@ -21,22 +21,22 @@ public:
 public:
     virtual std::string GetName() const
     {
-        return myName;
+        return m_Name;
     }
 
 private:
-    std::string myName;
-    bool myIsVisible;
-    bool myIsLocked;
+    std::string m_Name;
+    bool m_IsVisible;
+    bool m_IsLocked;
 
     PresentationMode PresentationMode;
 
-    Color myColor;
+    Color m_Color;
     float Transparency;
     LineStyle LineStyle;
 	LineThickness LineThickness;
 
-	std::shared_ptr<LayerCollection> myLayerCollection;
+	std::shared_ptr<LayerCollection> m_LayerCollection;
 };
 
 #endif  // _Layer_H_

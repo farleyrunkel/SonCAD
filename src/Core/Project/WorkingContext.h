@@ -11,34 +11,34 @@ class WorkingContext
 {
 public:
 	explicit WorkingContext() 
-		: myGridType(Workspace::GridTypes::Rectangular)
-		, myGridStep(1.0)
-		, myGridRotation(0.0)
-		, myGridDivisions(8)
-		, myWorkingPlane(gp_Pln(gp::XOY()))
+		: m_GridType(Workspace::GridTypes::Rectangular)
+		, m_GridStep(1.0)
+		, m_GridRotation(0.0)
+		, m_GridDivisions(8)
+		, m_WorkingPlane(gp_Pln(gp::XOY()))
 	{}
 
-	gp_Pln GetWorkingPlane() const { return myWorkingPlane; }
-	void SetWorkingPlane(const gp_Pln& thePlane) { myWorkingPlane = thePlane; }
+	gp_Pln GetWorkingPlane() const { return m_WorkingPlane; }
+	void SetWorkingPlane(const gp_Pln& thePlane) { m_WorkingPlane = thePlane; }
 
-	Workspace::GridTypes GetGridType() const { return myGridType; }
-	void SetGridType(Workspace::GridTypes theType) { myGridType = theType; }
+	Workspace::GridTypes GetGridType() const { return m_GridType; }
+	void SetGridType(Workspace::GridTypes theType) { m_GridType = theType; }
 
-	double GetGridStep() const { return myGridStep; }
-	void SetGridStep(double theStep) { myGridStep = theStep; }
+	double GetGridStep() const { return m_GridStep; }
+	void SetGridStep(double theStep) { m_GridStep = theStep; }
 
-	double GetGridRotation() const { return myGridRotation; }
-	void SetGridRotation(double theRotation) { myGridRotation = theRotation; }
+	double GetGridRotation() const { return m_GridRotation; }
+	void SetGridRotation(double theRotation) { m_GridRotation = theRotation; }
 
-	int GetGridDivisions() const { return myGridDivisions; }
-	void SetGridDivisions(int theDivisions) { myGridDivisions = theDivisions; }
+	int GetGridDivisions() const { return m_GridDivisions; }
+	void SetGridDivisions(int theDivisions) { m_GridDivisions = theDivisions; }
 
 private:
-	gp_Pln myWorkingPlane;
-	Workspace::GridTypes myGridType;
-	double myGridStep;
-	double myGridRotation;
-	int myGridDivisions;
+	gp_Pln m_WorkingPlane;
+	Workspace::GridTypes m_GridType;
+	double m_GridStep;
+	double m_GridRotation;
+	int m_GridDivisions;
 };
 
 #endif // !_WorkingContext_H_

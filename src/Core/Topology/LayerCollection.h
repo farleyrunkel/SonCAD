@@ -18,12 +18,12 @@ public:
     explicit LayerCollection() {}
 
 private:
-	std::vector<std::shared_ptr<Layer>> myLayers;
-	bool myIsolateActiveLayer;
-	std::shared_ptr<Layer> myActiveLayer;
-	std::shared_ptr<Document> myModel;
+	std::vector<std::shared_ptr<Layer>> m_Layers;
+	bool m_IsolateActiveLayer;
+	std::shared_ptr<Layer> m_ActiveLayer;
+	std::shared_ptr<Document> m_Model;
 
-	std::string myName;
+	std::string m_Name;
 };
 
 #endif  // _LayerCollection_H_

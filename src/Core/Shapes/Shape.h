@@ -46,17 +46,17 @@ public:
 public:
 
 private:
-    bool myIsSkipped;
-    bool myIsLoadedFromCache;
-    bool myIsInvalidating;
+    bool m_IsSkipped;
+    bool m_IsLoadedFromCache;
+    bool m_IsInvalidating;
 
-    std::shared_ptr<Body> myBody;
+    std::shared_ptr<Body> m_Body;
 private:
-    TCollection_AsciiString myName;
+    TCollection_AsciiString m_Name;
 
-    TopoDS_Shape myBRep;
-    TopoDS_Shape myTransformedBRep;
-    NCollection_Vector<NamedSubshape> myNamedSubshapes;
+    TopoDS_Shape m_BRep;
+    TopoDS_Shape m_TransformedBRep;
+    NCollection_Vector<NamedSubshape> m_NamedSubshapes;
 };
 
 #endif  // CORE_SHAPES_SHAPE_H_

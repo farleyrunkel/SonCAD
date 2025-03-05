@@ -23,9 +23,9 @@ public:
 public:
 
 private:
-    boost::uuids::uuid myLayerId;
+    boost::uuids::uuid m_LayerId;
 
-    std::shared_ptr<Document> myDocument;
+    std::shared_ptr<Document> m_Document;
 };
 
 #endif  // CORE_TOPOLOGY_ENTITY_H_

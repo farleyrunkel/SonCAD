@@ -1,4 +1,4 @@
 
 #include "Core/Project/CoreContext.h"
 
-CoreContext* CoreContext::myCurrent = nullptr;
+CoreContext* CoreContext::m_Current = nullptr;

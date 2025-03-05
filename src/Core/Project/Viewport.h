@@ -1,5 +1,5 @@
-#ifndef myViewport_h_
-#define myViewport_h_
+#ifndef m_Viewport_h_
+#define m_Viewport_h_
 
 #include <boost/signals2.hpp>
 
@@ -19,8 +19,6 @@ class Workspace;
 
 class Viewport : public enable_property_changed_signal
 {
-	using ViewportChangedSignal = boost::signals2::signal<void(Viewport*)>;
-
 public:
 	enum RenderModes
 	{
@@ -32,79 +30,79 @@ public:
 public:
 	explicit Viewport(const std::shared_ptr<Workspace>& workspace);
 
-	double PixelSize() const
+	double pixelSize() const
 	{
-		if(!myV3dView.IsNull() && myV3dView->IfWindow())
+		if(!m_V3dView.IsNull() && m_V3dView->IfWindow())
 		{
-			return myV3dView->Convert(1.0);
+			return m_V3dView->Convert(1.0);
 		}
 		return 1.0;
 	}
 
-	Graphic3d_Vec2d Size() const
+	Graphic3d_Vec2d size() const
 	{
 		double width = 0, height = 0;
-		myV3dView->Size(width, height);
+		m_V3dView->Size(width, height);
 		return Graphic3d_Vec2d(width, height);
 	}
 
-	Graphic3d_Vec2i ScreenSize() const
+	Graphic3d_Vec2i screenSize() const
 	{
-		double pixelSize = PixelSize();
+		double pixel = pixelSize();
 		double width = 100, height = 100;
-		myV3dView->Size(width, height);
-		return Graphic3d_Vec2i(width / pixelSize, height / pixelSize);
+		m_V3dView->Size(width, height);
+		return Graphic3d_Vec2i(width / pixel, height / pixel);
 	}
 
-	double GizmoScale() const
+	double gizmoScale() const
 	{
 		double width = 100, height = 100;
-		myV3dView->Size(width, height);
+		m_V3dView->Size(width, height);
 		double scale = Min(width, height) / 10.0;
 		return scale;
 	}
 
-	double DpiScale() const
+	double dpiScale() const
 	{
-		return myDpiScale;
+		return m_DpiScale;
 	}
 
-	void SetDpiScale(double dpiScale)
+	void setDpiScale(double dpiScale)
 	{
-		myDpiScale = dpiScale;
+		m_DpiScale = dpiScale;
 	}
 
-	void Init(bool useMsaa);
+	void init(bool useMsaa);
 
-	bool ScreenToPoint(gp_Pln plane, int screenX, int screenY, gp_Pnt& resultPnt);
+	bool screenToPoint(gp_Pln plane, int screenX, int screenY, gp_Pnt& resultPnt);
 
-	void UpdateRenderMode();
+	void updateRenderMode();
 
-	void Resize();
+	void resize();
 
-private:
-	std::shared_ptr<Workspace> myWorkspace;
-	std::shared_ptr<Document> myDocument;
-
-	Handle(V3d_Viewer) myViewer;
-	Handle(V3d_View) myV3dView;
-	Handle(AIS_InteractiveContext) myContext;
-	Handle(AIS_AnimationCamera) myAnimationCamera;
-
-	RenderModes myRenderMode = RenderModes::SolidShaded;
-
-	gp_Pnt myEyePoint = gp_Pnt(10, 10, 10);
-	gp_Pnt myTargetPoint = gp_Pnt(0, 0, 0);
-
-	double myTwist = 0.0f;
-	double myScale = 100.0f;
-	double myDpiScale = 1.0;
-
-	bool myNeedsRedraw;
-	bool myNeedsImmediateRedraw;
+public:
+	boost::signals2::signal<void(Viewport*)> sig_ViewportChanged;
 
 private:
-	ViewportChangedSignal emit_ViewportChanged;
+	std::shared_ptr<Workspace> m_Workspace;
+	std::shared_ptr<Document> m_Document;
+
+	Handle(V3d_Viewer) m_Viewer;
+	Handle(V3d_View) m_V3dView;
+	Handle(AIS_InteractiveContext) m_Context;
+	Handle(AIS_AnimationCamera) m_AnimationCamera;
+
+	RenderModes m_RenderMode = RenderModes::SolidShaded;
+
+	gp_Pnt m_EyePoint = gp_Pnt(10, 10, 10);
+	gp_Pnt m_TargetPoint = gp_Pnt(0, 0, 0);
+
+	double m_Twist = 0.0f;
+	double m_Scale = 100.0f;
+	double m_DpiScale = 1.0;
+
+	bool m_NeedsRedraw;
+	bool m_NeedsImmediateRedraw;
 };
 
 #endif // !_Viewport_h_

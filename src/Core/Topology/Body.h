@@ -17,11 +17,11 @@ public:
 public:
     virtual std::string GetName() const
     {
-        return myName;
+        return m_Name;
     }
 
 private:
-    std::string myName;
+    std::string m_Name;
 
 };
 

@@ -10,12 +10,12 @@
 class AppCommands
 {
 public:
-    static  RelayCommand& InitApplication();
-    static ActionCommand& ExitApplication();
-    static ActionCommand& ShowAboutDialog();
-    static ActionCommand& Settings();
-    static ActionCommand& ResetWindowLayout();
-    static ActionCommand& ShowDocumentExplorer();
+    static  RelayCommand& initApplication();
+    static ActionCommand& exitApplication();
+    static ActionCommand& showAboutDialog();
+    static ActionCommand& settings();
+    static ActionCommand& resetWindowLayout();
+    static ActionCommand& showDocumentExplorer();
 };
 
 #endif  // APP_COMMANDS_APPCOMMANDS_H_

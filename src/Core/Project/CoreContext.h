@@ -14,16 +14,16 @@ public:
 
 	static CoreContext* Current()
 	{
-		return myCurrent;
+		return m_Current;
 	}
 
 private:
-	std::shared_ptr<Workspace> myWorkspace;
-	std::shared_ptr<Viewport> myViewport;
-	std::shared_ptr<Document> myDocument;
+	std::shared_ptr<Workspace> m_Workspace;
+	std::shared_ptr<Viewport> m_Viewport;
+	std::shared_ptr<Document> m_Document;
 
 private:
-	static CoreContext* myCurrent;
+	static CoreContext* m_Current;
 };
 
 #endif // !_CoreContext_h_

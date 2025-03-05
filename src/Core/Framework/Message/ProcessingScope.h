@@ -5,63 +5,57 @@
 #include <iostream>
 #include <stdexcept>
 #include <memory>
+#include <string>
 
 #include "Core/Topology/Entity.h"
-//#include "Messages.h"    // Assuming Messages is defined elsewhere
-//#include "ExceptionHelper.h" // Assuming ExceptionHelper is defined elsewhere
+#include "Core/Framework/Message/Messages.h"
+#include "Core/Framework/Message/MessageManager.h"
 
-class ProcessingScope 
+// Processing scope management class
+class ProcessingScope
 {
 public:
-    // Constructor
-    ProcessingScope(Entity* referenceEntity, const std::string& description) {
-        //if (CoreContext::current() && CoreContext::current()->MessageHandler) {
-        //    CoreContext::current()->MessageHandler->OnProcessingStarted(referenceEntity, description);
-        //}
-    }
-
-    // Destructor
-    ~ProcessingScope() {
-        Dispose();
-    }
-
-    // ExecuteWithGuards static method
-    static bool ExecuteWithGuards(Entity* referenceEntity, const std::string& description, const std::function<bool()>& whatToDo) {
-        try {
-            ProcessingScope scope(referenceEntity, description);
-            return whatToDo();
+    ProcessingScope(std::shared_ptr<Entity> entity, const std::string& desc)
+        : entity_(entity), handler_(Messages::getHandler())
+    {
+        if(handler_)
+        {
+            handler_->onProcessingStarted(entity, desc);
+            // Log the start of processing
+            std::cout << "Processing started: " << desc << std::endl;
         }
-        catch (const std::exception& e) {
-            // Handle standard exceptions
-            //Messages::Exception("Exception while " + description + ".", e, referenceEntity);
-            std::cerr << e.what() << std::endl;
+    }
+
+    ~ProcessingScope()
+    {
+        if(handler_)
+        {
+            handler_->onProcessingStopped();
+            // Log the end of processing
+            std::cout << "Processing stopped" << std::endl;
+        }
+    }
+
+    template<typename F>
+    static bool executeWithGuards(std::shared_ptr<Entity> entity, const std::string& desc, F&& func)
+    {
+        try
+        {
+            ProcessingScope scope(entity, desc);
+            return func();
+        }
+        catch(const std::exception& e)
+        {
+            // Enhanced error logging with exception details
+            std::string errorMsg = "Exception in " + desc + ": " + e.what();
+            Messages::error(errorMsg, e, entity);
             return false;
         }
-        catch (...) {
-            // Handle SEH or other unknown exceptions
-            //auto info = ExceptionHelper::GetNativeExceptionInfo();
-            //if (info) {
-            //    Messages::Exception("Modeling Exception - " + info->Message, std::current_exception(), referenceEntity);
-            //}
-            //else {
-            //    Messages::Exception("Exception while " + description + ".", std::current_exception(), referenceEntity);
-            //}
-            std::cerr << "Unknown exception occurred." << std::endl;
-            return false;
-        }
-    }
-
-    // Dispose method
-    void Dispose() {
-        //if (CoreContext::current() && CoreContext::current()->MessageHandler) {
-        //    CoreContext::current()->MessageHandler->OnProcessingStopped();
-        //}
     }
 
 private:
-    // Disable copy constructor and assignment operator
-    ProcessingScope(const ProcessingScope&) = delete;
-    ProcessingScope& operator=(const ProcessingScope&) = delete;
+    std::shared_ptr<Entity> entity_;
+    std::shared_ptr<MessageHandler> handler_;
 };
 
 #endif  // CORE_FRAMEWORK_MESSAGE_PROCESSINGSCOPE_H_

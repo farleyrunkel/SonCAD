@@ -10,28 +10,28 @@
 #include "Core/Project/Workspace.h"
 
 Viewport::Viewport(const std::shared_ptr<Workspace>& workspace)
-    : myWorkspace(workspace)
+    : m_Workspace(workspace)
 {}
 
-void Viewport::Init(bool useMsaa)
+void Viewport::init(bool useMsaa)
 {
-	if(!myV3dView.IsNull())
+	if(!m_V3dView.IsNull())
 	{
 		return;
 	}
 
-	myV3dView = myWorkspace->GetViewer()->CreateView();
+	m_V3dView = m_Workspace->getViewer()->CreateView();
 
-	myAnimationCamera = new AIS_AnimationCamera("ViewCamera", myV3dView);
+	m_AnimationCamera = new AIS_AnimationCamera("ViewCamera", m_V3dView);
 
-	myV3dView->SetBgGradientColors(
+	m_V3dView->SetBgGradientColors(
 		Quantity_Color(0.624f, 0.714f, 0.804f, Quantity_TOC_RGB),
 		Quantity_Color(0.424f, 0.482f, 0.545f, Quantity_TOC_RGB),
 		Aspect_GFM_VER,
 		false
 	);
 
-	auto renderParams = myV3dView->ChangeRenderingParams();
+	auto renderParams = m_V3dView->ChangeRenderingParams();
 
 	renderParams.NbMsaaSamples = useMsaa ? 4 : 0;
 	renderParams.IsAntialiasingEnabled = useMsaa;
@@ -42,30 +42,30 @@ void Viewport::Init(bool useMsaa)
 	renderParams.IsReflectionEnabled = true;
 	renderParams.IsTransparentShadowEnabled = true;
 
-	myV3dView->SetAt(myTargetPoint.X(), myTargetPoint.Y(), myTargetPoint.Z());
-	myV3dView->SetEye(myEyePoint.X(), myEyePoint.Y(), myEyePoint.Z());
-	myV3dView->SetScale(myScale);
-	myV3dView->SetTwist(myTwist);
+	m_V3dView->SetAt(m_TargetPoint.X(), m_TargetPoint.Y(), m_TargetPoint.Z());
+	m_V3dView->SetEye(m_EyePoint.X(), m_EyePoint.Y(), m_EyePoint.Z());
+	m_V3dView->SetScale(m_Scale);
+	m_V3dView->SetTwist(m_Twist);
 }
 
-bool Viewport::ScreenToPoint(gp_Pln plane, int screenX, int screenY, gp_Pnt& resultPnt)
+bool Viewport::screenToPoint(gp_Pln plane, int screenX, int screenY, gp_Pnt& resultPnt)
 {
     return false;
 }
 
 
-void Viewport::UpdateRenderMode()
+void Viewport::updateRenderMode()
 {
-	if(myV3dView.IsNull())
+	if(m_V3dView.IsNull())
 	{
 		return;
 	}
 
-	myV3dView->SetComputedMode(myRenderMode == RenderModes::HLR);
+	m_V3dView->SetComputedMode(m_RenderMode == RenderModes::HLR);
 
-	auto renderParams = myV3dView->ChangeRenderingParams();
+	auto renderParams = m_V3dView->ChangeRenderingParams();
 
-	if(myRenderMode == RenderModes::Raytraced)
+	if(m_RenderMode == RenderModes::Raytraced)
 	{
 		renderParams.Method = Graphic3d_RM_RAYTRACING;
 	}
@@ -75,13 +75,13 @@ void Viewport::UpdateRenderMode()
 	}
 }
 
-void Viewport::Resize()
+void Viewport::resize()
 {
-	if(myV3dView.IsNull())
+	if(m_V3dView.IsNull())
 	{
 		return;
 	}
-	myV3dView->MustBeResized();
+	m_V3dView->MustBeResized();
 
-	emit_ViewportChanged(this);
+	sig_ViewportChanged(this);
 }

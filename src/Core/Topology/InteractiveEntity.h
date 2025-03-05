@@ -20,14 +20,14 @@ public:
 public:
     virtual std::string GetName() const
     {
-        return myName;
+        return m_Name;
     }
 
 private:
-    boost::uuids::uuid myLayerId;
+    boost::uuids::uuid m_LayerId;
 
-    std::string myName;
-    bool myIsVisible;
+    std::string m_Name;
+    bool m_IsVisible;
 };
 
 #endif  // _InteractiveEntity_H_
