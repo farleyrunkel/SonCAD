@@ -23,13 +23,13 @@ public:
 		return myCurrent;
 	}
 
-	std::shared_ptr<ModelController> documentController() const
+	std::shared_ptr<DocumentController> documentController() const
 	{
 		return myModelController;
 	}
 
 private:
-	std::shared_ptr<ModelController> myModelController;
+	std::shared_ptr<DocumentController> myModelController;
 	std::shared_ptr<ViewportController> myViewportController;
 	std::shared_ptr<WorkspaceController> myWorkspaceController;
 

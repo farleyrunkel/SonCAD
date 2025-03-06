@@ -1,21 +1,20 @@
 #ifndef _ModelController_h
 #define _ModelController_h
 
-#include <vector>
 #include <string>
+#include <vector>
 
-#include <Standard_Handle.hxx>
- 
-#include "Comm/BaseObject.h"
+#include "Comm/Property.h"
+#include "Core/Project/Document.h"
 
-class ModelController : public enable_property_changed_signal
+class DocumentController
 {
 public:
-	explicit ModelController() {}
+	explicit DocumentController() {}
 
 	bool askForSavingModelChanges() { return true;}
 
-	void newModel() {}
+	std::shared_ptr<Document> newModel();
 
 private:
 	const int myMaxMruCount = 12;

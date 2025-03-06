@@ -24,8 +24,8 @@ public:
                 controller->newModel();
             }
         }, [] {
-            auto* context = InteractiveContext::current();
-            return context && context->documentController();
+            auto context = InteractiveContext::current();
+            return context->documentController() != nullptr;
         });
 
         if(cmd.text().isEmpty())
