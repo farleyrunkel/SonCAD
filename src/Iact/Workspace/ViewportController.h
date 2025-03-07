@@ -19,7 +19,7 @@
 
 class WorkspaceController;
 
-class ViewportController : public enable_property_changed_signal
+class ViewportController : public BaseObject
 {
 public:
 	enum RubberbandSelectionMode
@@ -52,6 +52,11 @@ public:
 
 public:
 	explicit ViewportController() {}
+
+	auto viewport()
+	{
+		return myViewport;
+	}
 
 private:
 	const int RubberbandFreehandSelectionThresholdSquared = 100;

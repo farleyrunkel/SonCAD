@@ -30,6 +30,7 @@ public:
 	};
 
 public:
+	Workspace() {}
 	explicit Workspace(const std::shared_ptr<Document>& theDoc);
 
 public:
@@ -63,6 +64,8 @@ public:
 
 	std::weak_ptr<Document> document() const { return m_Document; }
 	void setDocument(const std::shared_ptr<Document>& theValue) { m_Document = theValue; }
+
+	std::vector<std::shared_ptr<Viewport>>& viewports() { return m_Viewports; }
 
 public:
 	void initV3dViewer();

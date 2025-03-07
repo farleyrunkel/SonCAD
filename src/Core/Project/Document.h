@@ -3,17 +3,26 @@
 #ifndef _Document_H_
 #define _Document_H_
 
-#include "Comm/BaseObject.h"
-
 #include <TDocStd_Document.hxx>
 
-class Document : public enable_property_changed_signal
+#include "Core/Project/Workspace.h"
+
+class LayerCollection;
+
+class Document
 {
 public:
-    Document();
+	Document();
+
+	std::vector<std::shared_ptr<Workspace>>& workspaces();
+
+	std::shared_ptr<LayerCollection> layers() const;
 
 private:
 	Handle(TDocStd_Document) m_document;
+
+	std::vector<std::shared_ptr<Workspace>> m_workspaces;
+	std::shared_ptr<LayerCollection> m_layers;
 };
 
 #endif  // _Document_H_

@@ -14,7 +14,7 @@
 
 class WorkspaceController;
 
-class SelectionContext : public enable_property_changed_signal
+class SelectionContext : public BaseObject
 {
 public:
     enum Options

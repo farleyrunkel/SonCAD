@@ -11,7 +11,7 @@
 // Forward declarations
 class WorkspaceController;
 
-class VisualObjectManager : public enable_property_changed_signal
+class VisualObjectManager : public BaseObject
 {
 
 protected:

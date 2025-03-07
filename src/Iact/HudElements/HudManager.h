@@ -4,13 +4,14 @@
 #define IACT_HUD_ELEMENTS_IHUDMANAGER_H_
 
 #include <functional>
-#include <string>
+
+#include <QString>
 
 #include "Comm/BaseObject.h"
 
 class HudElement;
 
-class HudManager : public enable_property_changed_signal
+class HudManager : public BaseObject
 {
 public:
     virtual ~HudManager() = default;
@@ -19,7 +20,7 @@ public:
     virtual void removeElement(HudElement* element) = 0;
     virtual void removeElements(std::function<bool(HudElement*)> predicate) = 0;
 
-    virtual void setHintMessage(const std::string& message) = 0;
+    virtual void setHintMessage(const QString& message) = 0;
 };
 
 #endif  // IACT_HUD_ELEMENTS_IHUDMANAGER_H_

@@ -9,7 +9,7 @@
 #include <Standard_Type.hxx>
 #include "Comm/BaseObject.h"
 
-class SnapBase : public enable_property_changed_signal
+class SnapBase : public BaseObject
 {
 public:
 	SnapBase() {}

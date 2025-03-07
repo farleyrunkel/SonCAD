@@ -3,13 +3,14 @@
 #ifndef _LayerCollection_H_
 #define _LayerCollection_H_
 
-#include <vector>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include <boost/signals2.hpp>
 
 #include "Core/Project/Document.h"
+#include "Core/Topology/Entity.h"
 #include "Core/Topology/Layer.h"
 
 class LayerCollection : public Entity

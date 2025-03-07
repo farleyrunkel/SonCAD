@@ -7,13 +7,13 @@
 
 #include <boost/signals2.hpp>
 
-class enable_property_changed_signal
+class BaseObject
 {
 public:
 	using PropertyChangedSignal = boost::signals2::signal<void(const std::string&)>;
 
 public:
-	enable_property_changed_signal();
+	BaseObject();
 
 	PropertyChangedSignal& propertyChanged() { return m_propertyChanged; }
 

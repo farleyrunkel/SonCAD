@@ -12,7 +12,7 @@
 class Tool;
 class WorkspaceController;
 
-class EditorState : public enable_property_changed_signal
+class EditorState : public BaseObject
 {
 public:
 	EditorState() {}

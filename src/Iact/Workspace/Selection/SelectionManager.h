@@ -11,7 +11,7 @@
 
 class WorkspaceController;
 
-class SelectionManager : public enable_property_changed_signal
+class SelectionManager : public BaseObject
 {
 public:
     enum SelectionMode

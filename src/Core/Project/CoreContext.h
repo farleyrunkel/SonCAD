@@ -16,20 +16,6 @@
 class CoreContext
 {
 public:
-    CoreContext()
-    {
-        current_ = this;
-        MessageManager_ = std::make_unique<MessageManager>();
-    }
-
-    CoreContext(const CoreContext&) = delete;
-    CoreContext& operator=(const CoreContext&) = delete;
-
-    virtual ~CoreContext()
-    {
-        dispose(false);
-    }
-
     static CoreContext* current() noexcept
     {
         return current_;
@@ -41,40 +27,15 @@ public:
         current_ = context;
     }
 
-    // Workspace 属性
-    virtual std::shared_ptr<Workspace> workspace() const
-    {
-        return workspace_;
-    }
-
-    virtual void setWorkspace(std::shared_ptr<Workspace> workspace)
-    {
-        workspace_ = std::move(workspace);
-        //setViewport(workspace_ ? workspace_->viewports().front() : nullptr);
-        raisePropertyChanged("workspace");
-    }
-
-    // Viewport 属性
-    virtual std::shared_ptr<Viewport> viewport() const
-    {
-        return viewport_;
-    }
-
-    virtual void setViewport(std::shared_ptr<Viewport> viewport)
-    {
-        viewport_ = std::move(viewport);
-        raisePropertyChanged("viewport");
-    }
-
     // Document 属性
     virtual std::shared_ptr<Document> document() const
     {
         return document_;
     }
 
-    virtual void setDocument(std::shared_ptr<Document> document)
+    virtual void setDocument(const std::shared_ptr<Document>& document)
     {
-        document_ = std::move(document);
+        document_ = document;
 
         raisePropertyChanged("document");
         raisePropertyChanged("undoHandler");
@@ -85,27 +46,62 @@ public:
         //    document_->layers()->onActivated();
         //}
 
-        //// 检查 Workspace 是否属于新 Document
-        //if(document_ && !document_->workspaces().contains(workspace_))
-        //{
-        //    setWorkspace(document_->workspaces().empty() ? nullptr : document_->workspaces().front());
-        //}
+        // 检查 Workspace 是否属于新 Document
+
+		auto workspaces = document_->workspaces();
+        auto found = std::find(workspaces.begin(), workspaces.end(), workspace_);
+        if(document_ && found == workspaces.end())
+        {
+			auto workspace = workspaces.empty() 
+                ? std::make_shared<Workspace>() 
+                : workspaces.front();
+            setWorkspace(workspace);
+        }
     }
 
-    // Layers 属性（只读）
-    virtual LayerCollection* layers() const
+    // Workspace 属性
+    virtual std::shared_ptr<Workspace> workspace() const
     {
-        //return document_ ? document_->layers() : nullptr;
+        return workspace_;
     }
 
-    //// MessageManager 属性（只读）
-    //MessageManager* MessageManager() const
-    //{
-    //    return MessageManager_.get();
-    //}
+    virtual void setWorkspace(const std::shared_ptr<Workspace>& workspace)
+    {
+        workspace_ = workspace;
+
+        auto viewports = workspace_->viewports();
+		auto viewport = viewports.empty() 
+            ? std::make_shared<Viewport>() 
+            : viewports.front();
+		setViewport(viewport);
+
+        raisePropertyChanged("workspace");
+    }
+
+    virtual std::shared_ptr<Viewport> viewport() const
+    {
+        return viewport_;
+    }
+
+    virtual void setViewport(const std::shared_ptr<Viewport>& viewport)
+    {
+        viewport_ = viewport;
+        raisePropertyChanged("viewport");
+    }
+
+    std::shared_ptr<LayerCollection> layers() const
+    {
+        return document_ ? document_->layers() : nullptr;
+    }
+
+    // MessageManager 属性（只读）
+    std::shared_ptr<MessageManager> messageManager() const
+    {
+        return MessageManager_;
+    }
 
     // Parameters 属性
-    virtual std::shared_ptr<ParameterSets> parameters()
+    std::shared_ptr<ParameterSets> parameters()
     {
         if(!parameterSets_)
         {
@@ -140,11 +136,25 @@ public:
     boost::signals2::signal<void(const std::string&)> propertyChanged;
 
 protected:
+    CoreContext()
+    {
+        current_ = this;
+        MessageManager_ = std::make_shared<MessageManager>();
+    }
+
+    CoreContext(const CoreContext&) = delete;
+    CoreContext& operator=(const CoreContext&) = delete;
+
+    virtual ~CoreContext()
+    {
+        dispose(false);
+    }
+
     virtual void dispose(bool disposing)
     {
         if(disposing)
         {
-            //MessageManager_.reset();
+            MessageManager_.reset();
         }
         workspace_.reset();
         viewport_.reset();
@@ -158,11 +168,12 @@ protected:
 
 private:
     static CoreContext* current_;
+
     std::shared_ptr<Document> document_;
     std::shared_ptr<Workspace> workspace_;
     std::shared_ptr<Viewport> viewport_;
     std::shared_ptr<ParameterSets> parameterSets_;
-    std::unique_ptr<MessageManager> MessageManager_;
+    std::shared_ptr<MessageManager> MessageManager_;
 };
 
 #endif // _CoreContext_h_

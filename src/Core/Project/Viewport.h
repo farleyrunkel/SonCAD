@@ -17,7 +17,7 @@
 
 class Workspace;
 
-class Viewport : public enable_property_changed_signal
+class Viewport : public BaseObject
 {
 public:
 	enum RenderModes
@@ -28,6 +28,7 @@ public:
 	};
 
 public:
+	Viewport(){}
 	explicit Viewport(const std::shared_ptr<Workspace>& workspace);
 
 	double pixelSize() const

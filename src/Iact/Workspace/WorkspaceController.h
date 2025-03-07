@@ -19,7 +19,7 @@
 #include "Iact/Workspace/ViewportController.h"
 #include "Occt/AisExtensions/AISX_Grid.h"
 
-class WorkspaceController : public enable_property_changed_signal
+class WorkspaceController : public BaseObject
 {
 public:
 	explicit WorkspaceController() {}

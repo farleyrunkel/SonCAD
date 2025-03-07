@@ -3,7 +3,7 @@
 // Own include
 #include "Comm/BaseObject.h"
 
-enable_property_changed_signal::enable_property_changed_signal()
+BaseObject::BaseObject()
 	: m_suppressed(false)
 {}
 

@@ -13,7 +13,7 @@
 class WorkspaceController;
 
 
-class VisualObject : public enable_property_changed_signal
+class VisualObject : public BaseObject
 {
 
 protected:

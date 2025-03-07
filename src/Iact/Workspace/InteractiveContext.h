@@ -15,21 +15,21 @@ class WorkspaceController;
 class InteractiveContext : public CoreContext
 {
 public:
-	InteractiveContext() {};
+	InteractiveContext();;
 	virtual ~InteractiveContext() {};
 
 	static InteractiveContext* current()
 	{
-		return myCurrent;
+		return m_current;
 	}
 
 	std::shared_ptr<DocumentController> documentController() const
 	{
-		return myModelController;
+		return m_modelController;
 	}
 
 private:
-	std::shared_ptr<DocumentController> myModelController;
+	std::shared_ptr<DocumentController> m_modelController;
 	std::shared_ptr<ViewportController> myViewportController;
 	std::shared_ptr<WorkspaceController> myWorkspaceController;
 
@@ -39,7 +39,7 @@ private:
 	const int _MaxScriptMruCount = 1;
 
 private:
-	static InteractiveContext* myCurrent;
- };
+	static InteractiveContext* m_current;
+};
 
 #endif // !_InteractiveContext_h

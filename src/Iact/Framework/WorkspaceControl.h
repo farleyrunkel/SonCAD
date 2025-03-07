@@ -15,7 +15,7 @@
 
 class WorkspaceController;
 
-class WorkspaceControl : public enable_property_changed_signal
+class WorkspaceControl : public BaseObject
 {
 public:
 	explicit WorkspaceControl() {}
