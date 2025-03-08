@@ -30,8 +30,9 @@ public:
 	};
 
 public:
-	Workspace() {}
 	explicit Workspace(const std::shared_ptr<Document>& theDoc);
+
+	void initViewport();
 
 public:
 	//! Getter and Setter

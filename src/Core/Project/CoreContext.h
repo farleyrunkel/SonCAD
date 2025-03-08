@@ -52,9 +52,16 @@ public:
         auto found = std::find(workspaces.begin(), workspaces.end(), workspace_);
         if(document_ && found == workspaces.end())
         {
-			auto workspace = workspaces.empty() 
-                ? std::make_shared<Workspace>() 
-                : workspaces.front();
+            std::shared_ptr<Workspace> workspace = nullptr;
+            if(workspaces.empty()) 
+            {
+                workspace = std::make_shared<Workspace>(document);
+                workspace->initViewport();
+            }
+            else
+            {
+                workspace = workspaces.front();
+            }
             setWorkspace(workspace);
         }
     }
@@ -74,7 +81,6 @@ public:
             ? std::make_shared<Viewport>() 
             : viewports.front();
 		setViewport(viewport);
-
         raisePropertyChanged("workspace");
     }
 

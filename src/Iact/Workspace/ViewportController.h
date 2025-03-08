@@ -15,11 +15,10 @@
 #include "Core/Project/Viewport.h"
 #include "Core/Project/Workspace.h"
 #include "Occt/OcctExtensions/AIS_ViewCubeEx.h"
-#include "Comm/BaseObject.h"
 
 class WorkspaceController;
 
-class ViewportController : public BaseObject
+class ViewportController
 {
 public:
 	enum RubberbandSelectionMode
@@ -51,7 +50,7 @@ public:
 
 
 public:
-	explicit ViewportController() {}
+	ViewportController(const std::shared_ptr<Viewport>& viewport, const std::shared_ptr<WorkspaceController>& WC) {}
 
 	auto viewport()
 	{

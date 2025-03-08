@@ -1,11 +1,13 @@
 // Copyright [2024] SunCAD
 
+// Own include
+#include "App/Commands/AppCommands.h"
+
 // Qt includes
 #include <QIcon>
 
 // Project includes
 #include "App/Application.h"
-#include "App/Commands/AppCommands.h"
 #include "App/Resource.h"
 #include "Iact/Commands/CommandHelper.h"
 #include "Iact/Commands/DocumentCommands.h"

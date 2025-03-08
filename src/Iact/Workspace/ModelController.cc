@@ -4,7 +4,7 @@
 
 std::shared_ptr<Document> DocumentController::newModel()
 {
-	auto newDocu = std::make_shared<Document>();
-	InteractiveContext::current()->setDocument(newDocu);
-	return newDocu;
+	auto doc = std::make_shared<Document>();
+	InteractiveContext::current()->setDocument(doc);
+	return doc;
 }

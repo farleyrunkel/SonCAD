@@ -52,7 +52,12 @@ Application::Application(int& argc, char** argv)
 }
 
 Application::~Application()
-{}
+{
+	delete m_mainWindow;
+	delete m_welcomeDialog;
+	delete m_appContext;
+	delete m_commandManager;
+}
 
 // Initialize synchronization mechanisms
 void Application::initTranslation()

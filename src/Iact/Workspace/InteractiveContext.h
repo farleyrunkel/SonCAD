@@ -16,22 +16,22 @@ class InteractiveContext : public CoreContext
 {
 public:
 	InteractiveContext();;
-	virtual ~InteractiveContext() {};
+	virtual ~InteractiveContext();;
 
-	static InteractiveContext* current()
-	{
-		return m_current;
-	}
+	static InteractiveContext* current();
 
-	std::shared_ptr<DocumentController> documentController() const
-	{
-		return m_modelController;
-	}
+	std::shared_ptr<DocumentController> documentController() const;
+
+	void setDocumentController(const std::shared_ptr<DocumentController>& documentController);
+
+	virtual void setWorkspace(const std::shared_ptr<Workspace>& workspace) override;
+
+	virtual void setViewport(const std::shared_ptr<Viewport>& value) override;
 
 private:
 	std::shared_ptr<DocumentController> m_modelController;
-	std::shared_ptr<ViewportController> myViewportController;
-	std::shared_ptr<WorkspaceController> myWorkspaceController;
+	std::shared_ptr<ViewportController> m_viewportController;
+	std::shared_ptr<WorkspaceController> m_workspaceController;
 
 	std::vector<Quantity_Color> _RecentUsedColors;
 	std::shared_ptr<EditorState> myEditorState;

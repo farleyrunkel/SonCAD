@@ -17,7 +17,8 @@
 #include "DockAreaTitleBar.h"
 #include "DockAreaWidget.h"
 
-#include "Resource.h"
+#include "App/Commands/AppCommands.h"
+#include "App/Resource.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : SARibbonMainWindow(parent)
@@ -162,6 +163,7 @@ void MainWindow::setupDockWidgets()
 
 void MainWindow::onMainWindowLoaded()
 {
+    AppCommands::initApplication().execute();
 }
 
 QAction* MainWindow::createAction(const QString& text, const QString& iconurl)

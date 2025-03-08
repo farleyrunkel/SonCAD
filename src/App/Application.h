@@ -13,9 +13,6 @@
 #include "App/WelcomeDialog.h"
 #include "Pres/Commands/CommandManager.h"
 
-// Forward declarations
-class Core;
-
 class Application : public QApplication
 {
     Q_OBJECT
@@ -28,7 +25,6 @@ private:
     void initTranslation();
 
 private:
-    friend class Core;
 
 private:
     MainWindow* m_mainWindow;

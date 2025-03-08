@@ -37,6 +37,9 @@ Workspace::Workspace(const std::shared_ptr<Document>& theDoc)
 	m_GlobalWorkingContext = std::make_shared<WorkingContext>();
 	m_CurrentWorkingContext = m_GlobalWorkingContext;
 
+}
+void Workspace::initViewport()
+{
 	m_Viewports.push_back(std::make_shared<Viewport>(shared_from_this()));
 }
 
