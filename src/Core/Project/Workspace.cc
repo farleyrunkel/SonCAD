@@ -43,6 +43,11 @@ void Workspace::initViewport()
 	m_Viewports.push_back(std::make_shared<Viewport>(shared_from_this()));
 }
 
+Handle(AIS_InteractiveContext) Workspace::aisContext() const
+{
+	return m_context;
+}
+
 void Workspace::initV3dViewer()
 {
 	if(m_Viewer.IsNull())
@@ -75,24 +80,24 @@ void Workspace::initAisContext()
 		initV3dViewer();
 	}
 
-	if(m_Context.IsNull())
+	if(m_context.IsNull())
 	{
-		m_Context = new AIS_InteractiveContext(m_Viewer);
-		m_Context->UpdateCurrentViewer();
+		m_context = new AIS_InteractiveContext(m_Viewer);
+		m_context->UpdateCurrentViewer();
 	}
 
-	m_Context->SetAutoActivateSelection(true);
-	m_Context->SetToHilightSelected(false);
-	m_Context->SetPickingStrategy(SelectMgr_PickingStrategy::SelectMgr_PickingStrategy_OnlyTopmost);
-	m_Context->SetDisplayMode(AIS_DisplayMode::AIS_Shaded, false);
+	m_context->SetAutoActivateSelection(true);
+	m_context->SetToHilightSelected(false);
+	m_context->SetPickingStrategy(SelectMgr_PickingStrategy::SelectMgr_PickingStrategy_OnlyTopmost);
+	m_context->SetDisplayMode(AIS_DisplayMode::AIS_Shaded, false);
 	m_Viewer->DisplayPrivilegedPlane(false, 1.0);
-	m_Context->EnableDrawHiddenLine();
+	m_context->EnableDrawHiddenLine();
 
 	// Reinit ais parameters
 	applyWorkingContext();
-	m_Context->SetPixelTolerance(2);
+	m_context->SetPixelTolerance(2);
 
-	auto drawer = m_Context->DefaultDrawer();
+	auto drawer = m_context->DefaultDrawer();
 	drawer->SetWireAspect(new Prs3d_LineAspect(Colors::Selection, Aspect_TOL_SOLID, 1.0));
 	drawer->SetTypeOfHLR(Prs3d_TypeOfHLR::Prs3d_TOH_PolyAlgo);
 
@@ -101,7 +106,7 @@ void Workspace::initAisContext()
 	style->SetFaceBoundaryDraw(true);
 	style->SetArrowAspect(new Prs3d_ArrowAspect(1.0, 35.0));
 	style->SetFaceBoundaryAspect(new Prs3d_LineAspect(Quantity_NOC_BLACK, Aspect_TOL_SOLID, 1.0));
-	m_Context->SetHighlightStyle(style);
+	m_context->SetHighlightStyle(style);
 
 }
 
@@ -204,7 +209,7 @@ bool Workspace::projectToGrid(const std::shared_ptr<Viewport>& viewport, int scr
 
 void Workspace::applyWorkingContext()
 {
-	if(!m_Context.IsNull())
+	if(!m_context.IsNull())
 	{
 		m_Viewer->SetPrivilegedPlane(m_CurrentWorkingContext->GetWorkingPlane().Position());
 	}

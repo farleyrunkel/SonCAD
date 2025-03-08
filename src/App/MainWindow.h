@@ -3,13 +3,18 @@
 #ifndef APP_MAINWINDOW_H_
 #define APP_MAINWINDOW_H_
 
+// Qt includes
 #include <QWidget>
-#include <QString>
 
+// SARibbonBar includes
 #include "SARibbonBar.h"
 #include "SARibbonMainWindow.h"
 
+// Dock includes
 #include "DockManager.h"
+
+// Project includes
+#include "App/Commands/AppCommands.h"
 
 class MainWindow : public SARibbonMainWindow
 {

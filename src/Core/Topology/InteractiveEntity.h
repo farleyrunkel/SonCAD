@@ -23,6 +23,17 @@ public:
         return m_Name;
     }
 
+	virtual void SetName(const std::string& name)
+	{
+		m_Name = name;
+	}
+
+    // uuid
+	virtual boost::uuids::uuid GetLayerId() const
+	{
+		return m_LayerId;
+	}
+
 private:
     boost::uuids::uuid m_LayerId;
 

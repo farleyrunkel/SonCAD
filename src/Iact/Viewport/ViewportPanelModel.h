@@ -7,7 +7,6 @@
 #include <any>
 
 // Project includes
-#include "Comm/BaseObject.h"
 #include "Comm/ObservableCollection.h"
 #include "Comm/PropertyChangedEventArgs.h"
 #include "Iact/HudElements/HudElement.h"
@@ -16,7 +15,7 @@
 #include "Iact/Workspace/ViewportController.h"
 #include "Iact/Workspace/WorkspaceController.h"
 
-class ViewportPanelModel : public BaseObject, public HudManager
+class ViewportPanelModel : public HudManager
 {
 public:
 	ViewportPanelModel();
@@ -31,21 +30,21 @@ public:
 
     QString hintMessage();
 
-    WorkspaceController* workspaceController() const 
+    std::shared_ptr<WorkspaceController> workspaceController() const
     {
         return m_workspaceController;
     }
 
     // ViewportController getter/setter
-    ViewportController* viewportController() const 
+    std::shared_ptr<ViewportController> viewportController() const 
     {
         return m_viewportController;
     }
 
-    void setViewportController(ViewportController* value);
+    void setViewportController(const std::shared_ptr<ViewportController>& value);
 
     // workspaceController getter/setter
-    void setWorkspaceController(WorkspaceController* value);
+    void setWorkspaceController(const std::shared_ptr<WorkspaceController>& value);
 
     void context_PropertyChanged(const QString& propertyName);
 //
@@ -54,8 +53,8 @@ public:
 //    void hudElementsRemoved(HudElement*);
 
 private:
-    WorkspaceController* m_workspaceController;
-    ViewportController* m_viewportController;
+    std::shared_ptr<WorkspaceController> m_workspaceController;
+    std::shared_ptr<ViewportController> m_viewportController;
     QList<HudElement*> m_hudElements;
     QString m_hintMessage;
 };

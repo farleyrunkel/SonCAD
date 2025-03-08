@@ -36,7 +36,7 @@ ViewportPanel::ViewportPanel(QWidget* parent)
 	//	m_hudContainer->layout()->addWidget(element);
 	//	m_hudContainer->setVisible(true);
 	//	m_hudContainer->update();
-	//	updateHud(m_mouseMovePosition); 
+	//	updateHud(m_mouseMovePosition);
 	//});
 
 	//connect(m_dataContext, &ViewportPanelModel::hudElementsRemoved
@@ -150,10 +150,10 @@ void ViewportPanel::viewportControllerChanged()
 		return;
 
 	if (m_mouseControl != nullptr) {
-		m_mouseControl->setViewportController(viewportController);
+		m_mouseControl->setViewportController(viewportController.get());
 	}
 
-	auto newHost = new ViewportHwndHost(viewportController, this);
+	auto newHost = new ViewportHwndHost(viewportController.get(), this);
 
 	if (m_viewportHwndHost != nullptr) {
 		layout()->replaceWidget(m_viewportHwndHost, newHost);

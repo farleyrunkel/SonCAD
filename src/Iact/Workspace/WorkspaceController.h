@@ -32,6 +32,13 @@ public:
 
 	void updateGrid();
 
+	std::shared_ptr<Workspace> workspace() const
+	{
+		return m_workspace;
+	}
+
+	void invalidate() {}
+
 private:
 	std::shared_ptr<Workspace> m_workspace;
 	std::shared_ptr<Viewport> m_activeViewport;

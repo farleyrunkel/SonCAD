@@ -14,7 +14,7 @@
 class DocumentCommands
 {
 public:
-    static const ActionCommand& createNewModel()
+    static ActionCommand& createNewModel()
     {
         static ActionCommand cmd([] {
             auto context = InteractiveContext::current();

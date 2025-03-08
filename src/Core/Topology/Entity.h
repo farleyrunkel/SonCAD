@@ -21,9 +21,11 @@ public:
     virtual std::string GetName() const { return "Unknown"; }
 
 public:
+    // uuid
+	virtual boost::uuids::uuid uuid() const { return m_uuid; }
 
 private:
-    boost::uuids::uuid m_LayerId;
+    boost::uuids::uuid m_uuid;
 
     std::shared_ptr<Document> m_Document;
 };

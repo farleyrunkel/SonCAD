@@ -24,13 +24,22 @@ public:
 
 	void setDocumentController(const std::shared_ptr<DocumentController>& documentController);
 
+	std::shared_ptr<WorkspaceController> workspaceController() const {
+		return m_workspaceController;
+	}
+
+	std::shared_ptr<ViewportController> viewportController() const
+	{
+		return m_viewportController;
+	}
+
 	virtual void setWorkspace(const std::shared_ptr<Workspace>& workspace) override;
 
 	virtual void setViewport(const std::shared_ptr<Viewport>& value) override;
 
 private:
 	std::shared_ptr<DocumentController> m_modelController;
-	std::shared_ptr<ViewportController> m_viewportController;
+	std::shared_ptr<ViewportController> m_viewportController; 
 	std::shared_ptr<WorkspaceController> m_workspaceController;
 
 	std::vector<Quantity_Color> _RecentUsedColors;

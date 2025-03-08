@@ -52,17 +52,16 @@ public:
         auto found = std::find(workspaces.begin(), workspaces.end(), workspace_);
         if(document_ && found == workspaces.end())
         {
-            std::shared_ptr<Workspace> workspace = nullptr;
             if(workspaces.empty()) 
             {
-                workspace = std::make_shared<Workspace>(document);
+                auto workspace = std::make_shared<Workspace>(document);
                 workspace->initViewport();
+                setWorkspace(workspace);
             }
             else
             {
-                workspace = workspaces.front();
-            }
-            setWorkspace(workspace);
+                setWorkspace(workspaces.front());
+            }        
         }
     }
 

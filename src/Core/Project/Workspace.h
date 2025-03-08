@@ -34,6 +34,8 @@ public:
 
 	void initViewport();
 
+	Handle(AIS_InteractiveContext) aisContext() const;
+
 public:
 	//! Getter and Setter
 
@@ -95,7 +97,7 @@ private:
 	std::shared_ptr<Document> m_Document;
 
 	Handle(V3d_Viewer) m_Viewer;
-	Handle(AIS_InteractiveContext) m_Context;
+	Handle(AIS_InteractiveContext) m_context;
 
 	bool m_NeedsRedraw;
 	bool m_NeedsImmediateRedraw;

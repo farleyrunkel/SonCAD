@@ -1,7 +1,9 @@
 // Copyright [2024] SunCAD
 
+// Own include
 #include "App/MainWindow.h"
 
+// Qt includes
 #include <QAbstractButton>
 #include <QAction>
 #include <QLabel>
@@ -9,16 +11,24 @@
 #include <QScopedPointer>
 #include <QStatusBar>
 
+// SARibbonBar includes
 #include "SARibbonApplicationButton.h"
 #include "SARibbonBar.h"
 #include "SARibbonMenu.h"
 
+// ads includes
 #include "AutoHideDockContainer.h"
 #include "DockAreaTitleBar.h"
 #include "DockAreaWidget.h"
 
-#include "App/Commands/AppCommands.h"
+// Project includes
 #include "App/Resource.h"
+#include "App/ViewportView.h"
+#include "App/WelcomeDialog.h"
+#include "Iact/Commands/DocumentCommands.h"
+#include "Iact/Commands/ModelCommands.h"
+#include "Iact/Commands/ToolboxCommands.h"
+#include "Iact/Commands/WorkspaceCommands.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : SARibbonMainWindow(parent)
@@ -76,14 +86,14 @@ void MainWindow::setupAppButton()
 
     if (!m_appButton) {
         m_appButton = new SARibbonMenu(this);
-        m_appButton->addAction(new QAction);
-        m_appButton->addAction(new QAction);
+        m_appButton->addAction(&DocumentCommands::createNewModel());
+        //m_appButton->addAction(&DocumentCommands::openModelFrom());
         m_appButton->addSeparator();
-        m_appButton->addAction(new QAction);
+        m_appButton->addAction(&AppCommands::settings());
         m_appButton->addSeparator();
-        m_appButton->addAction(new QAction);
+        m_appButton->addAction(&AppCommands::showAboutDialog());
         m_appButton->addSeparator();
-        m_appButton->addAction(new QAction);
+        m_appButton->addAction(&AppCommands::exitApplication());
     }
     SARibbonApplicationButton* appBtn = qobject_cast<SARibbonApplicationButton*>(btn);
     if (!appBtn) {
@@ -96,38 +106,38 @@ void MainWindow::setupCategories()
 {
     if (SARibbonCategory* aCategory = m_ribbonBar->addCategoryPage(tr("Edit"))) {
         if (SARibbonPannel* aPannel = aCategory->addPannel(tr("Undo"))) {
-            aPannel->addAction(new QAction, SARibbonPannelItem::Large);
-            aPannel->addAction(new QAction, SARibbonPannelItem::Large);
+            aPannel->addAction(&WorkspaceCommands::doUndo(), SARibbonPannelItem::Large);
+            aPannel->addAction(&WorkspaceCommands::doRedo(), SARibbonPannelItem::Large);
         }
     }
 
     if (SARibbonCategory* aCategory = m_ribbonBar->addCategoryPage(tr("Model"))) {
         if (SARibbonPannel* aPannel = aCategory->addPannel(tr("Create"))) {
-            aPannel->addAction(new QAction, SARibbonPannelItem::Large);
-            aPannel->addAction(new QAction, SARibbonPannelItem::Large);
-            aPannel->addAction(new QAction, SARibbonPannelItem::Large);
+            aPannel->addAction(&ModelCommands::createBox(), SARibbonPannelItem::Large);
+            aPannel->addAction(&ModelCommands::createCylinder(), SARibbonPannelItem::Large);
+            aPannel->addAction(&ModelCommands::createSphere(), SARibbonPannelItem::Large);
         }
     }
 
     if (SARibbonCategory* aCategory = m_ribbonBar->addCategoryPage(tr("ToolBox"))) {
         if (SARibbonPannel* aPannel = aCategory->addPannel(tr("Convert"))) {
-            aPannel->addAction(new QAction);
+            aPannel->addAction(&ToolboxCommands::convertToSolid());
         }
     }
 
     if (SARibbonCategory* aCategory = m_ribbonBar->addCategoryPage(tr("View"))) {
         if (SARibbonPannel* aPannel = aCategory->addPannel(tr("View"))) {
-            aPannel->addAction(new QAction);
-            aPannel->addAction(new QAction);
-            aPannel->addAction(new QAction);
-            aPannel->addAction(new QAction);
-            aPannel->addAction(new QAction);
-            aPannel->addAction(new QAction);
+            aPannel->addAction(&WorkspaceCommands::setPredefinedView(ViewportController::Top));
+            aPannel->addAction(&WorkspaceCommands::setPredefinedView(ViewportController::Bottom));
+            aPannel->addAction(&WorkspaceCommands::setPredefinedView(ViewportController::Left));
+            aPannel->addAction(&WorkspaceCommands::setPredefinedView(ViewportController::Right));
+            aPannel->addAction(&WorkspaceCommands::setPredefinedView(ViewportController::Front));
+            aPannel->addAction(&WorkspaceCommands::setPredefinedView(ViewportController::Back));
         }
         if (SARibbonPannel* aPannel = aCategory->addPannel(tr("Zoom"))) {
-            aPannel->addAction(new QAction);
-            aPannel->addAction(new QAction);
-            aPannel->addAction(new QAction);
+            aPannel->addAction(&WorkspaceCommands::zoomFitAll());
+            aPannel->addAction(&WorkspaceCommands::zoomIn());
+            aPannel->addAction(&WorkspaceCommands::zoomOut());
         }
         if (SARibbonPannel* aPannel = aCategory->addPannel(tr("Display"))) {
         }
@@ -138,27 +148,29 @@ void MainWindow::setupDockWidgets()
 {
     // Set up a central dock widget 
     ads::CDockWidget* CentralDockWidget = new ads::CDockWidget("Workspace");
-    CentralDockWidget->setWidget(new QWidget());
+    CentralDockWidget->setWidget(new ViewportView());
     auto* CentralDockArea = m_dockManager->setCentralWidget(CentralDockWidget);
 
     // Set up additional dock widgets for various panels
     ads::CDockWidget* documentDock = new ads::CDockWidget("Document");
-    documentDock->setWidget(new QWidget());
+    documentDock->setWidget(new WelcomeDialog());
 
     ads::CDockWidget* layersDock = new ads::CDockWidget("Layers");
-    layersDock->setWidget(new QWidget());
+    layersDock->setWidget(new WelcomeDialog());
 
     ads::CDockWidget* propertiesDock = new ads::CDockWidget("Properties");
-    propertiesDock->setWidget(new QWidget());
+    propertiesDock->setWidget(new WelcomeDialog());
 
     ads::CDockWidget* messageDock = new ads::CDockWidget("Message");
-    messageDock->setWidget(new QWidget());
+    messageDock->setWidget(new WelcomeDialog());
 
     // add dock widgets to specific dock areas
     m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarRight, propertiesDock)->setSize(240);
     m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarLeft, documentDock)->setSize(240);
     m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarLeft, layersDock)->setSize(240);
     m_dockManager->addAutoHideDockWidget(ads::SideBarLocation::SideBarBottom, messageDock)->setSize(240);
+
+    //connect(&AppCommands::showDocumentExplorer(), &QAction::triggered, documentDock->toggleViewAction(), &QAction::trigger);
 }
 
 void MainWindow::onMainWindowLoaded()

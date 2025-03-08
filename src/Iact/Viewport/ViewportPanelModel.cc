@@ -8,8 +8,8 @@ ViewportPanelModel::ViewportPanelModel()
 {
     //Entity.ErrorStateChanged += _Entity_ErrorStateChanged;
     //connect(InteractiveContext::current(), &InteractiveContext::propertyChanged, this, &ViewportPanelModel::context_PropertyChanged);
-    //setWorkspaceController(InteractiveContext::current()->workspaceController());
-    //setViewportController(InteractiveContext::current()->viewportController());
+    setWorkspaceController(InteractiveContext::current()->workspaceController());
+    setViewportController(InteractiveContext::current()->viewportController());
 }
 
 void ViewportPanelModel::addElement(HudElement* element) 
@@ -55,13 +55,13 @@ QString ViewportPanelModel::hintMessage()
     return m_hintMessage;
 }
 
-void ViewportPanelModel::setViewportController(ViewportController* value) 
+void ViewportPanelModel::setViewportController(const std::shared_ptr<ViewportController>& value)
 {
     m_viewportController = value;
     //raisePropertyChanged("viewportController");
 }
 
-void ViewportPanelModel::setWorkspaceController(WorkspaceController* value) 
+void ViewportPanelModel::setWorkspaceController(const std::shared_ptr<WorkspaceController>& value)
 {
     if (m_workspaceController != value) {
         m_workspaceController = value;
