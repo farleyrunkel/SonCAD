@@ -28,15 +28,25 @@ void InteractiveContext::setDocumentController(const std::shared_ptr<DocumentCon
 	m_modelController = value;
 }
 
+std::shared_ptr<WorkspaceController> InteractiveContext::workspaceController() const
+{
+	return m_workspaceController;
+}
+
+std::shared_ptr<ViewportController> InteractiveContext::viewportController() const
+{
+	return m_viewportController;
+}
+
 void InteractiveContext::setWorkspace(const std::shared_ptr<Workspace>& value)
 {
 	if(CoreContext::workspace() == value)
 	{
 		return;
 	}
+	m_workspaceController.reset();
 	if(value)
 	{
-		m_workspaceController.reset();
 		m_workspaceController = std::make_shared<WorkspaceController>(value);
 		m_workspaceController->initWorkspace();
 	}

@@ -9,13 +9,14 @@
 // Project includes
 #include "Comm/ObservableCollection.h"
 #include "Comm/PropertyChangedEventArgs.h"
+#include "Comm/PropertySignal.h"
 #include "Iact/HudElements/HudElement.h"
 #include "Iact/HudElements/HudManager.h"
 #include "Iact/Workspace/InteractiveContext.h"
 #include "Iact/Workspace/ViewportController.h"
 #include "Iact/Workspace/WorkspaceController.h"
 
-class ViewportPanelModel : public HudManager
+class ViewportPanelModel : public HudManager, public enable_property_changed_signal
 {
 public:
 	ViewportPanelModel();
@@ -46,7 +47,7 @@ public:
     // workspaceController getter/setter
     void setWorkspaceController(const std::shared_ptr<WorkspaceController>& value);
 
-    void context_PropertyChanged(const QString& propertyName);
+    void context_PropertyChanged(const std::string& propertyName);
 //
 //signals: 
 //    void hudElementAdded(HudElement*);

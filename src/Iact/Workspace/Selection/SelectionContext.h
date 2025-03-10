@@ -10,11 +10,11 @@
 #include "Core/Framework/OcctUtils/SubshapeType.h"
 #include "Core/Topology/InteractiveEntity.h"
 #include "Iact/Visual/VisualObject.h"
-#include "Comm/BaseObject.h"
+#include "Comm/PropertySignal.h"
 
 class WorkspaceController;
 
-class SelectionContext : public BaseObject
+class SelectionContext : public enable_property_changed_signal
 {
 public:
     enum Options

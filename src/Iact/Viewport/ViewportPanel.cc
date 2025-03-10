@@ -51,9 +51,7 @@ ViewportPanel::ViewportPanel(QWidget* parent)
 	//	updateHud(m_mouseMovePosition);
 	//});
 
-	//connect(m_dataContext, &ViewportPanelModel::propertyChanged
-	//		, this, &ViewportPanel::model_PropertyChanged);
-
+	m_dataContext->propertyChanged().connect([this](const std::string& property) { model_PropertyChanged(QString::fromStdString(property)); });
 	// Initialize layout for the panel
 	setLayout(new QVBoxLayout(this));
 	setMouseTracking(true);

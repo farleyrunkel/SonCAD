@@ -4,18 +4,14 @@
 #include <memory>
 #include <vector>
 
- 
- 
-
-#include "Comm/BaseObject.h"
-#include "Iact/HudElements/HudElement.h"
 #include "Iact/Panels/PropertyPanels/PropertyPanel.h"
 #include "Iact/Visual/VisualObject.h"
 #include "Iact/Workspace/Snapping/SnapBase.h"
 
 class WorkspaceController;
+class HudElement;
 
-class WorkspaceControl : public BaseObject
+class WorkspaceControl
 {
 public:
 	explicit WorkspaceControl() {}

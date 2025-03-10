@@ -15,8 +15,8 @@ class WorkspaceController;
 class InteractiveContext : public CoreContext
 {
 public:
-	InteractiveContext();;
-	virtual ~InteractiveContext();;
+	InteractiveContext();
+	virtual ~InteractiveContext();
 
 	static InteractiveContext* current();
 
@@ -24,14 +24,9 @@ public:
 
 	void setDocumentController(const std::shared_ptr<DocumentController>& documentController);
 
-	std::shared_ptr<WorkspaceController> workspaceController() const {
-		return m_workspaceController;
-	}
+	std::shared_ptr<WorkspaceController> workspaceController() const;
 
-	std::shared_ptr<ViewportController> viewportController() const
-	{
-		return m_viewportController;
-	}
+	std::shared_ptr<ViewportController> viewportController() const;
 
 	virtual void setWorkspace(const std::shared_ptr<Workspace>& workspace) override;
 

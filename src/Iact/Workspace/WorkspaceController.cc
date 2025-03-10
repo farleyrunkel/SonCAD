@@ -1,6 +1,8 @@
 
 #include "Iact/Workspace/WorkspaceController.h"
 
+#include <algorithm>
+
 #include "Occt/OcctHelper/AisHelper.h"
 #include "Core/Project/VisualStyles.h"
 
@@ -15,11 +17,25 @@ WorkspaceController::WorkspaceController(const std::shared_ptr<Workspace>& works
     assert(m_workspace != nullptr);
 }
 
-void WorkspaceController::setActiveViewport(const std::shared_ptr<Viewport>& value) {}
+void WorkspaceController::setActiveViewport(const std::shared_ptr<Viewport>& value) 
+{
+    m_activeViewport = value;
+}
 
 std::shared_ptr<ViewportController> WorkspaceController::getViewController(const std::shared_ptr<Viewport>& value)
 {
-	return nullptr;
+    if(value == nullptr)
+    {
+        return nullptr;
+    }
+
+    auto found = std::find_if(m_viewportControllers.begin(), m_viewportControllers.end(), [value](const auto& VC) {return VC->viewport() == value;});
+
+    if(found == m_viewportControllers.end())
+    {
+        return nullptr;
+    }
+    return *found;
 }
 
 void WorkspaceController::initWorkspace()
@@ -49,7 +65,6 @@ void WorkspaceController::initWorkspace()
     //visualObjects.initEntities();
     updateGrid();
 }
-
 
 void WorkspaceController::initVisualSettings()
 {
@@ -114,4 +129,9 @@ void WorkspaceController::initVisualSettings()
 void WorkspaceController::updateGrid()
 {
 
+}
+
+std::shared_ptr<Workspace> WorkspaceController::workspace() const
+{
+    return m_workspace;
 }

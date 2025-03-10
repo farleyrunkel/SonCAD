@@ -215,9 +215,9 @@ ViewportHwndHost::ViewportHwndHost(ViewportController* vc, QWidget* theParent)
     aDriver->ChangeOptions().useSystemBuffer = false;
 
     auto viewport = m_viewportController->viewport();
-    //myView = viewport->v3dView();
-    //myViewer = viewport->workspace()->v3dViewer();
-    //myContext = viewport->workspace()->aisContext();
+    myView = viewport->v3dView();
+    myViewer = viewport->workspace()->v3dViewer();
+    myContext = viewport->workspace()->aisContext();
 
     // Qt widget setup
     setMouseTracking(true);

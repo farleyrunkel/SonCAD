@@ -7,11 +7,9 @@
 
 #include <QString>
 
-#include "Comm/BaseObject.h"
-
 class HudElement;
 
-class HudManager : public BaseObject
+class HudManager
 {
 public:
     virtual ~HudManager() = default;

@@ -9,14 +9,14 @@
 #include <Standard_Handle.hxx>
 
 
-class BaseObject;
+class enable_property_changed_signal;
 
 class PropertyChangedEventArgs {
 public:
-    PropertyChangedEventArgs(const std::string& propertyName = "", BaseObject* sender = nullptr)
+    PropertyChangedEventArgs(const std::string& propertyName = "", enable_property_changed_signal* sender = nullptr)
         : _PropertyName(propertyName), _Object(sender) {}
 
-    BaseObject* Sender() const {
+    enable_property_changed_signal* Sender() const {
         return _Object;
     }
 
@@ -26,7 +26,7 @@ public:
     }
 
 private:
-    BaseObject* _Object;
+    enable_property_changed_signal* _Object;
     std::string _PropertyName;
 };
 

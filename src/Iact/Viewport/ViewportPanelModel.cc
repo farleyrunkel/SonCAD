@@ -2,12 +2,16 @@
 
 #include "Iact/Viewport/ViewportPanelModel.h"
 
+#include <boost/signals2.hpp>
+
 ViewportPanelModel::ViewportPanelModel()
-    : m_workspaceController(nullptr)
-    , m_viewportController(nullptr) 
 {
     //Entity.ErrorStateChanged += _Entity_ErrorStateChanged;
-    //connect(InteractiveContext::current(), &InteractiveContext::propertyChanged, this, &ViewportPanelModel::context_PropertyChanged);
+
+	InteractiveContext::current()->propertyChanged.connect(
+        std::bind(&ViewportPanelModel::context_PropertyChanged, this, std::placeholders::_1)
+    );
+
     setWorkspaceController(InteractiveContext::current()->workspaceController());
     setViewportController(InteractiveContext::current()->viewportController());
 }
@@ -47,7 +51,7 @@ void ViewportPanelModel::removeElements(std::function<bool(HudElement*)> predica
 void ViewportPanelModel::setHintMessage(const QString& message) 
 {
     m_hintMessage = message;
-    //emit propertyChanged("hintMessage");
+    raisePropertyChanged("hintMessage");
 }
 
 QString ViewportPanelModel::hintMessage() 
@@ -58,7 +62,7 @@ QString ViewportPanelModel::hintMessage()
 void ViewportPanelModel::setViewportController(const std::shared_ptr<ViewportController>& value)
 {
     m_viewportController = value;
-    //raisePropertyChanged("viewportController");
+    raisePropertyChanged("viewportController");
 }
 
 void ViewportPanelModel::setWorkspaceController(const std::shared_ptr<WorkspaceController>& value)
@@ -72,27 +76,24 @@ void ViewportPanelModel::setWorkspaceController(const std::shared_ptr<WorkspaceC
             //HudElements.Clear();
         }
         m_workspaceController = value;
-        //raisePropertyChanged("workspaceController");
+        raisePropertyChanged("workspaceController");
     }
 }
 
-void ViewportPanelModel::context_PropertyChanged(const QString& propertyName) 
+void ViewportPanelModel::context_PropertyChanged(const std::string& propertyName) 
 {
+    auto context = InteractiveContext::current();
     if (propertyName == "workspaceController") {
         if (m_workspaceController != nullptr) {
             //m_workspaceController.Selection.SelectionChanged -= _Selection_SelectionChanged;
         }
-        //if (auto context = dynamic_cast<InteractiveContext*>(sender())) {
-        //    setWorkspaceController(context->workspaceController());
-        //}
+        setWorkspaceController(context->workspaceController());
 
         if (m_workspaceController != nullptr) {
             //m_workspaceController.Selection.SelectionChanged += _Selection_SelectionChanged;
         }
     }
     else if (propertyName == "viewportController") {
-        //if (auto context = dynamic_cast<InteractiveContext*>(sender())) {
-        //    setViewportController(context->viewportController());
-        //}
+        setViewportController(context->viewportController());      
     }
 }

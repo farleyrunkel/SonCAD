@@ -36,6 +36,8 @@ public:
 
 	Handle(AIS_InteractiveContext) aisContext() const;
 
+	auto v3dViewer() const { return m_Viewer; }
+
 public:
 	//! Getter and Setter
 

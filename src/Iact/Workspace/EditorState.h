@@ -6,13 +6,13 @@
 #include <string>
 
 #include "Iact/Workspace/ViewportController.h"
-#include "Comm/BaseObject.h"
+#include "Comm/PropertySignal.h"
 
 // Forward declarations
 class Tool;
 class WorkspaceController;
 
-class EditorState : public BaseObject
+class EditorState : public enable_property_changed_signal
 {
 public:
 	EditorState() {}

@@ -4,11 +4,10 @@
 #include <vector>
 
  
- 
-
+#include "Core/Topology/InteractiveEntity.h"
 #include "Iact/Framework/WorkspaceControl.h"
 
-class WorkspaceControllr;
+class WorkspaceController;
 
 
 class Tool : public WorkspaceControl

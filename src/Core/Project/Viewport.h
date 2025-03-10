@@ -13,11 +13,11 @@
 #include <Quantity_Color.hxx>
 
 #include "Core/Project/Document.h"
-#include "Comm/BaseObject.h"
+#include "Comm/PropertySignal.h"
 
 class Workspace;
 
-class Viewport : public BaseObject
+class Viewport : public enable_property_changed_signal
 {
 public:
 	enum RenderModes
@@ -30,6 +30,11 @@ public:
 public:
 	Viewport(){}
 	explicit Viewport(const std::shared_ptr<Workspace>& workspace);
+
+	auto view() const 
+	{
+		return m_V3dView;
+	}
 
 	double pixelSize() const
 	{
@@ -78,6 +83,16 @@ public:
 	bool screenToPoint(gp_Pln plane, int screenX, int screenY, gp_Pnt& resultPnt);
 
 	void updateRenderMode();
+
+	auto v3dView() const
+	{
+		return m_V3dView;
+	}
+
+	auto workspace() const
+	{
+		return m_Workspace;
+	}
 
 	void resize();
 

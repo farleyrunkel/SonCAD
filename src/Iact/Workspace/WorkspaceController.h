@@ -11,6 +11,7 @@
  
 #include "Core/Project/Viewport.h"
 #include "Core/Project/Workspace.h"
+#include "Iact/Framework/Tool.h"
 #include "Iact/HudElements/HudManager.h"
 #include "Iact/Visual/VisualObjectManager.h"
 #include "Iact/Workspace/Selection/SelectionManager.h"
@@ -32,10 +33,7 @@ public:
 
 	void updateGrid();
 
-	std::shared_ptr<Workspace> workspace() const
-	{
-		return m_workspace;
-	}
+	std::shared_ptr<Workspace> workspace() const;
 
 	void invalidate() {}
 
@@ -59,6 +57,6 @@ private:
 	gp_XY m_lastGridSize;
 	bool m_gridNeedsUpdate;
 	std::vector<Handle(AIS_InteractiveObject)> m_objects;
- };
+};
 
 #endif // !_WorkspaceController_h

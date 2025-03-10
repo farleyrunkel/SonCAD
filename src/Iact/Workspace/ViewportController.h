@@ -50,11 +50,21 @@ public:
 
 
 public:
-	ViewportController(const std::shared_ptr<Viewport>& viewport, const std::shared_ptr<WorkspaceController>& WC) {}
+	ViewportController(const std::shared_ptr<Viewport>& viewport, const std::shared_ptr<WorkspaceController>& WC);
 
-	auto viewport()
+	std::shared_ptr<Viewport> viewport() const;
+
+	void init();
+
+	Handle(Aspect_Window) window() const;
+
+	void SetWindow(const Handle(Aspect_Window)& theWindow, const Aspect_RenderingContext theContext);
+
+	Handle(AIS_ViewCube) viewCube() const;
+
+	Handle(V3d_View) view() const
 	{
-		return myViewport;
+		return this->viewport() ? this->viewport()->view() : nullptr;
 	}
 
 private:
