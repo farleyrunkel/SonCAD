@@ -11,6 +11,8 @@
  
 #include "Core/Project/Viewport.h"
 #include "Core/Project/Workspace.h"
+#include "Iact/Framework/Editor.h"
+#include "Iact/Framework/Tool.h"
 #include "Iact/Framework/Tool.h"
 #include "Iact/HudElements/HudManager.h"
 #include "Iact/Visual/VisualObjectManager.h"
@@ -21,11 +23,26 @@
 class WorkspaceController : public std::enable_shared_from_this<WorkspaceController>
 {
 public:
-	WorkspaceController();
 	WorkspaceController(const std::shared_ptr<Workspace>& value);
 
-	void setActiveViewport(const std::shared_ptr<Viewport>& value);
+	std::shared_ptr<ViewportController> getViewController(int idx) const;
+
 	std::shared_ptr<ViewportController> getViewController(const std::shared_ptr<Viewport>& value);
+
+	// currentTool
+	std::shared_ptr<Tool> currentTool() const { return m_currentTool; }
+	void setCurrentTool(const std::shared_ptr<Tool>& value) { m_currentTool = value; }
+
+	// remove Tool
+	void removeTool(const std::shared_ptr<Tool>& value) {}
+
+	// start Tool
+	void startTool(const std::shared_ptr<Tool>& value) {}
+
+	// cancel tool
+	void cancelTool(const std::shared_ptr<Tool>& value) {}
+
+	void setActiveViewport(const std::shared_ptr<Viewport>& value);
 
 	void initWorkspace();
 
@@ -35,9 +52,16 @@ public:
 
 	std::shared_ptr<Workspace> workspace() const;
 
+	void redraw();
+
+	void invalidate(bool immediateOnly, bool forceRedraw = false);
+
 	void invalidate() {}
 
 private:
+	std::shared_ptr<Tool> m_currentTool;
+	std::shared_ptr<Editor> m_currentEditor;
+
 	std::shared_ptr<Workspace> m_workspace;
 	std::shared_ptr<Viewport> m_activeViewport;
 

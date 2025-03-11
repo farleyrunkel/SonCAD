@@ -62,9 +62,22 @@ public:
 
 	Handle(AIS_ViewCube) viewCube() const;
 
+	void setViewCube(bool isVisible);
+
 	Handle(V3d_View) view() const
 	{
 		return this->viewport() ? this->viewport()->view() : nullptr;
+	}
+
+	// get myWorkspaceController
+	std::shared_ptr<WorkspaceController> workspaceController() const
+	{
+		return myWorkspaceController;
+	}
+
+	void updateParameter()
+	{
+		setViewCube(true, 30, 1);
 	}
 
 private:
@@ -93,7 +106,9 @@ private:
 	RubberbandSelectionMode myRubberbandSelectionMode;
 	bool _RubberbandIncludeTouched;
 
-	Handle(AIS_ViewCubeEx) myViewCube;
+	Handle(AIS_ViewCubeEx) m_viewCube;
+
+	void setViewCube(bool isVisible, int size, double duration);
 };
 
 #endif // !_ViewportController_h

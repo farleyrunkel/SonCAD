@@ -3,20 +3,28 @@
 
 #include <vector>
 
- 
- 
-
 #include "Iact/Framework/WorkspaceControl.h"
 
-class WorkspaceControllr;
+class WorkspaceController;
 
 class ToolAction : public WorkspaceControl
 {
 public:
 	explicit ToolAction() {}
 
+	// Start and stop functions
+	bool start() { return onStart(); }
+	virtual void reset() { m_isFinished = false; }
+	void stop() { onStop();}
+
+	bool isFinished() const { return m_isFinished; }
+
+protected:
+	virtual bool onStart() { return false; }
+	virtual void onStop() {}
+
 private:
-	bool myIsFinished;
+	bool m_isFinished;
 };
 
 #endif // !_ToolAction_h

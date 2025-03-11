@@ -321,8 +321,8 @@ void ViewportHwndHost::initializeGL()
     }
 
     aWindow->SetSize(aViewSize.x(), aViewSize.y());
-    //m_viewportController->SetWindow(aWindow, aGlCtx->RenderingContext());
-    //m_viewportController->updateParameter();
+    m_viewportController->SetWindow(aWindow, aGlCtx->RenderingContext());
+    m_viewportController->updateParameter();
 }
 
 // ================================================================

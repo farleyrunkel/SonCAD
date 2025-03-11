@@ -18,19 +18,19 @@ public:
 		, m_WorkingPlane(gp_Pln(gp::XOY()))
 	{}
 
-	gp_Pln GetWorkingPlane() const { return m_WorkingPlane; }
+	gp_Pln workingPlane() const { return m_WorkingPlane; }
 	void SetWorkingPlane(const gp_Pln& thePlane) { m_WorkingPlane = thePlane; }
 
-	Workspace::GridTypes GetGridType() const { return m_GridType; }
+	Workspace::GridTypes gridType() const { return m_GridType; }
 	void SetGridType(Workspace::GridTypes theType) { m_GridType = theType; }
 
-	double GetGridStep() const { return m_GridStep; }
+	double gridStep() const { return m_GridStep; }
 	void SetGridStep(double theStep) { m_GridStep = theStep; }
 
-	double GetGridRotation() const { return m_GridRotation; }
+	double gridRotation() const { return m_GridRotation; }
 	void SetGridRotation(double theRotation) { m_GridRotation = theRotation; }
 
-	int GetGridDivisions() const { return m_GridDivisions; }
+	int gridDivisions() const { return m_GridDivisions; }
 	void SetGridDivisions(int theDivisions) { m_GridDivisions = theDivisions; }
 
 private:
