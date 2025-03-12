@@ -104,12 +104,12 @@ void WorkspaceController::initWorkspace()
 
     if(auto context = m_workspace->aisContext(); !context.IsNull())
     {
-        workspace()->aisContext()->Display(m_grid, true);
+        workspace()->aisContext()->Display(m_grid, 1, -1, true);
     }
 
     //// 初始化 VisualObjects 并更新网格
     //visualObjects.initEntities();
-    // updateGrid();
+    updateGrid();
 }
 
 void WorkspaceController::initVisualSettings()
@@ -201,14 +201,14 @@ void WorkspaceController::updateGrid()
         m_grid->SetExtents(m_lastGridSize.X(), m_lastGridSize.Y());
         m_grid->SetDivisions(wc->gridStep(), wc->gridDivisions() * M_PI / 180.0);
 
-        if(wc->gridType() == Workspace::GridTypes::Rectangular)
-        {
-            workspace()->aisContext()->SetDisplayMode(m_grid, 1, false);
-        }
-        else
-        {
-            workspace()->aisContext()->SetDisplayMode(m_grid, 2, false);
-        }
+  //      if(wc->gridType() == Workspace::GridTypes::Rectangular)
+  //      {
+  //          workspace()->aisContext()->SetDisplayMode(m_grid, 1, false);
+		//}
+  //      else
+  //      {
+  //          workspace()->aisContext()->SetDisplayMode(m_grid, 2, false);
+  //      }
     }
     else
     {
