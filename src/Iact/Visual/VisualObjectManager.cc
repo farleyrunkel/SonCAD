@@ -24,7 +24,7 @@
 
 std::unordered_map<std::string, VisualObjectManager::CreateVisualObjectDelegate> VisualObjectManager::s_registeredVisualTypes;
 
-VisualObjectManager::VisualObjectManager(std::shared_ptr<WorkspaceController> workspaceController)
+VisualObjectManager::VisualObjectManager(const std::shared_ptr<WorkspaceController>& workspaceController)
     : m_workspaceController(std::move(workspaceController))
 {
     // 假设外部信号中心已转换为 Boost.Signals2，需手动连接

@@ -152,6 +152,7 @@ void ViewportPanel::viewportControllerChanged()
 	}
 
 	auto newHost = new ViewportHwndHost(viewportController.get(), this);
+	newHost->setFocus();
 
 	if (m_viewportHwndHost != nullptr) {
 		layout()->replaceWidget(m_viewportHwndHost, newHost);

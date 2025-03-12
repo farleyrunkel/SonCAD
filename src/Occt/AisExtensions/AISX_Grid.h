@@ -3,11 +3,11 @@
 #ifndef OCCT_AISEXTENSIONS_AISX_GRID_H_
 #define OCCT_AISEXTENSIONS_AISX_GRID_H_
 
-#include "gp_XY.hxx"
-#include "gp_Ax3.hxx"
-#include "AIS_InteractiveObject.hxx"
-#include "Graphic3d_AspectLine3d.hxx"
-#include "Graphic3d_Group.hxx"
+#include <AIS_InteractiveObject.hxx>
+#include <gp_Ax3.hxx>
+#include <gp_XY.hxx>
+#include <Graphic3d_AspectLine3d.hxx>
+#include <Graphic3d_Group.hxx>
 
 class AISX_Grid : public AIS_InteractiveObject
 {
@@ -29,7 +29,7 @@ public:
 
     DEFINE_STANDARD_RTTIEXT(AISX_Grid, AIS_InteractiveObject)
 
-        //--------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------
 
 private:
     void _ComputeRectangular(const Handle(Graphic3d_Group)& theGroup);

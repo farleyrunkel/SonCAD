@@ -19,13 +19,16 @@ namespace
 Aspect_VKeyMouse qtMouseButtons2VKeys(Qt::MouseButtons theButtons)
 {
     Aspect_VKeyMouse aButtons = Aspect_VKeyMouse_NONE;
-    if ((theButtons & Qt::LeftButton) != 0) {
+    if((theButtons & Qt::LeftButton) != 0)
+    {
         aButtons |= Aspect_VKeyMouse_LeftButton;
     }
-    if ((theButtons & Qt::MiddleButton) != 0) {
+    if((theButtons & Qt::MiddleButton) != 0)
+    {
         aButtons |= Aspect_VKeyMouse_MiddleButton;
     }
-    if ((theButtons & Qt::RightButton) != 0) {
+    if((theButtons & Qt::RightButton) != 0)
+    {
         aButtons |= Aspect_VKeyMouse_RightButton;
     }
     return aButtons;
@@ -35,13 +38,16 @@ Aspect_VKeyMouse qtMouseButtons2VKeys(Qt::MouseButtons theButtons)
 Aspect_VKeyFlags qtMouseModifiers2VKeys(Qt::KeyboardModifiers theModifiers)
 {
     Aspect_VKeyFlags aFlags = Aspect_VKeyFlags_NONE;
-    if ((theModifiers & Qt::ShiftModifier) != 0) {
+    if((theModifiers & Qt::ShiftModifier) != 0)
+    {
         aFlags |= Aspect_VKeyFlags_SHIFT;
     }
-    if ((theModifiers & Qt::ControlModifier) != 0) {
+    if((theModifiers & Qt::ControlModifier) != 0)
+    {
         aFlags |= Aspect_VKeyFlags_CTRL;
     }
-    if ((theModifiers & Qt::AltModifier) != 0) {
+    if((theModifiers & Qt::AltModifier) != 0)
+    {
         aFlags |= Aspect_VKeyFlags_ALT;
     }
     return aFlags;
@@ -50,7 +56,8 @@ Aspect_VKeyFlags qtMouseModifiers2VKeys(Qt::KeyboardModifiers theModifiers)
 //! Map Qt key to virtual key.
 Aspect_VKey qtKey2VKey(int theKey)
 {
-    switch (theKey) {
+    switch(theKey)
+    {
     case 1060: // ru
     case Qt::Key_A: return Aspect_VKey_A;
     case 1048: // ru
@@ -203,7 +210,7 @@ ViewportHwndHost::ViewportHwndHost(ViewportController* vc, QWidget* theParent)
     , m_viewportController(vc)
     , myIsCoreProfile(true)
 {
-    //m_viewportController->setWidget(this);
+    m_viewportController->setWidget(this);
 
     Handle(Aspect_DisplayConnection) aDisp = new Aspect_DisplayConnection();
     Handle(OpenGl_GraphicDriver) aDriver = new OpenGl_GraphicDriver(aDisp, false);
@@ -233,7 +240,8 @@ ViewportHwndHost::ViewportHwndHost(ViewportController* vc, QWidget* theParent)
     //aGlFormat.setOption (QSurfaceFormat::DebugContext, true);
     aDriver->ChangeOptions().contextDebug = aGlFormat.testOption(QSurfaceFormat::DebugContext);
     //aGlFormat.setOption (QSurfaceFormat::DeprecatedFunctions, true);
-    if (myIsCoreProfile) {
+    if(myIsCoreProfile)
+    {
         aGlFormat.setVersion(4, 5);
     }
     aGlFormat.setProfile(myIsCoreProfile ? QSurfaceFormat::CoreProfile : QSurfaceFormat::CompatibilityProfile);
@@ -273,16 +281,20 @@ void ViewportHwndHost::dumpGlInfo(bool theIsBasic, bool theToPrint)
     TColStd_IndexedDataMapOfStringString aGlCapsDict;
     myView->DiagnosticInformation(aGlCapsDict, theIsBasic ? Graphic3d_DiagnosticInfo_Basic : Graphic3d_DiagnosticInfo_Complete);
     TCollection_AsciiString anInfo;
-    for (TColStd_IndexedDataMapOfStringString::Iterator aValueIter(aGlCapsDict); aValueIter.More(); aValueIter.Next()) {
-        if (!aValueIter.Value().IsEmpty()) {
-            if (!anInfo.IsEmpty()) {
+    for(TColStd_IndexedDataMapOfStringString::Iterator aValueIter(aGlCapsDict); aValueIter.More(); aValueIter.Next())
+    {
+        if(!aValueIter.Value().IsEmpty())
+        {
+            if(!anInfo.IsEmpty())
+            {
                 anInfo += "\n";
             }
             anInfo += aValueIter.Key() + ": " + aValueIter.Value();
         }
     }
 
-    if (theToPrint) {
+    if(theToPrint)
+    {
         Message::SendInfo(anInfo);
     }
     myGlInfo = QString::fromUtf8(anInfo.ToCString());
@@ -298,7 +310,8 @@ void ViewportHwndHost::initializeGL()
     const Graphic3d_Vec2i aViewSize(aRect.right() - aRect.left(), aRect.bottom() - aRect.top());
 
     Handle(OpenGl_Context) aGlCtx = new OpenGl_Context();
-    if (!aGlCtx->Init(myIsCoreProfile)) {
+    if(!aGlCtx->Init(myIsCoreProfile))
+    {
         Message::SendFail() << "Error: OpenGl_Context is unable to wrap OpenGL context";
         QMessageBox::critical(0, "Failure", "OpenGl_Context is unable to wrap OpenGL context");
         QApplication::exit(1);
@@ -306,7 +319,8 @@ void ViewportHwndHost::initializeGL()
     }
 
     Handle(Aspect_NeutralWindow) aWindow = Handle(Aspect_NeutralWindow)::DownCast(myView->Window());
-    if (aWindow.IsNull()) {
+    if(aWindow.IsNull())
+    {
         aWindow = new Aspect_NeutralWindow();
         aWindow->SetVirtual(true);
 
@@ -331,7 +345,8 @@ void ViewportHwndHost::initializeGL()
 // ================================================================
 void ViewportHwndHost::paintGL()
 {
-    if (myView->Window().IsNull()) {
+    if(myView->Window().IsNull())
+    {
         return;
     }
 
@@ -341,11 +356,13 @@ void ViewportHwndHost::paintGL()
     //Handle(OpenGl_Context) aGlCtx = aDriver->GetSharedContext();
     Handle(OpenGl_Context) aGlCtx = OcctGlTools::GetGlContext(myView);
     Handle(OpenGl_FrameBuffer) aDefaultFbo = aGlCtx->DefaultFrameBuffer();
-    if (aDefaultFbo.IsNull()) {
+    if(aDefaultFbo.IsNull())
+    {
         aDefaultFbo = new OcctQtFrameBuffer();
         aGlCtx->SetDefaultFrameBuffer(aDefaultFbo);
     }
-    if (!aDefaultFbo->InitWrapper(aGlCtx)) {
+    if(!aDefaultFbo->InitWrapper(aGlCtx))
+    {
         aDefaultFbo.Nullify();
         Message::DefaultMessenger()->Send("Default FBO wrapper creation failed", Message_Fail);
         QMessageBox::critical(0, "Failure", "Default FBO wrapper creation failed");
@@ -358,13 +375,15 @@ void ViewportHwndHost::paintGL()
     Graphic3d_Vec2i aViewSizeNew = aDefaultFbo->GetVPSize();
     Handle(Aspect_NeutralWindow) aWindow = Handle(Aspect_NeutralWindow)::DownCast(myView->Window());
     aWindow->Size(aViewSizeOld.x(), aViewSizeOld.y());
-    if (aViewSizeNew != aViewSizeOld) {
+    if(aViewSizeNew != aViewSizeOld)
+    {
         aWindow->SetSize(aViewSizeNew.x(), aViewSizeNew.y());
         myView->MustBeResized();
         myView->Invalidate();
         dumpGlInfo(true, false);
 
-        for (const Handle(V3d_View)& aSubviewIter : myView->Subviews()) {
+        for(const Handle(V3d_View)& aSubviewIter : myView->Subviews())
+        {
             aSubviewIter->MustBeResized();
             aSubviewIter->Invalidate();
             aDefaultFbo->SetupViewport(aGlCtx);
@@ -393,7 +412,8 @@ void ViewportHwndHost::closeEvent(QCloseEvent* theEvent)
 void ViewportHwndHost::keyPressEvent(QKeyEvent* theEvent)
 {
     Aspect_VKey aKey = qtKey2VKey(theEvent->key());
-    switch (aKey) {
+    switch(aKey)
+    {
     case Aspect_VKey_Escape:
     {
         QApplication::exit();
@@ -420,11 +440,12 @@ void ViewportHwndHost::mousePressEvent(QMouseEvent* theEvent)
     QOpenGLWidget::mousePressEvent(theEvent);
     const Graphic3d_Vec2i aPnt(theEvent->pos().x(), theEvent->pos().y());
     const Aspect_VKeyFlags aFlags = qtMouseModifiers2VKeys(theEvent->modifiers());
-    if (!myView.IsNull()
-        && UpdateMouseButtons(aPnt,
-        qtMouseButtons2VKeys(theEvent->buttons()),
-        aFlags,
-        false)) {
+    if(!myView.IsNull()
+       && UpdateMouseButtons(aPnt,
+       qtMouseButtons2VKeys(theEvent->buttons()),
+       aFlags,
+       false))
+    {
         updateView();
     }
 }
@@ -438,11 +459,12 @@ void ViewportHwndHost::mouseReleaseEvent(QMouseEvent* theEvent)
     QOpenGLWidget::mouseReleaseEvent(theEvent);
     const Graphic3d_Vec2i aPnt(theEvent->pos().x(), theEvent->pos().y());
     const Aspect_VKeyFlags aFlags = qtMouseModifiers2VKeys(theEvent->modifiers());
-    if (!myView.IsNull()
-        && UpdateMouseButtons(aPnt,
-        qtMouseButtons2VKeys(theEvent->buttons()),
-        aFlags,
-        false)) {
+    if(!myView.IsNull()
+       && UpdateMouseButtons(aPnt,
+       qtMouseButtons2VKeys(theEvent->buttons()),
+       aFlags,
+       false))
+    {
         updateView();
     }
 }
@@ -456,11 +478,12 @@ void ViewportHwndHost::mouseMoveEvent(QMouseEvent* theEvent)
     QOpenGLWidget::mouseMoveEvent(theEvent);
 
     const Graphic3d_Vec2i aNewPos(theEvent->pos().x(), theEvent->pos().y());
-    if (!myView.IsNull()
-        && UpdateMousePosition(aNewPos,
-        qtMouseButtons2VKeys(theEvent->buttons()),
-        qtMouseModifiers2VKeys(theEvent->modifiers()),
-        false)) {
+    if(!myView.IsNull()
+       && UpdateMousePosition(aNewPos,
+       qtMouseButtons2VKeys(theEvent->buttons()),
+       qtMouseModifiers2VKeys(theEvent->modifiers()),
+       false))
+    {
         updateView();
     }
 }
@@ -477,14 +500,17 @@ void ViewportHwndHost::wheelEvent(QWheelEvent* theEvent)
 #else
     const Graphic3d_Vec2i aPos(theEvent->pos().x(), theEvent->pos().y());
 #endif
-    if (myView.IsNull()) {
+    if(myView.IsNull())
+    {
         return;
     }
 
-    if (!myView->Subviews().IsEmpty()) {
+    if(!myView->Subviews().IsEmpty())
+    {
         Handle(V3d_View) aPickedView = myView->PickSubview(aPos);
-        if (!aPickedView.IsNull()
-            && aPickedView != myFocusView) {
+        if(!aPickedView.IsNull()
+           && aPickedView != myFocusView)
+        {
             // switch input focus to another subview
             OnSubviewChanged(myContext, myFocusView, aPickedView);
             updateView();
@@ -492,7 +518,8 @@ void ViewportHwndHost::wheelEvent(QWheelEvent* theEvent)
         }
     }
 
-    if (UpdateZoom(Aspect_ScrollDelta(aPos, double(theEvent->angleDelta().y()) / 8.0))) {
+    if(UpdateZoom(Aspect_ScrollDelta(aPos, double(theEvent->angleDelta().y()) / 8.0)))
+    {
         updateView();
     }
 }
@@ -515,7 +542,8 @@ void ViewportHwndHost::handleViewRedraw(const Handle(AIS_InteractiveContext)& th
                                         const Handle(V3d_View)& theView)
 {
     AIS_ViewController::handleViewRedraw(theCtx, theView);
-    if (myToAskNextFrame) {
+    if(myToAskNextFrame)
+    {
         // ask more frames for animation
         updateView();
     }

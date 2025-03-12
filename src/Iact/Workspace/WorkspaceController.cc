@@ -2,15 +2,31 @@
 #include "Iact/Workspace/WorkspaceController.h"
 
 #include <algorithm>
+#include <QTimer>
 
+#include "Core/Project/Viewport.h"
 #include "Core/Project/VisualStyles.h"
 #include "Core/Project/WorkingContext.h"
+#include "Occt/AisExtensions/AISX_Grid.h"
 #include "Occt/OcctHelper/AisHelper.h"
+
+// makebox occt
+#include <AIS_Shape.hxx>
+#include <BRepPrimAPI_MakeBox.hxx>
+
 
 WorkspaceController::WorkspaceController(const std::shared_ptr<Workspace>& workspace)
     : m_workspace(workspace)
 {
     assert(m_workspace != nullptr);
+
+    m_workspace->sig_GridChanged.connect([this](Workspace* ws) {workspace_GridChanged(ws); });
+    Viewport::sig_ViewportChanged.connect([this](Viewport* vp) {viewport_ViewportChanged(vp); });
+
+    //m_redrawTimer = new QTimer();
+    //m_redrawTimer->setInterval(1000 / 60);
+    //m_redrawTimer->connect(m_redrawTimer, &QTimer::timeout, [this]() {redrawTimer_Tick(); } );
+    //m_redrawTimer->start();
 }
 
 std::shared_ptr<ViewportController> WorkspaceController::getViewController(int idx) const
@@ -21,6 +37,32 @@ std::shared_ptr<ViewportController> WorkspaceController::getViewController(int i
     }
     return m_viewportControllers[idx];
 }
+
+void WorkspaceController::workspace_GridChanged(Workspace* sender)
+{
+    if(m_workspace.get() == sender)
+    {
+        recalculateGridSize();
+        m_gridNeedsUpdate = true;
+        updateGrid();
+        invalidate();
+    }
+}
+
+void WorkspaceController::viewport_ViewportChanged(Viewport* sender)
+{
+    if(std::any_of(m_viewportControllers.begin(), m_viewportControllers.end(),
+       [sender](auto vc) {
+        return vc->viewport().get() == sender;
+    }))
+    {
+        recalculateGridSize();
+        updateParameter();
+        invalidate();
+    }
+}
+void WorkspaceController::updateParameter()
+{}
 
 void WorkspaceController::setActiveViewport(const std::shared_ptr<Viewport>& value) 
 {
@@ -56,19 +98,18 @@ void WorkspaceController::initWorkspace()
         m_viewportControllers.emplace_back(std::make_shared<ViewportController>(view, shared_from_this()));
     }
 
-    // 创建并显示网格
     m_grid = new AISX_Grid();
 
     AisHelper::disableGlobalClipPlanes(m_grid);
 
     if(auto context = m_workspace->aisContext(); !context.IsNull())
     {
-        context->Display(m_grid, 0, -1, false);
+        workspace()->aisContext()->Display(m_grid, true);
     }
 
     //// 初始化 VisualObjects 并更新网格
     //visualObjects.initEntities();
-    updateGrid();
+    // updateGrid();
 }
 
 void WorkspaceController::initVisualSettings()
@@ -130,6 +171,14 @@ void WorkspaceController::initVisualSettings()
     aisContext->SetHighlightStyle(Prs3d_TypeOfHighlight::Prs3d_TypeOfHighlight_LocalDynamic, hilightLocalDrawer);
 }
 
+void WorkspaceController::recalculateGridSize() 
+{
+}
+
+void WorkspaceController::redrawTimer_Tick() 
+{ 
+    redraw(); 
+}
 
 void WorkspaceController::updateGrid()
 {
@@ -173,7 +222,6 @@ std::shared_ptr<Workspace> WorkspaceController::workspace() const
 {
     return m_workspace;
 }
-
 
 void WorkspaceController::redraw()
 {

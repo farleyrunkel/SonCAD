@@ -11,11 +11,12 @@ class WorkingContext
 {
 public:
 	explicit WorkingContext() 
-		: m_GridType(Workspace::GridTypes::Rectangular)
+		: m_WorkingPlane(gp_Pln(gp::XOY()))
+		, m_GridType(Workspace::GridTypes::Rectangular)
 		, m_GridStep(1.0)
 		, m_GridRotation(0.0)
 		, m_GridDivisions(8)
-		, m_WorkingPlane(gp_Pln(gp::XOY()))
+		
 	{}
 
 	gp_Pln workingPlane() const { return m_WorkingPlane; }

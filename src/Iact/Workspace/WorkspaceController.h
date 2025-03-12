@@ -27,6 +27,7 @@ public:
 
 	std::shared_ptr<ViewportController> getViewController(int idx) const;
 
+
 	std::shared_ptr<ViewportController> getViewController(const std::shared_ptr<Viewport>& value);
 
 	// currentTool
@@ -46,17 +47,26 @@ public:
 
 	void initWorkspace();
 
-	void initVisualSettings();
-
-	void updateGrid();
-
 	std::shared_ptr<Workspace> workspace() const;
-
-	void redraw();
 
 	void invalidate(bool immediateOnly, bool forceRedraw = false);
 
 	void invalidate() {}
+
+	auto visualObjects()
+	{
+		return m_visualObjectManager;
+	}
+
+private:
+	void workspace_GridChanged(Workspace* sender);
+	void viewport_ViewportChanged(Viewport* sender);
+	void redraw();
+	void updateGrid();
+	void initVisualSettings();
+	void recalculateGridSize();
+	void updateParameter();
+	void redrawTimer_Tick();
 
 private:
 	std::shared_ptr<Tool> m_currentTool;
@@ -75,7 +85,7 @@ private:
 	gp_Pnt2d m_cursorPosition2d;
 
 	std::vector<std::shared_ptr<ViewportController>> m_viewportControllers;
-	std::thread m_redrawTimer;
+	QTimer* m_redrawTimer;
 
 	Handle(AISX_Grid) m_grid;
 	gp_XY m_lastGridSize;

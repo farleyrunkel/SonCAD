@@ -2,6 +2,8 @@
 #define _ViewportController_h
 
 #include <cmath>
+#include <QWidget>
+#include <boost/signals2.hpp>
 
 #include <AIS_RubberBand.hxx>
 #include <gp_Pnt.hxx>
@@ -47,27 +49,21 @@ public:
 		WorkingPlane
 	};
 
-
-
 public:
 	ViewportController(const std::shared_ptr<Viewport>& viewport, const std::shared_ptr<WorkspaceController>& WC);
 
-	std::shared_ptr<Viewport> viewport() const;
+	Handle(V3d_View) view() const
+	{
+		return this->viewport() ? this->viewport()->view() : nullptr;
+	}
 
-	void init();
+	std::shared_ptr<Viewport> viewport() const;
 
 	Handle(Aspect_Window) window() const;
 
 	void SetWindow(const Handle(Aspect_Window)& theWindow, const Aspect_RenderingContext theContext);
 
 	Handle(AIS_ViewCube) viewCube() const;
-
-	void setViewCube(bool isVisible);
-
-	Handle(V3d_View) view() const
-	{
-		return this->viewport() ? this->viewport()->view() : nullptr;
-	}
 
 	// get myWorkspaceController
 	std::shared_ptr<WorkspaceController> workspaceController() const
@@ -80,7 +76,46 @@ public:
 		setViewCube(true, 30, 1);
 	}
 
+	// Getter for lockedToPlane
+	bool LockedToPlane() const
+	{
+		return _LockedToPlane;
+	}
+
+	// Setter for lockedToPlane
+	void SetLockedToPlane(bool value);
+
+	void zoomFitAll();
+
+	void setWidget(QWidget* widget)
+	{
+		m_host = widget;
+	}
+
 private:
+
+	void init();
+
+	void setViewCube(bool isVisible);
+	void setViewCube(bool isVisible, int size, double duration);
+
+	void setPredefinedView(PredefinedViews predefinedView);
+
+	void setTrihedron(bool visible)
+	{}
+
+	void update()
+	{
+		if(m_host)
+			m_host->update();
+	}
+
+public:
+	boost::signals2::signal<void(bool)> sig_LockedToPlaneChanged;
+
+private:
+	QWidget* m_host;
+
 	const int RubberbandFreehandSelectionThresholdSquared = 100;
 
 	static Handle(WNT_WClass) _OcWindowClass;
@@ -104,11 +139,10 @@ private:
 
 	Handle(AIS_RubberBand) myRubberBand;
 	RubberbandSelectionMode myRubberbandSelectionMode;
+
 	bool _RubberbandIncludeTouched;
 
 	Handle(AIS_ViewCubeEx) m_viewCube;
-
-	void setViewCube(bool isVisible, int size, double duration);
 };
 
 #endif // !_ViewportController_h

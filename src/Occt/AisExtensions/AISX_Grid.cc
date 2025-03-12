@@ -2,8 +2,8 @@
 
 #include "Occt/AisExtensions/AISX_Grid.h"
 
-#include <Graphic3d_ArrayOfSegments.hxx>
 #include <gp.hxx>
+#include <Graphic3d_ArrayOfSegments.hxx>
 #include <PrsMgr_PresentableObject.hxx>
 
 IMPLEMENT_STANDARD_RTTIEXT(AISX_Grid, AIS_InteractiveObject)

@@ -38,7 +38,7 @@ public:
     using Ptr = std::shared_ptr<VisualObjectManager>;
     using CreateVisualObjectDelegate = std::function<std::shared_ptr<VisualObject>(std::shared_ptr<WorkspaceController>, std::shared_ptr<InteractiveEntity>)>;
 
-    explicit VisualObjectManager(std::shared_ptr<WorkspaceController> workspaceController);
+    explicit VisualObjectManager(const std::shared_ptr<WorkspaceController>& workspaceController);
     ~VisualObjectManager() = default;
 
     template<typename TEntity>

@@ -38,6 +38,38 @@ std::shared_ptr<Viewport> ViewportController::viewport() const
 	return myViewport;
 }
 
+void ViewportController::SetLockedToPlane(bool value)
+{
+    if(_LockedToPlane != value)
+    {
+        _LockedToPlane = value;
+        if(value)
+        {
+            setPredefinedView(PredefinedViews::WorkingPlane);
+        }
+        setViewCube(!value);
+        setTrihedron(!value && _ShowTrihedron);
+        sig_LockedToPlaneChanged(value);
+    }
+}
+
+void ViewportController::zoomFitAll()
+{
+    if(m_host == nullptr)
+    {
+        // We need a window, defer call
+        _ZoomFitAllOnInit = true;
+        return;
+    }
+    workspaceController()->visualObjects()->updateInvalidatedEntities();
+    viewport()->v3dView()->FitAll(0.1, false);
+    viewport()->v3dView()->ZFitAll(1.0);
+    workspaceController()->invalidate();
+
+    update();
+    //viewport()->onViewMoved();
+}
+
 void ViewportController::init()
 {
 	viewport()->init(true);
@@ -156,6 +188,55 @@ void ViewportController::setViewCube(bool isVisible, int size, double duration)
         //    aisContext->SetViewAffinity(m_viewCube, viewport->v3dView(), viewport.get() == currentViewport().get());
         //}
     }
+
+    workspaceController()->invalidate(true);
+}
+
+void ViewportController::setPredefinedView(PredefinedViews predefinedView)
+{
+    if(predefinedView == PredefinedViews::WorkingPlane)
+    {
+        const auto& plane = workspaceController()->workspace()->getWorkingPlane();
+        const auto& dir = plane.Axis().Direction();
+        viewport()->view()->SetProj(dir.X(), dir.Y(), dir.Z());
+
+        const auto& up = plane.YAxis().Direction();
+        viewport()->view()->SetUp(up.X(), up.Y(), up.Z());
+        return;
+    }
+
+    // 确保视图锁定或无视图立方体时无法进行旋转
+    if(_LockedToPlane || !m_viewCube)
+        return;
+
+    V3d_TypeOfOrientation orientation;
+    switch(predefinedView)
+    {
+    case PredefinedViews::Top:
+        orientation = V3d_TypeOfOrientation_Zup_Top;
+        break;
+    case PredefinedViews::Bottom:
+        orientation = V3d_TypeOfOrientation_Zup_Bottom;
+        break;
+    case PredefinedViews::Left:
+        orientation = V3d_TypeOfOrientation_Zup_Left;
+        break;
+    case PredefinedViews::Right:
+        orientation = V3d_TypeOfOrientation_Zup_Right;
+        break;
+    case PredefinedViews::Front:
+        orientation = V3d_TypeOfOrientation_Zup_Front;
+        break;
+    case PredefinedViews::Back:
+        orientation = V3d_TypeOfOrientation_Zup_Back;
+        break;
+    default:
+        return;
+    }
+
+    Handle(AIS_ViewCubeOwner) viewCubeOwner = new AIS_ViewCubeOwner(m_viewCube, orientation);
+
+    m_viewCube->HandleClick(viewCubeOwner);
 
     workspaceController()->invalidate();
 }
