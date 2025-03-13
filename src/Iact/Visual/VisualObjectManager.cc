@@ -152,11 +152,11 @@ std::shared_ptr<InteractiveEntity> VisualObjectManager::getEntity(const Handle(A
 
 void VisualObjectManager::updateInvalidatedEntities()
 {
-    for(auto& entity : m_invalidatedInteractiveEntities)
-    {
-        update(entity);
-    }
-    m_invalidatedInteractiveEntities.clear();
+    //for(auto& entity : m_invalidatedInteractiveEntities)
+    //{
+    //    update(entity);
+    //}
+    //m_invalidatedInteractiveEntities.clear();
 }
 
 std::vector<std::shared_ptr<VisualObject>> VisualObjectManager::getAll() const

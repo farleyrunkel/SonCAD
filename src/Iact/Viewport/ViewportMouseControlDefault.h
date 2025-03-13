@@ -12,15 +12,13 @@
 #include <QScopedPointer>
 
 // Project includes
-#include "Iact/Viewport/IViewportMouseControl.h"
+#include "Iact/Viewport/ViewportMouseControl.h"
 #include "Iact/Workspace/ViewportController.h"
 
-class ViewportMouseControlDefault : public IViewportMouseControl
+class ViewportMouseControlDefault : public ViewportMouseControl
 {
 public:
     explicit ViewportMouseControlDefault();
-
-    void setViewportController(ViewportController* controller) override;
 
     void MouseMove(const QPointF& pos, QMouseEvent* mouseEvent, Qt::KeyboardModifiers modifierKeys) override;
     void mouseWheel(const QPointF& pos, MouseWheel wheel, int delta, QInputEvent* /*device*/, Qt::KeyboardModifiers modifierKeys) override;
@@ -32,7 +30,6 @@ private:
     void updateMouseMoveMode(QMouseEvent* mouseEvent, Qt::KeyboardModifiers modifierKeys);
 
 private:
-    ViewportController* viewportController;
     ViewportController::MouseMoveMode currentMouseMoveMode;
     QPointF mouseDownPos;
 };

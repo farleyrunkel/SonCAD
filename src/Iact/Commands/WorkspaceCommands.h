@@ -10,36 +10,12 @@
 class WorkspaceCommands
 {
 public:
-    static ActionCommand& doUndo()
-    {
-        static ActionCommand command;
-        return command;
-    }
-    static ActionCommand& doRedo()
-    {
-        static ActionCommand command;
-        return command;
-    }
-    static ActionCommand& setPredefinedView(ViewportController::PredefinedViews param)
-    {
-        static ActionCommand command;
-        return command;
-    }
-    static ActionCommand& zoomFitAll()
-    {
-        static ActionCommand command;
-        return command;
-    }
-    static ActionCommand& zoomIn()
-    {
-        static ActionCommand command;
-        return command;
-    }
-    static ActionCommand& zoomOut()
-    {
-        static ActionCommand command;
-        return command;
-    }
+    static ActionCommand& doUndo();
+    static ActionCommand& doRedo();
+    static ActionCommand& setPredefinedView(ViewportController::PredefinedViews param);
+    static ActionCommand& zoomFitAll();
+    static ActionCommand& zoomIn();
+    static ActionCommand& zoomOut();
 };
 
 #endif  // IACT_COMMANDS_WORKSPACECOMMANDS_H_

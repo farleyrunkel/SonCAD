@@ -9,21 +9,9 @@
 class ModelCommands 
 {
 public:
-    static ActionCommand& createBox()
-    {
-        static ActionCommand command;
-        return command;
-    }
-    static ActionCommand& createCylinder()
-    {
-        static ActionCommand command;
-        return command;
-    }
-    static ActionCommand& createSphere()
-    {
-        static ActionCommand command;
-        return command;
-    }
+    static ActionCommand& createBox();
+    static ActionCommand& createCylinder();
+    static ActionCommand& createSphere();
 };
 
 #endif  // IACT_COMMANDS_MODELCOMMANDS_H_

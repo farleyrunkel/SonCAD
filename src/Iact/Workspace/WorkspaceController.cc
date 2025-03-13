@@ -23,10 +23,10 @@ WorkspaceController::WorkspaceController(const std::shared_ptr<Workspace>& works
     m_workspace->sig_GridChanged.connect([this](Workspace* ws) {workspace_GridChanged(ws); });
     Viewport::sig_ViewportChanged.connect([this](Viewport* vp) {viewport_ViewportChanged(vp); });
 
-    //m_redrawTimer = new QTimer();
-    //m_redrawTimer->setInterval(1000 / 60);
-    //m_redrawTimer->connect(m_redrawTimer, &QTimer::timeout, [this]() {redrawTimer_Tick(); } );
-    //m_redrawTimer->start();
+    m_redrawTimer = new QTimer();
+    m_redrawTimer->setInterval(1000 / 60);
+    m_redrawTimer->connect(m_redrawTimer, &QTimer::timeout, [this]() {redrawTimer_Tick(); } );
+    m_redrawTimer->start();
 }
 
 std::shared_ptr<ViewportController> WorkspaceController::getViewController(int idx) const

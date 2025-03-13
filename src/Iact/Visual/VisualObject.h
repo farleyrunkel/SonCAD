@@ -25,8 +25,8 @@ public:
     using Ptr = std::shared_ptr<VisualObject>;
 
 protected:
-    explicit VisualObject(std::shared_ptr<WorkspaceController> workspaceController,
-                          std::shared_ptr<InteractiveEntity> entity);
+    VisualObject(const std::shared_ptr<WorkspaceController>& workspaceController, const std::shared_ptr<InteractiveEntity>& entity);
+
     virtual ~VisualObject() = default;
 
 public:

@@ -10,10 +10,10 @@
 // Project includes
 #include "Iact/Workspace/WorkspaceController.h"
 
-VisualObject::VisualObject(std::shared_ptr<WorkspaceController> workspaceController,
-                           std::shared_ptr<InteractiveEntity> entity)
-    : m_workspaceController(std::move(workspaceController))
-    , m_entity(std::move(entity))
+VisualObject::VisualObject(const std::shared_ptr<WorkspaceController>& workspaceController,
+                           const std::shared_ptr<InteractiveEntity>& entity)
+    : m_workspaceController(workspaceController)
+    , m_entity(entity)
 {}
 
 std::shared_ptr<WorkspaceController> VisualObject::workspaceController() const

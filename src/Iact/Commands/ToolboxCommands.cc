@@ -2,3 +2,19 @@
 
 // Own include
 #include "Iact/Commands/ToolboxCommands.h"
+
+#include "App/Resource.h"
+
+ActionCommand& ToolboxCommands::convertToSolid()
+{
+    static ActionCommand command;
+    // Initialize command properties if not already set
+    if(command.text().isEmpty())
+    {
+        command.setText(QObject::tr("Convert to Solid"));
+        command.setToolTip(QObject::tr("Convert the current shape into a single solid shape and replace the whole shape stack of the selected body with it."));
+        command.setIcon(Resource::icon("Tools/Tool-ConvertToSolid"));
+        command.setCheckable(false);
+    }
+    return command;
+}

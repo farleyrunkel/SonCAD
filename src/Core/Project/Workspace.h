@@ -64,7 +64,7 @@ public:
 
     std::shared_ptr<WorkingContext> workingContext() const { return m_CurrentWorkingContext; }
 
-    std::weak_ptr<Document> document() const { return m_Document; }
+    std::shared_ptr<Document> document() const { return m_Document; }
 
     std::vector<std::shared_ptr<Viewport>>& viewports() { return m_Viewports; }
 

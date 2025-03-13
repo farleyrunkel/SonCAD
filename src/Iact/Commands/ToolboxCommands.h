@@ -10,11 +10,7 @@
 class ToolboxCommands
 {
 public:
-    static ActionCommand& convertToSolid()
-    {
-        static ActionCommand command;
-        return command;
-    }
+    static ActionCommand& convertToSolid();
 };
 
 #endif  // IACT_COMMANDS_TOOLBOXCOMMANDS_H_

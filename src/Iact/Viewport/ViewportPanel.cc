@@ -148,7 +148,7 @@ void ViewportPanel::viewportControllerChanged()
 		return;
 
 	if (m_mouseControl != nullptr) {
-		m_mouseControl->setViewportController(viewportController.get());
+		m_mouseControl->setViewportController(viewportController);
 	}
 
 	auto newHost = new ViewportHwndHost(viewportController.get(), this);

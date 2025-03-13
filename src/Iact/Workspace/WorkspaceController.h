@@ -26,8 +26,6 @@ public:
 	WorkspaceController(const std::shared_ptr<Workspace>& value);
 
 	std::shared_ptr<ViewportController> getViewController(int idx) const;
-
-
 	std::shared_ptr<ViewportController> getViewController(const std::shared_ptr<Viewport>& value);
 
 	// currentTool

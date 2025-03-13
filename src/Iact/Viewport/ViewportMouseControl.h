@@ -1,7 +1,7 @@
 // Copyright [2024] SunCAD
 
-#ifndef SRC_IACT_VIEWPORT_IVIEWPORTMOUSECONTROL_H_
-#define SRC_IACT_VIEWPORT_IVIEWPORTMOUSECONTROL_H_
+#ifndef IACT_VIEWPORT_ViewportMouseControl_H_
+#define IACT_VIEWPORT_ViewportMouseControl_H_
 
 #include <QPointF>
 #include <QMouseEvent>
@@ -10,19 +10,21 @@
 #include "Iact/Workspace/ViewportController.h"
 
 // Interface for viewport mouse control
-class IViewportMouseControl {
- public:
+class ViewportMouseControl
+{
+public:
     // Enum to represent mouse wheel direction
-    enum class MouseWheel {
+    enum class MouseWheel
+    {
         Vertical,
         Horizontal
     };
-
-    IViewportMouseControl() = default;
-    virtual ~IViewportMouseControl() = default;
+public:
+    ViewportMouseControl() = default;
+    virtual ~ViewportMouseControl() = default;
 
     // Set the viewport controller
-    virtual void setViewportController(ViewportController* controller) { m_viewportController = controller; }
+    virtual void setViewportController(const std::shared_ptr<ViewportController>& controller) { m_viewportController = controller; }
 
     // Handle mouse move event
     virtual void MouseMove(const QPointF& pos, QMouseEvent* mouseEvent, Qt::KeyboardModifiers modifierKeys) = 0;
@@ -39,8 +41,12 @@ class IViewportMouseControl {
     // Cancel any ongoing operation
     virtual void cancel() = 0;
 
- private:
-    ViewportController* m_viewportController;
+protected:
+	// Get the viewport controller
+	std::shared_ptr<ViewportController> viewportController() const { return m_viewportController; }
+
+private:
+    std::shared_ptr<ViewportController> m_viewportController;
 };
 
-#endif  // SRC_IACT_VIEWPORT_IVIEWPORTMOUSECONTROL_H_
+#endif  // IACT_VIEWPORT_ViewportMouseControl_H_
