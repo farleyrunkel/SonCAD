@@ -4,8 +4,9 @@
 #define IACT_FRAMEWORK_TOOLACTION_H_
 
 #include <Standard_Handle.hxx>
+#include <Standard_Transient.hxx>
 
-class WorkspaceControl;
+#include "Iact/Framework/WorkspaceControl.h"
 
 DEFINE_STANDARD_HANDLE(ToolAction, WorkspaceControl);
 

@@ -6,7 +6,10 @@
 #include <QWidget>
 #include <QSize>
 
-#include "Iact/Workspace/WorkspaceController.h"
+#include <Standard_Transient.hxx>
+#include <Standard_Handle.hxx>
+
+class WorkspaceController;
 
 class IHudElement : public QWidget
 {
@@ -17,7 +20,7 @@ public:
 	{}
 
 public:
-	Handle(WorkspaceController) GetGetWorkspaceController() const;
+	Handle(WorkspaceController) GetWorkspaceController() const;
 	void setWorkspaceController(const Handle(WorkspaceController)& controller);
 
 	virtual void Initialize() = 0;

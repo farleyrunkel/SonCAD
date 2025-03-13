@@ -1,7 +1,8 @@
 // Copyright [2024] SunCAD
+#include "Iact/Framework/WorkspaceControl.h"
 
 #include "Core/Core.h"
-#include "Iact/Framework/WorkspaceControl.h"
+#include "Iact/HudElements/HudElement.h"
 #include "Iact/Visual/VisualObject.h"
 #include "Iact/Workspace/WorkspaceController.h"
 

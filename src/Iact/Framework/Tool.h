@@ -10,8 +10,7 @@
 #include <boost/signals2.hpp>
 
 #include "Iact/Framework/ToolAction.h"
-
-class WorkspaceControl;
+#include "Iact/Framework/WorkspaceControl.h"
 
 DEFINE_STANDARD_HANDLE(Tool, WorkspaceControl);
 

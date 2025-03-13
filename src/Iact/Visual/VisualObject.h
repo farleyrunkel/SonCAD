@@ -9,8 +9,9 @@
 #include <gp_Trsf.hxx>
 #include <Standard_Handle.hxx>
 
-#include "Core/Topology/InteractiveEntity.h"
 #include "Comm/BaseObject.h"
+#include "Core/Topology/InteractiveEntity.h"
+#include "Iact/Framework/WorkspaceControl.h"
 #include "Iact/Workspace/WorkspaceController.h"
 
 DEFINE_STANDARD_HANDLE(VisualObject, BaseObject);

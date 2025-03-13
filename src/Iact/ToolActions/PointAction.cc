@@ -5,6 +5,7 @@
 #include <ProjLib.hxx>
 
 #include "Iact/Workspace/WorkspaceController.h"
+#include "Iact/Framework/WorkspaceControl.h"
 
 PointAction::PointAction()
     : ToolAction(),

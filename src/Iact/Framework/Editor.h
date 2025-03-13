@@ -9,7 +9,6 @@
 
 class Editor : public WorkspaceControl
 {
-
 public:
 	explicit Editor();
 

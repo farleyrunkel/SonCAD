@@ -12,7 +12,6 @@
 #include "Iact/HudElements/IHudManager.h"
 #include "Iact/HudElements/HudElement.h"
 
-
 class HudContainer : public QFrame, public IHudManager
 {
 	Q_OBJECT

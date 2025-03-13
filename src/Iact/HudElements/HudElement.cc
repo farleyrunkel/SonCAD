@@ -2,17 +2,16 @@
 
 #include "Iact/HudElements/HudElement.h"
 
+#include "Iact/Framework/ToolAction.h"
 #include "Iact/Workspace/WorkspaceController.h"
 
+Handle(WorkspaceController) IHudElement::GetWorkspaceController() const {
+	return _WorkspaceController;
+}
 
-
-	Handle(WorkspaceController) IHudElement::GetGetWorkspaceController() const {
-		return _WorkspaceController;
+void IHudElement::setWorkspaceController(const Handle(WorkspaceController)& controller) {
+	if (!_WorkspaceController.IsNull()  && _WorkspaceController != controller) {
+		throw std::logic_error("Sun_WorkspaceController cannot be changed");
 	}
-
-	void IHudElement::setWorkspaceController(const Handle(WorkspaceController)& controller) {
-		if (!_WorkspaceController.IsNull()  && _WorkspaceController != controller) {
-			throw std::logic_error("Sun_WorkspaceController cannot be changed");
-		}
-		_WorkspaceController = controller;
-	}
+	_WorkspaceController = controller;
+}

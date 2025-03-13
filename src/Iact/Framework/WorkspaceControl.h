@@ -8,9 +8,11 @@
 #include <Standard_Handle.hxx>
 
 #include "Comm/BaseObject.h"
-#include "Iact/HudElements/HudElement.h"
-#include "Iact/Visual/VisualObject.h"
 #include "Iact/Workspace/MouseEventData.h"
+
+class WorkspaceController;
+class IHudElement;
+class VisualObject;
 
 DEFINE_STANDARD_HANDLE(WorkspaceControl, BaseObject);
 
