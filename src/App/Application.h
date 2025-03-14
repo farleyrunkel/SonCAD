@@ -7,7 +7,6 @@
 
 #include <QString>
 #include <QApplication>
-#include <QCoreApplication>
 
 #include "App/MainWindow.h"
 #include "App/WelcomeDialog.h"
@@ -38,11 +37,11 @@ private:
     void _InitializeTranslation();
 
 private:
-    MainWindow* _MainWindow = nullptr;
-    WelcomeDialog* _WelcomeDialog = nullptr;
-    AppContext* _AppContext= nullptr;
+    MainWindow* _MainWindow;
+    WelcomeDialog* _WelcomeDialog;
+    AppContext* _AppContext;
 };
 
-#define App static_cast<Application*>(QCoreApplication::instance())
+#define App static_cast<Application*>(qApp)
 
 #endif  // APP_APPLICATION_H

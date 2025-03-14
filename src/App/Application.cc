@@ -16,6 +16,9 @@
 
 Application::Application(int& argc, char** argv)
     : QApplication(argc, argv)
+	, _MainWindow(nullptr)
+	, _WelcomeDialog(nullptr)
+	, _AppContext(nullptr)
 {
     _InitializeTranslation();
 
