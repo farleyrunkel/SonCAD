@@ -10,10 +10,10 @@
 #include <QDebug>
 #include <QScopedPointer>
 
-#include "Iact/Viewport/IViewportMouseControl.h"
+#include "Iact/Viewport/ViewportMouseControl.h"
 #include "Iact/Workspace/ViewportController.h"
 
-    class ViewportMouseControlDefault : public IViewportMouseControl
+    class ViewportMouseControlDefault : public ViewportMouseControl
     {
     public:
         explicit ViewportMouseControlDefault();

@@ -1,7 +1,6 @@
 // Copyright [2024] SunCAD
 #include "Iact/Framework/WorkspaceControl.h"
 
-#include "Core/Core.h"
 #include "Iact/HudElements/HudElement.h"
 #include "Iact/Visual/VisualObject.h"
 #include "Iact/Workspace/WorkspaceController.h"
@@ -32,7 +31,7 @@ void WorkspaceControl::Add(IHudElement* hudElement)
 		return;
 	}
 	_HudElements.append(hudElement);
-	//if (auto wc = Core::AppContext()->GetWorkspaceController(); wc->hudManager()) {
+	//if (auto wc = App->AppContext()->GetWorkspaceController(); wc->hudManager()) {
 	//	wc->hudManager()->AddElement(hudElement);
 	//}
 }

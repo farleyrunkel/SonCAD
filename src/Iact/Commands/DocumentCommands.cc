@@ -10,8 +10,6 @@
 #include "App/Application.h"
 #include "Iact/Commands/CommandHelper.h"
 
-
-
 ActionCommand& DocumentCommands::CreateNewModel()
 {
     static ActionCommand command(

@@ -6,7 +6,6 @@
 
 #include "App/AboutDialog.h"
 #include "App/Application.h"
-#include "Core/Core.h"
 #include "Iact/Commands/CommandHelper.h"
 #include "Iact/Commands/DocumentCommands.h"
 #include "ResourceUtils.h"
@@ -26,7 +25,7 @@ ActionCommand& AppCommands::ExitApplication()
 {
     static ActionCommand command(
         []() {
-        Core::GetMainWindow()->close();
+        App->GetMainWindow()->close();
     }
     );
     // Initialize command properties if not already set
@@ -40,7 +39,7 @@ ActionCommand& AppCommands::ExitApplication()
 
 ActionCommand& AppCommands::ShowAboutDialog()
 {
-    static AboutDialog aboutDialog(Core::GetMainWindow());
+    static AboutDialog aboutDialog(App->GetMainWindow());
     static ActionCommand command(
         []() {
         aboutDialog.show();
@@ -71,7 +70,7 @@ ActionCommand& AppCommands::Settings()
 ActionCommand& AppCommands::ResetWindowLayout()
 {
     static ActionCommand command(
-        []() { /*Core::mainWindow()->Docking.LoadWindowLayout("Default");*/
+        []() { /*App->mainWindow()->Docking.LoadWindowLayout("Default");*/
     }
     );
     // Initialize command properties if not already set

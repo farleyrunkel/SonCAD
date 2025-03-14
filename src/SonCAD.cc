@@ -5,9 +5,11 @@
 #include <QLibrary>
 
 #include "App/Application.h"
+#include "Comm/Utils.h"
 
 int main(int argc, char *argv[]) 
 {
+    Utils::RedirectOCCTMessagesToFile("E://Github//SonCAD//SunCAD.log");
 
     Application app(argc, argv);
 

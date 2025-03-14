@@ -7,7 +7,6 @@
 #include <QMessageBox>
 
 #include "ResourceUtils.h"
-#include "Core/Core.h"
 #include "Iact/Primitives/CreateBoxTool.h"
 #include "Iact/Commands/CommandHelper.h"
 

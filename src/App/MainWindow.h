@@ -7,14 +7,11 @@
 
 #include "SARibbonBar.h"
 #include "SARibbonMainWindow.h"
-
 #include "DockManager.h"
 
 #include "App/Commands/AppCommands.h"
 
-
-
-class MainWindow : public SARibbonMainWindow 
+class MainWindow : public SARibbonMainWindow
 {
     Q_OBJECT
 
@@ -27,8 +24,6 @@ private:
     void SetupDockWidgets();
     void SetupAppButton();
     void SetupCategories();
-
-    QAction* CreateAction(const QString& text, const QString& iconurl);
 
     void OnMainWindowLoaded();
 

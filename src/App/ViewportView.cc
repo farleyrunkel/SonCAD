@@ -7,15 +7,12 @@
 #include <QLabel>
 #include <QFont>
 
-#include "Core/Core.h"
 #include "Iact/Viewport/ViewportPanel.h"
 
-
-
 ViewportView::ViewportView(QWidget* parent)
-    : QScrollArea(parent),
-      _ViewportPanel(nullptr) {
-
+    : QScrollArea(parent)
+    , _ViewportPanel(nullptr)
+{
     // Set layout for the main panel
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     setLayout(mainLayout);

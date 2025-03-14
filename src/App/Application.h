@@ -29,7 +29,7 @@ public:
         return _MainWindow;
     }
 
-    Handle(AppContext) GetAppContext() const 
+    AppContext* GetAppContext() const 
     {
         return _AppContext;
     }
@@ -40,7 +40,9 @@ private:
 private:
     MainWindow* _MainWindow = nullptr;
     WelcomeDialog* _WelcomeDialog = nullptr;
-    Handle(AppContext) _AppContext= nullptr;
+    AppContext* _AppContext= nullptr;
 };
+
+#define App static_cast<Application*>(QCoreApplication::instance())
 
 #endif  // APP_APPLICATION_H

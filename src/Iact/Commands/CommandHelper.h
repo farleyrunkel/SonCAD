@@ -8,7 +8,6 @@
 #include "Iact/Workspace/ModelController.h"
 #include "Iact/Framework/Tool.h"
 
-
 class CommandHelper
 {
 public:
