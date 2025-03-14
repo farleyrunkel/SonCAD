@@ -4,60 +4,38 @@
 #include "Iact/Viewport/ViewportPanel.h"
 
 // Qt Libraries
+#include <QGuiApplication>
+#include <QScreen>
 #include <QVBoxLayout>
 #include <QWidget>
-#include <QScreen>
 #include <QWindow>
-#include <QGuiApplication>
 
 // Project Libraries
 #include "Iact/Viewport/ViewportMouseControlDefault.h"
-#include "Iact/Viewport/ViewportPanelModel.h"
 
 ViewportPanel::ViewportPanel(QWidget* parent)
 	: QWidget(parent)
-	, m_dataContext(new ViewportPanelModel())
-	, m_mouseControl(new ViewportMouseControlDefault())
-	, m_hudContainer(new QFrame(this))
-	, m_viewportHwndHost(nullptr)
-	, m_mouseMovePosition(0.0, 0.0)
+	, _MouseControl(new ViewportMouseControlDefault())
+	, _HudContainer(new QFrame(this))
+	, _ViewportHwndHost(nullptr)
+	, _MouseMovePosition(0.0, 0.0)
 {
-	m_hudContainer->setFrameShape(QFrame::NoFrame);
-	m_hudContainer->setMouseTracking(true);
-	m_hudContainer->setVisible(false);
-	m_hudContainer->setLayout(new QVBoxLayout);
+	Message::SendInfo("ViewportPanel: Constructing ViewportPanel");
 
-	m_hudContainer->setAutoFillBackground(false);
-	m_hudContainer->setStyleSheet("background-color: rgba(128, 128, 128, 0.5);");
+	_HudContainer->setFrameShape(QFrame::NoFrame);
+	_HudContainer->setMouseTracking(true);
+	_HudContainer->setVisible(false);
+	_HudContainer->setLayout(new QVBoxLayout);
 
-	//connect(m_dataContext, &ViewportPanelModel::hudElementAdded
-	//		, [this](HudElement* element) 
-	//{
-	//	m_hudContainer->layout()->addWidget(element);
-	//	m_hudContainer->setVisible(true);
-	//	m_hudContainer->update();
-	//	updateHud(m_mouseMovePosition);
-	//});
+	_HudContainer->setAutoFillBackground(false);
+	_HudContainer->setStyleSheet("background-color: rgba(128, 128, 128, 0.5);");
 
-	//connect(m_dataContext, &ViewportPanelModel::hudElementsRemoved
-	//		, [this](HudElement* element) {
-	//	m_hudContainer->layout()->removeWidget(element);
-
-	//	// If there are no more elements, hide the container
-	//	if (m_hudContainer->layout()->count() == 0) {
-	//		m_hudContainer->setVisible(false);
-	//	}
-	//	m_hudContainer->update();
-	//	updateHud(m_mouseMovePosition);
-	//});
-
-	//m_dataContext->propertyChanged().connect([this](const std::string& property) { model_PropertyChanged(QString::fromStdString(property)); });
-	// Initialize layout for the panel
 	setLayout(new QVBoxLayout(this));
 	setMouseTracking(true);
 
-	viewportControllerChanged();
-	m_hudContainer->raise();
+	_ViewportControllerChanged();
+
+	_HudContainer->raise();
 }
 
 void ViewportPanel::mouseMoveEvent(QMouseEvent* event)
@@ -65,16 +43,16 @@ void ViewportPanel::mouseMoveEvent(QMouseEvent* event)
 	qDebug() << "ViewportPanel: Mouse move event";
 	QWidget::mouseMoveEvent(event);
 
-	m_mouseMovePosition = this->mapFromGlobal(event->globalPos());
+	_MouseMovePosition = this->mapFromGlobal(event->globalPos());
 
-	if(m_viewportHwndHost)
+	if(_ViewportHwndHost)
 	{
-		auto p = m_viewportHwndHost->mapFromParent(m_mouseMovePosition);
-		m_mouseControl->MouseMove(p, event, event->modifiers());
+		auto p = _ViewportHwndHost->mapFromParent(_MouseMovePosition);
+		_MouseControl->MouseMove(p, event, event->modifiers());
 	}
-	m_hudContainer->adjustSize();
-	m_hudContainer->update();  // 强制重新绘制控件
-	updateHud(m_mouseMovePosition);
+	_HudContainer->adjustSize();
+	_HudContainer->update();  // 强制重新绘制控件
+	updateHud(_MouseMovePosition);
 }
 
 void ViewportPanel::wheelEvent(QWheelEvent* event)
@@ -85,14 +63,14 @@ void ViewportPanel::wheelEvent(QWheelEvent* event)
 void ViewportPanel::mousePressEvent(QMouseEvent* event)
 {
 	QWidget::mousePressEvent(event);
-	m_mouseMovePosition = this->mapFromGlobal(event->globalPos());
+	_MouseMovePosition = this->mapFromGlobal(event->globalPos());
 
 	setFocus();
 
-	//if(m_viewportHwndHost)
+	//if(_ViewportHwndHost)
 	//{
-	//	auto p = m_viewportHwndHost->mapFromParent(m_mouseMovePosition);
-	//	m_mouseControl->MouseDown(p, event->button(), 1, event->buttons(), event->modifiers());
+	//	auto p = _ViewportHwndHost->mapFromParent(_MouseMovePosition);
+	//	_MouseControl->MouseDown(p, event->button(), 1, event->buttons(), event->modifiers());
 	//}
 }
 
@@ -104,16 +82,16 @@ void ViewportPanel::resizeEvent(QResizeEvent* event)
 void ViewportPanel::mouseReleaseEvent(QMouseEvent* event)
 {
 	QWidget::mouseReleaseEvent(event);
-	m_mouseMovePosition = this->mapFromGlobal(event->globalPos());
+	_MouseMovePosition = this->mapFromGlobal(event->globalPos());
 
-	//if(m_viewportHwndHost)
+	//if(_ViewportHwndHost)
 	//{
-	//	auto p = m_viewportHwndHost->mapFromParent(m_mouseMovePosition);
-	//	m_mouseControl->MouseUp(p, event->button(), event->buttons(), event->modifiers());
+	//	auto p = _ViewportHwndHost->mapFromParent(_MouseMovePosition);
+	//	_MouseControl->MouseUp(p, event->button(), event->buttons(), event->modifiers());
 	//}
-	m_hudContainer->adjustSize();
-	m_hudContainer->update();
-	updateHud(m_mouseMovePosition);
+	_HudContainer->adjustSize();
+	_HudContainer->update();
+	updateHud(_MouseMovePosition);
 }
 
 
@@ -137,7 +115,7 @@ void ViewportPanel::model_PropertyChanged(const QString& propertyName)
 {
 	if(propertyName == "viewportController")
 	{
-		viewportControllerChanged();
+		_ViewportControllerChanged();
 	}
 	if(propertyName == "hintMessage")
 	{
@@ -145,37 +123,38 @@ void ViewportPanel::model_PropertyChanged(const QString& propertyName)
 	}
 }
 
-void ViewportPanel::viewportControllerChanged()
+void ViewportPanel::_ViewportControllerChanged()
 {
+	Message::SendInfo("ViewportPanel: ViewportController changed");
 	//auto viewportController = m_dataContext->viewportController();
 
 	//if(viewportController == nullptr)
 	//	return;
 
-	//if(m_mouseControl != nullptr)
+	//if(_MouseControl != nullptr)
 	//{
-	//	m_mouseControl->setViewportController(viewportController);
+	//	_MouseControl->setViewportController(viewportController);
 	//}
 
-	//auto newHost = new ViewportHwndHost(viewportController.get(), this);
-	//newHost->setFocus();
+	auto newHost = new ViewportHwndHost(nullptr, this);
+	newHost->setFocus();
 
-	//if(m_viewportHwndHost != nullptr)
-	//{
-	//	layout()->replaceWidget(m_viewportHwndHost, newHost);
-	//	delete m_viewportHwndHost;
-	//}
-	//else
-	//{
-	//	layout()->addWidget(newHost);
-	//}
-	//m_viewportHwndHost = newHost;
-	//m_hudContainer->raise();
+	if(_ViewportHwndHost != nullptr)
+	{
+		layout()->replaceWidget(_ViewportHwndHost, newHost);
+		delete _ViewportHwndHost;
+	}
+	else
+	{
+		layout()->addWidget(newHost);
+	}
+	_ViewportHwndHost = newHost;
+	//_HudContainer->raise();
 }
 
 void ViewportPanel::updateHud(const QPointF& pos)
 {
 	int x = pos.x() + 10;
-	int y = pos.y() - 10 - m_hudContainer->height();
-	m_hudContainer->move(x, y);
+	int y = pos.y() - 10 - _HudContainer->height();
+	_HudContainer->move(x, y);
 }

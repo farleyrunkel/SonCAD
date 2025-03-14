@@ -8,11 +8,10 @@
 
 #include "Iact/Viewport/ViewportPanel.h"
 
-
-
 class ViewportView : public QScrollArea 
 {
     Q_OBJECT
+
 public:
     explicit ViewportView(QWidget* parent = nullptr);
 

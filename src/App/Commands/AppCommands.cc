@@ -8,7 +8,7 @@
 #include "App/Application.h"
 #include "Iact/Commands/CommandHelper.h"
 #include "Iact/Commands/DocumentCommands.h"
-#include "ResourceUtils.h"
+#include "App/ResourceUtils.h"
 
 RelayCommand& AppCommands::InitApplication()
 {

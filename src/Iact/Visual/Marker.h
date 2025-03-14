@@ -18,7 +18,7 @@
 #include <Prs3d_PointAspect.hxx>
 #include <ElSLib.hxx>
 
-#include "ResourceUtils.h"
+#include "App/ResourceUtils.h"
 #include "Comm/Types/Color.h"
 #include "Comm/PixMapHelper.h"
 #include "Iact/Visual/VisualObject.h"

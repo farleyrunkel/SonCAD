@@ -25,13 +25,13 @@ private:
     void SetupAppButton();
     void SetupCategories();
 
-    void OnMainWindowLoaded();
+private:
+    void _MainWindow_Loaded();
 
 private:
-    QMenu* _AppButton = nullptr;
-    SARibbonBar* _RibbonBar = nullptr;
-    // The main container for docking
-    ads::CDockManager* _DockManager = nullptr;
+    QMenu* _AppButton;
+    SARibbonBar* _RibbonBar;
+    ads::CDockManager* _DockManager;     // The main container for docking
 };
 
 #endif  // APP_MAINWINDOW_H_

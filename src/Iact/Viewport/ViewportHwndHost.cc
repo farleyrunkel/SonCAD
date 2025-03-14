@@ -205,13 +205,11 @@ public:
 // Function : ViewportHwndHost
 // Purpose  :
 // ================================================================
-ViewportHwndHost::ViewportHwndHost(ViewportController* vc, QWidget* theParent)
+ViewportHwndHost::ViewportHwndHost(const Handle(ViewportController)& vc , QWidget* theParent)
     : QOpenGLWidget(theParent)
-    , m_viewportController(vc)
+    , myViewportController(vc)
     , myIsCoreProfile(true)
 {
-    //m_viewportController->setWidget(this);
-
     Handle(Aspect_DisplayConnection) aDisp = new Aspect_DisplayConnection();
     Handle(OpenGl_GraphicDriver) aDriver = new OpenGl_GraphicDriver(aDisp, false);
     // lets QOpenGLWidget to manage buffer swap
@@ -221,10 +219,32 @@ ViewportHwndHost::ViewportHwndHost(ViewportController* vc, QWidget* theParent)
     // offscreen FBOs should be always used
     aDriver->ChangeOptions().useSystemBuffer = false;
 
-    //auto viewport = m_viewportController->viewport();
-    //myView = viewport->v3dView();
-    //myViewer = viewport->workspace()->v3dViewer();
-    //myContext = viewport->workspace()->aisContext();
+    // create viewer
+    myViewer = new V3d_Viewer(aDriver);
+    myViewer->SetDefaultBackgroundColor(Quantity_NOC_BLACK);
+    myViewer->SetDefaultLights();
+    myViewer->SetLightOn();
+    myViewer->ActivateGrid(Aspect_GT_Rectangular, Aspect_GDM_Lines);
+
+    // create AIS context
+    myContext = new AIS_InteractiveContext(myViewer);
+
+    myViewCube = new AIS_ViewCube();
+    myViewCube->SetViewAnimation(myViewAnimation);
+    myViewCube->SetFixedAnimationLoop(false);
+    myViewCube->SetAutoStartAnimation(true);
+    myViewCube->TransformPersistence()->SetOffset2d(Graphic3d_Vec2i(100, 150));
+
+    // note - window will be created later within initializeGL() callback!
+    myView = myViewer->CreateView();
+    myView->SetImmediateUpdate(false);
+#ifndef __APPLE__
+    myView->ChangeRenderingParams().NbMsaaSamples = 4; // warning - affects performance
+#endif
+    myView->ChangeRenderingParams().ToShowStats = true;
+    myView->ChangeRenderingParams().CollectedStats = (Graphic3d_RenderingParams::PerfCounters)
+        (Graphic3d_RenderingParams::PerfCounters_FrameRate
+         | Graphic3d_RenderingParams::PerfCounters_Triangles);
 
     // Qt widget setup
     setMouseTracking(true);
@@ -309,6 +329,13 @@ void ViewportHwndHost::initializeGL()
     const QRect aRect = rect();
     const Graphic3d_Vec2i aViewSize(aRect.right() - aRect.left(), aRect.bottom() - aRect.top());
 
+    Aspect_Drawable aNativeWin = (Aspect_Drawable)winId();
+#ifdef _WIN32
+    HDC   aWglDevCtx = wglGetCurrentDC();
+    HWND  aWglWin = WindowFromDC(aWglDevCtx);
+    aNativeWin = (Aspect_Drawable)aWglWin;
+#endif
+
     Handle(OpenGl_Context) aGlCtx = new OpenGl_Context();
     if(!aGlCtx->Init(myIsCoreProfile))
     {
@@ -319,24 +346,31 @@ void ViewportHwndHost::initializeGL()
     }
 
     Handle(Aspect_NeutralWindow) aWindow = Handle(Aspect_NeutralWindow)::DownCast(myView->Window());
-    if(aWindow.IsNull())
+    if(!aWindow.IsNull())
+    {
+        aWindow->SetNativeHandle(aNativeWin);
+        aWindow->SetSize(aViewSize.x(), aViewSize.y());
+        myView->SetWindow(aWindow, aGlCtx->RenderingContext());
+        dumpGlInfo(true, true);
+    }
+    else
     {
         aWindow = new Aspect_NeutralWindow();
         aWindow->SetVirtual(true);
-
-        Aspect_Drawable aNativeWin = (Aspect_Drawable)winId();
-#ifdef _WIN32
-        //HGLRC aWglCtx    = wglGetCurrentContext();
-        HDC   aWglDevCtx = wglGetCurrentDC();
-        HWND  aWglWin = WindowFromDC(aWglDevCtx);
-        aNativeWin = (Aspect_Drawable)aWglWin;
-#endif
         aWindow->SetNativeHandle(aNativeWin);
+        aWindow->SetSize(aViewSize.x(), aViewSize.y());
+        myView->SetWindow(aWindow, aGlCtx->RenderingContext());
+        dumpGlInfo(true, true);
+
+        myContext->Display(myViewCube, 0, 0, false);
     }
 
-    aWindow->SetSize(aViewSize.x(), aViewSize.y());
-    //m_viewportController->SetWindow(aWindow, aGlCtx->RenderingContext());
-    //m_viewportController->updateParameter();
+    {
+        // dummy shape for testing
+        TopoDS_Shape aBox = BRepPrimAPI_MakeBox(100.0, 50.0, 90.0).Shape();
+        Handle(AIS_Shape) aShape = new AIS_Shape(aBox);
+        myContext->Display(aShape, AIS_Shaded, 0, false);
+    }
 }
 
 // ================================================================
@@ -347,6 +381,20 @@ void ViewportHwndHost::paintGL()
 {
     if(myView->Window().IsNull())
     {
+        return;
+    }
+
+    Aspect_Drawable aNativeWin = (Aspect_Drawable)winId();
+#ifdef _WIN32
+    HDC   aWglDevCtx = wglGetCurrentDC();
+    HWND  aWglWin = WindowFromDC(aWglDevCtx);
+    aNativeWin = (Aspect_Drawable)aWglWin;
+#endif
+    if(myView->Window()->NativeHandle() != aNativeWin)
+    {
+        // workaround window recreation done by Qt on monitor (QScreen) disconnection
+        Message::SendWarning() << "Native window handle has changed by QOpenGLWidget!";
+        initializeGL();
         return;
     }
 
@@ -395,6 +443,7 @@ void ViewportHwndHost::paintGL()
     aView->InvalidateImmediate();
     FlushViewEvents(myContext, aView, true);
 }
+
 
 // ================================================================
 // Function : closeEvent

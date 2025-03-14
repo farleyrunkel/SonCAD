@@ -12,12 +12,11 @@
 #include "SARibbonBar.h"
 #include "SARibbonApplicationButton.h"
 #include "SARibbonMenu.h"
-
 #include "AutoHideDockContainer.h"
 #include "DockAreaWidget.h"
 #include "DockAreaTitleBar.h"
 
-#include "ResourceUtils.h"
+#include "App/ResourceUtils.h"
 #include "App/WelcomeDialog.h"
 #include "App/ViewportView.h"
 
@@ -27,6 +26,9 @@
 
 MainWindow::MainWindow(QWidget* parent)
     : SARibbonMainWindow(parent)
+	, _AppButton(nullptr)
+	, _RibbonBar(nullptr)
+	, _DockManager(nullptr)
 {
     SetupUi();
 
@@ -35,7 +37,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     SetupDockWidgets();
 
-    OnMainWindowLoaded();
+    _MainWindow_Loaded();
 }
 
 MainWindow::~MainWindow() {}
@@ -142,7 +144,7 @@ void MainWindow::SetupDockWidgets()
 {
     // Set up a central dock widget 
     ads::CDockWidget* CentralDockWidget = new ads::CDockWidget("Workspace");
-    CentralDockWidget->setWidget(new ViewportView());
+    CentralDockWidget->setWidget(new ViewportView(this));
     auto* CentralDockArea = _DockManager->setCentralWidget(CentralDockWidget);
 
     // Set up additional dock widgets for various panels
@@ -167,7 +169,7 @@ void MainWindow::SetupDockWidgets()
     connect(&AppCommands::ShowDocumentExplorer(), &QAction::triggered, documentDock->toggleViewAction(), &QAction::trigger);
 }
 
-void MainWindow::OnMainWindowLoaded()
+void MainWindow::_MainWindow_Loaded()
 {
     AppCommands::InitApplication().Execute();
 }

@@ -12,6 +12,8 @@
 #include "App/WelcomeDialog.h"
 #include "App/AppContext.h"
 
+#define App static_cast<Application*>(qApp)
+
 class Application : public QApplication 
 {
     Q_OBJECT
@@ -23,12 +25,12 @@ public:
         _WelcomeDialog->deleteLater();
     }
 
-    MainWindow* GetMainWindow() const
+	MainWindow* GetMainWindow() const noexcept
     {
         return _MainWindow;
     }
 
-    AppContext* GetAppContext() const 
+    AppContext* GetAppContext() const noexcept
     {
         return _AppContext;
     }
@@ -41,7 +43,5 @@ private:
     WelcomeDialog* _WelcomeDialog;
     AppContext* _AppContext;
 };
-
-#define App static_cast<Application*>(qApp)
 
 #endif  // APP_APPLICATION_H

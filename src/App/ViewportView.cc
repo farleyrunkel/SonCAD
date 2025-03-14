@@ -30,7 +30,7 @@ ViewportView::ViewportView(QWidget* parent)
     _MessageBar->setStyleSheet("background-color: lightyellow;");
     mainLayout->addWidget(_MessageBar);
 
-    // Add spacer between the labels
+    // add spacer between the labels
     mainLayout->addStretch(1);
 
     // Grid information display
@@ -40,33 +40,7 @@ ViewportView::ViewportView(QWidget* parent)
     gridInfo->setStyleSheet(_MessageBar->styleSheet());
     mainLayout->addWidget(gridInfo);
 
-    //connect(Core::AppContext(), &AppContext::workspaceControllerChanged, [this](Sun::WorkspaceController* controller) {
-    //    if (controller) {
-    //        if (m_viewportPanel) {
-    //            m_viewportPanel->deleteLater();
-    //        }
-    //        // Create main panel for the viewport
-    //        m_viewportPanel = new ViewportPanel();
-
-    //        auto workspace = controller->Workspace();
-    //        m_viewportPanel->setViewer(workspace->v3dViewer());
-    //        m_viewportPanel->setAisContext(workspace->aisContext());
-    //        m_viewportPanel->setWorkspaceController(controller);
-
-    //        connect(m_viewportPanel, &ViewportPanel::hintMessageChanged, [this](const QString& message) {
-    //            messageBar->setText(message); }
-    //        );
-
-    //        connect(Core::AppContext(), &AppContext::viewportChanged, [this](Sun_Viewport* Viewport) {
-    //            if (Viewport) {
-    //                m_viewportPanel->setView(Viewport->V3dView());
-    //                setWidget(m_viewportPanel); // Set as the scrollable area
-    //                setWidgetResizable(true); // Allow resizing
-    //            }}
-    //        );
-
-    //        connect(Core::AppContext(), &AppContext::viewportControllerChanged,
-    //            m_viewportPanel, &ViewportPanel::setViewportController);
-    //    }}
-    //);
+    _ViewportPanel = new ViewportPanel(this);
+    setWidget(_ViewportPanel);
+    setWidgetResizable(true);
 }
