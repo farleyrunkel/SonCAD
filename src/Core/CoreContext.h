@@ -20,6 +20,8 @@ public:
 public:
     Handle(Workspace) GetWorkspace();
 
+    Handle(Viewport) GetViewport();
+
     virtual void SetDocument(const Handle(Model)& value);
     virtual void SetWorkspace(const Handle(Workspace)& value);
     virtual void SetViewport(const Handle(Viewport)& value);

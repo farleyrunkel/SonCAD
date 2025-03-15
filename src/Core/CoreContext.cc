@@ -27,7 +27,7 @@ void CoreContext::SetDocument(const Handle(Model)& doc)
 
     if(it == workspaces.end())
     {
-        SetWorkspace(workspaces.IsEmpty() ? new Workspace() : workspaces.First());
+        SetWorkspace(workspaces.IsEmpty() ? new Workspace(doc) : workspaces.First());
     }
 }
 
@@ -36,12 +36,17 @@ Handle(Workspace) CoreContext::GetWorkspace()
     return _Workspace;
 }
 
+Handle(Viewport) CoreContext::GetViewport()
+{
+    return _Viewport;
+}
+
 void CoreContext::SetWorkspace(const Handle(Workspace)& value)
 {
     _Workspace = value;
 
 	auto& viewports = _Workspace->GetViewports();
-	SetViewport(viewports.IsEmpty() ? new Viewport : viewports.First());
+	SetViewport(viewports.IsEmpty() ? new Viewport(value) : viewports.First());
 }
 
 void CoreContext::SetViewport(const Handle(Viewport)& value)

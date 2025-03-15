@@ -44,6 +44,7 @@ public:
     {
         initViewer();
     }
+
     ~Workspace()
     {}
 
