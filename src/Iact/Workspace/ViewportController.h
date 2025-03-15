@@ -8,6 +8,7 @@
 #include "Comm/BaseObject.h"
 #include "Core/Viewport.h"
 
+class WorkspaceController;
 
 DEFINE_STANDARD_HANDLE(ViewportController, BaseObject)
 
@@ -18,6 +19,8 @@ public:
 	{
 		myViewport = new Viewport();
 	}
+
+	ViewportController(const Handle(Viewport)& viewport, const Handle(WorkspaceController)& wc);
 
 public:
 	enum class PredefinedViews
@@ -41,6 +44,11 @@ public:
 		return myViewport;
 	}
 
+	Handle(WorkspaceController) GetWorkspaceController()
+	{
+		return _WorkspaceController;
+	}
+
 public:
 	void MouseMove(const QPointF& pos, Qt::KeyboardModifiers modifiers,
 				   MouseMoveMode mode = MouseMoveMode::None)
@@ -59,6 +67,7 @@ public:
 	{}
 private:
 	Handle(Viewport) myViewport;
+	Handle(WorkspaceController)  _WorkspaceController;
 };
 
 

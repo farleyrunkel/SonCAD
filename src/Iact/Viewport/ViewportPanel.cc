@@ -12,6 +12,7 @@
 
 // Project Libraries
 #include "Iact/Viewport/ViewportMouseControlDefault.h"
+#include "Iact/Workspace/InteractiveContext.h"
 
 ViewportPanel::ViewportPanel(QWidget* parent)
 	: QWidget(parent)
@@ -135,6 +136,8 @@ void ViewportPanel::_ViewportControllerChanged()
 	//{
 	//	_MouseControl->setViewportController(viewportController);
 	//}
+
+	auto VC = InteractiveContext::Current()->GetViewportController();
 
 	auto newHost = new ViewportHwndHost(new ViewportController, this);
 	newHost->setFocus();

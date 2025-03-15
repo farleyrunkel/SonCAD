@@ -1,0 +1,9 @@
+// Copyright [2024] SunCAD
+
+#ifndef IACT_VIEWPORT_VIEWPORTPANELMODEL_H_
+#define IACT_VIEWPORT_VIEWPORTPANELMODEL_H_
+
+class ViewportPanelModel
+{};
+
+#endif // IACT_VIEWPORT_VIEWPORTPANELMODEL_H_

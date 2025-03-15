@@ -72,7 +72,6 @@ void InteractiveContext::SetWorkspaceController(const Handle(WorkspaceController
             _WorkspaceController->Dispose();
         }
         _WorkspaceController = controller;
-
     }
 }
 
@@ -88,7 +87,6 @@ void InteractiveContext::SetViewportController(const Handle(ViewportController)&
     if(_ViewportController != controller)
     {
         _ViewportController = controller;
-
     }
 }
 
@@ -145,5 +143,11 @@ void InteractiveContext::SetViewport(const Handle(Viewport)& value)
     if(value.IsNull())
     {
         SetViewportController(nullptr);
+        _WorkspaceController->SetActiveViewport(nullptr);
+    }
+    else
+    {
+        _WorkspaceController->SetActiveViewport(value);
+		SetViewportController(_WorkspaceController->GetViewController(value));
     }
 }

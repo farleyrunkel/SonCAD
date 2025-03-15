@@ -17,8 +17,9 @@
 #include <QWidget>
 
 // Project includes
-#include "Iact/Viewport/ViewportMouseControl.h"
 #include "Iact/Viewport/ViewportHwndHost.h"
+#include "Iact/Viewport/ViewportMouseControl.h"
+#include "Iact/Viewport/ViewportPanelModel.h"
 
 /// @brief ViewportPanel class
 class ViewportPanel : public QWidget
@@ -54,6 +55,8 @@ private:
 	QPointF _MouseMovePosition;
 	bool _SuppressContextMenu;
 	bool _ContextMenuIsOpen;
+
+	ViewportPanelModel* _DataContext;
 };
 
 #endif  // IACT_VIEWPORT_VIEWPORTPANEL_H_
