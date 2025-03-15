@@ -47,7 +47,7 @@ void MainWindow::SetupUi()
     resize(1260, 800);
 
     setWindowTitle(tr("SunCAD"));
-    setWindowIcon(ResourceUtils::Icon("App/App-MainLogo"));
+    setWindowIcon(Resource::Icon("App/App-MainLogo"));
     setStatusBar(new QStatusBar());
 
     ads::CDockManager::setConfigFlag(ads::CDockManager::OpaqueSplitterResize, true);

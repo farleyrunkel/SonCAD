@@ -1,4 +1,4 @@
-// ResourceUtils.h
+// Resource.h
 #ifndef RESOURCEUTILS_H_
 #define RESOURCEUTILS_H_
 
@@ -8,7 +8,7 @@
 #include <QDebug>
 
 
-class ResourceUtils 
+class Resource 
 {
 public:
     static constexpr const char* ICON_PATH_PREFIX = "://icons/";

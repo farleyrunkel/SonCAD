@@ -13,18 +13,18 @@
 ActionCommand& DocumentCommands::CreateNewModel()
 {
     static ActionCommand command(
-        []() { if(CommandHelper::GetDocumentController()->AskForSavingModelChanges())
-    {
-        CommandHelper::GetDocumentController()->NewModel();
-    }},
-        []() { return !CommandHelper::GetDocumentController().IsNull(); }
+        []() {
+        if(auto DC = InteractiveContext::Current()->GetDocumentController(); DC->AskForSavingModelChanges())
+            DC->NewModel();
+    },
+        []() { return CommandHelper::CanCreateDocument(); }
     );
 
     if(command.text().isEmpty())
     {
         command.setText(QObject::tr("New Model"));
         command.setToolTip(QObject::tr("Create a new model."));
-        command.setIcon(ResourceUtils::Icon("App/App-NewModel"));
+        command.setIcon(Resource::Icon("App/App-NewModel"));
     }
 
     return command;
@@ -33,18 +33,18 @@ ActionCommand& DocumentCommands::CreateNewModel()
 ActionCommand& DocumentCommands::OpenModelFrom()
 {
     static ActionCommand command(
-        []() { if(CommandHelper::GetDocumentController()->AskForSavingModelChanges())
+        []() { if(InteractiveContext::Current()->GetDocumentController()->AskForSavingModelChanges())
     {
-        CommandHelper::GetDocumentController()->OpenModelFrom("");
+        InteractiveContext::Current()->GetDocumentController()->OpenModelFrom("");
     }},
-        []() { return !CommandHelper::GetDocumentController().IsNull(); }
+        []() { return !InteractiveContext::Current()->GetDocumentController().IsNull(); }
     );
 
     if(command.text().isEmpty())
     {
         command.setText(QObject::tr("Open Model..."));
         command.setToolTip(QObject::tr("Opens an existing Model."));
-        command.setIcon(ResourceUtils::Icon("App/App-OpenModel"));
+        command.setIcon(Resource::Icon("App/App-OpenModel"));
     }
 
     return command;

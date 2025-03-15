@@ -19,9 +19,9 @@
 #include <Graphic3d_RenderingParams.hxx>
 #include <Graphic3d_RenderTransparentMethod.hxx>
 #include <V3d_View.hxx>
-
 #include "Comm/BaseObject.h"
-#include "Core/Workspace.h"
+
+class Workspace;
 
 DEFINE_STANDARD_HANDLE(Viewport, BaseObject)
 
@@ -37,8 +37,15 @@ public:
     };
 
 public:
-    // 构造函数
+    // 
+    Viewport();
+
     explicit Viewport(const Handle(Workspace)& workspace);
+
+    Handle(Workspace) GetWorkspace()
+    {
+		return _Workspace;
+    }
 
     // 获取器和设置器
     gp_Pnt EyePoint()
@@ -143,55 +150,10 @@ public:
     }
 
     // 初始化 Viewport，支持 MSAA
-    void Init(bool useMsaa)
-    {
-        if(_V3dView)
-        {
-            return;
-        }
-
-        _V3dView = _Workspace->V3dViewer()->CreateView();
-        _AisAnimationCamera = new AIS_AnimationCamera("ViewCamera", _V3dView);
-
-        _V3dView->SetBgGradientColors(Quantity_Color(0.624, 0.714, 0.804, Quantity_TOC_sRGB),
-                                      Quantity_Color(0.424, 0.482, 0.545, Quantity_TOC_sRGB),
-                                      Aspect_GFM_VER, false);
-
-        Graphic3d_RenderingParams& renderParams = _V3dView->ChangeRenderingParams();
-        renderParams.NbMsaaSamples = useMsaa ? 4 : 0;
-        renderParams.IsAntialiasingEnabled = useMsaa;
-        renderParams.TransparencyMethod = Graphic3d_RTM_DEPTH_PEELING_OIT;
-        renderParams.Method = Graphic3d_RM_RASTERIZATION;
-        renderParams.RaytracingDepth = 3;
-        renderParams.IsShadowEnabled = true;
-        renderParams.IsReflectionEnabled = true;
-        renderParams.IsTransparentShadowEnabled = true;
-
-        // 重新初始化视图参数
-        SetTargetPoint(_TargetPoint);
-        SetEyePoint(_EyePoint);
-        SetScale(_Scale);
-        SetTwist(_Twist);
-        UpdateRenderMode();
-    }
+    void Init(bool useMsaa);
 
     // 更新渲染模式
-    void UpdateRenderMode()
-    {
-        if(!_V3dView) return;
-
-        _V3dView->SetComputedMode(_RenderMode == HLR);
-
-        auto& renderParams = _V3dView->ChangeRenderingParams();
-        if(_RenderMode == Raytraced)
-        {
-            renderParams.Method = Graphic3d_RM_RAYTRACING;
-        }
-        else
-        {
-            renderParams.Method = Graphic3d_RM_RASTERIZATION;
-        }
-    }
+    void UpdateRenderMode();
 
     // 析构函数
     ~Viewport()

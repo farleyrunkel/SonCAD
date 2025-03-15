@@ -7,6 +7,9 @@
 #include <boost/signals2.hpp>
 
 #include <Standard_Handle.hxx>
+#include <TDocStd_Document.hxx>
+#include <NCollection_Vector.hxx>
+
 #include "Core/Workspace.h"
 #include "Comm/BaseObject.h"
 
@@ -17,7 +20,7 @@ class Model : public BaseObject
 public:
     Model();
 
-    QVector<Handle(Workspace)>& GetWorkspaces();
+    NCollection_Vector<Handle(Workspace)>& GetWorkspaces();
 
     static QString FileExtension();
 
@@ -32,7 +35,8 @@ public:
     boost::signals2::signal<void()> OnResetUnsavedChanges;
 
 private:
-    QVector<Handle(Workspace)> _Workspaces;
+    NCollection_Vector<Handle(Workspace)> _Workspaces;
+    Handle(TDocStd_Document) __Document;
 };
 
 #endif  // CORE_TOPOLOGY_MODEL_H_

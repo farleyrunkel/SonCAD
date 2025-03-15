@@ -8,27 +8,25 @@
 
 #include "Pres/Commands/ICommand.h"
 
+class RelayCommand : public ICommand
+{
+public:
+    // Constructor
+    RelayCommand(std::function<void()> Execute);
 
+    // Constructor
+    RelayCommand(std::function<void()> Execute, std::function<bool()> CanExecute);
 
-    class RelayCommand : public ICommand
-    {
-    public:
-        // Constructor
-        RelayCommand(std::function<void()> Execute);
+    // Method to execute the command
+    void Execute() override;
 
-        // Constructor
-        RelayCommand(std::function<void()> Execute, std::function<bool()> CanExecute);
+    // Method to check if the command can be executed
+    bool CanExecute() const override;
 
-        // Method to execute the command
-        void Execute() override;
-
-        // Method to check if the command can be executed
-        bool CanExecute() const override;
-
-    private:
-        std::function<void()> _Execute;      // Function to execute the command
-        std::function<bool()> _CanExecute;   // Function to check if the command can be executed
-    };
+private:
+    std::function<void()> _Execute;      // Function to execute the command
+    std::function<bool()> _CanExecute;   // Function to check if the command can be executed
+};
 
 
 #endif  // PRES_COMMANDS_RELAYCOMMAND_H_

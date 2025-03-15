@@ -3,17 +3,17 @@
 #ifndef IACT_WORKSPACE_MODELCONTROLLER_H_
 #define IACT_WORKSPACE_MODELCONTROLLER_H_
 
-#include "Comm/BaseObject.h"
-
 #include <string>
+
+#include "Comm/BaseObject.h"
+#include "Core/Topology/Model.h"
 
 DEFINE_STANDARD_HANDLE(ModelController, BaseObject)
 
 class ModelController : public BaseObject
 {
 public:
-    ModelController()
-    {}
+    ModelController();
     ~ModelController()
     {}
 
@@ -23,10 +23,7 @@ public:
         return true;
     }
 
-    void NewModel()
-    {
-
-    }
+    Handle(Model) NewModel();
 
     void OpenModelFrom(const std::string&)
     {}

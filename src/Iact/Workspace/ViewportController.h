@@ -15,7 +15,9 @@ class ViewportController : public BaseObject
 {
 public:
 	ViewportController()
-	{}
+	{
+		myViewport = new Viewport();
+	}
 
 public:
 	enum class PredefinedViews
@@ -36,7 +38,7 @@ public:
 
 	Handle(Viewport) GetViewport()
 	{
-		return nullptr;
+		return myViewport;
 	}
 
 public:
@@ -55,7 +57,8 @@ public:
 	{}
 	void Rotate(double deltaX, double deltaY, double deltaZ)
 	{}
-
+private:
+	Handle(Viewport) myViewport;
 };
 
 

@@ -2,10 +2,13 @@
 
 #include "Iact/Workspace/InteractiveContext.h"
 
+#include <algorithm>
+
 #include <QString>
 
 #include "Comm/BaseObject.h"
 #include "Core/CoreContext.h"
+#include "Core/Topology/Model.h"
 #include "Iact/Workspace/ModelController.h"
 #include "Iact/Workspace/ViewportController.h"
 #include "Iact/Workspace/WorkspaceController.h"
@@ -34,8 +37,6 @@ InteractiveContext::~InteractiveContext()
     }
     _ViewportController = nullptr;
 }
-
-// ModelController getter/setter
 
 Handle(ModelController) InteractiveContext::GetDocumentController() const
 {
@@ -124,4 +125,25 @@ void InteractiveContext::AddToScriptMruList(const QString& filePath)
         _RecentUsedScripts.prepend(filePath);
     }
 
+}
+
+void InteractiveContext::SetWorkspace(const Handle(Workspace)& value) 
+{
+	if(CoreContext::GetWorkspace() == value)
+	{
+		return;
+	}
+
+    SetWorkspaceController(nullptr);
+    SetWorkspaceController(value.IsNull() ? nullptr : new WorkspaceController(value));
+    CoreContext::SetWorkspace(value);
+}
+
+void InteractiveContext::SetViewport(const Handle(Viewport)& value) 
+{
+    CoreContext::SetViewport(value);
+    if(value.IsNull())
+    {
+        SetViewportController(nullptr);
+    }
 }

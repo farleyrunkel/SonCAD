@@ -16,6 +16,7 @@ class WorkspaceController : public BaseObject
 {
 public:
     WorkspaceController();
+    WorkspaceController(const Handle(Workspace)& value) {}
 
     bool StartTool(Handle(Tool) tool);
 

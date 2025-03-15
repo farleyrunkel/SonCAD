@@ -2,22 +2,23 @@
 
 #include "Pres/Commands/RelayCommand.h"
 
+RelayCommand::RelayCommand(std::function<void()> Execute)
+    : _Execute(std::move(Execute)), _CanExecute(nullptr)
+{}
 
+RelayCommand::RelayCommand(std::function<void()> Execute, std::function<bool()> CanExecute)
+    : _Execute(std::move(Execute)), _CanExecute(std::move(CanExecute))
+{}
 
-    RelayCommand::RelayCommand(std::function<void()> Execute)
-        : _Execute(std::move(Execute)), _CanExecute(nullptr) {
+void RelayCommand::Execute()
+{
+    if(_Execute && CanExecute())
+    {
+        _Execute();
     }
+}
 
-    RelayCommand::RelayCommand(std::function<void()> Execute, std::function<bool()> CanExecute)
-        : _Execute(std::move(Execute)), _CanExecute(std::move(CanExecute)) {
-    }
-
-    void RelayCommand::Execute() {
-        if (_Execute) {
-            _Execute();
-        }
-    }
-
-    bool RelayCommand::CanExecute() const {
-        return _CanExecute ? _CanExecute() : true;
-    }
+bool RelayCommand::CanExecute() const
+{
+    return _CanExecute ? _CanExecute() : true;
+}

@@ -2,10 +2,15 @@
 
 #include "Core/Topology/Model.h"
 
-Model::Model()
-{}
+#include <NCollection_Vector.hxx>
 
-QVector<Handle(Workspace)>& Model::GetWorkspaces()
+Model::Model()
+{
+	Handle(Workspace) workspace = new Workspace(this);
+    _Workspaces.Append(workspace);
+}
+
+NCollection_Vector<Handle(Workspace)>& Model::GetWorkspaces()
 {
     return _Workspaces;
 }

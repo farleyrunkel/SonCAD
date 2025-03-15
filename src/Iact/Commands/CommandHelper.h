@@ -11,15 +11,13 @@
 class CommandHelper
 {
 public:
-    static Handle(WorkspaceController) GetWorkspaceController();
-
-    static Handle(ModelController) GetDocumentController();
-
     static Handle(Tool) CurrentTool();
 
     static bool StartTool(Handle(Tool) tool);
 
-    static inline bool CanExecuteOnWorkspace();
+    static bool CanCreateDocument();
+
+    static bool CanExecuteOnWorkspace();
 
     static bool CanExecuteOnViewport();
 

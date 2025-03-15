@@ -13,6 +13,8 @@
 #include <QMessageBox>
 #include <QMouseEvent>
 
+#include "Core/Workspace.h"
+
 namespace
 {
 //! Map Qt buttons bitmask to virtual keys.
@@ -205,30 +207,17 @@ public:
 // Function : ViewportHwndHost
 // Purpose  :
 // ================================================================
-ViewportHwndHost::ViewportHwndHost(const Handle(ViewportController)& vc , QWidget* theParent)
-    : QOpenGLWidget(theParent)
-    , myViewportController(vc)
+
+ViewportHwndHost::ViewportHwndHost(const Handle(V3d_Viewer)& viewer,
+                                   const Handle(V3d_View)& view,
+                                   const Handle(AIS_InteractiveContext)& vc,
+                                   QWidget* parent)
+    : QOpenGLWidget(parent)
+    , myViewer(viewer)
+    , myContext(vc)
+    , myView(view)
     , myIsCoreProfile(true)
 {
-    Handle(Aspect_DisplayConnection) aDisp = new Aspect_DisplayConnection();
-    Handle(OpenGl_GraphicDriver) aDriver = new OpenGl_GraphicDriver(aDisp, false);
-    // lets QOpenGLWidget to manage buffer swap
-    aDriver->ChangeOptions().buffersNoSwap = true;
-    // don't write into alpha channel
-    aDriver->ChangeOptions().buffersOpaqueAlpha = true;
-    // offscreen FBOs should be always used
-    aDriver->ChangeOptions().useSystemBuffer = false;
-
-    // create viewer
-    myViewer = new V3d_Viewer(aDriver);
-    myViewer->SetDefaultBackgroundColor(Quantity_NOC_BLACK);
-    myViewer->SetDefaultLights();
-    myViewer->SetLightOn();
-    myViewer->ActivateGrid(Aspect_GT_Rectangular, Aspect_GDM_Lines);
-
-    // create AIS context
-    myContext = new AIS_InteractiveContext(myViewer);
-
     myViewCube = new AIS_ViewCube();
     myViewCube->SetViewAnimation(myViewAnimation);
     myViewCube->SetFixedAnimationLoop(false);
@@ -236,7 +225,7 @@ ViewportHwndHost::ViewportHwndHost(const Handle(ViewportController)& vc , QWidge
     myViewCube->TransformPersistence()->SetOffset2d(Graphic3d_Vec2i(100, 150));
 
     // note - window will be created later within initializeGL() callback!
-    myView = myViewer->CreateView();
+
     myView->SetImmediateUpdate(false);
 #ifndef __APPLE__
     myView->ChangeRenderingParams().NbMsaaSamples = 4; // warning - affects performance
@@ -252,6 +241,8 @@ ViewportHwndHost::ViewportHwndHost(const Handle(ViewportController)& vc , QWidge
     setFocusPolicy(Qt::StrongFocus); // set focus policy to threat QContextMenuEvent from keyboard
     setUpdatesEnabled(true);
     setUpdateBehavior(QOpenGLWidget::NoPartialUpdate);
+
+    Handle(OpenGl_GraphicDriver)   aDriver = Handle(OpenGl_GraphicDriver)::DownCast(myViewer->Driver());
 
     // OpenGL setup managed by Qt
     QSurfaceFormat aGlFormat;
@@ -284,6 +275,13 @@ ViewportHwndHost::ViewportHwndHost(const Handle(ViewportController)& vc , QWidge
     //QCoreApplication::setAttribute (Qt::AA_UseOpenGLES);
 #endif
 }
+
+ViewportHwndHost::ViewportHwndHost(const Handle(ViewportController)& vc, QWidget* theParent)
+    : ViewportHwndHost(vc->GetViewport()->GetWorkspace()->GetViewer(),
+                       vc->GetViewport()->GetWorkspace()->GetViewer()->CreateView(),
+                       new AIS_InteractiveContext(vc->GetViewport()->GetWorkspace()->GetViewer()),
+                       theParent)
+{}
 
 // ================================================================
 // Function : ~ViewportHwndHost
@@ -326,6 +324,10 @@ void ViewportHwndHost::dumpGlInfo(bool theIsBasic, bool theToPrint)
 // ================================================================
 void ViewportHwndHost::initializeGL()
 {
+    if(myView.IsNull())
+    {
+        return;
+    }
     const QRect aRect = rect();
     const Graphic3d_Vec2i aViewSize(aRect.right() - aRect.left(), aRect.bottom() - aRect.top());
 
@@ -346,26 +348,20 @@ void ViewportHwndHost::initializeGL()
     }
 
     Handle(Aspect_NeutralWindow) aWindow = Handle(Aspect_NeutralWindow)::DownCast(myView->Window());
-    if(!aWindow.IsNull())
-    {
-        aWindow->SetNativeHandle(aNativeWin);
-        aWindow->SetSize(aViewSize.x(), aViewSize.y());
-        myView->SetWindow(aWindow, aGlCtx->RenderingContext());
-        dumpGlInfo(true, true);
-    }
-    else
+    if(aWindow.IsNull())
     {
         aWindow = new Aspect_NeutralWindow();
         aWindow->SetVirtual(true);
-        aWindow->SetNativeHandle(aNativeWin);
-        aWindow->SetSize(aViewSize.x(), aViewSize.y());
-        myView->SetWindow(aWindow, aGlCtx->RenderingContext());
-        dumpGlInfo(true, true);
-
-        myContext->Display(myViewCube, 0, 0, false);
     }
 
+    aWindow->SetNativeHandle(aNativeWin);
+    aWindow->SetSize(aViewSize.x(), aViewSize.y());
+    myView->SetWindow(aWindow, aGlCtx->RenderingContext());
+    dumpGlInfo(true, true);
+
     {
+        myContext->Display(myViewCube, 0, 0, false);
+
         // dummy shape for testing
         TopoDS_Shape aBox = BRepPrimAPI_MakeBox(100.0, 50.0, 90.0).Shape();
         Handle(AIS_Shape) aShape = new AIS_Shape(aBox);

@@ -3,39 +3,39 @@
 #include "Iact/Commands/CommandHelper.h"
 
 #include "App/Application.h"
-
-Handle(WorkspaceController) CommandHelper::GetWorkspaceController()
-{
-    return App->GetAppContext() ? App->GetAppContext()->GetWorkspaceController() : nullptr;
-}
-
-Handle(ModelController) CommandHelper::GetDocumentController()
-{
-    return App->GetAppContext() ? App->GetAppContext()->GetDocumentController() : nullptr;
-}
+#include "Iact/Workspace/InteractiveContext.h"
 
 Handle(Tool) CommandHelper::CurrentTool()
 {
-    return GetWorkspaceController() ? GetWorkspaceController()->CurrentTool() : nullptr;
+    return InteractiveContext::Current()->GetWorkspaceController()
+        ? InteractiveContext::Current()->GetWorkspaceController()->CurrentTool() 
+        : nullptr;
 }
 
 bool CommandHelper::StartTool(Handle(Tool) tool)
 {
-    return GetWorkspaceController() && GetWorkspaceController()->StartTool(tool);
+    return InteractiveContext::Current()->GetWorkspaceController() 
+        && InteractiveContext::Current()->GetWorkspaceController()->StartTool(tool);
 }
 
-inline bool CommandHelper::CanExecuteOnWorkspace()
+bool CommandHelper::CanExecuteOnWorkspace()
 {
-    return GetWorkspaceController() && GetWorkspaceController()->GetWorkspace();
+    return InteractiveContext::Current()->GetWorkspaceController() 
+        && InteractiveContext::Current()->GetWorkspaceController()->GetWorkspace();
 }
 
 bool CommandHelper::CanExecuteOnViewport()
 {
-    return App->GetAppContext() && App->GetAppContext()->GetViewportController()
-        && App->GetAppContext()->GetViewportController()->GetViewport();
+    return InteractiveContext::Current()->GetViewportController()
+        && InteractiveContext::Current()->GetViewportController()->GetViewport();
+}
+
+bool CommandHelper::CanCreateDocument()
+{
+    return !InteractiveContext::Current()->GetDocumentController().IsNull();
 }
 
 bool CommandHelper::CanStartTool()
 {
-    return !GetWorkspaceController().IsNull();
+    return !InteractiveContext::Current()->GetWorkspaceController().IsNull();
 }

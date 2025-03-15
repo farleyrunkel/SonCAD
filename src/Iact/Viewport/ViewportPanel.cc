@@ -136,7 +136,7 @@ void ViewportPanel::_ViewportControllerChanged()
 	//	_MouseControl->setViewportController(viewportController);
 	//}
 
-	auto newHost = new ViewportHwndHost(nullptr, this);
+	auto newHost = new ViewportHwndHost(new ViewportController, this);
 	newHost->setFocus();
 
 	if(_ViewportHwndHost != nullptr)

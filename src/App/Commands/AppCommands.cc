@@ -13,8 +13,7 @@
 RelayCommand& AppCommands::InitApplication()
 {
     static RelayCommand command(
-        []() {
-        DocumentCommands::CreateNewModel().Execute();
+        []() { DocumentCommands::CreateNewModel().Execute();
     }
     );
 
@@ -32,7 +31,7 @@ ActionCommand& AppCommands::ExitApplication()
     if(command.text().isEmpty())
     {
         command.setText(QObject::tr("Exit Program"));
-        command.setIcon(ResourceUtils::Icon("App/App-ExitApp"));
+        command.setIcon(Resource::Icon("App/App-ExitApp"));
     }
     return command;
 }
@@ -50,7 +49,7 @@ ActionCommand& AppCommands::ShowAboutDialog()
     {
         command.setText(QObject::tr("About SunCAD"));
         command.setToolTip(QObject::tr("Shows version and license information."));
-        command.setIcon(ResourceUtils::Icon("App/App-AboutDialog"));
+        command.setIcon(Resource::Icon("App/App-AboutDialog"));
     }
     return command;
 }
@@ -62,7 +61,7 @@ ActionCommand& AppCommands::Settings()
     if(command.text().isEmpty())
     {
         command.setText(QObject::tr("Settings"));
-        command.setIcon(ResourceUtils::Icon("App/App-Settings"));
+        command.setIcon(Resource::Icon("App/App-Settings"));
     }
     return command;
 }
@@ -78,7 +77,7 @@ ActionCommand& AppCommands::ResetWindowLayout()
     {
         command.setText(QObject::tr("Reset Window Layout"));
         command.setToolTip(QObject::tr("Resets the Window layout to the default layout."));
-        command.setIcon(ResourceUtils::Icon("App/App-RestoreLayout"));
+        command.setIcon(Resource::Icon("App/App-RestoreLayout"));
     }
     return command;
 }
@@ -91,7 +90,7 @@ ActionCommand& AppCommands::ShowDocumentExplorer()
     {
         command.setText(QObject::tr("Show Sun_Document Explorer"));
         command.setToolTip(QObject::tr("Opens the Sun_Document Explorer"));
-        command.setIcon(ResourceUtils::Icon("App/App-ShowDocu"));
+        command.setIcon(Resource::Icon("App/App-ShowDocu"));
     }
     return command;
 }

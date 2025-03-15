@@ -12,6 +12,7 @@
 
 #include "Comm/BaseObject.h"
 #include "Core/CoreContext.h"
+#include "Core/Topology/Model.h"
 #include "Iact/Workspace/ModelController.h"
 #include "Iact/Workspace/ViewportController.h"
 #include "Iact/Workspace/WorkspaceController.h"
@@ -24,6 +25,11 @@ public:
     InteractiveContext();
 
     ~InteractiveContext() override;
+
+    static InteractiveContext* Current()
+    {
+        return static_cast<InteractiveContext*>(CoreContext::Current());
+    }
 
     // ModelController getter/setter
     Handle(ModelController) GetDocumentController() const;
@@ -46,6 +52,14 @@ public:
     // 添加脚本到最近使用列表
     void AddToScriptMruList(const QString& filePath);
 
+protected:
+    virtual void SetWorkspace(const Handle(Workspace)& value) override;
+    virtual void SetViewport(const Handle(Viewport)& value) override;
+
+private:
+    void Initialize()
+    {}
+
 private:
     Handle(ModelController) _DocumentController;
     Handle(WorkspaceController) _WorkspaceController;
@@ -54,9 +68,6 @@ private:
     QList<QColor> _RecentUsedColors;
     QList<QString> _RecentUsedScripts;
     const int _MaxScriptMruCount = 10;
-
-    void Initialize()
-    {}
 };
 
 #endif  // APP_INTERACTIVECONTEXT_H
