@@ -91,6 +91,9 @@ private:
 
 	void _UpdateParameter();
 
+public:
+	boost::signals2::signal<void()> OnUpdate;
+
 private:
 	Handle(Viewport) myViewport;
 	Handle(WorkspaceController)  _WorkspaceController;

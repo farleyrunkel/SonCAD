@@ -168,4 +168,6 @@ void ViewportController::SetPredefinedView(PredefinedViews predefinedView)
 	Handle(AIS_ViewCubeOwner) viewCubeOwner = new AIS_ViewCubeOwner(_ViewCube, orientation);
 
 	_ViewCube->HandleClick(viewCubeOwner);
+
+	OnUpdate();
 }

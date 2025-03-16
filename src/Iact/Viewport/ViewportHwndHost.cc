@@ -284,6 +284,8 @@ ViewportHwndHost::ViewportHwndHost(const Handle(ViewportController)& vc, QWidget
 {
 	myViewportController = vc;
     myViewportController->InitWindow();
+
+	myViewportController->OnUpdate.connect([this]() { update(); });
      
     if(!myViewCube.IsNull())
     {
