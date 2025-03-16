@@ -37,8 +37,6 @@ public:
     };
 
 public:
-    // 
-    Viewport();
 
     explicit Viewport(const Handle(Workspace)& workspace);
 
@@ -170,12 +168,25 @@ public:
         }
     }
 
+    void OnViewMoved()
+    {
+        _RaiseViewportChanged();
+    }
+
 public:
     boost::signals2::signal<void(const gp_Pnt&)> EyePointChanged;
     boost::signals2::signal<void(const gp_Pnt&)> TargetPointChanged;
     boost::signals2::signal<void(double)> TwistChanged;
     boost::signals2::signal<void(double)> ScaleChanged;
     boost::signals2::signal<void(RenderModes)> RenderModeChanged;
+
+    boost::signals2::signal<void(const Handle(Viewport)&)> ViewportChanged;
+
+private:
+    void _RaiseViewportChanged()
+    {
+        ViewportChanged(this);
+    }
 
 private:
     Handle(Workspace) _Workspace;

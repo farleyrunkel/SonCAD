@@ -3,8 +3,10 @@
 #include "Core/Topology/Model.h"
 
 #include <NCollection_Vector.hxx>
+#include <TDocStd_Document.hxx>
 
 Model::Model()
+	: TDocStd_Document("XmlOcaf")
 {
 	Handle(Workspace) workspace = new Workspace(this);
     _Workspaces.Append(workspace);

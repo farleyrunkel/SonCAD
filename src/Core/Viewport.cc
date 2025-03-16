@@ -4,14 +4,10 @@
 
 #include "Core/Workspace.h"
 
-Viewport::Viewport()
-{
-    _Workspace = new Workspace();
-}
-
 Viewport::Viewport(const Handle(Workspace)& workspace)
     : _Workspace(workspace), _RenderMode(SolidShaded), _Twist(0.0), _Scale(100.0)
-{}
+{
+}
 
 void Viewport::Init(bool useMsaa)
 {

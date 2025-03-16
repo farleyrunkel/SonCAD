@@ -16,11 +16,6 @@ DEFINE_STANDARD_HANDLE(ViewportController, BaseObject)
 class ViewportController : public BaseObject
 {
 public:
-	ViewportController()
-	{
-		myViewport = new Viewport();
-	}
-
 	ViewportController(const Handle(Viewport)& viewport, const Handle(WorkspaceController)& wc);
 
 	// get viewcube
@@ -63,7 +58,10 @@ public:
 	void InitWindow();
 
 	void SetPredefinedView(PredefinedViews predefinedView);
-	void ZoomFitAll() {}
+
+	void ZoomFitAll();
+	
+	void Zoom(double value);
 
 public:
 	void MouseMove(const QPointF& pos, Qt::KeyboardModifiers modifiers,
@@ -79,8 +77,7 @@ public:
 	{}  // Add necessary parameters
 	void Zoom(const QPointF& pos, double delta)
 	{}
-	void Zoom(double delta)
-	{}
+
 	void Rotate(double deltaX, double deltaY, double deltaZ)
 	{}
 private:
@@ -90,9 +87,6 @@ private:
 	}
 
 	void _UpdateParameter();
-
-public:
-	boost::signals2::signal<void()> OnUpdate;
 
 private:
 	Handle(Viewport) myViewport;

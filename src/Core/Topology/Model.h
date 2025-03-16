@@ -15,7 +15,7 @@
 
 DEFINE_STANDARD_HANDLE(Model, BaseObject)
 
-class Model : public BaseObject
+class Model : public TDocStd_Document
 {
 public:
     Model();
@@ -36,7 +36,6 @@ public:
 
 private:
     NCollection_Vector<Handle(Workspace)> _Workspaces;
-    Handle(TDocStd_Document) __Document;
 };
 
 #endif  // CORE_TOPOLOGY_MODEL_H_

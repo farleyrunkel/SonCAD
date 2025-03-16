@@ -19,9 +19,10 @@ public:
     static ActionCommand& SetBackView();
     static ActionCommand& SetRightView();
     static ActionCommand& SetLefttView();
-    static ActionCommand& zoomFitAll();
-    static ActionCommand& zoomIn();
-    static ActionCommand& zoomOut();
+    static ActionCommand& ZoomFitAll();
+    static ActionCommand& ZoomFitSelected();
+    static ActionCommand& ZoomIn();
+    static ActionCommand& ZoomOut();
 };
 
 #endif  // IACT_COMMANDS_WORKSPACECOMMANDS_H_

@@ -127,6 +127,16 @@ void MainWindow::SetupCategories()
         }
     }
 
+    if(SARibbonCategory* aCategory = _RibbonBar->addCategoryPage(tr("ToolBox")))
+    {
+        if(SARibbonPannel* aPannel = aCategory->addPannel(tr("Create")))
+        {
+            aPannel->addAction(&ModelCommands::CreateBox(), SARibbonPannelItem::Large);
+            aPannel->addAction(&ModelCommands::CreateCylinder(), SARibbonPannelItem::Large);
+            aPannel->addAction(&ModelCommands::CreateSphere(), SARibbonPannelItem::Large);
+        }
+    }
+
     if(SARibbonCategory* aCategory = _RibbonBar->addCategoryPage(tr("View")))
     {
         if(SARibbonPannel* aPannel = aCategory->addPannel(tr("View")))
@@ -139,13 +149,16 @@ void MainWindow::SetupCategories()
             aPannel->addAction(&WorkspaceCommands::SetPredefinedView(ViewportController::PredefinedViews::Back));
         }
 
-        if(SARibbonPannel* aPannel = aCategory->addPannel(tr("Widgets")))
+        if(SARibbonPannel* aPannel = aCategory->addPannel(tr("Zoom")))
         {
-            aPannel->addAction(&ModelCommands::CreateBox(), SARibbonPannelItem::Large);
+            aPannel->addAction(&WorkspaceCommands::ZoomFitAll());
+            aPannel->addAction(&WorkspaceCommands::ZoomFitSelected());
+            aPannel->addAction(&WorkspaceCommands::ZoomIn());
+            aPannel->addAction(&WorkspaceCommands::ZoomOut());
         }
-        if(SARibbonPannel* aPannel = aCategory->addPannel(tr("Panels")))
+        if(SARibbonPannel* aPannel = aCategory->addPannel(tr("Display")))
         {
-            aPannel->addAction(&AppCommands::ShowDocumentExplorer(), SARibbonPannelItem::Large);
+            aPannel->addAction(&WorkspaceCommands::SetPredefinedView(ViewportController::PredefinedViews::Left));
         }
     }
 }

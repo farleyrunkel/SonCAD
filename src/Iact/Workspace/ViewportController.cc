@@ -169,5 +169,27 @@ void ViewportController::SetPredefinedView(PredefinedViews predefinedView)
 
 	_ViewCube->HandleClick(viewCubeOwner);
 
-	OnUpdate();
+	myViewport->OnViewMoved();
+}
+
+void ViewportController::ZoomFitAll() 
+{
+	myViewport->GetV3dView()->FitAll(0.1, false);
+	myViewport->GetV3dView()->ZFitAll(1.0);
+
+	myViewport->OnViewMoved();
+}
+
+void ViewportController::Zoom(double value)
+{
+	if(value > 0)
+	{
+		myViewport->GetV3dView()->SetZoom(1.0 + value, true);
+	}
+	else if(value < 0)
+	{
+		myViewport->GetV3dView()->SetZoom(1.0 / (1.0 - value), true);
+	}
+	myViewport->GetV3dView()->Redraw();
+	myViewport->OnViewMoved();
 }
