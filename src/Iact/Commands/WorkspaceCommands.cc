@@ -60,7 +60,7 @@ ActionCommand& WorkspaceCommands::SetTopView()
     );
     if(command.text().isEmpty())
     {
-        command.setText(QObject::tr("Top View"));
+        command.setText(QObject::tr("Top"));
         command.setIcon(Resource::Icon("View/View-Top"));
         command.setCheckable(false);
     }
@@ -75,7 +75,7 @@ ActionCommand& WorkspaceCommands::SetBottomView()
     );
     if(command.text().isEmpty())
     {
-        command.setText(QObject::tr("Bottom View"));
+        command.setText(QObject::tr("Bottom"));
         command.setIcon(Resource::Icon("View/View-Bottom"));
         command.setCheckable(false);
     }
@@ -90,7 +90,7 @@ ActionCommand& WorkspaceCommands::SetFrontView()
     );
     if(command.text().isEmpty())
     {
-        command.setText(QObject::tr("Front View"));
+        command.setText(QObject::tr("Front"));
         command.setIcon(Resource::Icon("View/View-Front"));
         command.setCheckable(false);
     }
@@ -105,7 +105,7 @@ ActionCommand& WorkspaceCommands::SetBackView()
     );
     if(command.text().isEmpty())
     {
-        command.setText(QObject::tr("Back View"));
+        command.setText(QObject::tr("Back"));
         command.setIcon(Resource::Icon("View/View-Back"));
         command.setCheckable(false);
     }
@@ -120,7 +120,7 @@ ActionCommand& WorkspaceCommands::SetRightView()
     );
     if(command.text().isEmpty())
     {
-        command.setText(QObject::tr("Right View"));
+        command.setText(QObject::tr("Right"));
         command.setIcon(Resource::Icon("View/View-Right"));
         command.setCheckable(false);
     }
@@ -135,7 +135,7 @@ ActionCommand& WorkspaceCommands::SetLefttView()
     );
     if(command.text().isEmpty())
     {
-        command.setText(QObject::tr("Right View"));
+        command.setText(QObject::tr("Right"));
         command.setIcon(Resource::Icon("View/View-Right"));
         command.setCheckable(false);
     }

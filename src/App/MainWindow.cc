@@ -2,27 +2,27 @@
 
 #include "App/MainWindow.h"
 
+#include <QAbstractButton>
 #include <QAction>
 #include <QLabel>
-#include <QStatusBar>
-#include <QScopedPointer>
-#include <QAbstractButton>
 #include <QPlainTextEdit>
+#include <QScopedPointer>
+#include <QStatusBar>
 
-#include "SARibbonBar.h"
-#include "SARibbonApplicationButton.h"
-#include "SARibbonMenu.h"
 #include "AutoHideDockContainer.h"
-#include "DockAreaWidget.h"
 #include "DockAreaTitleBar.h"
+#include "DockAreaWidget.h"
+#include "SARibbonApplicationButton.h"
+#include "SARibbonBar.h"
+#include "SARibbonMenu.h"
 
 #include "App/ResourceUtils.h"
-#include "App/WelcomeDialog.h"
 #include "App/ViewportView.h"
-
-#include "Iact/Commands/ModelCommands.h"
+#include "App/WelcomeDialog.h"
 #include "Iact/Commands/DocumentCommands.h"
-
+#include "Iact/Commands/ModelCommands.h"
+#include "Iact/Commands/WorkspaceCommands.h"
+#include "Iact/Workspace/ViewportController.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : SARibbonMainWindow(parent)
@@ -129,6 +129,16 @@ void MainWindow::SetupCategories()
 
     if(SARibbonCategory* aCategory = _RibbonBar->addCategoryPage(tr("View")))
     {
+        if(SARibbonPannel* aPannel = aCategory->addPannel(tr("View")))
+        {
+            aPannel->addAction(&WorkspaceCommands::SetPredefinedView(ViewportController::PredefinedViews::Top));
+            aPannel->addAction(&WorkspaceCommands::SetPredefinedView(ViewportController::PredefinedViews::Bottom));
+            aPannel->addAction(&WorkspaceCommands::SetPredefinedView(ViewportController::PredefinedViews::Left));
+            aPannel->addAction(&WorkspaceCommands::SetPredefinedView(ViewportController::PredefinedViews::Right));
+            aPannel->addAction(&WorkspaceCommands::SetPredefinedView(ViewportController::PredefinedViews::Front));
+            aPannel->addAction(&WorkspaceCommands::SetPredefinedView(ViewportController::PredefinedViews::Back));
+        }
+
         if(SARibbonPannel* aPannel = aCategory->addPannel(tr("Widgets")))
         {
             aPannel->addAction(&ModelCommands::CreateBox(), SARibbonPannelItem::Large);
