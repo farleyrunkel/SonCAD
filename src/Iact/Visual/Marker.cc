@@ -4,14 +4,9 @@
 
 #include <sstream>
 
-#include <QSharedPointer>
-
-#include "Occt/OcctHelper/AisHelper.h"
-
 #include "Iact/Workspace/WorkspaceController.h"
-#include "Occt/Managed/AIS_PointEx.h"
-
-
+#include "Occt/OcctExtensions/AIS_PointEx.h"
+#include "Occt/OcctHelper/AisHelper.h"
 
 Marker::Marker(const Handle(WorkspaceController)& workspaceController, Styles styles, const MarkerImage& image)
     : VisualObject(workspaceController, nullptr),

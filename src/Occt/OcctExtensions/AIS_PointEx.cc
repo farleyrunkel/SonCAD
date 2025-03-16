@@ -1,20 +1,22 @@
 ﻿// Copyright [2024] SunCAD
 
-#include "Occt/Managed/AIS_PointEx.h"
+// Own include
+#include "Occt/OcctExtensions/AIS_PointEx.h"
 
+// Occt includes
 #include <Graphic3d_AspectMarker3d.hxx>
-#include <PrsMgr_PresentationManager.hxx>
 #include <Prs3d_Drawer.hxx>
+#include <PrsMgr_PresentationManager.hxx>
 #include <StdPrs_Point.hxx>
-
-
 
 IMPLEMENT_STANDARD_RTTIEXT(AIS_PointEx,AIS_Point)
 
 AIS_PointEx::AIS_PointEx(const Handle(Geom_Point)& aComponent)
-	: AIS_Point(aComponent)
+	: ::AIS_Point(aComponent)
 {
 }
+
+//--------------------------------------------------------------------------------------------------
 
 void AIS_PointEx::SetBackgroundColor(const Quantity_Color& theColor)
 {
@@ -24,6 +26,8 @@ void AIS_PointEx::SetBackgroundColor(const Quantity_Color& theColor)
     myBackgroundDrawer->PointAspect()->SetColor(theColor);
     SynchronizeAspects();
 }
+
+//--------------------------------------------------------------------------------------------------
 
 void AIS_PointEx::Compute(const Handle(PrsMgr_PresentationManager)& aPresentationManager,
                         const Handle(Prs3d_Presentation)& aPresentation, 
@@ -38,6 +42,8 @@ void AIS_PointEx::Compute(const Handle(PrsMgr_PresentationManager)& aPresentatio
 
     AIS_Point::Compute(aPresentationManager, aPresentation, aMode);
 }
+
+//--------------------------------------------------------------------------------------------------
 
 void AIS_PointEx::EnableBackground(double theTransparency)
 {
@@ -54,9 +60,9 @@ void AIS_PointEx::EnableBackground(double theTransparency)
     Handle(Prs3d_PointAspect) aPointAspect = new Prs3d_PointAspect(aMarkerAspect);
     aPointAspect->SetTypeOfMarker(Aspect_TOM_USERDEFINED);
     myBackgroundDrawer->SetPointAspect(aPointAspect);
+
     myBackgroundDrawer->SetZLayer(ZLayer());
 
     SetToUpdate();
     UpdatePresentations();
 }
-

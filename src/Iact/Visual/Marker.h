@@ -3,28 +3,27 @@
 #ifndef IACT_VISUAL_MARKER_H_
 #define IACT_VISUAL_MARKER_H_
 
-#include <QObject>
+#include <QDebug>
 #include <QImage>
+#include <QObject>
 #include <QPixmap>
 #include <QString>
-#include <QDebug>
 #include <QtCore>
 
-#include <gp_Pnt.hxx>
-#include <Geom_CartesianPoint.hxx>
 #include <AIS_Point.hxx>
-#include <Image_PixMap.hxx>
-#include <Graphic3d_MarkerImage.hxx>
-#include <Prs3d_PointAspect.hxx>
 #include <ElSLib.hxx>
+#include <Geom_CartesianPoint.hxx>
+#include <gp_Pnt.hxx>
+#include <Graphic3d_MarkerImage.hxx>
+#include <Image_PixMap.hxx>
+#include <Prs3d_PointAspect.hxx>
 
 #include "App/ResourceUtils.h"
-#include "Comm/Types/Color.h"
 #include "Comm/PixMapHelper.h"
+#include "Comm/Types/Color.h"
 #include "Iact/Visual/VisualObject.h"
-#include "Occt/Managed/AIS_PointEx.h"
-
-
+#include "Occt/OcctExtensions/AIS_PointEx.h"
+#include "Occt/OcctExtensions/AIS_ViewCubeEx.h"
 
 DEFINE_STANDARD_HANDLE(Marker, VisualObject);
 

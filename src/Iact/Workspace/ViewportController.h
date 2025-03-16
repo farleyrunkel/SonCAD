@@ -7,6 +7,7 @@
 
 #include "Comm/BaseObject.h"
 #include "Core/Viewport.h"
+#include "Occt/OcctExtensions/AIS_ViewCubeEx.h"
 
 class WorkspaceController;
 
@@ -74,7 +75,8 @@ private:
 private:
 	Handle(Viewport) myViewport;
 	Handle(WorkspaceController)  _WorkspaceController;
-};
 
+	Handle(AIS_ViewCubeEx) myViewCube;
+};
 
 #endif  // IACT_WORKSPACE_VIEWPORTCONTROLLER_H_

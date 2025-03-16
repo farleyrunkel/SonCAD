@@ -208,8 +208,8 @@ public:
 // Purpose  :
 // ================================================================
 
-ViewportHwndHost::ViewportHwndHost(const Handle(V3d_Viewer)& viewer,
-                                   const Handle(V3d_View)& view,
+ViewportHwndHost::ViewportHwndHost(const Handle(V3d_View)& view,
+                                   const Handle(V3d_Viewer)& viewer,
                                    const Handle(AIS_InteractiveContext)& vc,
                                    QWidget* parent)
     : QOpenGLWidget(parent)
@@ -277,8 +277,8 @@ ViewportHwndHost::ViewportHwndHost(const Handle(V3d_Viewer)& viewer,
 }
 
 ViewportHwndHost::ViewportHwndHost(const Handle(ViewportController)& vc, QWidget* theParent)
-    : ViewportHwndHost(vc->GetViewport()->GetWorkspace()->V3dViewer(),
-                       vc->GetViewport()->GetV3dView(),
+    : ViewportHwndHost(vc->GetViewport()->GetV3dView(),
+                       vc->GetViewport()->GetWorkspace()->V3dViewer(),
                        vc->GetViewport()->GetWorkspace()->AisContext(),
                        theParent)
 {}
