@@ -12,8 +12,6 @@
 
 #include <Quantity_Color.hxx>
 
-
-
 class Color : public QColor 
 {
 public:

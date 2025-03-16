@@ -14,6 +14,8 @@
 #include <V3d_TypeOfVisualization.hxx>
 #include <Quantity_Color.hxx>
 #include <V3d_DirectionalLight.hxx>
+#include <BRepPrimAPI_MakeBox.hxx>
+#include <AIS_Shape.hxx>
 
 void Workspace::InitV3dViewer()
 {
@@ -68,6 +70,13 @@ void Workspace::InitAisContext()
     style->SetArrowAspect(new Prs3d_ArrowAspect(1.0, 35.0));
     style->SetFaceBoundaryAspect(new Prs3d_LineAspect(Quantity_NOC_BLACK, Aspect_TOL_SOLID, 1.0));
     _AisContext->SetHighlightStyle(style);
+
+    {
+        // dummy shape for testing
+        TopoDS_Shape aBox = BRepPrimAPI_MakeBox(5.0, 5.0, 5.0).Shape();
+        Handle(AIS_Shape) aShape = new AIS_Shape(aBox);
+        _AisContext->Display(aShape, AIS_Shaded, 0, false);
+    }
 }
 
 void Workspace::_ApplyWorkingContext() {}

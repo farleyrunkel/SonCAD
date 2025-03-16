@@ -281,7 +281,16 @@ ViewportHwndHost::ViewportHwndHost(const Handle(ViewportController)& vc, QWidget
                        vc->GetViewport()->GetWorkspace()->V3dViewer(),
                        vc->GetViewport()->GetWorkspace()->AisContext(),
                        theParent)
-{}
+{
+	myViewportController = vc;
+    myViewportController->InitWindow();
+     
+    if(!myViewCube.IsNull())
+    {
+        myViewCube.reset(myViewportController->GetViewCube().get());
+    }
+    myViewCube->SetViewAnimation(myViewAnimation);
+}
 
 // ================================================================
 // Function : ~ViewportHwndHost
@@ -358,15 +367,6 @@ void ViewportHwndHost::initializeGL()
     aWindow->SetSize(aViewSize.x(), aViewSize.y());
     myView->SetWindow(aWindow, aGlCtx->RenderingContext());
     dumpGlInfo(true, true);
-
-    {
-        myContext->Display(myViewCube, 0, 0, false);
-
-        // dummy shape for testing
-        TopoDS_Shape aBox = BRepPrimAPI_MakeBox(100.0, 50.0, 90.0).Shape();
-        Handle(AIS_Shape) aShape = new AIS_Shape(aBox);
-        myContext->Display(aShape, AIS_Shaded, 0, false);
-    }
 }
 
 // ================================================================

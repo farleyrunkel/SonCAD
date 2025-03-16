@@ -23,6 +23,16 @@ public:
 
 	ViewportController(const Handle(Viewport)& viewport, const Handle(WorkspaceController)& wc);
 
+	// get viewcube
+	Handle(AIS_ViewCube) GetViewCube()
+	{
+		return m_viewCube;
+	}
+
+	void SetViewCube(bool isVisible);
+
+	void SetViewCube(bool isVisible, int size, double duration);
+
 public:
 	enum class PredefinedViews
 	{
@@ -50,6 +60,8 @@ public:
 		return _WorkspaceController;
 	}
 
+	void InitWindow();
+
 public:
 	void MouseMove(const QPointF& pos, Qt::KeyboardModifiers modifiers,
 				   MouseMoveMode mode = MouseMoveMode::None)
@@ -72,11 +84,13 @@ private:
 		myViewport->Init(true);
 	}
 
+	void _UpdateParameter();
+
 private:
 	Handle(Viewport) myViewport;
 	Handle(WorkspaceController)  _WorkspaceController;
 
-	Handle(AIS_ViewCubeEx) myViewCube;
+	Handle(AIS_ViewCube) m_viewCube;
 };
 
 #endif  // IACT_WORKSPACE_VIEWPORTCONTROLLER_H_

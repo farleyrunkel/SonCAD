@@ -6,7 +6,7 @@
 #include <vector>
 #include <cstdint>
 
-#include "Comm/Types/Color.h"
+#include <Quantity_Color.hxx>
 
 // Enum definitions
 enum class PresentationMode
@@ -42,25 +42,25 @@ enum class LineThickness
 class Colors
 {
 public:
-    static const Color Default;
-    static const Color Selection;
-    static const Color Highlight;
-    static const Color FilteredSubshapes;
-    static const Color FilteredSubshapesHot;
-    static const Color Ghost;
-    static const Color Auxillary;
-    static const Color Marker;
-    static const Color AttributeMarkerBackground;
-    static const Color AttributeMarkerSelection;
-    static const Color SketchEditorSegments;
-    static const Color SketchEditorHighlight;
-    static const Color SketchEditorSelection;
-    static const Color SketchEditorCreating;
-    static const Color SketchEditorAuxillary;
-    static const Color ActionBlue;
-    static const Color ActionRed;
-    static const Color ActionGreen;
-    static const Color ActionWhite;
+    static const Quantity_Color Default;
+    static const Quantity_Color Selection;
+    static const Quantity_Color Highlight;
+    static const Quantity_Color FilteredSubshapes;
+    static const Quantity_Color FilteredSubshapesHot;
+    static const Quantity_Color Ghost;
+    static const Quantity_Color Auxillary;
+    static const Quantity_Color Marker;
+    static const Quantity_Color AttributeMarkerBackground;
+    static const Quantity_Color AttributeMarkerSelection;
+    static const Quantity_Color SketchEditorSegments;
+    static const Quantity_Color SketchEditorHighlight;
+    static const Quantity_Color SketchEditorSelection;
+    static const Quantity_Color SketchEditorCreating;
+    static const Quantity_Color SketchEditorAuxillary;
+    static const Quantity_Color ActionBlue;
+    static const Quantity_Color ActionRed;
+    static const Quantity_Color ActionGreen;
+    static const Quantity_Color ActionWhite;
 };
 
 // LineStyleDescription struct
