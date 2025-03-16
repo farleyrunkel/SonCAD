@@ -26,7 +26,7 @@ public:
 	// get viewcube
 	Handle(AIS_ViewCube) GetViewCube()
 	{
-		return m_viewCube;
+		return _ViewCube;
 	}
 
 	void SetViewCube(bool isVisible);
@@ -62,6 +62,9 @@ public:
 
 	void InitWindow();
 
+	void SetPredefinedView(PredefinedViews predefinedView);
+	void ZoomFitAll() {}
+
 public:
 	void MouseMove(const QPointF& pos, Qt::KeyboardModifiers modifiers,
 				   MouseMoveMode mode = MouseMoveMode::None)
@@ -75,6 +78,8 @@ public:
 	void StartRubberbandSelection()
 	{}  // Add necessary parameters
 	void Zoom(const QPointF& pos, double delta)
+	{}
+	void Zoom(double delta)
 	{}
 	void Rotate(double deltaX, double deltaY, double deltaZ)
 	{}
@@ -90,7 +95,7 @@ private:
 	Handle(Viewport) myViewport;
 	Handle(WorkspaceController)  _WorkspaceController;
 
-	Handle(AIS_ViewCube) m_viewCube;
+	Handle(AIS_ViewCube) _ViewCube;
 };
 
 #endif  // IACT_WORKSPACE_VIEWPORTCONTROLLER_H_

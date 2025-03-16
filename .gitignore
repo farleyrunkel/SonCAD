@@ -80,5 +80,3 @@ build
 CMakeSettings.json
 CMakePresets.json
 CMakeUserPresets.json
-
-*.log

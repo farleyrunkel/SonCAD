@@ -17,17 +17,17 @@ void ViewportController::SetViewCube(bool isVisible)
 {
 	auto aisContext = myViewport->GetWorkspace()->AisContext();
 
-	if(m_viewCube.IsNull())
+	if(_ViewCube.IsNull())
 		return;
 
-	if(isVisible && !aisContext->IsDisplayed(m_viewCube))
+	if(isVisible && !aisContext->IsDisplayed(_ViewCube))
 	{
-		aisContext->Display(m_viewCube, false);
+		aisContext->Display(_ViewCube, false);
 		//_WorkspaceController->invalidate(true);
 	}
-	else if(!isVisible && aisContext->IsDisplayed(m_viewCube))
+	else if(!isVisible && aisContext->IsDisplayed(_ViewCube))
 	{
-		aisContext->Remove(m_viewCube, false);
+		aisContext->Remove(_ViewCube, false);
 		//_WorkspaceController->invalidate(true);
 	}
 }
@@ -37,7 +37,7 @@ void ViewportController::SetViewCube(bool isVisible, int size, double duration)
 	auto aisContext = myViewport->GetWorkspace()->AisContext();
 
 	// 如果视图立方体已存在，则使用现有方法更新其显示状态
-	if(!m_viewCube.IsNull())
+	if(!_ViewCube.IsNull())
 	{
 		SetViewCube(isVisible);
 		return;
@@ -61,19 +61,19 @@ void ViewportController::SetViewCube(bool isVisible, int size, double duration)
 	//}
 
 	// 初始化视图立方体
-	m_viewCube = new AIS_ViewCube();
-	//m_viewCube->SetSize(size * myViewport->DpiScale());
-	//m_viewCube->SetBoxFacetExtension(size * myViewport->dpiScale() * 0.15);
-	//m_viewCube->SetViewAnimation(myViewport->aisAnimationCamera());
-	m_viewCube->SetFixedAnimationLoop(false);
-	m_viewCube->SetDrawAxes(true);
-	m_viewCube->SetDuration(duration);
-	m_viewCube->SetResetCamera(true);
-	m_viewCube->SetFitSelected(true);
-	//m_viewCube->SetTexture(pixmap);
+	_ViewCube = new AIS_ViewCube();
+	//_ViewCube->SetSize(size * myViewport->DpiScale());
+	//_ViewCube->SetBoxFacetExtension(size * myViewport->dpiScale() * 0.15);
+	//_ViewCube->SetViewAnimation(myViewport->aisAnimationCamera());
+	_ViewCube->SetFixedAnimationLoop(false);
+	_ViewCube->SetDrawAxes(true);
+	_ViewCube->SetDuration(duration);
+	_ViewCube->SetResetCamera(true);
+	_ViewCube->SetFitSelected(true);
+	//_ViewCube->SetTexture(pixmap);
 
 	// 设置位置及透视效果
-	m_viewCube->SetTransformPersistence(new Graphic3d_TransformPers(
+	_ViewCube->SetTransformPersistence(new Graphic3d_TransformPers(
 		Graphic3d_TMF_TriedronPers, Aspect_TOTP_RIGHT_UPPER, Graphic3d_Vec2i(100, 100)));
 
 	// 配置颜色
@@ -82,9 +82,9 @@ void ViewportController::SetViewCube(bool isVisible, int size, double duration)
 	Quantity_Color::ColorFromHex("93a4b6", edgeColor);
 	Quantity_Color::ColorFromHex("a6b4c3", cornerColor);
 
-	m_viewCube->BoxSideStyle()->SetColor(sideColor);
-	m_viewCube->BoxEdgeStyle()->SetColor(edgeColor);
-	m_viewCube->BoxCornerStyle()->SetColor(cornerColor);
+	_ViewCube->BoxSideStyle()->SetColor(sideColor);
+	_ViewCube->BoxEdgeStyle()->SetColor(edgeColor);
+	_ViewCube->BoxCornerStyle()->SetColor(cornerColor);
 
 	// 设置材质
 	auto material = new Graphic3d_MaterialAspect(Graphic3d_NOM_DEFAULT);
@@ -92,20 +92,20 @@ void ViewportController::SetViewCube(bool isVisible, int size, double duration)
 	material->SetDiffuseColor(Quantity_Color(0.2, 0.2, 0.2, Quantity_TOC_sRGB));
 	material->SetEmissiveColor(Quantity_NOC_BLACK);
 	material->SetSpecularColor(Quantity_NOC_BLACK);
-	m_viewCube->SetMaterial(*material);
+	_ViewCube->SetMaterial(*material);
 
 	// 高亮属性
 	auto highlightColor = Colors::Highlight;
-	m_viewCube->DynamicHilightAttributes()->ShadingAspect()->SetColor(highlightColor);
-	m_viewCube->DynamicHilightAttributes()->ShadingAspect()->SetMaterial(*material);
+	_ViewCube->DynamicHilightAttributes()->ShadingAspect()->SetColor(highlightColor);
+	_ViewCube->DynamicHilightAttributes()->ShadingAspect()->SetMaterial(*material);
 
 	// 显示或隐藏视图立方体
 	if(isVisible)
 	{
-		aisContext->Display(m_viewCube, false);
+		aisContext->Display(_ViewCube, false);
 
 		//for (const auto& viewport : _WorkspaceController->workspace()->viewports()) {
-		//    aisContext->SetViewAffinity(m_viewCube, viewport->v3dView(), viewport.get() == currentmyViewport.get());
+		//    aisContext->SetViewAffinity(_ViewCube, viewport->v3dView(), viewport.get() == currentmyViewport.get());
 		//}
 	}
 
@@ -120,4 +120,52 @@ void ViewportController::InitWindow()
 void ViewportController::_UpdateParameter()
 {
 	SetViewCube(true, 50, 2.0);
+}
+
+
+void ViewportController::SetPredefinedView(PredefinedViews predefinedView)
+{
+	//if(predefinedView == PredefinedViews::WorkingPlane)
+	//{
+	//	const auto& plane = workspaceController()->workspace()->workingPlane();
+	//	const auto& dir = plane.Axis().Direction();
+	//	viewport()->view()->SetProj(dir.X(), dir.Y(), dir.Z());
+
+	//	const auto& up = plane.YAxis().Direction();
+	//	viewport()->view()->SetUp(up.X(), up.Y(), up.Z());
+	//	return;
+	//}
+
+	//// 确保视图锁定或无视图立方体时无法进行旋转
+	//if(m_lockedToPlane || !_ViewCube)
+	//	return;
+
+	V3d_TypeOfOrientation orientation;
+	switch(predefinedView)
+	{
+	case PredefinedViews::Top:
+		orientation = V3d_TypeOfOrientation_Zup_Top;
+		break;
+	case PredefinedViews::Bottom:
+		orientation = V3d_TypeOfOrientation_Zup_Bottom;
+		break;
+	case PredefinedViews::Left:
+		orientation = V3d_TypeOfOrientation_Zup_Left;
+		break;
+	case PredefinedViews::Right:
+		orientation = V3d_TypeOfOrientation_Zup_Right;
+		break;
+	case PredefinedViews::Front:
+		orientation = V3d_TypeOfOrientation_Zup_Front;
+		break;
+	case PredefinedViews::Back:
+		orientation = V3d_TypeOfOrientation_Zup_Back;
+		break;
+	default:
+		return;
+	}
+
+	Handle(AIS_ViewCubeOwner) viewCubeOwner = new AIS_ViewCubeOwner(_ViewCube, orientation);
+
+	_ViewCube->HandleClick(viewCubeOwner);
 }
