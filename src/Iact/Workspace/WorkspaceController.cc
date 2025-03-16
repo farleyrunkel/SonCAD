@@ -49,6 +49,9 @@ Handle(ViewportController) WorkspaceController::GetViewController(const Handle(V
 
 void WorkspaceController::InitWorkspace()
 {
+	_Workspace->InitV3dViewer();
+	_Workspace->InitAisContext();
+
     for(auto& view : _Workspace->GetViewports())
     {
         Handle(ViewportController) viewCtrl = new ViewportController(view, this);

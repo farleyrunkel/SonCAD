@@ -277,9 +277,9 @@ ViewportHwndHost::ViewportHwndHost(const Handle(V3d_Viewer)& viewer,
 }
 
 ViewportHwndHost::ViewportHwndHost(const Handle(ViewportController)& vc, QWidget* theParent)
-    : ViewportHwndHost(vc->GetViewport()->GetWorkspace()->GetViewer(),
+    : ViewportHwndHost(vc->GetViewport()->GetWorkspace()->V3dViewer(),
                        vc->GetViewport()->GetV3dView(),
-                       new AIS_InteractiveContext(vc->GetViewport()->GetWorkspace()->GetViewer()),
+                       vc->GetViewport()->GetWorkspace()->AisContext(),
                        theParent)
 {}
 

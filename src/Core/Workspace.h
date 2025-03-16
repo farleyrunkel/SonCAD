@@ -31,55 +31,36 @@ public:
 
 public:
     Workspace(const Handle(Model)& model)
-	{
-        initViewer();
+    {
+        _Document = model;
 
-		_Document = model;
-
-		Handle(Viewport) viewport = new Viewport(this);
+        Handle(Viewport) viewport = new Viewport(this);
         _Viewports.Append(viewport);
     }
 
     Workspace()
     {
-        initViewer();
+        InitV3dViewer();
     }
 
     ~Workspace()
     {}
 
-	NCollection_Vector<Handle(Viewport)>& GetViewports()
-	{
-		return _Viewports;
-	}
-
-    void initViewer()    
+    NCollection_Vector<Handle(Viewport)>& GetViewports()
     {
-        Handle(Aspect_DisplayConnection) aDisp = new Aspect_DisplayConnection();
-        Handle(OpenGl_GraphicDriver) aDriver = new OpenGl_GraphicDriver(aDisp, false);
-        // lets QOpenGLWidget to manage buffer swap
-        aDriver->ChangeOptions().buffersNoSwap = true;
-        // don't write into alpha channel
-        aDriver->ChangeOptions().buffersOpaqueAlpha = true;
-        // offscreen FBOs should be always used
-        aDriver->ChangeOptions().useSystemBuffer = false;
-
-        // create viewer
-        _V3dViewer = new V3d_Viewer(aDriver);
-        _V3dViewer->SetDefaultBackgroundColor(Quantity_NOC_BLACK);
-        _V3dViewer->SetDefaultLights();
-        _V3dViewer->SetLightOn();
-        _V3dViewer->ActivateGrid(Aspect_GT_Rectangular, Aspect_GDM_Lines);
+        return _Viewports;
     }
 
-    Handle(V3d_Viewer) GetViewer()
-    {
-        return _V3dViewer;
-    }
+    void InitV3dViewer();
+    void InitAisContext();
 
     Handle(V3d_Viewer) V3dViewer() const
     {
         return _V3dViewer;
+    }
+
+    Handle(AIS_InteractiveContext) AisContext() const {
+        return _AisContext;
     }
 
     const gp_Pln& WorkingPlane() const
@@ -118,7 +99,10 @@ private:
 
     Handle(V3d_Viewer) _V3dViewer;
     Handle(AIS_InteractiveContext) _AisContext;
+
     bool _GridEnabled;
+
+    void _ApplyWorkingContext();
 };
 
 #endif  // CORE_WORKSPACE_H
