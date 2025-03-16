@@ -47,6 +47,12 @@ public:
 		return _Workspace;
     }
 
+    // V3dView
+	Handle(V3d_View) GetV3dView()
+	{
+		return _V3dView;
+	}
+
     // 获取器和设置器
     gp_Pnt EyePoint()
     {

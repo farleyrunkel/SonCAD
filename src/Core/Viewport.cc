@@ -13,11 +13,9 @@ Viewport::Viewport(const Handle(Workspace)& workspace)
     : _Workspace(workspace), _RenderMode(SolidShaded), _Twist(0.0), _Scale(100.0)
 {}
 
-// 初始化 Viewport，支持 MSAA
-
 void Viewport::Init(bool useMsaa)
 {
-    if(_V3dView)
+    if(!_V3dView.IsNull())
     {
         return;
     }

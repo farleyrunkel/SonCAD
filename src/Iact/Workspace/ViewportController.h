@@ -66,6 +66,12 @@ public:
 	void Rotate(double deltaX, double deltaY, double deltaZ)
 	{}
 private:
+	void Init()
+	{
+		myViewport->Init(true);
+	}
+
+private:
 	Handle(Viewport) myViewport;
 	Handle(WorkspaceController)  _WorkspaceController;
 };

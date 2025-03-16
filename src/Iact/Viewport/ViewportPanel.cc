@@ -37,6 +37,12 @@ ViewportPanel::ViewportPanel(QWidget* parent)
 	_ViewportControllerChanged();
 
 	_HudContainer->raise();
+
+	InteractiveContext::Current()->PropertyChanged.connect(
+		[this](const std::string& property) {
+		model_PropertyChanged(property);
+	}
+	);
 }
 
 void ViewportPanel::mouseMoveEvent(QMouseEvent* event)
@@ -112,34 +118,26 @@ void ViewportPanel::contextMenuEvent(QContextMenuEvent* event)
 	contextMenu.exec(event->globalPos());
 }
 
-void ViewportPanel::model_PropertyChanged(const QString& propertyName)
+void ViewportPanel::model_PropertyChanged(const std::string& propertyName)
 {
-	if(propertyName == "viewportController")
+	if(propertyName == "ViewportController")
 	{
 		_ViewportControllerChanged();
 	}
-	if(propertyName == "hintMessage")
+	if(propertyName == "HintMessage")
 	{
-
 	}
 }
 
 void ViewportPanel::_ViewportControllerChanged()
 {
 	Message::SendInfo("ViewportPanel: ViewportController changed");
-	//auto viewportController = m_dataContext->viewportController();
-
-	//if(viewportController == nullptr)
-	//	return;
-
-	//if(_MouseControl != nullptr)
-	//{
-	//	_MouseControl->setViewportController(viewportController);
-	//}
 
 	auto VC = InteractiveContext::Current()->GetViewportController();
+	if(VC.IsNull())
+		return;
 
-	auto newHost = new ViewportHwndHost(new ViewportController, this);
+	auto newHost = new ViewportHwndHost(VC, this);
 	newHost->setFocus();
 
 	if(_ViewportHwndHost != nullptr)

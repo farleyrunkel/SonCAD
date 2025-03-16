@@ -87,6 +87,7 @@ void InteractiveContext::SetViewportController(const Handle(ViewportController)&
     if(_ViewportController != controller)
     {
         _ViewportController = controller;
+        RaisePropertyChanged("ViewportController");
     }
 }
 

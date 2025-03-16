@@ -19,7 +19,6 @@
 // Project includes
 #include "Iact/Viewport/ViewportHwndHost.h"
 #include "Iact/Viewport/ViewportMouseControl.h"
-#include "Iact/Viewport/ViewportPanelModel.h"
 
 /// @brief ViewportPanel class
 class ViewportPanel : public QWidget
@@ -44,7 +43,7 @@ protected:
 	virtual void contextMenuEvent(QContextMenuEvent* event) override;
 
 private:
-	void model_PropertyChanged(const QString& propertyName);
+	void model_PropertyChanged(const std::string& propertyName);
 	void _ViewportControllerChanged();
 	void updateHud(const QPointF& pos);
 
@@ -55,8 +54,6 @@ private:
 	QPointF _MouseMovePosition;
 	bool _SuppressContextMenu;
 	bool _ContextMenuIsOpen;
-
-	ViewportPanelModel* _DataContext;
 };
 
 #endif  // IACT_VIEWPORT_VIEWPORTPANEL_H_

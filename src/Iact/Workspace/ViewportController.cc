@@ -6,4 +6,5 @@ ViewportController::ViewportController(const Handle(Viewport)& viewport, const H
 {
 	myViewport = viewport;
 	_WorkspaceController = wc;
+	Init();
 }
