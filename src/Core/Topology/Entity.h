@@ -9,6 +9,8 @@
 #include <QObject>
 #include <QUuid>
 
+#include <TDF_Label.hxx>
+
 #include "Comm/BaseObject.h"
 
 DEFINE_STANDARD_HANDLE(Entity, BaseObject)
@@ -20,6 +22,8 @@ class Entity : public BaseObject
 public:
     // Constructor
     explicit Entity();
+
+    explicit Entity(const TDF_Label& label) {}
 
     // Guid property (using QUuid)
     QUuid Guid() const;

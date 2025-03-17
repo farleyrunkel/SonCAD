@@ -16,7 +16,7 @@ class VisualObject;
 
 DEFINE_STANDARD_HANDLE(WorkspaceControl, BaseObject);
 
-class WorkspaceControl : public BaseObject, public IMouseEventHandler
+class WorkspaceControl : public BaseObject
 {
 public:
     explicit WorkspaceControl();
@@ -29,7 +29,7 @@ public:
     {}
 
 protected:
-    virtual QList<Handle(WorkspaceControl)> GetChildren() const;
+    virtual std::vector<Handle(WorkspaceControl)> GetChildren() const;
 
     void SetHintMessage(const QString& message);
 
@@ -38,7 +38,7 @@ protected:
     void Add(IHudElement* hudElement);
 
 public:
-    virtual bool OnMouseMove(MouseEventData* data) override
+    virtual bool OnMouseMove(const std::shared_ptr<MouseEventData>& data)
     {
         auto children = GetChildren();
         return std::any_of(children.begin(), children.end(),
@@ -48,7 +48,7 @@ public:
         });
     }
 
-    virtual bool OnMouseDown(MouseEventData* data) override
+    virtual bool OnMouseDown(const std::shared_ptr<MouseEventData>& data)
     {
         auto children = GetChildren();
         return std::any_of(children.begin(), children.end(),
@@ -58,7 +58,7 @@ public:
         });
     }
 
-    virtual bool OnMouseUp(MouseEventData* data) override
+    virtual bool OnMouseUp(const std::shared_ptr<MouseEventData>& data)
     {
         auto children = GetChildren();
         return std::any_of(children.begin(), children.end(),
@@ -68,17 +68,17 @@ public:
         });
     }
 
-    virtual void enrichContextMenu(QList<QAction*>& itemList)
+    virtual void EnrichContextMenu(QList<QAction*>& itemList)
     {
         auto children = GetChildren();
         std::for_each(children.begin(), children.end(),
                       [&itemList](Handle(WorkspaceControl) child)
         {
-            child->enrichContextMenu(itemList);
+            child->EnrichContextMenu(itemList);
         });
     }
 
-    virtual bool OnKeyPressed(MouseEventData* data)
+    virtual bool OnKeyPressed(const std::shared_ptr<MouseEventData>& data)
     {
         auto children = GetChildren();
         return std::any_of(children.begin(), children.end(),
@@ -90,8 +90,8 @@ public:
 
 private:
     Handle(WorkspaceController) _WorkspaceController;
-    QList<IHudElement*> _HudElements;
-    QList<Handle(VisualObject)> _VisualObjects;
+    std::vector<IHudElement*> _HudElements;
+    std::vector<Handle(VisualObject)> _VisualObjects;
 };
 
 #endif  // IACT_FRAMEWORK_WORKSPACECONTROLL_H_

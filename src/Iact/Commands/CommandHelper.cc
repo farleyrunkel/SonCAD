@@ -12,7 +12,7 @@ Handle(Tool) CommandHelper::CurrentTool()
         : nullptr;
 }
 
-bool CommandHelper::StartTool(Handle(Tool) tool)
+bool CommandHelper::StartTool(const Handle(Tool)& tool)
 {
     return InteractiveContext::Current()->GetWorkspaceController() 
         && InteractiveContext::Current()->GetWorkspaceController()->StartTool(tool);

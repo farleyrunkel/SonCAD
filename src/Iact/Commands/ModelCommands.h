@@ -11,6 +11,7 @@ public:
     static ActionCommand& CreateBox();
     static ActionCommand& CreateCylinder();
     static ActionCommand& CreateSphere();
+    static ActionCommand& CreateSketch();
 };
 
 #endif  // APP_MODELCOMMANDS_H

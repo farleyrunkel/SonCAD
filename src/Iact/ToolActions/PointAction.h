@@ -21,13 +21,13 @@ public:
     {
     public:
         EventArgs() {}
-        EventArgs(const gp_Pnt& p, const gp_Pnt2d& pp, const gp_Pnt& mp, MouseEventData* m)
+        EventArgs(const gp_Pnt& p, const gp_Pnt2d& pp, const gp_Pnt& mp, const std::shared_ptr < MouseEventData>& m)
             : Point(p), PointOnPlane(pp), MarkerPosition(mp), MouseEventData(m)
         {}
         gp_Pnt Point;
         gp_Pnt2d PointOnPlane;
         gp_Pnt MarkerPosition;
-        MouseEventData* MouseEventData;
+        std::shared_ptr<MouseEventData> MouseEventData;
     };
 
 public:
@@ -39,13 +39,13 @@ public:
 protected:
     bool OnStart() override;
 
-    bool OnMouseMove(MouseEventData* data) override;
-    bool OnMouseDown(MouseEventData* data) override;
-    bool OnMouseUp(MouseEventData* data) override;
+    bool OnMouseMove(const std::shared_ptr<MouseEventData>& data) override;
+    bool OnMouseDown(const std::shared_ptr<MouseEventData>& data) override;
+    bool OnMouseUp(const std::shared_ptr<MouseEventData>& data) override;
 
 private:
     void _EnsureMarker();
-    void ProcessMouseInput(MouseEventData* data);
+    void ProcessMouseInput(const std::shared_ptr<MouseEventData>& data);
 
 
 private:

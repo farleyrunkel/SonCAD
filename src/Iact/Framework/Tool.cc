@@ -5,7 +5,7 @@
 #include "Iact/Framework/WorkspaceControl.h"
 #include "Iact/Workspace/WorkspaceController.h"
 
-Tool::Tool(QObject* parent) : WorkspaceControl(),
+Tool::Tool() : WorkspaceControl(),
 _Id(typeid(*this).name())
 {}
 
@@ -60,7 +60,7 @@ bool Tool::PrepareUndo()
 	return Cancel(false);
 }
 
-QList<Handle(WorkspaceControl)> Tool::GetChildren() const
+std::vector<Handle(WorkspaceControl)> Tool::GetChildren() const
 {
 	qDebug() << "Debug: Tool::GetChildren";
 	return {_ToolActions.begin(), _ToolActions.end()};

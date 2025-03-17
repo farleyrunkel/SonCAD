@@ -3,36 +3,26 @@
 #include "Iact/Commands/ModelCommands.h"
 
 #include <QIcon>
-#include <QObject>
 #include <QMessageBox>
+#include <QObject>
 
 #include "App/ResourceUtils.h"
-#include "Iact/Primitives/CreateBoxTool.h"
 #include "Iact/Commands/CommandHelper.h"
+#include "Iact/Primitives/CreateBoxTool.h"
 
 // Initialize the static command outside the class
 ActionCommand& ModelCommands::CreateBox() 
 {
     static ActionCommand command(
-        []() { /*CommandHelper::startTool(new CreateBoxTool())*/; },
+        []() { CommandHelper::StartTool(new CreateBoxTool()); },
         []() { return CommandHelper::CanStartTool(); }
     );
 
     // Initialize command properties if not already set
     if (command.text().isEmpty()) {
         command.setText(QObject::tr("Box"));
-        command.setIcon(Resource::Icon("model/Prim-Box"));
+        command.setIcon(Resource::Icon("Model/Prim-Box"));
         command.setToolTip(QObject::tr("Creates a new body with a box shape."));
-
-        //command.connect(Core::commandManager(), &CommandManager::updateEnabled,
-        //                []() { command.setEnabled(command.canExecute()); }
-        //);
-        //command.connect(Core::appContext(), &InteractiveContext::workspaceControllerChanged,
-        //    [](WorkspaceController* controller) { 
-        //        auto currentTool = controller->currentTool();
-        //        command.setCheckable(currentTool && qobject_cast<CreateBoxTool*>(currentTool) != nullptr);
-        //    }
-        //);
     }
 
     return command;
@@ -47,14 +37,9 @@ ActionCommand& ModelCommands::CreateCylinder()
 
     // Initialize command properties if not already set
     if (command.text().isEmpty()) {
-        command.setText(QObject::tr("Box"));
-        command.setIcon(Resource::Icon("model/Prim-Cylinder"));
+        command.setText(QObject::tr("Cylinder"));
+        command.setIcon(Resource::Icon("Model/Prim-Cylinder"));
         command.setToolTip(QObject::tr("Creates a new body with a Cylinder shape."));
-
-        //command.connect(Core::commandManager(), &CommandManager::updateEnabled,
-        //                []() { command.setEnabled(command.canExecute()); }
-        //);
-
     }
     return command;
 }
@@ -68,14 +53,26 @@ ActionCommand& ModelCommands::CreateSphere()
 
     // Initialize command properties if not already set
     if (command.text().isEmpty()) {
-        command.setText(QObject::tr("Box"));
-        command.setIcon(Resource::Icon("model/Prim-Sphere"));
+        command.setText(QObject::tr("Sphere"));
+        command.setIcon(Resource::Icon("Model/Prim-Sphere"));
         command.setToolTip(QObject::tr("Creates a new body with a Sphere shape."));
+    }
+    return command;
+}
 
-        //command.connect(Core::commandManager(), &CommandManager::updateEnabled,
-        //                []() { command.setEnabled(command.canExecute()); }
-        //);
+ActionCommand& ModelCommands::CreateSketch()
+{
+    static ActionCommand command(
+        []() {},
+        []() { return CommandHelper::CanStartTool(); }
+    );
 
+    // Initialize command properties if not already set
+    if(command.text().isEmpty())
+    {
+        command.setText(QObject::tr("Sketch"));
+        command.setIcon(Resource::Icon("Model/Prim-Sketch"));
+        command.setToolTip(QObject::tr("Creates a new body with a Sketch shape."));
     }
     return command;
 }

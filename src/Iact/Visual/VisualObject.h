@@ -29,7 +29,7 @@ public:
 
     virtual Handle(AIS_InteractiveObject) AisObject() const = 0;
 
-    Handle(WorkspaceController) GetGetWorkspaceController() const
+    Handle(WorkspaceController) GetWorkspaceController() const
     {
         return _WorkspaceController;
     }
@@ -57,7 +57,7 @@ public:
     void SetIsSelected(bool value);
 
     QVariant Tag() const
-    {
+    { 
         return _Tag;
     }
 
@@ -66,7 +66,7 @@ public:
         _Tag = tag;
     }
 
-    // Signal: AIS Object Changed
+public:
     boost::signals2::signal<void(const std::shared_ptr<VisualObject>&)> OnAisObjectChanged;
 
 private:

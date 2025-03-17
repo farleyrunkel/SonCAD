@@ -10,8 +10,8 @@
 class WorkspaceCommands
 {
 public:
-    static ActionCommand& doUndo();
-    static ActionCommand& doRedo();
+    static ActionCommand& DoUndo();
+    static ActionCommand& DoRedo();
     static ActionCommand& SetPredefinedView(ViewportController::PredefinedViews param);
     static ActionCommand& SetTopView();
     static ActionCommand& SetBottomView();

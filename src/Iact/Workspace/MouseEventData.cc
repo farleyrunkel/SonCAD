@@ -4,8 +4,6 @@
 
 #include "Core/Viewport.h"
 
-
-
 Handle(InteractiveEntity) MouseEventData::DetectedEntity() const {
     return !_DetectedElements.isEmpty() ? _DetectedElements[0].entity : nullptr;
 }

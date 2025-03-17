@@ -13,7 +13,7 @@ class CommandHelper
 public:
     static Handle(Tool) CurrentTool();
 
-    static bool StartTool(Handle(Tool) tool);
+    static bool StartTool(const Handle(Tool)& tool);
 
     static bool CanCreateDocument();
 

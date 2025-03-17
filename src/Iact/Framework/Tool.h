@@ -5,7 +5,7 @@
 
 #include <QObject>
 #include <QString>
-#include <QList>
+#include <vector>
 
 #include <boost/signals2.hpp>
 
@@ -17,7 +17,7 @@ DEFINE_STANDARD_HANDLE(Tool, WorkspaceControl);
 class Tool : public WorkspaceControl
 {
 public:
-	explicit Tool(QObject* parent = nullptr);
+	explicit Tool();
 
 public:
 	bool Start();
@@ -35,7 +35,7 @@ public:
 	virtual bool PrepareUndo();
 
 protected:
-	virtual QList<Handle(WorkspaceControl)> GetChildren() const override;
+	virtual std::vector<Handle(WorkspaceControl)> GetChildren() const override;
 
 	virtual bool OnCancel();
 
@@ -53,7 +53,7 @@ protected:
 
 	void StopAllActions();
 
-	//signals
+public:
 	boost::signals2::signal<void(ToolAction*)> ToolActionChanged;
 
 private:

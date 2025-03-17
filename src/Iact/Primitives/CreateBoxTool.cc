@@ -1,8 +1,11 @@
 // Copyright [2024] SunCAD
 
+#include "Iact/Primitives/CreateBoxTool.h"
+
+#include <AIS_Shape.hxx>
+
 #include "Iact/HudElements/Coord2DHudElement.h"
 #include "Iact/HudElements/MultiValueHudElement.h"
-#include "Iact/Primitives/CreateBoxTool.h"
 #include "Iact/Workspace/WorkspaceController.h"
 
 namespace
@@ -25,6 +28,18 @@ CreateBoxTool::CreateBoxTool()
 bool CreateBoxTool::OnStart()
 {
     qDebug() << "Debug: CreateBoxTool::OnStart";
+    {
+        auto WC = GetWorkspaceController();
+        if(WC.IsNull()) return false;
+        auto context = WC->GetWorkspace()->AisContext();
+        // dummy shape for testing
+        TopoDS_Shape aBox = BRepPrimAPI_MakeBox(5.0, 5.0, 5.0).Shape();
+        Handle(AIS_Shape) aShape = new AIS_Shape(aBox);
+        context->Display(aShape, AIS_Shaded, 0, false);
+        WC->ActiveViewport()->GetV3dView()->Redraw();
+        WC->ActiveViewport()->OnViewMoved();
+    }
+
     _CurrentPhase = Phase::PivotPoint;
     auto pointAction = new PointAction();
     if(!StartAction(pointAction))
@@ -62,7 +77,7 @@ void CreateBoxTool::_EnsurePreviewShape()
     //    _VisualShape = new VisualShape(WorkspaceController, body, VisualShape.Options.Ghosting);
     //    _IsTemporaryVisual = true;
     //}
-    //_VisualShape->SetIsSelectable(false);   
+    //_VisualShape->SetIsSelectable(false);
 }
 
 void CreateBoxTool::_PivotAction_Preview(PointAction::EventArgs* args)

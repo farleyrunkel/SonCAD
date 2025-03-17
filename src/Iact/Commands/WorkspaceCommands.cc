@@ -16,7 +16,7 @@
 #include "App/ResourceUtils.h"
 
 // Initialize the static command outside the class
-ActionCommand& WorkspaceCommands::doUndo()
+ActionCommand& WorkspaceCommands::DoUndo()
 {
     static ActionCommand command(
         []() { ; },
@@ -34,7 +34,7 @@ ActionCommand& WorkspaceCommands::doUndo()
     return command;
 }
 
-ActionCommand& WorkspaceCommands::doRedo()
+ActionCommand& WorkspaceCommands::DoRedo()
 {
     static ActionCommand command(
         []() { ; },

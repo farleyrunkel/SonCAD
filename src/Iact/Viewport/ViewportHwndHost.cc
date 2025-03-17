@@ -282,11 +282,11 @@ ViewportHwndHost::ViewportHwndHost(const Handle(ViewportController)& vc, QWidget
                        vc->GetViewport()->GetWorkspace()->AisContext(),
                        theParent)
 {
-	myViewportController = vc;
+    myViewportController = vc;
     myViewportController->InitWindow();
 
-	myViewportController->GetViewport()->ViewportChanged.connect([this](const auto&) { updateView(); });
-     
+    myViewportController->GetViewport()->ViewportChanged.connect([this](const auto&) { updateView(); });
+
     if(!myViewCube.IsNull())
     {
         myViewCube.reset(myViewportController->GetViewCube().get());
@@ -507,8 +507,8 @@ void ViewportHwndHost::mouseReleaseEvent(QMouseEvent* theEvent)
     const Graphic3d_Vec2i aPnt(theEvent->pos().x(), theEvent->pos().y());
     const Aspect_VKeyFlags aFlags = qtMouseModifiers2VKeys(theEvent->modifiers());
     if(!myView.IsNull()
-       && UpdateMouseButtons(aPnt,
-       qtMouseButtons2VKeys(theEvent->buttons()),
+       && UpdateMouseButtons(aPnt, 
+       qtMouseButtons2VKeys(theEvent->buttons()), 
        aFlags,
        false))
     {

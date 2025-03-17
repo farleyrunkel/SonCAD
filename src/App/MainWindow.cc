@@ -106,14 +106,10 @@ void MainWindow::SetupCategories()
 {
     if(SARibbonCategory* aCategory = _RibbonBar->addCategoryPage(tr("Edit")))
     {
-        if(SARibbonPannel* aPannel = aCategory->addPannel(tr("Panel 1")))
+        if(SARibbonPannel* aPannel = aCategory->addPannel(tr("Undo")))
         {
-            QAction* aAction = new QAction;
-            aAction->setText("save");
-            aAction->setIcon(QIcon("://Icon/save.svg"));
-            aAction->setObjectName("actSave");
-            aAction->setShortcut(QKeySequence(QLatin1String("Ctrl+S")));
-            aPannel->addLargeAction(aAction);
+            aPannel->addAction(&WorkspaceCommands::DoUndo());
+            aPannel->addAction(&WorkspaceCommands::DoRedo());
         }
     }
 
@@ -124,6 +120,7 @@ void MainWindow::SetupCategories()
             aPannel->addAction(&ModelCommands::CreateBox(), SARibbonPannelItem::Large);
             aPannel->addAction(&ModelCommands::CreateCylinder(), SARibbonPannelItem::Large);
             aPannel->addAction(&ModelCommands::CreateSphere(), SARibbonPannelItem::Large);
+            aPannel->addAction(&ModelCommands::CreateSketch(), SARibbonPannelItem::Large);
         }
     }
 

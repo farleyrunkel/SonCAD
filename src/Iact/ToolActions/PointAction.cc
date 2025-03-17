@@ -20,7 +20,7 @@ bool PointAction::OnStart()
     return true;
 }
 
-bool PointAction::OnMouseMove(MouseEventData* data)
+bool PointAction::OnMouseMove(const std::shared_ptr<MouseEventData>& data)
 {
     qDebug() << "- PointAction::OnMouseMove";
     if(!_IsFinished)
@@ -46,12 +46,12 @@ bool PointAction::OnMouseMove(MouseEventData* data)
     return false;
 }
 
-bool PointAction::OnMouseDown(MouseEventData* data)
+bool PointAction::OnMouseDown(const std::shared_ptr<MouseEventData>& data)
 {
     return false;
 }
 
-bool PointAction::OnMouseUp(MouseEventData* data)
+bool PointAction::OnMouseUp(const std::shared_ptr<MouseEventData>& data)
 {
     if(!_IsFinished)
     {
@@ -78,7 +78,7 @@ void PointAction::_EnsureMarker()
     }
 }
 
-void PointAction::ProcessMouseInput(MouseEventData* data)
+void PointAction::ProcessMouseInput(const std::shared_ptr<MouseEventData>& data)
 {
     qDebug() << "Debug: PointAction::ProcessMouseInput";
     {
