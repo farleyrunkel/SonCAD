@@ -123,10 +123,19 @@ void InteractiveContext::AddToScriptMruList(const QString& filePath)
         }
         _RecentUsedScripts.prepend(filePath);
     }
-
 }
 
-void InteractiveContext::SetWorkspace(const Handle(Workspace)& value) 
+std::shared_ptr<ParameterSets> InteractiveContext::GetParameterSets()
+{
+
+    if(_ParameterSets.get() == nullptr)
+    {
+        _ParameterSets = std::make_shared<ParameterSets>();
+    }
+    return _ParameterSets;
+}
+
+void InteractiveContext::SetWorkspace(const Handle(Workspace)& value)
 {
 	if(CoreContext::GetWorkspace() == value)
 	{

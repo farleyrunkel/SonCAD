@@ -3,6 +3,4 @@
 // Own include
 #include "Iact/Workspace/EditorState.h"
 
-//-----------------------------------------------------------------------------
-
-	EditorState::EditorState() {}
+EditorState::EditorState() {}

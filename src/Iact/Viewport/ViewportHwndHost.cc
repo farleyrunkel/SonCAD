@@ -259,7 +259,7 @@ void ViewportHwndHost::paintGL()
     }
 
     // wrap FBO created by QOpenGLWidget
-    // get context from this (composer) view rather than from arbitrary one
+    // Get context from this (composer) view rather than from arbitrary one
     //Handle(OpenGl_GraphicDriver) aDriver = Handle(OpenGl_GraphicDriver)::DownCast (myContext->CurrentViewer()->Driver());
     //Handle(OpenGl_Context) aGlCtx = aDriver->GetSharedContext();
     Handle(OpenGl_Context) aGlCtx = OcctGlTools::GetGlContext(myView);

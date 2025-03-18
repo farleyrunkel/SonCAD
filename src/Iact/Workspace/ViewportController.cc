@@ -4,8 +4,10 @@
 
 #include <Standard_NotImplemented.hxx>
 
-#include "Iact/Workspace/WorkspaceController.h"
 #include "Core/Project/VisualStyles.h"
+#include "Iact/Workspace/ViewportParameterSet.h"
+#include "Iact/Workspace/WorkspaceController.h"
+#include "Iact/Workspace/InteractiveContext.h"
 
 ViewportController::ViewportController(const Handle(Viewport)& viewport, 
 									   const Handle(WorkspaceController)& wc)
@@ -13,6 +15,16 @@ ViewportController::ViewportController(const Handle(Viewport)& viewport,
 	_Viewport = viewport;
 	_WorkspaceController = wc;
 	Init();
+}
+
+Handle(Viewport) ViewportController::GetViewport()
+{
+	return _Viewport;
+}
+
+Handle(WorkspaceController) ViewportController::GetWorkspaceController()
+{
+	return _WorkspaceController;
 }
 
 bool ViewportController::LockedToPlane() const
@@ -41,9 +53,24 @@ void ViewportController::InitWindow()
 	_UpdateParameter();
 }
 
+void ViewportController::Init()
+{
+	ViewportParameterSet::ParameterChanged.connect(std::bind(&ViewportController::_ViewportParameterSet_ParameterChanged, this,
+													  std::placeholders::_1, 
+													  std::placeholders::_2));
+
+	auto parameterSet = InteractiveContext::Current()->GetParameterSets()->Get<ViewportParameterSet>();
+
+	_Viewport->Init(parameterSet->EnableAntialiasing());
+}
+
 void ViewportController::_UpdateParameter()
 {
 	_SetViewCube(true, 50, 2.0);
+}
+
+void ViewportController::_ViewportParameterSet_ParameterChanged(OverridableParameterSet* set, std::string key)
+{
 }
 
 void ViewportController::_SetMouseMoveMode(MouseMoveMode mode)
@@ -68,6 +95,12 @@ void ViewportController::_SetMouseMoveMode(MouseMoveMode mode)
 		_CurrentMouseMoveMode = MouseMoveMode::Zooming;
 		break;
 	}
+}
+
+void ViewportController::_ResetMouseMoveMode()
+{
+	_GravityPoint = gp_Pnt(0, 0, 0);
+	_CurrentMouseMoveMode = MouseMoveMode::None;
 }
 
 void ViewportController::Rotate(double yawDeg, double pitchDeg, double rollDeg)
@@ -286,7 +319,7 @@ void ViewportController::_SetViewCube(bool isVisible, int size, double duration)
 		aisContext->Display(_ViewCube, false);
 
 		//for (const auto& viewport : _WorkspaceController->workspace()->viewports()) {
-		//    aisContext->SetViewAffinity(_ViewCube, viewport->v3dView(), viewport.get() == currentmyViewport.get());
+		//    aisContext->SetViewAffinity(_ViewCube, viewport->v3dView(), viewport.Get() == currentmyViewport.Get());
 		//}
 	}
 

@@ -11,6 +11,7 @@
 #include <QString>
 
 #include "Comm/BaseObject.h"
+#include "Comm/ParameterSets.h"
 #include "Core/CoreContext.h"
 #include "Core/Topology/Model.h"
 #include "Iact/Workspace/ModelController.h"
@@ -52,6 +53,10 @@ public:
     // 添加脚本到最近使用列表
     void AddToScriptMruList(const QString& filePath);
 
+    // Get parametersets
+
+    std::shared_ptr<ParameterSets> GetParameterSets();
+
 protected:
     virtual void SetWorkspace(const Handle(Workspace)& value) override;
     virtual void SetViewport(const Handle(Viewport)& value) override;
@@ -68,6 +73,8 @@ private:
     QList<QColor> _RecentUsedColors;
     QList<QString> _RecentUsedScripts;
     const int _MaxScriptMruCount = 10;
+
+	std::shared_ptr<ParameterSets> _ParameterSets;
 };
 
 #endif  // APP_INTERACTIVECONTEXT_H

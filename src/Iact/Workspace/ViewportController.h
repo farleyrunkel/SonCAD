@@ -5,8 +5,12 @@
 
 #include <QObject>
 
+#include <AIS_RubberBand.hxx>
+#include <AIS_ViewCube.hxx>
+
 #include "Comm/BaseObject.h"
 #include "Core/Viewport.h"
+#include "Iact/Workspace/ViewportParameterSet.h"
 #include "Occt/OcctExtensions/AIS_ViewCubeEx.h"
 
 class WorkspaceController;
@@ -18,7 +22,7 @@ class ViewportController : public BaseObject
 public:
 	ViewportController(const Handle(Viewport)& viewport, const Handle(WorkspaceController)& wc);
 
-	// get viewcube
+	// Get viewcube
 	Handle(AIS_ViewCube) GetViewCube()
 	{
 		return _ViewCube;
@@ -41,15 +45,9 @@ public:
 		None, Panning, Rotating, Twisting, Zooming
 	};
 
-	Handle(Viewport) GetViewport()
-	{
-		return _Viewport;
-	}
+	Handle(Viewport) GetViewport();
 
-	Handle(WorkspaceController) GetWorkspaceController()
-	{
-		return _WorkspaceController;
-	}
+	Handle(WorkspaceController) GetWorkspaceController();
 
 	bool LockedToPlane() const;
 
@@ -88,25 +86,17 @@ public:
 	{}  // Add necessary parameters
 
 private:
-	void Init()
-	{
-		_Viewport->Init(true);
-	}
+	void Init();
 
 	void _UpdateParameter();
 
+	void _ViewportParameterSet_ParameterChanged(OverridableParameterSet* set, std::string key);
 
 	void _SetMouseMoveMode(MouseMoveMode mode);
 
-
-	void _ResetMouseMoveMode()
-	{
-		_GravityPoint = gp_Pnt(0, 0, 0);
-		_CurrentMouseMoveMode = MouseMoveMode::None;
-	}
+	void _ResetMouseMoveMode();
 
 	void _SetViewCube(bool isVisible);
-
 	void _SetViewCube(bool isVisible, int size, double duration);
 
 private:
@@ -114,6 +104,7 @@ private:
 	Handle(WorkspaceController)  _WorkspaceController;
 
 	Handle(AIS_ViewCube) _ViewCube;
+	Handle(AIS_RubberBand) _AisRubberBand;
 
 	gp_Pnt  _GravityPoint;
 	Graphic3d_Vec2d _StartedMousePosition;
@@ -122,6 +113,9 @@ private:
 	MouseMoveMode _CurrentMouseMoveMode;
 
 	bool _LockedToPlane;
+	bool _ShowTrihedron;
+
+	const int RubberbandFreehandSelectionThresholdSquared = 100;
 };
 
 #endif  // IACT_WORKSPACE_VIEWPORTCONTROLLER_H_

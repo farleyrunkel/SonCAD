@@ -23,7 +23,7 @@ void Workspace::InitV3dViewer()
     Handle(OpenGl_GraphicDriver) aDriver = new OpenGl_GraphicDriver(aDisp, false);
     // lets QOpenGLWidget to manage buffer swap
     aDriver->ChangeOptions().buffersNoSwap = true;
-    // don't write into alpha channel
+    // don't Write into alpha channel
     aDriver->ChangeOptions().buffersOpaqueAlpha = true;
     // offscreen FBOs should be always used
     aDriver->ChangeOptions().useSystemBuffer = false;
