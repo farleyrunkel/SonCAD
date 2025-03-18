@@ -7,6 +7,9 @@
 #include <QMouseEvent>
 #include <QInputEvent>
 
+#include <Graphic3d_Vec2.hxx>
+#include <Aspect_VKeyFlags.hxx>
+
 #include "Iact/Workspace/ViewportController.h"
 
     // Interface for viewport mouse control
@@ -30,6 +33,8 @@ public:
     // Handle mouse move event
     virtual void MouseMove(const QPointF& pos, QMouseEvent* mouseEvent, Qt::KeyboardModifiers ModifierKeys) = 0;
 
+    virtual void MouseMove(const Graphic3d_Vec2d& pos, Aspect_VKeyMouse buttons, Aspect_VKeyFlags keys) {}
+
     // Handle mouse wheel event
     virtual void MouseWheel(const QPointF& pos, MouseWheelEnum wheel, int delta, QInputEvent* device, Qt::KeyboardModifiers ModifierKeys) = 0;
 
@@ -42,7 +47,7 @@ public:
     // Cancel any ongoing operation
     virtual void Cancel() = 0;
 
-private:
+protected:
     Handle(ViewportController) _ViewportController;
 };
 

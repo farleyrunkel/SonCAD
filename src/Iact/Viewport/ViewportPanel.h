@@ -28,7 +28,9 @@ class ViewportPanel : public QWidget
 public:
 	explicit ViewportPanel(QWidget* parent = nullptr);
 
-	~ViewportPanel() override {}
+	~ViewportPanel() override {
+		delete _MouseControl;
+	}
 
 public:
 
@@ -46,6 +48,7 @@ private:
 	void model_PropertyChanged(const std::string& propertyName);
 	void _ViewportControllerChanged();
 	void updateHud(const QPointF& pos);
+	void UpdateView();
 
 private:
 	ViewportHwndHost* _ViewportHwndHost;

@@ -24,10 +24,6 @@ public:
 		return _ViewCube;
 	}
 
-	void SetViewCube(bool isVisible);
-
-	void SetViewCube(bool isVisible, int size, double duration);
-
 public:
 	enum class PredefinedViews
 	{
@@ -47,7 +43,7 @@ public:
 
 	Handle(Viewport) GetViewport()
 	{
-		return myViewport;
+		return _Viewport;
 	}
 
 	Handle(WorkspaceController) GetWorkspaceController()
@@ -55,16 +51,31 @@ public:
 		return _WorkspaceController;
 	}
 
+	bool LockedToPlane() const;
+
+	void SetLockedToPlane(bool value);
+
 	void InitWindow();
 
 	void SetPredefinedView(PredefinedViews predefinedView);
 
-	void ZoomFitAll();
-	
+	void Rotate(double yawDeg, double pitchDeg, double rollDeg);
+
+	void Pan(double dx, double dy);
+
+	void Zoom(const Graphic3d_Vec2d& pos, double delta);
+
 	void Zoom(double value);
 
+	void ZoomFitAll();
+
+	void ZoomFitSelected();
+
+	void _SetTrihedron(bool visible);
+
 public:
-	void MouseMove(const QPointF& pos, Qt::KeyboardModifiers modifiers,
+	void MouseMove(const Graphic3d_Vec2d& pos, 
+				   Aspect_VKeyFlags keys, 
 				   MouseMoveMode mode = MouseMoveMode::None)
 	{};
 	void MouseDown(Qt::KeyboardModifiers modifiers)
@@ -75,24 +86,42 @@ public:
 	{}
 	void StartRubberbandSelection()
 	{}  // Add necessary parameters
-	void Zoom(const QPointF& pos, double delta)
-	{}
 
-	void Rotate(double deltaX, double deltaY, double deltaZ)
-	{}
 private:
 	void Init()
 	{
-		myViewport->Init(true);
+		_Viewport->Init(true);
 	}
 
 	void _UpdateParameter();
 
+
+	void _SetMouseMoveMode(MouseMoveMode mode);
+
+
+	void _ResetMouseMoveMode()
+	{
+		_GravityPoint = gp_Pnt(0, 0, 0);
+		_CurrentMouseMoveMode = MouseMoveMode::None;
+	}
+
+	void _SetViewCube(bool isVisible);
+
+	void _SetViewCube(bool isVisible, int size, double duration);
+
 private:
-	Handle(Viewport) myViewport;
+	Handle(Viewport) _Viewport;
 	Handle(WorkspaceController)  _WorkspaceController;
 
 	Handle(AIS_ViewCube) _ViewCube;
+
+	gp_Pnt  _GravityPoint;
+	Graphic3d_Vec2d _StartedMousePosition;
+	Graphic3d_Vec2d _LastMousePosition;
+
+	MouseMoveMode _CurrentMouseMoveMode;
+
+	bool _LockedToPlane;
 };
 
 #endif  // IACT_WORKSPACE_VIEWPORTCONTROLLER_H_

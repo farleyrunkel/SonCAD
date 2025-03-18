@@ -12,13 +12,16 @@
 
 #include <AIS_AnimationCamera.hxx>
 #include <Aspect_GradientFillMethod.hxx>
+#include <gp.hxx>
 #include <gp_Ax1.hxx>
+#include <gp_Dir.hxx>
 #include <gp_Lin.hxx>
 #include <gp_Pnt.hxx>
 #include <Graphic3d_RenderingMode.hxx>
 #include <Graphic3d_RenderingParams.hxx>
 #include <Graphic3d_RenderTransparentMethod.hxx>
 #include <V3d_View.hxx>
+
 #include "Comm/BaseObject.h"
 
 class Workspace;
@@ -171,6 +174,72 @@ public:
     void OnViewMoved()
     {
         _RaiseViewportChanged();
+    }
+
+    void _ValidateViewGeometry()
+    {
+        if(_V3dView.IsNull())
+        {
+            return;
+        }
+
+        // If distance is 0, the parameters cannot be restored
+        if(_V3dView->Camera()->Distance() == 0.0)
+        {
+            _V3dView->Camera()->SetDistance(0.00001);
+        }
+    }
+
+	gp_Pln GetViewPlane()
+	{
+		auto eyeDir = GetViewDirection();
+		return gp_Pln(_TargetPoint, eyeDir);
+	}
+
+	gp_Lin GetViewLine()
+	{
+		return gp_Lin(_EyePoint, GetViewDirection());
+	}
+
+    gp_Dir GetViewDirection()
+    {
+		_ValidateViewGeometry();
+
+        gp_Vec eyeVector(_EyePoint, _TargetPoint);
+        return gp_Dir(eyeVector);
+    }
+
+    gp_Ax1 ViewAxis(int screenX, int screenY)
+    {
+		if(_V3dView.IsNull())
+		{
+			return gp::OX();
+		}
+
+		double px = 0, py = 0, pz = 0;
+        _V3dView->Convert(screenX, screenY, px, py, pz);
+
+		return gp_Ax1(gp_Pnt(px, py, pz), GetViewDirection());
+    }
+
+    gp_Dir GetUpDirection()
+    {
+        if(_V3dView.IsNull())
+        {
+            return gp_Dir(0, 0, 1);
+        }
+
+        double xUp = 0, yUp = 0, zUp = 0;
+        _V3dView->Up(xUp, yUp, zUp);
+        return gp_Dir(xUp, yUp, zUp);
+    }
+
+    gp_Dir GetRightDirection()
+    {
+		auto upDir = GetUpDirection();
+        auto eyeDir = GetViewDirection();
+
+		return upDir.Crossed(eyeDir);
     }
 
 public:

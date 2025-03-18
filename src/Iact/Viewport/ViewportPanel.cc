@@ -11,6 +11,7 @@
 #include <QWindow>
 
 // Project Libraries
+#include "Comm/QtMouseHelper.h"
 #include "Iact/Viewport/ViewportMouseControlDefault.h"
 #include "Iact/Workspace/InteractiveContext.h"
 
@@ -55,11 +56,16 @@ void ViewportPanel::mouseMoveEvent(QMouseEvent* event)
 	if(_ViewportHwndHost)
 	{
 		auto p = _ViewportHwndHost->mapFromParent(_MouseMovePosition);
+
 		_MouseControl->MouseMove(p, event, event->modifiers());
+
+		_MouseControl->MouseMove(Graphic3d_Vec2d(p.x(), p.y()), 
+								 QtMouseHelper::qtMouseButtons2VKeys(event->buttons()), QtMouseHelper::qtMouseModifiers2VKeys(event->modifiers()));
 	}
 	_HudContainer->adjustSize();
-	_HudContainer->update();  // 强制重新绘制控件
+	_HudContainer->update();
 	updateHud(_MouseMovePosition);
+	UpdateView();
 }
 
 void ViewportPanel::wheelEvent(QWheelEvent* event)
@@ -137,6 +143,11 @@ void ViewportPanel::_ViewportControllerChanged()
 	if(VC.IsNull())
 		return;
 
+	if(_MouseControl != nullptr)
+	{
+		_MouseControl->SetViewportController(VC);
+	}
+
 	auto newHost = new ViewportHwndHost(VC, this);
 	newHost->setFocus();
 
@@ -158,4 +169,13 @@ void ViewportPanel::updateHud(const QPointF& pos)
 	int x = pos.x() + 10;
 	int y = pos.y() - 10 - _HudContainer->height();
 	_HudContainer->move(x, y);
+}
+
+void ViewportPanel::UpdateView()
+{
+	update();
+	if(_ViewportHwndHost)
+	{
+		_ViewportHwndHost->update();
+	}
 }
