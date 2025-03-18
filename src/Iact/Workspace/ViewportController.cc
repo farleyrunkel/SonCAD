@@ -246,8 +246,94 @@ void ViewportController::MouseMove(const Graphic3d_Vec2d& pos, Aspect_VKeyFlags 
 	if(IsInRubberbandSelection())
 	{
 		_LastMousePosition = pos;
-
+		_UpdateRubberbandSelection();
+		_WorkspaceController->Invalidate(true);
+		return;
 	}
+
+	if(_CurrentMouseMoveMode != mode)
+	{
+		if(mode == MouseMoveMode::None)
+		{
+			_ResetMouseMoveMode();
+		}
+		else
+		{
+			_StartedMousePosition = pos;
+			_SetMouseMoveMode(mode);
+		}
+	}
+
+	switch(_CurrentMouseMoveMode)
+	{
+	case MouseMoveMode::Panning:
+		_Viewport->GetV3dView()->Pan(pos.x() - _LastMousePosition.x(), _LastMousePosition.y() - pos.y());
+		_Viewport->OnViewMoved();
+		break;
+
+	case MouseMoveMode::Twisting:
+		Rotate(0, 0, (pos.y() - _LastMousePosition.y()) / 12.0);
+		break;
+
+	case MouseMoveMode::Rotating:
+		Rotate((_LastMousePosition.x() - pos.x()) / 6.0, (_LastMousePosition.y() - pos.y()) / 6.0, 0);
+		break;
+
+	case MouseMoveMode::Zooming:
+		_Viewport->GetV3dView()->ZoomAtPoint((int)_LastMousePosition.x(), (int)pos.y(), (int)pos.x(), (int)_LastMousePosition.y());
+		_Viewport->OnViewMoved();
+		break;
+	}
+
+	_WorkspaceController->MouseMove(this, pos, keys);
+	_WorkspaceController->Invalidate();
+	_LastMousePosition = pos;
+}
+
+void ViewportController::MouseMove(Aspect_VKeyFlags keys)
+{
+	if(!_AisRubberBand.IsNull())
+	{
+		return;
+	}
+	_WorkspaceController->MouseDown(this, keys);
+}
+
+void ViewportController::MouseDown(Aspect_VKeyFlags keys)
+{
+	_WorkspaceController->MouseDown(this, keys);
+}
+
+void ViewportController::MouseUp(Aspect_VKeyFlags keys)
+{
+	if(IsInRubberbandSelection())
+	{
+		_StopRubberbandSelection();
+	}
+	_WorkspaceController->MouseUp(this, keys);
+}
+
+void ViewportController::_StopRubberbandSelection()
+{
+	if(_AisRubberBand.IsNull()) return;
+
+	_WorkspaceController->GetWorkspace()->AisContext()->Remove(_AisRubberBand, false);
+	_AisRubberBand.Nullify();
+
+	switch(_RubberbandMode)
+	{
+	case ViewportController::Rectangle:
+		_WorkspaceController->SelectByRectangle(_CalcRectangleSelectionPoints(false), _RubberbandIncludeTouched, this);
+		break;
+	case ViewportController::Freehand:
+		_RubberbandPoints.push_back(_RubberbandPoints[0]);
+		_WorkspaceController->SelectByPolyline(_RubberbandPoints, _RubberbandIncludeTouched, this);
+		break;
+	default:
+		break;
+	}
+	_RubberbandPoints.clear();
+	_WorkspaceController->Invalidate(true);
 }
 
 void ViewportController::_SetViewCube(bool isVisible)

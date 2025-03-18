@@ -23,9 +23,6 @@ Handle(Tool) WorkspaceController::CurrentTool()
     return nullptr;
 }
 
-void WorkspaceController::Invalidate()
-{}
-
 Handle(Workspace) WorkspaceController::GetWorkspace()
 {
     return _Workspace;

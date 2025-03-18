@@ -30,7 +30,12 @@ public:
     bool StartTool(const Handle(Tool)& tool);
 
     Handle(Tool) CurrentTool();
-    void Invalidate();
+    void Invalidate(bool immediateOnly = false, bool forceRedraw = false)
+    {
+    }
+
+	void SelectByRectangle(const Graphic3d_Vec4i& corners, bool includeTouched, const Handle(ViewportController)& viewportController) {}
+    void SelectByPolyline(const std::vector<Graphic3d_Vec2i>& pointList, bool includeTouched, const Handle(ViewportController)& viewportController) {}
 
     Handle(Workspace) GetWorkspace();
 
