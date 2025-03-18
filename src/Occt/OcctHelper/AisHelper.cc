@@ -27,3 +27,17 @@ TopoDS_Shape AisHelper::GetShapeFromEntityOwner(const Handle(SelectMgr_EntityOwn
 
 	return TopoDS_Shape(brepOwner->Shape());
 }
+
+void AisHelper::SetRubberbandPoints(const Handle(Aspect_Window)& wntWindow, 
+									const Handle(AIS_RubberBand)& aisRubberband, std::vector<Graphic3d_Vec2i>& pointList)
+{
+	Standard_Integer width, height;
+	wntWindow->Size(width, height);
+	auto rubberband = aisRubberband;
+	rubberband->ClearPoints();
+	for (auto point : pointList)
+	{
+		Graphic3d_Vec2i vec2i(point.x(), height - point.y());
+		rubberband->AddPoint(vec2i);
+	}
+}

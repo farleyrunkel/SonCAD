@@ -242,6 +242,16 @@ public:
 		return upDir.Crossed(eyeDir);
     }
 
+	double DpiScale() const
+	{
+		return _DpiScale;
+	}
+
+	Handle(AIS_AnimationCamera) AisAnimationCamera() const
+	{
+		return _AisAnimationCamera;
+	}
+
 public:
     boost::signals2::signal<void(const gp_Pnt&)> EyePointChanged;
     boost::signals2::signal<void(const gp_Pnt&)> TargetPointChanged;
@@ -263,7 +273,10 @@ private:
     gp_Pnt _TargetPoint = gp_Pnt(0, 0, 0);
     double _Twist = 0.0;
     double _Scale = 100.0;
+
     RenderModes _RenderMode;
+
+    double _DpiScale = 1.0;
 
     Handle(V3d_View) _V3dView;
     Handle(AIS_AnimationCamera) _AisAnimationCamera;

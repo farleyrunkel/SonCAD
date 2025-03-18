@@ -2,14 +2,16 @@
 
 #include "Iact/Workspace/ViewportController.h"
 
+#include <Graphic3d_Vec4.hxx>
 #include <Standard_NotImplemented.hxx>
 
 #include "Core/Project/VisualStyles.h"
+#include "Iact/Workspace/InteractiveContext.h"
 #include "Iact/Workspace/ViewportParameterSet.h"
 #include "Iact/Workspace/WorkspaceController.h"
-#include "Iact/Workspace/InteractiveContext.h"
+#include "Occt/OcctHelper/AisHelper.h"
 
-ViewportController::ViewportController(const Handle(Viewport)& viewport, 
+ViewportController::ViewportController(const Handle(Viewport)& viewport,
 									   const Handle(WorkspaceController)& wc)
 {
 	_Viewport = viewport;
@@ -50,14 +52,23 @@ void ViewportController::SetLockedToPlane(bool value)
 
 void ViewportController::InitWindow()
 {
+	if(_ZoomFitAllOnInit)
+	{
+		_ZoomFitAllOnInit = false;
+		ZoomFitAll();
+	}
+	_Viewport->GetV3dView()->Update();
+	_Viewport->GetV3dView()->MustBeResized();
+	_Viewport->GetV3dView()->SetImmediateUpdate(false);
+
 	_UpdateParameter();
 }
 
 void ViewportController::Init()
 {
 	ViewportParameterSet::ParameterChanged.connect(std::bind(&ViewportController::_ViewportParameterSet_ParameterChanged, this,
-													  std::placeholders::_1, 
-													  std::placeholders::_2));
+												   std::placeholders::_1,
+												   std::placeholders::_2));
 
 	auto parameterSet = InteractiveContext::Current()->GetParameterSets()->Get<ViewportParameterSet>();
 
@@ -66,11 +77,15 @@ void ViewportController::Init()
 
 void ViewportController::_UpdateParameter()
 {
-	_SetViewCube(true, 50, 2.0);
+	auto parameterSet = InteractiveContext::Current()->GetParameterSets()->Get<ViewportParameterSet>();
+	_SetViewCube(parameterSet->ShowViewCube(), parameterSet->ViewCubeSize(), parameterSet->ViewCubeAnimationDuration());
+	_SetTrihedron(parameterSet->ShowTrihedron());
+	_ShowTrihedron = parameterSet->ShowTrihedron();
 }
 
 void ViewportController::_ViewportParameterSet_ParameterChanged(OverridableParameterSet* set, std::string key)
 {
+	_UpdateParameter();
 }
 
 void ViewportController::_SetMouseMoveMode(MouseMoveMode mode)
@@ -182,7 +197,7 @@ void ViewportController::Zoom(const Graphic3d_Vec2d& pos, double value)
 		_Viewport->GetV3dView()->StartZoomAtPoint(pos.x(), pos.y());
 	}
 
-	_Viewport->GetV3dView()->ZoomAtPoint(pos.x(), pos.y() - delta , pos.x(), pos.y() + delta);
+	_Viewport->GetV3dView()->ZoomAtPoint(pos.x(), pos.y() - delta, pos.x(), pos.y() + delta);
 	_WorkspaceController->Invalidate();
 	_Viewport->OnViewMoved();
 }
@@ -205,7 +220,6 @@ void ViewportController::ZoomFitAll()
 {
 	_Viewport->GetV3dView()->FitAll(0.1, false);
 	_Viewport->GetV3dView()->ZFitAll(1.0);
-
 	_Viewport->OnViewMoved();
 }
 
@@ -224,6 +238,15 @@ void ViewportController::_SetTrihedron(bool visible)
 	else
 	{
 		_Viewport->GetV3dView()->TriedronErase();
+	}
+}
+
+void ViewportController::MouseMove(const Graphic3d_Vec2d& pos, Aspect_VKeyFlags keys, MouseMoveMode mode)
+{
+	if(IsInRubberbandSelection())
+	{
+		_LastMousePosition = pos;
+
 	}
 }
 
@@ -276,11 +299,11 @@ void ViewportController::_SetViewCube(bool isVisible, int size, double duration)
 
 	// 初始化视图立方体
 	_ViewCube = new AIS_ViewCube();
-	//_ViewCube->SetSize(size * _Viewport->DpiScale());
-	//_ViewCube->SetBoxFacetExtension(size * _Viewport->dpiScale() * 0.15);
-	//_ViewCube->SetViewAnimation(_Viewport->aisAnimationCamera());
+	_ViewCube->SetSize(size * _Viewport->DpiScale());
+	_ViewCube->SetBoxFacetExtension(size * _Viewport->DpiScale() * 0.15);
+	_ViewCube->SetViewAnimation(_Viewport->AisAnimationCamera());
 	_ViewCube->SetFixedAnimationLoop(false);
-	_ViewCube->SetDrawAxes(true);
+	_ViewCube->SetDrawAxes(false);
 	_ViewCube->SetDuration(duration);
 	_ViewCube->SetResetCamera(true);
 	_ViewCube->SetFitSelected(true);
@@ -324,6 +347,62 @@ void ViewportController::_SetViewCube(bool isVisible, int size, double duration)
 	}
 
 	//_WorkspaceController->invalidate(true);
+}
+
+void ViewportController::_UpdateRubberbandSelection()
+{
+	if(_RubberbandMode == RubberbandSelectionMode::Rectangle)
+	{
+		auto points = _CalcRectangleSelectionPoints(true);
+		_AisRubberBand->SetRectangle(points.x(), points.y(), points.z(), points.w());
+	}
+
+	else if(_RubberbandMode == RubberbandSelectionMode::Freehand)
+	{
+		int height = 0, width = 0;
+		auto wind = _Viewport->GetV3dView()->Window();
+		if(wind.IsNull()) return;
+		wind->Size(width, height);
+
+		int currentPointX = Max(0, Min((int)_LastMousePosition.x(), width));
+		int currentPointY = Max(0, Min((int)_LastMousePosition.y(), height));
+		auto lastPoint = _RubberbandPoints[_RubberbandPoints.size() - 2];
+		auto distX = currentPointX - lastPoint.x();
+		auto distY = currentPointY - lastPoint.y();
+		if(distX * distX + distY * distY > RubberbandFreehandSelectionThresholdSquared)
+		{
+			_RubberbandPoints.push_back(Graphic3d_Vec2i(currentPointX, currentPointY));
+		}
+		else
+		{
+			_RubberbandPoints[_RubberbandPoints.size() - 1] = Graphic3d_Vec2i(currentPointX, currentPointY);
+		}
+
+		AisHelper::SetRubberbandPoints(_Viewport->GetV3dView()->Window(), _AisRubberBand, _RubberbandPoints);
+	}
+
+	_WorkspaceController->GetWorkspace()->AisContext()->Redisplay(_AisRubberBand, false);
+}
+
+Graphic3d_Vec4i ViewportController::_CalcRectangleSelectionPoints(bool bottomUp)
+{
+	int height = 0, width = 0;
+	auto wind = _Viewport->GetV3dView()->Window();
+	if(wind.IsNull()) return {};
+	wind->Size(width, height);
+
+	int left = Max(0, Min((int)_StartedMousePosition.x(), (int)_LastMousePosition.x()));
+	int right = Min(width, Max((int)_StartedMousePosition.x(), (int)_LastMousePosition.x()));
+	int top = Max(0, Min((int)_StartedMousePosition.y(), (int)_LastMousePosition.y()));
+	int bottom = Min(height, Max((int)_StartedMousePosition.y(), (int)_LastMousePosition.y()));
+
+	if(bottomUp)
+	{
+		top = height - top;
+		bottom = height - bottom;
+	}
+
+	return Graphic3d_Vec4i(left, top, right, bottom);
 }
 
 void ViewportController::SetPredefinedView(PredefinedViews predefinedView)

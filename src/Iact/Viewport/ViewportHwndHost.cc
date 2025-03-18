@@ -153,7 +153,11 @@ ViewportHwndHost::ViewportHwndHost(const Handle(ViewportController)& vc, QWidget
     {
         myViewCube.reset(myViewportController->GetViewCube().get());
     }
-    myViewCube->SetViewAnimation(myViewAnimation);
+
+    if(!myViewCube.IsNull())
+    {
+        myViewCube->SetViewAnimation(myViewAnimation);
+    }
 }
 
 // ================================================================

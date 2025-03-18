@@ -7,6 +7,7 @@
 
 #include <AIS_RubberBand.hxx>
 #include <AIS_ViewCube.hxx>
+#include <Graphic3d_Vec4.hxx>
 
 #include "Comm/BaseObject.h"
 #include "Core/Viewport.h"
@@ -45,6 +46,13 @@ public:
 		None, Panning, Rotating, Twisting, Zooming
 	};
 
+	enum RubberbandSelectionMode
+	{
+		Rectangle,
+		Freehand
+	};
+
+public:
 	Handle(Viewport) GetViewport();
 
 	Handle(WorkspaceController) GetWorkspaceController();
@@ -71,11 +79,15 @@ public:
 
 	void _SetTrihedron(bool visible);
 
+	bool IsInRubberbandSelection() const
+	{
+		return !_AisRubberBand.IsNull();
+	}
+
 public:
 	void MouseMove(const Graphic3d_Vec2d& pos, 
-				   Aspect_VKeyFlags keys, 
-				   MouseMoveMode mode = MouseMoveMode::None)
-	{};
+				   Aspect_VKeyFlags keys = Aspect_VKeyFlags_NONE,
+				   MouseMoveMode mode = MouseMoveMode::None);;
 	void MouseDown(Qt::KeyboardModifiers modifiers)
 	{};
 	void MouseUp(Qt::KeyboardModifiers modifiers)
@@ -99,6 +111,10 @@ private:
 	void _SetViewCube(bool isVisible);
 	void _SetViewCube(bool isVisible, int size, double duration);
 
+	void _UpdateRubberbandSelection();
+
+	Graphic3d_Vec4i _CalcRectangleSelectionPoints(bool bottomUp);
+
 private:
 	Handle(Viewport) _Viewport;
 	Handle(WorkspaceController)  _WorkspaceController;
@@ -114,8 +130,11 @@ private:
 
 	bool _LockedToPlane;
 	bool _ShowTrihedron;
+	bool _ZoomFitAllOnInit;
 
 	const int RubberbandFreehandSelectionThresholdSquared = 100;
+	RubberbandSelectionMode _RubberbandMode;
+	std::vector<Graphic3d_Vec2i> _RubberbandPoints;
 };
 
 #endif  // IACT_WORKSPACE_VIEWPORTCONTROLLER_H_
