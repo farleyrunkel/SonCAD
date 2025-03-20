@@ -2,11 +2,13 @@
 
 #include "Iact/Framework/Tool.h"
 
+#include <algorithm>
+
 #include "Iact/Framework/WorkspaceControl.h"
 #include "Iact/Workspace/WorkspaceController.h"
 
-Tool::Tool() : WorkspaceControl(),
-_Id(typeid(*this).name())
+Tool::Tool() 
+	: WorkspaceControl()
 {}
 
 bool Tool::Start()
@@ -25,11 +27,6 @@ bool Tool::OnStart()
 	return false;
 }
 
-ToolAction* Tool::CurrentAction() const
-{
-	return _ToolActions.size() > 0 ? _ToolActions.first() : nullptr;
-}
-
 bool Tool::Cancel(bool force)
 {
 	if(!OnCancel() && !force)
@@ -40,39 +37,33 @@ bool Tool::Cancel(bool force)
 	return true;
 }
 
+bool Tool::OnCancel()
+{
+	return true;
+}
+
 void Tool::Stop()
 {
 	_IsActive = false;
 	OnStop();
 	Cleanup();
 
-	//GetWorkspaceController()->RemoveTool(this);
+	GetWorkspaceController()->RemoveTool(this);
 	GetWorkspaceController()->Invalidate();
 }
 
-QString Tool::Id() const
+void Tool::OnStop()
+{}
+
+Handle(ToolAction) Tool::CurrentAction() const
 {
-	return _Id;
+	return _ToolActions.IsEmpty() ? nullptr : _ToolActions.First();
 }
 
 bool Tool::PrepareUndo()
 {
 	return Cancel(false);
 }
-
-std::vector<Handle(WorkspaceControl)> Tool::GetChildren() const
-{
-	qDebug() << "Debug: Tool::GetChildren";
-	return {_ToolActions.begin(), _ToolActions.end()};
-}
-
-bool Tool::OnCancel()
-{
-	return true;
-}
-
-void Tool::OnStop()
-{}
 
 void Tool::Cleanup()
 {
@@ -81,13 +72,13 @@ void Tool::Cleanup()
 	//BaseCleanup();
 }
 
-bool Tool::StartAction(ToolAction* toolAction, bool exclusive)
+bool Tool::StartAction(Handle(ToolAction) toolAction, bool exclusive)
 {
-	if(_ToolActions.contains(toolAction))
+	auto it = std::find(_ToolActions.begin(), _ToolActions.end(), toolAction);
+	if(it != _ToolActions.end())
 	{
 		return true;
 	}
-
 	try
 	{
 		if(exclusive)
@@ -95,13 +86,13 @@ bool Tool::StartAction(ToolAction* toolAction, bool exclusive)
 			StopAllActions();
 		}
 
-		if(toolAction != nullptr)
+		if(!toolAction.IsNull())
 		{
 			toolAction->SetWorkspaceController(GetWorkspaceController());
 			if(!toolAction->Start())
 				return false;
 
-			_ToolActions.insert(_ToolActions.begin(), toolAction);
+			_ToolActions.SetValue(0, toolAction);
 			ToolActionChanged(toolAction);
 		}
 		return true;
@@ -113,14 +104,15 @@ bool Tool::StartAction(ToolAction* toolAction, bool exclusive)
 	}
 }
 
-void Tool::StopAction(ToolAction* toolAction)
+void Tool::StopAction(Handle(ToolAction) toolAction)
 {
-	if(toolAction == nullptr)
+	if(toolAction.IsNull())
 		return;
 
-	if(!_ToolActions.isEmpty())
+	if(!_ToolActions.IsEmpty())
 	{
-		_ToolActions.removeOne(toolAction);
+		std::remove(_ToolActions.begin(), _ToolActions.end(), toolAction);
+		_ToolActions.EraseLast();
 	}
 
 	toolAction->Stop();
@@ -133,6 +125,15 @@ void Tool::StopAllActions()
 	{
 		StopAction(action);
 	}
-	_ToolActions.clear();
+	_ToolActions.Clear();
 }
 
+NCollection_Vector<Handle(WorkspaceControl)> Tool::GetChildren() const
+{
+	NCollection_Vector<Handle(WorkspaceControl)> children;
+	for(const auto& action : _ToolActions)
+	{
+		children.Append(action);
+	}
+	return children;
+}

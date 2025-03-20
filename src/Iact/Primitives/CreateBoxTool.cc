@@ -80,7 +80,7 @@ void CreateBoxTool::_EnsurePreviewShape()
     //_VisualShape->SetIsSelectable(false);
 }
 
-void CreateBoxTool::_PivotAction_Preview(PointAction::EventArgs* args)
+void CreateBoxTool::_PivotAction_Preview(std::shared_ptr<PointAction::EventArgs> args)
 {
     qDebug() << "- CreateBoxTool::_PivotAction_Preview";
     if(_Coord2DHudElement)
@@ -91,7 +91,7 @@ void CreateBoxTool::_PivotAction_Preview(PointAction::EventArgs* args)
     qDebug() << "   - PointPlane1: " << _PointPlane1.X() << " " << _PointPlane1.Y();
 }
 
-void CreateBoxTool::_PivotAction_Finished(PointAction::EventArgs* args)
+void CreateBoxTool::_PivotAction_Finished(std::shared_ptr<PointAction::EventArgs> args)
 {
     qDebug() << "- CreateBoxTool::_PivotAction_Finished";
 
@@ -100,7 +100,7 @@ void CreateBoxTool::_PivotAction_Finished(PointAction::EventArgs* args)
     qDebug() << "   - PointPlane1: " << _PointPlane1.X() << " " << _PointPlane1.Y();
 
     auto action = CurrentAction();
-    if(action == nullptr)
+    if(action.IsNull())
     {
         return;
     }
@@ -131,7 +131,7 @@ void CreateBoxTool::_PivotAction_Finished(PointAction::EventArgs* args)
     }
 }
 
-void CreateBoxTool::_BaseRectAction_Preview(PointAction::EventArgs* args)
+void CreateBoxTool::_BaseRectAction_Preview(std::shared_ptr<PointAction::EventArgs> args)
 {
     if(args != nullptr)
     {
@@ -208,8 +208,7 @@ void CreateBoxTool::_BaseRectAction_Preview(PointAction::EventArgs* args)
     //WorkspaceController::Instance()->Invalidate();
 }
 
-
-void CreateBoxTool::_BaseRectAction_Finished(PointAction::EventArgs* args)
+void CreateBoxTool::_BaseRectAction_Finished(std::shared_ptr<PointAction::EventArgs> args)
 {
 
 }

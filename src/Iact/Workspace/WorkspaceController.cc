@@ -13,16 +13,96 @@ WorkspaceController::WorkspaceController()
 
 bool WorkspaceController::StartTool(const Handle(Tool)& tool)
 {
-	tool->SetWorkspaceController(this);
+    try
+    {
+        if(!_CurrentTool.IsNull()
+           && !CancelTool(_CurrentTool, true))
+        {
+            return false;
+        }
 
-	tool->Start();
+        if(!tool.IsNull())
+        {
+            tool->SetWorkspaceController(this);
+            _CurrentTool = tool;
 
+            if(!tool->Start())
+            {
+                return false;
+            }
+
+			RaisePropertyChanged("CurrentTool");
+            Invalidate(true);
+            return true;
+        }
+        return false;
+	}
+    catch(std::exception& e)
+    {
+		std::cerr << "Error: " << e.what() << std::endl;
+        return false;
+    }
     return false;
+}
+
+bool WorkspaceController::CancelTool(const Handle(Tool)& tool, bool force)
+{
+    auto isCancelled = true;
+	assert(!tool.IsNull());
+
+    if(!_CurrentTool.IsNull())
+    {
+        if(!_CurrentTool->Cancel(force))
+        {
+            isCancelled = false;
+        }
+	}
+
+    if(isCancelled)
+    {
+		_CurrentTool.Nullify();
+        RaisePropertyChanged("CurrentTool");
+
+    }
+
+	Invalidate();
+    UpdateSelection();
+    return isCancelled;
+}
+
+void WorkspaceController::UpdateSelection()
+{
+	if(_LastMouseMoveViewportController.IsNull())
+	{
+		return;
+	}
+    _SelectionManager->Update();
+	MouseMove(_LastMouseMoveViewportController, _LastMouseMovePosition, _LastModifierKeys);
 }
 
 Handle(Tool) WorkspaceController::CurrentTool()
 {
     return nullptr;
+}
+
+void WorkspaceController::RemoveTool(const Handle(Tool)& tool) 
+{
+	assert(!tool.IsNull());
+	if(_CurrentTool != tool)
+	{
+        return;
+	}
+
+	_CurrentTool.Nullify();
+
+	RaisePropertyChanged("CurrentTool");
+	Invalidate();
+    UpdateSelection();
+
+    if(_CurrentTool.IsNull())
+    {
+		return;
+    }
 }
 
 Handle(Workspace) WorkspaceController::GetWorkspace()
@@ -79,9 +159,9 @@ NCollection_Vector<Handle(WorkspaceControl)> WorkspaceController::EnumerateContr
     qDebug() << "Debug: m_workspaceController::enumerateControls";
     NCollection_Vector<Handle(WorkspaceControl)> controls;
 
-    if(m_currentTool)
+    if(_CurrentTool)
     {
-        controls.Append(m_currentTool);
+        controls.Append(_CurrentTool);
     }
 
     if(m_currentEditor)

@@ -35,10 +35,10 @@ protected:
 
 private:
 	void _EnsurePreviewShape();
-	void _PivotAction_Preview(PointAction::EventArgs* args);
-	void _PivotAction_Finished(PointAction::EventArgs* args);
-	void _BaseRectAction_Preview(PointAction::EventArgs* args);
-	void _BaseRectAction_Finished(PointAction::EventArgs* args);
+	void _PivotAction_Preview(std::shared_ptr<PointAction::EventArgs> args);
+	void _PivotAction_Finished(std::shared_ptr<PointAction::EventArgs> args);
+	void _BaseRectAction_Preview(std::shared_ptr<PointAction::EventArgs> args);
+	void _BaseRectAction_Finished(std::shared_ptr<PointAction::EventArgs> args);
 	void _MultiValueEntered(double newValue1, double newValue2);
 
 private:

@@ -19,7 +19,7 @@ void WorkspaceControl::SetWorkspaceController(const Handle(WorkspaceController)&
 	_WorkspaceController = WorkspaceController;
 }
 
-std::vector<Handle(WorkspaceControl)> WorkspaceControl::GetChildren() const
+NCollection_Vector<Handle(WorkspaceControl)> WorkspaceControl::GetChildren() const
 {
 	return {};
 }

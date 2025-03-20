@@ -6,6 +6,7 @@
 #include <QList>
 
 #include <Standard_Handle.hxx>
+#include <NCollection_Vector.hxx>
 
 #include "Comm/BaseObject.h"
 #include "Iact/Workspace/MouseEventData.h"
@@ -29,7 +30,7 @@ public:
     {}
 
 protected:
-    virtual std::vector<Handle(WorkspaceControl)> GetChildren() const;
+    virtual NCollection_Vector<Handle(WorkspaceControl)> GetChildren() const;
 
     void SetHintMessage(const QString& message);
 

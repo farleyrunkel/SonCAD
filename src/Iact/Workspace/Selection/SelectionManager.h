@@ -26,6 +26,8 @@ public:
 
     }
 
+    void Update() {}
+
 private:
     NCollection_Vector<Handle(InteractiveEntity)> _EmptyList;
 	Handle(WorkspaceController) _WorkspaceController;

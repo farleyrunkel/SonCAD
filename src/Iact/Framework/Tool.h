@@ -9,6 +9,9 @@
 
 #include <boost/signals2.hpp>
 
+#include <NCollection_Vector.hxx>
+
+#include "Core/Topology/InteractiveEntity.h"
 #include "Iact/Framework/ToolAction.h"
 #include "Iact/Framework/WorkspaceControl.h"
 
@@ -24,18 +27,16 @@ public:
 
 	virtual bool OnStart();
 
-	ToolAction* CurrentAction() const;
+	Handle(ToolAction) CurrentAction() const;
 
 	bool Cancel(bool force);
 
 	void Stop();
 
-	QString Id() const;
-
 	virtual bool PrepareUndo();
 
 protected:
-	virtual std::vector<Handle(WorkspaceControl)> GetChildren() const override;
+	virtual NCollection_Vector<Handle(WorkspaceControl)> GetChildren() const override;
 
 	virtual bool OnCancel();
 
@@ -47,18 +48,19 @@ protected:
 	//	CleanedUp = true;
 	//}
 
-	bool StartAction(ToolAction* toolAction, bool exclusive = true);
+	bool StartAction(Handle(ToolAction)  toolAction, bool exclusive = true);
 
-	void StopAction(ToolAction* toolAction);
+	void StopAction(Handle(ToolAction)  toolAction);
 
 	void StopAllActions();
 
 public:
-	boost::signals2::signal<void(ToolAction*)> ToolActionChanged;
+	boost::signals2::signal<void(Handle(ToolAction))> ToolActionChanged;
 
 private:
-	QList<ToolAction*> _ToolActions;
-	QString _Id;
+	NCollection_Vector<Handle(ToolAction)> _ToolActions;
+	NCollection_Vector<Handle(InteractiveEntity)> _OverriddenVisualShapes;
+
 	bool _IsActive;
 };
 

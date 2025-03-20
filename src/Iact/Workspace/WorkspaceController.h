@@ -37,7 +37,14 @@ public:
 
     bool StartTool(const Handle(Tool)& tool);
 
+    bool CancelTool(const Handle(Tool)& tool, bool force);
+
+    void UpdateSelection();
+
     Handle(Tool) CurrentTool();
+
+	void RemoveTool(const Handle(Tool)& tool);
+
     void Invalidate(bool immediateOnly = false, bool forceRedraw = false)
     {}
 
@@ -71,7 +78,7 @@ private:
     Handle(Viewport) _ActiveViewport;
 
 private:
-    Handle(Tool)  m_currentTool;
+    Handle(Tool)  _CurrentTool;
     Handle(Editor) m_currentEditor;
 
     std::shared_ptr<MouseEventData> _MouseEventData;

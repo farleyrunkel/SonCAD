@@ -31,10 +31,11 @@ public:
     };
 
 public:
-    explicit PointAction();;
-    // ∂®“Â Boost –≈∫≈
-    boost::signals2::signal<void(PointAction::EventArgs*)> Preview;
-    boost::signals2::signal<void(PointAction::EventArgs*)> Finished;
+    explicit PointAction();
+
+public:
+    boost::signals2::signal<void(std::shared_ptr<EventArgs>)> Preview;
+    boost::signals2::signal<void(std::shared_ptr<EventArgs>)> Finished;
 
 protected:
     bool OnStart() override;
