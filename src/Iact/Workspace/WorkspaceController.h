@@ -11,15 +11,17 @@
 #include <gp_Pnt.hxx>
 #include <gp_Pnt2d.hxx>
 #include <NCollection_Vector.hxx>
+#include <SelectMgr_EntityOwner.hxx>
 
 #include "Comm/BaseObject.h"
 #include "Core/Workspace.h"
 #include "Iact/Framework/Editor.h"
 #include "Iact/Framework/Tool.h"
-#include "Iact/Visual/VisualObjectManager.h"
 #include "Iact/Workspace/MouseEventData.h"
 #include "Iact/Workspace/Selection/SelectionManager.h"
 #include "Iact/Workspace/ViewportController.h"
+
+class VisualObjectManager;
 
 DEFINE_STANDARD_HANDLE(WorkspaceController, BaseObject)
 
@@ -82,9 +84,13 @@ private:
     NCollection_Vector<Handle(AIS_InteractiveObject)> _CustomHighlights;
 
 	Handle(SelectionManager) _SelectionManager;
+	Handle(VisualObjectManager) _VisualObjects;
 
     gp_Pnt  _CursorPosition;
     gp_Pnt2d _CursorPosition2d;
+
+    Handle(AIS_InteractiveObject) _LastDetectedAisObject;
+    Handle(SelectMgr_EntityOwner) _LastDetectedOwner;
 };
 
 #endif // IACT_WORKSPACE_WORKSPACECONTROLLER_H_

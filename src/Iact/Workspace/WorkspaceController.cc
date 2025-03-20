@@ -5,6 +5,8 @@
 #include "Comm/BaseObject.h"
 #include "Core/Workspace.h"
 #include "Iact/Framework/Tool.h"
+#include "Iact/Visual/VisualObjectManager.h"
+#include "Occt/OcctHelper/AisHelper.h"
 
 WorkspaceController::WorkspaceController()
 {}
@@ -130,8 +132,28 @@ void WorkspaceController::MouseMove(const Handle(ViewportController)& viewportCo
 	}
 
     gp_Pnt planePoint;
+    
+	if(!viewportController->GetViewport()->ScreenToPoint(_Workspace->WorkingPlane(), pos.x(), pos.y(), planePoint))
+	{
+        _CursorPosition = gp_Pnt();
+        _CursorPosition2d = gp_Pnt2d();
+	}
 
-    if (!viewportController->GetViewport())
+    _LastDetectedAisObject.Nullify();
+    _LastDetectedOwner.Nullify();
+
+	_MouseEventData->Set(viewportController->GetViewport(), pos, planePoint, modifierKeys);
+
+    if(_Workspace->AisContext()->HasDetected())
+    {
+		_LastDetectedOwner = _Workspace->AisContext()->DetectedOwner();
+		_LastDetectedAisObject = _Workspace->AisContext()->DetectedInteractive();
+		TopoDS_Shape detectedShape = AisHelper::GetShapeFromEntityOwner(_LastDetectedOwner);
+		_LastDetectedAisObject->SetOwner(_LastDetectedOwner);
+
+		auto detectedEntity = _VisualObjects->GetEntity(_LastDetectedAisObject);
+
+    }
 
     for(const auto& handler : EnumerateControls())
     {

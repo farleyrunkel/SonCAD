@@ -19,7 +19,7 @@
 
 class WorkspaceController;
 
-DEFINE_STANDARD_HANDLE(VisualObjectManager, Standard_Transient);
+DEFINE_STANDARD_HANDLE(VisualObjectManager, BaseObject);
 
 class VisualObjectManager : public BaseObject
 {
@@ -44,6 +44,12 @@ public:
     std::list<Handle(VisualObject)> All() const;
 
     void Remove(const Handle(InteractiveEntity)& entity);
+
+    Handle(InteractiveEntity) GetEntity(const Handle(AIS_InteractiveObject)& aisInteractiveObject)
+    {
+		if(aisInteractiveObject.IsNull() ) return nullptr;
+        auto owner = aisInteractiveObject->GetOwner();
+    }
 
     void Clear();
 

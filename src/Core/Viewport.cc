@@ -160,7 +160,6 @@ void Viewport::Init(bool useMsaa)
     renderParams.IsReflectionEnabled = true;
     renderParams.IsTransparentShadowEnabled = true;
 
-    // 重新初始化视图参数
     SetTargetPoint(_TargetPoint);
     SetEyePoint(_EyePoint);
     SetScale(_Scale);

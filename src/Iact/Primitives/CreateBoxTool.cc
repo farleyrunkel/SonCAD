@@ -143,11 +143,11 @@ void CreateBoxTool::_BaseRectAction_Preview(PointAction::EventArgs* args)
     double dimX = std::abs(_PointPlane1.X() - _PointPlane2.X());
     double dimY = std::abs(_PointPlane1.Y() - _PointPlane2.Y());
 
-    if(args && args->MouseEventData->ModifierKeys.testFlag(Qt::ControlModifier))
-    {
-        dimX = ::RoundToNearest(dimX, GetWorkspaceController()->GetWorkspace()->GridStep());
-        dimY = ::RoundToNearest(dimY, GetWorkspaceController()->GetWorkspace()->GridStep());
-    }
+    //if(args && args->MouseEventData->ModifierKeys.testFlag(Qt::ControlModifier))
+    //{
+    //    dimX = ::RoundToNearest(dimX, GetWorkspaceController()->GetWorkspace()->GridStep());
+    //    dimY = ::RoundToNearest(dimY, GetWorkspaceController()->GetWorkspace()->GridStep());
+    //}
 
     if(std::abs(dimX) <= 0.0)
     {

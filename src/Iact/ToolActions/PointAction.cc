@@ -82,7 +82,7 @@ void PointAction::ProcessMouseInput(const std::shared_ptr<MouseEventData>& data)
 {
     qDebug() << "Debug: PointAction::ProcessMouseInput";
     {
-        _CurrentPoint = data->PointOnPlane;
+        //_CurrentPoint = data->_PointOnPlane;
         //Remove(_HintLine);
     }
 }
