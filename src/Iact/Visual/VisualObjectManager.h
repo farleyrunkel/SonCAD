@@ -10,80 +10,65 @@
 #include <Standard_Handle.hxx>
 #include <AIS_InteractiveObject.hxx>
 #include <TCollection_ExtendedString.hxx>
+#include <NCollection_Map.hxx>
 
 #include "Comm/BaseObject.h"
 #include "Core/Topology/InteractiveEntity.h"
 #include "Core/Topology/Layer.h"
 #include "Iact/Visual/VisualObject.h"
 
+class WorkspaceController;
 
+DEFINE_STANDARD_HANDLE(VisualObjectManager, Standard_Transient);
 
-    class WorkspaceController;
+class VisualObjectManager : public BaseObject
+{
+public:
+    using CreateVisualObjectDelegate = std::function<Handle(VisualObject)(Handle(WorkspaceController), const Handle(InteractiveEntity)&)>;
 
-    DEFINE_STANDARD_HANDLE(VisualObjectManager, Standard_Transient);
+    explicit VisualObjectManager(const Handle(WorkspaceController)& workspaceController);
 
-    class VisualObjectManager : public BaseObject
+    ~VisualObjectManager() override
     {
-    public:
-        using CreateVisualObjectDelegate = std::function<Handle(VisualObject)(Handle(WorkspaceController), const Handle(InteractiveEntity)&)>;
+        Clear();
+    }
 
-        explicit VisualObjectManager(const Handle(WorkspaceController)& workspaceController);
+    // Registration methods
+    template <typename TEntity>
+    static void Register(const CreateVisualObjectDelegate& createDelegate);
 
-        ~VisualObjectManager() override {
-            Clear();
-        }
+    Handle(VisualObject) Add(const Handle(InteractiveEntity)& entity);
 
-        // Registration methods
-        template <typename TEntity>
-        static void Register(const CreateVisualObjectDelegate& createDelegate) {
-            auto typeId = TEntity::TypeId();
-            if (_RegisteredVisualTypes.find(typeId) != _RegisteredVisualTypes.end()) {
-                throw std::runtime_error("Entity type already registered.");
-            }
-            _RegisteredVisualTypes[typeId] = createDelegate;
-        }
+    Handle(VisualObject) Find(const Handle(InteractiveEntity)& entity) const;
 
-        Handle(VisualObject) Add(const Handle(InteractiveEntity)& entity);
+    std::list<Handle(VisualObject)> All() const;
 
-        Handle(VisualObject) Find(const Handle(InteractiveEntity)& entity) const;
+    void Remove(const Handle(InteractiveEntity)& entity);
 
-        std::list<Handle(VisualObject)> All() const;
+    void Clear();
 
-        void Remove(const Handle(InteractiveEntity)& entity);
+    // Isolation
+    bool EntityIsolationEnabled() const;
 
-        void Clear();
+    void SetIsolatedEntities(const std::list<Handle(InteractiveEntity)>& entitiesToIsolate);
 
-        // Isolation
-        bool EntityIsolationEnabled() const;
+    std::list<Handle(InteractiveEntity)> IsolatedEntities() const;
 
-        void SetIsolatedEntities(const std::list<Handle(InteractiveEntity)>& entitiesToIsolate);
+    // Signals
+    boost::signals2::signal<void()> OnIsolationChanged;
 
-        std::list<Handle(InteractiveEntity)> IsolatedEntities() const;
+private:
+    static Handle(VisualObject) CreateVisualObject(const Handle(WorkspaceController)& workspaceController,
+                                                   const Handle(InteractiveEntity)& entity);
 
-        // Signals
-        boost::signals2::signal<void()> OnIsolationChanged;
+private:
+    static std::map<Standard_Type, CreateVisualObjectDelegate> _RegisteredVisualTypes;
 
-    private:
-        static Handle(VisualObject) CreateVisualObject(const Handle(WorkspaceController)& workspaceController,
-                                                       const Handle(InteractiveEntity)& entity) {
-            //auto typeId = entity->DynamicType();
-            //auto it = _RegisteredVisualTypes.find(typeId);
-            //if (it != _RegisteredVisualTypes.end()) {
-            //    return it->second(workspaceController, entity);
-            //}
-            //throw std::runtime_error("No visualization registered for entity type");
-
-            return nullptr;
-        }
-
-    private:
-        static std::map<Standard_Type, CreateVisualObjectDelegate> _RegisteredVisualTypes;
-
-        Handle(WorkspaceController) _WorkspaceController = nullptr;
-        std::map<Handle(InteractiveEntity), Handle(VisualObject)> _InteractiveToVisual;
-        std::map<TCollection_ExtendedString, Handle(InteractiveEntity)> _GuidToInteractive;
-        std::list<Handle(InteractiveEntity)> _InvalidatedEntities;
-        std::list<Handle(InteractiveEntity)> _IsolatedEntities;
-    };
+    Handle(WorkspaceController) _WorkspaceController = nullptr;
+    std::map<Handle(InteractiveEntity), Handle(VisualObject)> _InteractiveToVisual;
+    std::map<TCollection_ExtendedString, Handle(InteractiveEntity)> _GuidToInteractive;
+    std::list<Handle(InteractiveEntity)> _InvalidatedEntities;
+    std::list<Handle(InteractiveEntity)> _IsolatedEntities;
+};
 
 #endif  // IACT_VISUAL_VISUALOBJECTMANAGER_H_

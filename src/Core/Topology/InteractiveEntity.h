@@ -11,7 +11,6 @@
 #include "Core/Topology/Entity.h"
 #include "Core/Topology/Layer.h"
 
-
 DEFINE_STANDARD_HANDLE(InteractiveEntity, Standard_Transient);
 
 class InteractiveEntity : public Entity

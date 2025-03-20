@@ -2,6 +2,16 @@
 
 #include "Core/Viewport.h"
 
+#include <IntAna_IntConicQuad.hxx>
+#include <Precision.hxx>
+#include <gp_Lin.hxx>
+#include <gp_Pln.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Dir.hxx>
+#include <Graphic3d_RenderingParams.hxx>
+#include <Quantity_Color.hxx>
+#include <AIS_AnimationCamera.hxx>
+
 #include "Core/Workspace.h"
 
 Viewport::Viewport(const Handle(Workspace)& workspace)
@@ -58,4 +68,67 @@ void Viewport::UpdateRenderMode()
     {
         renderParams.Method = Graphic3d_RM_RASTERIZATION;
     }
+}
+
+bool Viewport::ScreenToPoint(gp_Pln plane, int screenX, int screenY, gp_Pnt& resultPnt)
+{
+    if(_V3dView.IsNull())
+    {
+        return false;
+    }
+    try
+    {
+        _ValidateViewGeometry();
+
+        if(_V3dView->IfWindow())
+        {
+            double xv = 0, yv = 0, zv = 0;
+            double vx = 0, vy = 0, vz = 0;
+
+            _V3dView->Convert(screenX, screenY, xv, yv, zv);
+            _V3dView->Proj(vx, vy, vz);
+
+            gp_Lin line(gp_Pnt(xv, yv, zv), gp_Dir(vx, vy, vz));
+            IntAna_IntConicQuad intersection(line, plane, Precision::Confusion());
+
+            if(intersection.IsDone()
+			   && !intersection.IsParallel()
+			   && intersection.NbPoints() > 0)
+			{
+                resultPnt = intersection.Point(1);
+				return true;
+			}
+        }
+    }
+	catch(std::exception& e)
+	{
+		std::cerr << "Viewport::ScreenToPoint: " << e.what() << std::endl;
+	}
+
+	resultPnt = gp_Pnt(0, 0, 0);
+    return true;
+}
+
+bool Viewport::PointToScreen(const gp_Pnt& point, int& screenX, int& screenY)
+{
+	if(_V3dView.IsNull())
+	{
+		return false;
+	}
+
+	try
+	{
+        int x = 0, y = 0;
+        _V3dView->Convert(point.X(), point.Y(), point.Z(), x, y);
+
+        screenX = x;
+        screenY = y;
+	}
+    catch(std::exception& e)
+    {
+        std::cerr << "Viewport::PointToScreen: " << e.what() << std::endl;
+    }
+    screenX = 0;
+    screenY = 0;
+    return false;
 }

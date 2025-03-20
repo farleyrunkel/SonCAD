@@ -2,48 +2,76 @@
 
 #include "Iact/Visual/VisualObjectManager.h"
 
+#include "Iact/Workspace/WorkspaceController.h"
 
+VisualObjectManager::VisualObjectManager(const Handle(WorkspaceController)& workspaceController)
+    : _WorkspaceController(workspaceController)
+{}
 
+Handle(VisualObject) VisualObjectManager::Add(const Handle(InteractiveEntity)& entity)
+{
+    if(!entity) return nullptr;
 
-    VisualObjectManager::VisualObjectManager(const Handle(WorkspaceController)& workspaceController)
-        : _WorkspaceController(workspaceController) {}
+    auto visualObject = CreateVisualObject(_WorkspaceController, entity);
+    return visualObject;
+}
+Handle(VisualObject) VisualObjectManager::Find(const Handle(InteractiveEntity)& entity) const
+{
+    auto it = _InteractiveToVisual.find(entity);
+    return it != _InteractiveToVisual.end() ? it->second : nullptr;
+}
+std::list<Handle(VisualObject)> VisualObjectManager::All() const
+{
+    std::list<Handle(VisualObject)> visualObjects;
+    for(const auto& pair : _InteractiveToVisual)
+    {
+        visualObjects.push_back(pair.second);
+    }
+    return visualObjects;
+}
+void VisualObjectManager::Remove(const Handle(InteractiveEntity)& entity)
+{
+    _InteractiveToVisual.erase(entity);
+}
+void VisualObjectManager::Clear()
+{
+    _InteractiveToVisual.clear();
+    _GuidToInteractive.clear();
+    _InvalidatedEntities.clear();
+    _IsolatedEntities.clear();
+}
 
-    Handle(VisualObject) VisualObjectManager::Add(const Handle(InteractiveEntity)& entity) {
-        if (!entity) return nullptr;
+// Isolation
 
-        auto visualObject = CreateVisualObject(_WorkspaceController, entity);
-        return visualObject;
-    }
-    Handle(VisualObject) VisualObjectManager::Find(const Handle(InteractiveEntity)& entity) const {
-        auto it = _InteractiveToVisual.find(entity);
-        return it != _InteractiveToVisual.end() ? it->second : nullptr;
-    }
-    std::list<Handle(VisualObject)> VisualObjectManager::All() const {
-        std::list<Handle(VisualObject)> visualObjects;
-        for (const auto& pair : _InteractiveToVisual) {
-            visualObjects.push_back(pair.second);
-        }
-        return visualObjects;
-    }
-    void VisualObjectManager::Remove(const Handle(InteractiveEntity)& entity) {
-        _InteractiveToVisual.erase(entity);
-    }
-    void VisualObjectManager::Clear() {
-        _InteractiveToVisual.clear();
-        _GuidToInteractive.clear();
-        _InvalidatedEntities.clear();
-        _IsolatedEntities.clear();
-    }
+bool VisualObjectManager::EntityIsolationEnabled() const
+{
+    return !_IsolatedEntities.empty();
+}
+void VisualObjectManager::SetIsolatedEntities(const std::list<Handle(InteractiveEntity)>& entitiesToIsolate)
+{
+    _IsolatedEntities = entitiesToIsolate;
+    OnIsolationChanged();
+}
+std::list<Handle(InteractiveEntity)> VisualObjectManager::IsolatedEntities() const
+{
+    return _IsolatedEntities;
+}
 
-    // Isolation
+Handle(VisualObject) VisualObjectManager::CreateVisualObject(const Handle(WorkspaceController)& workspaceController, const Handle(InteractiveEntity)& entity)
+{
 
-    bool VisualObjectManager::EntityIsolationEnabled() const {
-        return !_IsolatedEntities.empty();
+    return nullptr;
+}
+
+// Registration methods
+
+template<typename TEntity>
+void VisualObjectManager::Register(const CreateVisualObjectDelegate& createDelegate)
+{
+    auto typeId = TEntity::TypeId();
+    if(_RegisteredVisualTypes.find(typeId) != _RegisteredVisualTypes.end())
+    {
+        throw std::runtime_error("Entity type already registered.");
     }
-    void VisualObjectManager::SetIsolatedEntities(const std::list<Handle(InteractiveEntity)>& entitiesToIsolate) {
-        _IsolatedEntities = entitiesToIsolate;
-        OnIsolationChanged();
-    }
-    std::list<Handle(InteractiveEntity)> VisualObjectManager::IsolatedEntities() const {
-        return _IsolatedEntities;
-    }
+    _RegisteredVisualTypes[typeId] = createDelegate;
+}

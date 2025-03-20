@@ -229,6 +229,21 @@ void ViewportController::ZoomFitSelected()
 		"ViewportController::ZoomFitSelected() - method is not implemented");
 }
 
+bool ViewportController::IsInRubberbandSelection() const
+{
+	return !_AisRubberBand.IsNull();
+}
+
+void ViewportController::StartRubberbandSelection(RubberbandSelectionMode mode, 
+												  bool includeTouched, 
+												  const Graphic3d_Vec2d& position)
+{
+	throw Standard_NotImplemented(
+		"ViewportController::StartRubberbandSelection(RubberbandSelectionMode mode, "
+		"bool includeTouched,"
+		"const Graphic3d_Vec2d & position) - method is not implemented");
+}
+
 void ViewportController::_SetTrihedron(bool visible)
 {
 	if(visible)

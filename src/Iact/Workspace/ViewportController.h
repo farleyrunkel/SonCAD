@@ -77,12 +77,11 @@ public:
 
 	void ZoomFitSelected();
 
-	void _SetTrihedron(bool visible);
+	bool IsInRubberbandSelection() const;
 
-	bool IsInRubberbandSelection() const
-	{
-		return !_AisRubberBand.IsNull();
-	}
+	void StartRubberbandSelection(RubberbandSelectionMode mode, 
+								  bool includeTouched, 
+								  const Graphic3d_Vec2d& position = {});
 
 public:
 	void MouseMove(const Graphic3d_Vec2d& pos, 
@@ -93,11 +92,6 @@ public:
 	void MouseDown(Aspect_VKeyFlags keys);
 
 	void MouseUp(Aspect_VKeyFlags keys);
-
-	void StartEditing()
-	{}
-	void StartRubberbandSelection()
-	{}  // Add necessary parameters
 
 private:
 	void Init();
@@ -112,6 +106,8 @@ private:
 
 	void _SetViewCube(bool isVisible);
 	void _SetViewCube(bool isVisible, int size, double duration);
+
+	void _SetTrihedron(bool visible);
 
 	void _UpdateRubberbandSelection();
 

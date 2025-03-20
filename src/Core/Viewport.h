@@ -176,20 +176,6 @@ public:
         _RaiseViewportChanged();
     }
 
-    void _ValidateViewGeometry()
-    {
-        if(_V3dView.IsNull())
-        {
-            return;
-        }
-
-        // If distance is 0, the parameters cannot be restored
-        if(_V3dView->Camera()->Distance() == 0.0)
-        {
-            _V3dView->Camera()->SetDistance(0.00001);
-        }
-    }
-
 	gp_Pln GetViewPlane()
 	{
 		auto eyeDir = GetViewDirection();
@@ -252,6 +238,10 @@ public:
 		return _AisAnimationCamera;
 	}
 
+	bool ScreenToPoint(gp_Pln plane, int screenX, int screenY, gp_Pnt& point);
+
+    bool PointToScreen(const gp_Pnt& point, int& screenX, int& screenY);
+
 public:
     boost::signals2::signal<void(const gp_Pnt&)> EyePointChanged;
     boost::signals2::signal<void(const gp_Pnt&)> TargetPointChanged;
@@ -265,6 +255,20 @@ private:
     void _RaiseViewportChanged()
     {
         ViewportChanged(this);
+    }
+
+    void _ValidateViewGeometry()
+    {
+        if(_V3dView.IsNull())
+        {
+            return;
+        }
+
+        // If distance is 0, the parameters cannot be restored
+        if(_V3dView->Camera()->Distance() == 0.0)
+        {
+            _V3dView->Camera()->SetDistance(0.00001);
+        }
     }
 
 private:

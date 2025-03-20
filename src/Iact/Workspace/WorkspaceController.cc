@@ -58,7 +58,7 @@ void WorkspaceController::InitWorkspace()
     for(auto& view : _Workspace->GetViewports())
     {
         Handle(ViewportController) viewCtrl = new ViewportController(view, this);
-		_ViewControllers.push_back(viewCtrl);
+		_ViewControllers.Append(viewCtrl);
     }
 }
 
@@ -72,30 +72,70 @@ Handle(Viewport) WorkspaceController::ActiveViewport() const
 	return _ActiveViewport;
 }
 
-std::vector<Handle(WorkspaceControl)> WorkspaceController::EnumerateControls()
+NCollection_Vector<Handle(WorkspaceControl)> WorkspaceController::EnumerateControls()
 {
     qDebug() << "Debug: m_workspaceController::enumerateControls";
-    std::vector<Handle(WorkspaceControl)> controls;
+    NCollection_Vector<Handle(WorkspaceControl)> controls;
 
     if(m_currentTool)
     {
-        controls.push_back(m_currentTool);
+        controls.Append(m_currentTool);
     }
 
     if(m_currentEditor)
     {
-        controls.push_back(m_currentEditor);
+        controls.Append(m_currentEditor);
     }
 
     return controls;
 }
 
-void WorkspaceController::MouseMove(const Handle(ViewportController)& VC, const Graphic3d_Vec2d& pos, Aspect_VKeyFlags keys) 
+void WorkspaceController::MouseMove(const Handle(ViewportController)& viewportController,
+                                    const Graphic3d_Vec2d& pos, 
+                                    Aspect_VKeyFlags modifierKeys)
 {
     qDebug() << "Debug: m_workspaceController::MouseMove: " << pos;
+
+    _LastMouseMovePosition = pos;
+	_LastMouseMoveViewportController = viewportController;
+    _LastModifierKeys = modifierKeys;
+	_MouseEventData->Clear();
+
+    for(auto& aisObject : _CustomHighlights)
+    {
+        if(_Workspace->AisContext()->IsDisplayed(aisObject))
+        {
+			_Workspace->AisContext()->Unhilight(aisObject, false);
+        }
+    }
+
+	_CustomHighlights.Clear();
+
+	if(pos.x() < 0 || pos.y() < 0)
+	{
+        _Workspace->AisContext()->MoveTo(0, 0, viewportController->GetViewport()->GetV3dView(), false);
+        Invalidate(true);
+        return;
+	}
+
+	auto status = _Workspace->AisContext()->MoveTo(pos.x(), pos.y(), viewportController->GetViewport()->GetV3dView(), false);
+
+	Invalidate(true);
+
+	if(status == AIS_StatusOfDetection::AIS_SOD_Error)
+	{
+		_CursorPosition = gp_Pnt();
+		_CursorPosition2d = gp_Pnt2d();
+        return;
+	}
+
+    gp_Pnt planePoint;
+
+    if (!viewportController->GetViewport())
+
     for(const auto& handler : EnumerateControls())
     {
-        if(handler->OnMouseMove(m_mouseEventData)) {
+        if(handler->OnMouseMove(_MouseEventData)) {
         }
     }
 }
