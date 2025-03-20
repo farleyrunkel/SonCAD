@@ -57,9 +57,9 @@ void ViewportController::InitWindow()
 		_ZoomFitAllOnInit = false;
 		ZoomFitAll();
 	}
-	_Viewport->GetV3dView()->Update();
-	_Viewport->GetV3dView()->MustBeResized();
-	_Viewport->GetV3dView()->SetImmediateUpdate(false);
+	_Viewport->V3dView()->Update();
+	_Viewport->V3dView()->MustBeResized();
+	_Viewport->V3dView()->SetImmediateUpdate(false);
 
 	_UpdateParameter();
 }
@@ -98,7 +98,7 @@ void ViewportController::_SetMouseMoveMode(MouseMoveMode mode)
 
 	case MouseMoveMode::Rotating:
 		_CurrentMouseMoveMode = MouseMoveMode::Rotating;
-		_GravityPoint = _Viewport->GetV3dView()->GravityPoint();
+		_GravityPoint = _Viewport->V3dView()->GravityPoint();
 		break;
 
 	case MouseMoveMode::Twisting:
@@ -106,7 +106,7 @@ void ViewportController::_SetMouseMoveMode(MouseMoveMode mode)
 		break;
 
 	case MouseMoveMode::Zooming:
-		_Viewport->GetV3dView()->StartZoomAtPoint(_StartedMousePosition.x(), _StartedMousePosition.y());
+		_Viewport->V3dView()->StartZoomAtPoint(_StartedMousePosition.x(), _StartedMousePosition.y());
 		_CurrentMouseMoveMode = MouseMoveMode::Zooming;
 		break;
 	}
@@ -122,7 +122,7 @@ void ViewportController::Rotate(double yawDeg, double pitchDeg, double rollDeg)
 {
 	if(!_LockedToPlane) // 仅当未锁定到平面时执行旋转
 	{
-		Handle(V3d_View) view = _Viewport->GetV3dView();
+		Handle(V3d_View) view = _Viewport->V3dView();
 		if(!view) return;
 
 		// 定义常量：限制俯仰角度（接近 90 度）
@@ -177,14 +177,14 @@ void ViewportController::Rotate(double yawDeg, double pitchDeg, double rollDeg)
 	}
 
 	// 更新视图
-	_Viewport->GetV3dView()->Update();
+	_Viewport->V3dView()->Update();
 	_WorkspaceController->Invalidate();
 	_Viewport->OnViewMoved();
 }
 
 void ViewportController::Pan(double dx, double dy)
 {
-	_Viewport->GetV3dView()->Panning(dx, dy);
+	_Viewport->V3dView()->Panning(dx, dy);
 	_WorkspaceController->Invalidate();
 	_Viewport->OnViewMoved();
 }
@@ -194,10 +194,10 @@ void ViewportController::Zoom(const Graphic3d_Vec2d& pos, double value)
 	double delta = value * 20.0;
 	if(_CurrentMouseMoveMode != MouseMoveMode::Zooming)
 	{
-		_Viewport->GetV3dView()->StartZoomAtPoint(pos.x(), pos.y());
+		_Viewport->V3dView()->StartZoomAtPoint(pos.x(), pos.y());
 	}
 
-	_Viewport->GetV3dView()->ZoomAtPoint(pos.x(), pos.y() - delta, pos.x(), pos.y() + delta);
+	_Viewport->V3dView()->ZoomAtPoint(pos.x(), pos.y() - delta, pos.x(), pos.y() + delta);
 	_WorkspaceController->Invalidate();
 	_Viewport->OnViewMoved();
 }
@@ -206,20 +206,20 @@ void ViewportController::Zoom(double value)
 {
 	if(value > 0)
 	{
-		_Viewport->GetV3dView()->SetZoom(1.0 + value, true);
+		_Viewport->V3dView()->SetZoom(1.0 + value, true);
 	}
 	else if(value < 0)
 	{
-		_Viewport->GetV3dView()->SetZoom(1.0 / (1.0 - value), true);
+		_Viewport->V3dView()->SetZoom(1.0 / (1.0 - value), true);
 	}
-	_Viewport->GetV3dView()->Redraw();
+	_Viewport->V3dView()->Redraw();
 	_Viewport->OnViewMoved();
 }
 
 void ViewportController::ZoomFitAll()
 {
-	_Viewport->GetV3dView()->FitAll(0.1, false);
-	_Viewport->GetV3dView()->ZFitAll(1.0);
+	_Viewport->V3dView()->FitAll(0.1, false);
+	_Viewport->V3dView()->ZFitAll(1.0);
 	_Viewport->OnViewMoved();
 }
 
@@ -248,11 +248,11 @@ void ViewportController::_SetTrihedron(bool visible)
 {
 	if(visible)
 	{
-		_Viewport->GetV3dView()->TriedronDisplay(Aspect_TOTP_LEFT_LOWER, Quantity_NOC_BLACK, 0.1, V3d_ZBUFFER);
+		_Viewport->V3dView()->TriedronDisplay(Aspect_TOTP_LEFT_LOWER, Quantity_NOC_BLACK, 0.1, V3d_ZBUFFER);
 	}
 	else
 	{
-		_Viewport->GetV3dView()->TriedronErase();
+		_Viewport->V3dView()->TriedronErase();
 	}
 }
 
@@ -282,7 +282,7 @@ void ViewportController::MouseMove(const Graphic3d_Vec2d& pos, Aspect_VKeyFlags 
 	switch(_CurrentMouseMoveMode)
 	{
 	case MouseMoveMode::Panning:
-		_Viewport->GetV3dView()->Pan(pos.x() - _LastMousePosition.x(), _LastMousePosition.y() - pos.y());
+		_Viewport->V3dView()->Pan(pos.x() - _LastMousePosition.x(), _LastMousePosition.y() - pos.y());
 		_Viewport->OnViewMoved();
 		break;
 
@@ -295,7 +295,7 @@ void ViewportController::MouseMove(const Graphic3d_Vec2d& pos, Aspect_VKeyFlags 
 		break;
 
 	case MouseMoveMode::Zooming:
-		_Viewport->GetV3dView()->ZoomAtPoint((int)_LastMousePosition.x(), (int)pos.y(), (int)pos.x(), (int)_LastMousePosition.y());
+		_Viewport->V3dView()->ZoomAtPoint((int)_LastMousePosition.x(), (int)pos.y(), (int)pos.x(), (int)_LastMousePosition.y());
 		_Viewport->OnViewMoved();
 		break;
 	}
@@ -461,7 +461,7 @@ void ViewportController::_UpdateRubberbandSelection()
 	else if(_RubberbandMode == RubberbandSelectionMode::Freehand)
 	{
 		int height = 0, width = 0;
-		auto wind = _Viewport->GetV3dView()->Window();
+		auto wind = _Viewport->V3dView()->Window();
 		if(wind.IsNull()) return;
 		wind->Size(width, height);
 
@@ -479,7 +479,7 @@ void ViewportController::_UpdateRubberbandSelection()
 			_RubberbandPoints[_RubberbandPoints.size() - 1] = Graphic3d_Vec2i(currentPointX, currentPointY);
 		}
 
-		AisHelper::SetRubberbandPoints(_Viewport->GetV3dView()->Window(), _AisRubberBand, _RubberbandPoints);
+		AisHelper::SetRubberbandPoints(_Viewport->V3dView()->Window(), _AisRubberBand, _RubberbandPoints);
 	}
 
 	_WorkspaceController->GetWorkspace()->AisContext()->Redisplay(_AisRubberBand, false);
@@ -488,7 +488,7 @@ void ViewportController::_UpdateRubberbandSelection()
 Graphic3d_Vec4i ViewportController::_CalcRectangleSelectionPoints(bool bottomUp)
 {
 	int height = 0, width = 0;
-	auto wind = _Viewport->GetV3dView()->Window();
+	auto wind = _Viewport->V3dView()->Window();
 	if(wind.IsNull()) return {};
 	wind->Size(width, height);
 

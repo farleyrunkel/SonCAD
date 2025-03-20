@@ -40,206 +40,56 @@ public:
     };
 
 public:
-
     explicit Viewport(const Handle(Workspace)& workspace);
+    ~Viewport();
 
-    Handle(Workspace) GetWorkspace()
-    {
-		return _Workspace;
-    }
+public:
+    Handle(Workspace) GetWorkspace();
 
-    // V3dView
-	Handle(V3d_View) GetV3dView()
-	{
-		return _V3dView;
-	}
+	Handle(V3d_View) V3dView();
 
-    // 获取器和设置器
-    gp_Pnt EyePoint()
-    {
-        if(_V3dView)
-        {
-            double xEye = 0, yEye = 0, zEye = 0;
-            _V3dView->Eye(xEye, yEye, zEye);
-            _EyePoint = gp_Pnt(xEye, yEye, zEye);
-        }
-        return _EyePoint;
-    }
+    gp_Pnt EyePoint();
 
-    void SetEyePoint(const gp_Pnt& point)
-    {
-        _EyePoint = point;
-        if(_V3dView)
-        {
-            _V3dView->SetEye(_EyePoint.X(), _EyePoint.Y(), _EyePoint.Z());
-            EyePointChanged(_EyePoint);  // 传递参数
-        }
-    }
+    void SetEyePoint(const gp_Pnt& point);
 
-    gp_Pnt TargetPoint()
-    {
-        if(_V3dView)
-        {
-            double xAt = 0, yAt = 0, zAt = 0;
-            _V3dView->At(xAt, yAt, zAt);
-            _TargetPoint = gp_Pnt(xAt, yAt, zAt);
-        }
-        return _TargetPoint;
-    }
+    gp_Pnt TargetPoint();
 
-    void SetTargetPoint(const gp_Pnt& point)
-    {
-        _TargetPoint = point;
-        if(_V3dView)
-        {
-            _V3dView->SetAt(_TargetPoint.X(), _TargetPoint.Y(), _TargetPoint.Z());
-            TargetPointChanged(_TargetPoint);  // 传递参数
-        }
-    }
+    void SetTargetPoint(const gp_Pnt& point);
 
-    double Twist()
-    {
-        if(_V3dView)
-        {
-            _Twist = _V3dView->Twist() * 180.0 / M_PI;  // 转换为度
-        }
-        return _Twist;
-    }
+    double Twist();
 
-    void SetTwist(double value)
-    {
-        if(_V3dView)
-        {
-            _V3dView->SetTwist(value * M_PI / 180.0);  // 转换为弧度
-            if(_Twist != value)
-            {
-                _Twist = value;
-                TwistChanged(_Twist);  // 传递参数
-            }
-        }
-    }
+    void SetTwist(double value);
 
-    double Scale()
-    {
-        if(_V3dView)
-        {
-            _Scale = _V3dView->Scale();
-        }
-        return _Scale;
-    }
+    double Scale();
 
-    void SetScale(double value)
-    {
-        if(_V3dView)
-        {
-            _V3dView->SetScale(value);
-            if(_Scale != value)
-            {
-                _Scale = value;
-                ScaleChanged(_Scale);  // 传递参数
-            }
-        }
-    }
+    void SetScale(double value);
 
-    RenderModes RenderMode() const
-    {
-        return _RenderMode;
-    }
+    RenderModes RenderMode() const;
 
-    void setRenderMode(RenderModes mode)
-    {
-        if(_RenderMode != mode)
-        {
-            _RenderMode = mode;
-            UpdateRenderMode();
-            RenderModeChanged(_RenderMode);  // 传递参数
-        }
-    }
+    void setRenderMode(RenderModes mode);
 
-    // 初始化 Viewport，支持 MSAA
     void Init(bool useMsaa);
 
-    // 更新渲染模式
     void UpdateRenderMode();
 
-    // 析构函数
-    ~Viewport()
-    {
-        if(_V3dView)
-        {
-            _V3dView->Remove();
-        }
-    }
+    void Resize();
 
-    void OnViewMoved()
-    {
-        _RaiseViewportChanged();
-    }
+    void OnViewMoved();
 
-	gp_Pln GetViewPlane()
-	{
-		auto eyeDir = GetViewDirection();
-		return gp_Pln(_TargetPoint, eyeDir);
-	}
+	gp_Pln GetViewPlane();
+	gp_Lin GetViewLine();
+    gp_Dir GetViewDirection();
+    gp_Ax1 ViewAxis(int screenX, int screenY);
+    gp_Dir GetUpDirection();
+    gp_Dir GetRightDirection();
 
-	gp_Lin GetViewLine()
-	{
-		return gp_Lin(_EyePoint, GetViewDirection());
-	}
+	double DpiScale() const;
 
-    gp_Dir GetViewDirection()
-    {
-		_ValidateViewGeometry();
+	Handle(AIS_AnimationCamera) AisAnimationCamera() const;
 
-        gp_Vec eyeVector(_EyePoint, _TargetPoint);
-        return gp_Dir(eyeVector);
-    }
-
-    gp_Ax1 ViewAxis(int screenX, int screenY)
-    {
-		if(_V3dView.IsNull())
-		{
-			return gp::OX();
-		}
-
-		double px = 0, py = 0, pz = 0;
-        _V3dView->Convert(screenX, screenY, px, py, pz);
-
-		return gp_Ax1(gp_Pnt(px, py, pz), GetViewDirection());
-    }
-
-    gp_Dir GetUpDirection()
-    {
-        if(_V3dView.IsNull())
-        {
-            return gp_Dir(0, 0, 1);
-        }
-
-        double xUp = 0, yUp = 0, zUp = 0;
-        _V3dView->Up(xUp, yUp, zUp);
-        return gp_Dir(xUp, yUp, zUp);
-    }
-
-    gp_Dir GetRightDirection()
-    {
-		auto upDir = GetUpDirection();
-        auto eyeDir = GetViewDirection();
-
-		return upDir.Crossed(eyeDir);
-    }
-
-	double DpiScale() const
-	{
-		return _DpiScale;
-	}
-
-	Handle(AIS_AnimationCamera) AisAnimationCamera() const
-	{
-		return _AisAnimationCamera;
-	}
+    bool ScreenToPoint(int screenX, int screenY, gp_Pnt& point);
 
 	bool ScreenToPoint(gp_Pln plane, int screenX, int screenY, gp_Pnt& point);
-
     bool PointToScreen(const gp_Pnt& point, int& screenX, int& screenY);
 
 public:
@@ -248,28 +98,12 @@ public:
     boost::signals2::signal<void(double)> TwistChanged;
     boost::signals2::signal<void(double)> ScaleChanged;
     boost::signals2::signal<void(RenderModes)> RenderModeChanged;
-
     boost::signals2::signal<void(const Handle(Viewport)&)> ViewportChanged;
 
 private:
-    void _RaiseViewportChanged()
-    {
-        ViewportChanged(this);
-    }
+    void _RaiseViewportChanged();
 
-    void _ValidateViewGeometry()
-    {
-        if(_V3dView.IsNull())
-        {
-            return;
-        }
-
-        // If distance is 0, the parameters cannot be restored
-        if(_V3dView->Camera()->Distance() == 0.0)
-        {
-            _V3dView->Camera()->SetDistance(0.00001);
-        }
-    }
+    void _ValidateViewGeometry();
 
 private:
     Handle(Workspace) _Workspace;

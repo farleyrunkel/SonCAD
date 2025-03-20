@@ -113,12 +113,12 @@ void WorkspaceController::MouseMove(const Handle(ViewportController)& viewportCo
 
 	if(pos.x() < 0 || pos.y() < 0)
 	{
-        _Workspace->AisContext()->MoveTo(0, 0, viewportController->GetViewport()->GetV3dView(), false);
+        _Workspace->AisContext()->MoveTo(0, 0, viewportController->GetViewport()->V3dView(), false);
         Invalidate(true);
         return;
 	}
 
-	auto status = _Workspace->AisContext()->MoveTo(pos.x(), pos.y(), viewportController->GetViewport()->GetV3dView(), false);
+	auto status = _Workspace->AisContext()->MoveTo(pos.x(), pos.y(), viewportController->GetViewport()->V3dView(), false);
 
 	Invalidate(true);
 

@@ -36,7 +36,7 @@ bool CreateBoxTool::OnStart()
         TopoDS_Shape aBox = BRepPrimAPI_MakeBox(5.0, 5.0, 5.0).Shape();
         Handle(AIS_Shape) aShape = new AIS_Shape(aBox);
         context->Display(aShape, AIS_Shaded, 0, false);
-        WC->ActiveViewport()->GetV3dView()->Redraw();
+        WC->ActiveViewport()->V3dView()->Redraw();
         WC->ActiveViewport()->OnViewMoved();
     }
 
