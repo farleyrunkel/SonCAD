@@ -27,7 +27,7 @@ Handle(AIS_InteractiveObject) MouseEventData::DetectedAisObject() const
 
 void MouseEventData::Clear()
 {
-    _Viewport = nullptr;
+    _Viewport.Nullify();
     _ScreenPoint = Graphic3d_Vec2d();
     _PointOnPlane = gp_Pnt();
     _DetectedElements.Clear();

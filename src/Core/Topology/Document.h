@@ -7,7 +7,7 @@
 #include <TDF_Label.hxx>
 #include <TDocStd_Document.hxx>
 
-#include "Core/Topology/Entity.h"
+class Entity;
 
 DEFINE_STANDARD_HANDLE(Document, TDocStd_Document)
 
@@ -20,7 +20,7 @@ public:
     //! If a document is created outside of an application using this constructor, it must be
     //! managed by a Handle. Otherwise memory problems could appear: call of TDocStd_Owner::GetDocument
     //! creates a Handle(TDocStd_Document), so, releasing it will produce a crash.
-    Standard_EXPORT Document(const TCollection_ExtendedString& astorageformat) : TDocStd_Document(astorageformat){}
+    Document(const TCollection_ExtendedString& astorageformat);
 
 private:
     NCollection_DataMap<Standard_CString, Standard_Integer> _Instances;

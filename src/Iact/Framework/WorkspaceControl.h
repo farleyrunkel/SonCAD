@@ -3,8 +3,6 @@
 #ifndef IACT_FRAMEWORK_WORKSPACECONTROLL_H_
 #define IACT_FRAMEWORK_WORKSPACECONTROLL_H_
 
-#include <QList>
-
 #include <Standard_Handle.hxx>
 #include <NCollection_Vector.hxx>
 
@@ -20,8 +18,9 @@ DEFINE_STANDARD_HANDLE(WorkspaceControl, BaseObject);
 class WorkspaceControl : public BaseObject
 {
 public:
-    explicit WorkspaceControl();
+    WorkspaceControl();
 
+public:
     Handle(WorkspaceController) GetWorkspaceController() const;
 
     void SetWorkspaceController(const Handle(WorkspaceController)& WorkspaceController);

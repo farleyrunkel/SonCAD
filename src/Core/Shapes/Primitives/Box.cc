@@ -1,18 +1,12 @@
 // Copyright [2024] SunCAD
 
 #include "Core/Shapes/Primitives/Box.h"
+#include <TCollection_AsciiString.hxx>
 
-#include <QObject>
-
-Box::Box() : _DimensionX(1.0), _DimensionY(1.0), _DimensionZ(1.0)
-{}
-
-QString Box::GetName() const
-{
-    return "Box";
-}
-
-void Box::SetName(const QString&)
+Box::Box() 
+    : _DimensionX(1.0)
+    , _DimensionY(1.0)
+    , _DimensionZ(1.0)
 {}
 
 // DimensionX property

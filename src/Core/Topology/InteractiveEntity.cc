@@ -10,26 +10,6 @@ InteractiveEntity::InteractiveEntity()
     , _LayerId(QUuid::createUuid())
 {}
 
-// Name property
-QString InteractiveEntity::GetName() const
-{
-    return _Name;
-}
-
-void InteractiveEntity::SetName(const QString& Name)
-{
-    //if (_name != name) {
-    //    SaveUndo();
-    //    _name = name;
-    //    emit propertyChanged();  // Equivalent to RaisePropertyChanged
-    //    if (!IsDeserializing && CoreContext::current()) {
-    //        if (Document* doc = Document::current()) {
-    //            doc->instanceChanged(this);
-    //        }
-    //    }
-    //}
-}
-
 // IsVisible property
 bool InteractiveEntity::IsVisible() const
 {

@@ -13,7 +13,7 @@ DEFINE_STANDARD_HANDLE(ToolAction, WorkspaceControl);
 class ToolAction : public WorkspaceControl
 {
 public:
-    explicit ToolAction();;
+    explicit ToolAction();
 
     // Start and stop functions
     bool Start()

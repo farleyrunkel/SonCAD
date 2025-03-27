@@ -41,7 +41,7 @@ bool CreateBoxTool::OnStart()
     }
 
     _CurrentPhase = Phase::PivotPoint;
-    auto pointAction = new PointAction();
+    Handle(PointAction) pointAction = new PointAction();
     if(!StartAction(pointAction))
     {
         return false;

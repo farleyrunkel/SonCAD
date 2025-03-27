@@ -8,8 +8,16 @@
 #include "Iact/Visual/VisualObjectManager.h"
 #include "Occt/OcctHelper/AisHelper.h"
 
-WorkspaceController::WorkspaceController()
-{}
+WorkspaceController::WorkspaceController()  
+{
+}
+
+WorkspaceController::WorkspaceController(const Handle(Workspace)& value)
+{
+    _Workspace = value;
+    _MouseEventData = std::make_shared<MouseEventData>();
+    InitWorkspace();
+}
 
 bool WorkspaceController::StartTool(const Handle(Tool)& tool)
 {
@@ -181,7 +189,11 @@ void WorkspaceController::MouseMove(const Handle(ViewportController)& viewportCo
     _LastMouseMovePosition = pos;
 	_LastMouseMoveViewportController = viewportController;
     _LastModifierKeys = modifierKeys;
-	_MouseEventData->Clear();
+
+	if(_MouseEventData != nullptr)
+	{
+		_MouseEventData->Clear();
+	}
 
     for(auto& aisObject : _CustomHighlights)
     {
@@ -231,8 +243,7 @@ void WorkspaceController::MouseMove(const Handle(ViewportController)& viewportCo
 		TopoDS_Shape detectedShape = AisHelper::GetShapeFromEntityOwner(_LastDetectedOwner);
 		_LastDetectedAisObject->SetOwner(_LastDetectedOwner);
 
-		auto detectedEntity = _VisualObjects->GetEntity(_LastDetectedAisObject);
-
+		//auto detectedEntity = _VisualObjects->GetEntity(_LastDetectedAisObject);
     }
 
     for(const auto& handler : EnumerateControls())

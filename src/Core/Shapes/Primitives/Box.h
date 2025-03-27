@@ -19,11 +19,6 @@ public:
     // Initialization
     Box();
 
-    // Class name property
-    virtual QString GetName() const override;
-
-    virtual void SetName(const QString&) override;
-
     // DimensionX property
     double DimensionX() const;
 

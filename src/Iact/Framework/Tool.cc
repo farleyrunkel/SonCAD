@@ -67,9 +67,8 @@ bool Tool::PrepareUndo()
 
 void Tool::Cleanup()
 {
-	//StopAllActions();
+	StopAllActions();
 	//RestoreAllVisualShapes();
-	//BaseCleanup();
 }
 
 bool Tool::StartAction(Handle(ToolAction) toolAction, bool exclusive)

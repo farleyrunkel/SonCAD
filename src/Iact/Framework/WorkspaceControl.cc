@@ -6,7 +6,6 @@
 #include "Iact/Workspace/WorkspaceController.h"
 
 WorkspaceControl::WorkspaceControl()
-	: _WorkspaceController(nullptr)
 {}
 
 Handle(WorkspaceController) WorkspaceControl::GetWorkspaceController() const

@@ -57,10 +57,9 @@ void ViewportPanel::mouseMoveEvent(QMouseEvent* event)
 	{
 		auto p = _ViewportHwndHost->mapFromParent(_MouseMovePosition);
 
-		_MouseControl->MouseMove(p, event, event->modifiers());
-
 		_MouseControl->MouseMove(Graphic3d_Vec2d(p.x(), p.y()), 
-								 QtMouseHelper::qtMouseButtons2VKeys(event->buttons()), QtMouseHelper::qtMouseModifiers2VKeys(event->modifiers()));
+								 QtMouseHelper::qtMouseButtons2VKeys(event->buttons()),
+								 QtMouseHelper::qtMouseModifiers2VKeys(event->modifiers()));
 	}
 	_HudContainer->adjustSize();
 	_HudContainer->update();

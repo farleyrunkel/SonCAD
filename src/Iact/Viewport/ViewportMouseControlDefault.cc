@@ -39,9 +39,7 @@ void ViewportMouseControlDefault::MouseMove(const Graphic3d_Vec2d& pos, Aspect_V
 
 	if(_ViewportController.IsNull()) return;
 
-
-    // _ViewportController->MouseMove
-
+	_ViewportController->MouseMove(pos, buttons);
 }
 
 void ViewportMouseControlDefault::MouseDown(const QPointF& pos, Qt::MouseButton changedButton, int clickCount, QMouseEvent*, Qt::KeyboardModifiers ModifierKeys)

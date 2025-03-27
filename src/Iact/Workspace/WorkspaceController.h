@@ -29,11 +29,7 @@ class WorkspaceController : public BaseObject
 {
 public:
     WorkspaceController();
-    WorkspaceController(const Handle(Workspace)& value)
-    {
-        _Workspace = value;
-        InitWorkspace();
-    }
+    WorkspaceController(const Handle(Workspace)& value);
 
     bool StartTool(const Handle(Tool)& tool);
 

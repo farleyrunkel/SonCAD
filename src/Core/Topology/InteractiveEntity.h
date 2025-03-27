@@ -17,12 +17,7 @@ class InteractiveEntity : public Entity
 {
 public:
     explicit InteractiveEntity();
-
-    // Name property
-    QString GetName() const override;
-    void SetName(const QString& Name) override;
-
-    // IsVisible property
+   // IsVisible property
     bool IsVisible() const;
     void SetIsVisible(bool IsVisible);
 

@@ -193,11 +193,14 @@ Marker::MarkerImage Marker::_GetMarkerImage(const QString& Name, int size)
     auto pixmap = _TryGetMarkerAsImage(Name, size);
 
     MarkerImage image;
-    image.PixMap = pixmap;
-    image.Width  = pixmap->Width();
-    image.Height = (int)pixmap->Height();
-    image.Bytes  = (new Graphic3d_MarkerImage(pixmap))->GetBitMapArray();   
 
+    if(!pixmap.IsNull()) 
+    {
+        image.PixMap = pixmap;
+        image.Width  = pixmap->Width();
+        image.Height = (int)pixmap->Height();
+        image.Bytes  = (new Graphic3d_MarkerImage(pixmap))->GetBitMapArray();   
+    }
     return image;
 }
 
@@ -206,7 +209,7 @@ Handle(Image_PixMap) Marker::_TryGetMarkerAsImage(const QString& Name, int size)
     int dpiScale = 1;
     int finalSize = static_cast<int>(size * dpiScale);
 
-    QString imagePath = Resource::IconPath("Marker/" + Name);
+    QString imagePath = Resource::MarkerPath(Name);
 
     QImage image(imagePath);
     if (!image.load(imagePath, "svg")) 

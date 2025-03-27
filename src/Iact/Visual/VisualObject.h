@@ -19,60 +19,49 @@ DEFINE_STANDARD_HANDLE(VisualObject, BaseObject);
 class VisualObject : public BaseObject
 {
 protected:
-    explicit VisualObject(const Handle(WorkspaceController)& workspaceController, const Handle(InteractiveEntity)& entity);
+    explicit VisualObject(const Handle(WorkspaceController)& workspaceController,
+                          const Handle(InteractiveEntity)& entity);
     virtual ~VisualObject()
     {}
 
 public:
-    virtual void Remove() = 0;
-    virtual void Update() = 0;
-
-    virtual Handle(AIS_InteractiveObject) AisObject() const = 0;
-
-    Handle(WorkspaceController) GetWorkspaceController() const
-    {
-        return _WorkspaceController;
-    }
+    Handle(WorkspaceController) GetWorkspaceController() const;
 
     Handle(AIS_InteractiveContext) AisContext() const;
 
-    Handle(InteractiveEntity) Entity() const
-    {
-        return _Entity;
-    }
+    virtual Handle(AIS_InteractiveObject) AisObject() const = 0;
 
-    void SetLocalTransformation(const gp_Trsf& transformation);
-
-    virtual bool IsSelectable() const
-    {
-        return false;
-    }
-
-    virtual void SetIsSelectable(bool value)
-    {
-        (void)value;
-    }
+    virtual bool IsSelectable() const;
+    virtual void SetIsSelectable(bool value);
 
     bool IsSelected() const;
     void SetIsSelected(bool value);
 
-    QVariant Tag() const
-    { 
-        return _Tag;
-    }
 
-    void SetTag(const QVariant& tag)
-    {
-        _Tag = tag;
-    }
+    std::any Tag() const;
+
+    void SetTag(const std::any& tag);
+
+    Handle(InteractiveEntity) Entity() const;
+
+    virtual void Remove() = 0;
+    virtual void Update() = 0;
+
+    void SetLocalTransformation(const gp_Trsf& transformation);
 
 public:
-    boost::signals2::signal<void(const std::shared_ptr<VisualObject>&)> OnAisObjectChanged;
+    boost::signals2::signal<void(const Handle(VisualObject)&)> AisObjectChanged;
+
+protected:
+    void RaiseAisObjectChanged()
+    {
+        AisObjectChanged(this);
+    }
 
 private:
     Handle(WorkspaceController) _WorkspaceController;
     Handle(InteractiveEntity) _Entity;
-    QVariant _Tag;
+    std::any _Tag;
 };
 
 #endif  // IACT_VISUAL_VISUALOBJECT_H_

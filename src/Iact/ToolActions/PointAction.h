@@ -48,7 +48,6 @@ private:
     void _EnsureMarker();
     void ProcessMouseInput(const std::shared_ptr<MouseEventData>& data);
 
-
 private:
     Marker* _Marker;
     gp_Pnt _CurrentPoint;
