@@ -6,10 +6,10 @@
 #include <vector>
 
 #include <Aspect_VKeyFlags.hxx>
-#include <Graphic3d_Vec2.hxx>
-#include <Graphic3d_Vec4.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Pnt2d.hxx>
+#include <Graphic3d_Vec2.hxx>
+#include <Graphic3d_Vec4.hxx>
 #include <NCollection_Vector.hxx>
 #include <SelectMgr_EntityOwner.hxx>
 
@@ -17,6 +17,7 @@
 #include "Core/Workspace.h"
 #include "Iact/Framework/Editor.h"
 #include "Iact/Framework/Tool.h"
+#include "Iact/HudElements/HudManager.h"
 #include "Iact/Workspace/MouseEventData.h"
 #include "Iact/Workspace/Selection/SelectionManager.h"
 #include "Iact/Workspace/ViewportController.h"
@@ -61,6 +62,12 @@ public:
     Handle(Viewport) ActiveViewport() const;
 
     NCollection_Vector<Handle(WorkspaceControl)> EnumerateControls();
+
+    void SetHudManager(const Handle(HudManager)& manager)
+    {
+        _Manager = manager;
+    }
+
     // mouse control
 public:
     void MouseMove(const Handle(ViewportController)& VC, const Graphic3d_Vec2d& pos, Aspect_VKeyFlags keys);
@@ -94,6 +101,8 @@ private:
 
     Handle(AIS_InteractiveObject) _LastDetectedAisObject;
     Handle(SelectMgr_EntityOwner) _LastDetectedOwner;
+
+    Handle(HudManager) _Manager;
 };
 
 #endif // IACT_WORKSPACE_WORKSPACECONTROLLER_H_

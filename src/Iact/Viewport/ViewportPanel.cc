@@ -12,6 +12,7 @@
 
 // Project Libraries
 #include "Comm/QtMouseHelper.h"
+#include "Iact/HudElements/HudManager.h"
 #include "Iact/Viewport/ViewportMouseControlDefault.h"
 #include "Iact/Workspace/InteractiveContext.h"
 
@@ -21,6 +22,7 @@ ViewportPanel::ViewportPanel(QWidget* parent)
 	, _HudContainer(new QFrame(this))
 	, _ViewportHwndHost(nullptr)
 	, _MouseMovePosition(0.0, 0.0)
+	, _HudManager(new HudManager())
 {
 	Message::SendInfo("ViewportPanel: Constructing ViewportPanel");
 
@@ -31,6 +33,12 @@ ViewportPanel::ViewportPanel(QWidget* parent)
 
 	_HudContainer->setAutoFillBackground(false);
 	_HudContainer->setStyleSheet("background-color: rgba(128, 128, 128, 0.5);");
+
+	auto VC = InteractiveContext::Current()->GetWorkspaceController();
+	if(!VC.IsNull())
+	{
+		VC->SetHudManager(_HudManager);
+	}
 
 	setLayout(new QVBoxLayout(this));
 	setMouseTracking(true);

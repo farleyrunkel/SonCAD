@@ -17,6 +17,7 @@
 #include <QWidget>
 
 // Project includes
+#include "Iact/HudElements/HudManager.h"
 #include "Iact/Viewport/ViewportHwndHost.h"
 #include "Iact/Viewport/ViewportMouseControl.h"
 
@@ -57,6 +58,8 @@ private:
 	QPointF _MouseMovePosition;
 	bool _SuppressContextMenu;
 	bool _ContextMenuIsOpen;
+
+	Handle(HudManager) _HudManager;
 };
 
 #endif  // IACT_VIEWPORT_VIEWPORTPANEL_H_
